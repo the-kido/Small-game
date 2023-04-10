@@ -670,3 +670,5 @@ parameters/Walk/blend_position = Vector2(0, 0)
 z_index = -1
 position = Vector2(-14, 20)
 rotation = 3.14159
+
+[connection signal="attack" from="." to="Weapon" method="_on_player_attack"]
