@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://b08e5exkky4tx"]
+[gd_scene load_steps=53 format=3]
 
 [ext_resource type="Script" path="res://PlayerController.gd" id="1_1dl7r"]
 [ext_resource type="Texture2D" uid="uid://7kq1c3lwc6la" path="res://assets/sprites/player/player_east.png" id="2_eda8y"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/sprites/player/player_north.png" id="3_2fk2t"]
 [ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="4_iet7a"]
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="5_pg2rd"]
-[ext_resource type="PackedScene" uid="uid://cwrhemsske2pi" path="res://weapon_entity.tscn" id="6_ik4pt"]
+[ext_resource type="PackedScene" uid="uid://ccbx0jffonpn0" path="res://weapon_holder.tscn" id="6_ik4pt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
 atlas = ExtResource("2_eda8y")
@@ -651,7 +651,7 @@ libraries = {
 "player": SubResource("AnimationLibrary_ulu1t")
 }
 
-[node name="Weapon" parent="." instance=ExtResource("6_ik4pt")]
+[node name="Weapon Holder" parent="." instance=ExtResource("6_ik4pt")]
 z_index = -1
 position = Vector2(-14, 20)
 rotation = 3.14159
@@ -672,4 +672,4 @@ parameters/conditions/walk = false
 parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)
 parameters/Walk/blend_position = Vector2(0, 0)
 
-[connection signal="weapon_use" from="Input Controller" to="Weapon" method="on_player_weapon_use"]
+[connection signal="weapon_use" from="Input Controller" to="Weapon Holder" method="on_player_weapon_use"]

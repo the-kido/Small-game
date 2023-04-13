@@ -6,15 +6,19 @@ extends Node2D
 signal attack
 
 #Weapon values
-var 
 var reload_delay = 0.5
 
 func change_weapon(weapon: BaseWeapon):
-	weapon.
-	 
+	pass
 
-func _process(_delta):
-	hide_gun_behind_player()
+'''
+THIS IS DEBUGGING. DEFAUTL THIS TO SOME SORT OF "NEW LEVEL" SYSTEM TO START
+WITH A DEFAULT WEAPON
+'''
+@export var default_weapon: BaseWeapon
+#func _ready():
+#	change_weapon("")
+
 
 
 var _reloaded = true
@@ -46,10 +50,6 @@ func reload():
 	return true
 	
 
-#Asthetics	
-func hide_gun_behind_player():
-	var facing_direction: Vector2 = -(global_position - get_global_mouse_position()).normalized()
-	_gun_animation_tree.set("parameters/blend_position", facing_direction)
 
 
 
