@@ -1,77 +1,75 @@
-[gd_scene load_steps=52 format=3 uid="uid://c6rijxx6s5k1y"]
+[gd_scene load_steps=53 format=3 uid="uid://b08e5exkky4tx"]
 
-[ext_resource type="Script" path="res://PlayerController.gd" id="1_vue70"]
-[ext_resource type="Texture2D" uid="uid://7kq1c3lwc6la" path="res://source/sprites/player/player_east.png" id="2_us8rj"]
-[ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://source/sprites/player/player_north.png" id="3_2riel"]
-[ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://source/sprites/player/player_south.png" id="4_6h1eg"]
-[ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://source/sprites/player/player_west.png" id="4_7m0qv"]
-[ext_resource type="PackedScene" uid="uid://cdyodjh66i41i" path="res://player_gun.tscn" id="6_ik4pt"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eib2"]
-size = Vector2(48, 80)
+[ext_resource type="Script" path="res://PlayerController.gd" id="1_1dl7r"]
+[ext_resource type="Texture2D" uid="uid://7kq1c3lwc6la" path="res://assets/sprites/player/player_east.png" id="2_eda8y"]
+[ext_resource type="Script" path="res://player_input_controller.gd" id="2_sjoel"]
+[ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/sprites/player/player_north.png" id="3_2fk2t"]
+[ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="4_iet7a"]
+[ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="5_pg2rd"]
+[ext_resource type="PackedScene" uid="uid://cwrhemsske2pi" path="res://weapon_entity.tscn" id="6_ik4pt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
-atlas = ExtResource("2_us8rj")
+atlas = ExtResource("2_eda8y")
 region = Rect2(18, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ucxe4"]
-atlas = ExtResource("2_us8rj")
+atlas = ExtResource("2_eda8y")
 region = Rect2(9, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fl4gy"]
-atlas = ExtResource("2_us8rj")
+atlas = ExtResource("2_eda8y")
 region = Rect2(0, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ik12i"]
-atlas = ExtResource("2_us8rj")
+atlas = ExtResource("2_eda8y")
 region = Rect2(27, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ewq0h"]
-atlas = ExtResource("3_2riel")
+atlas = ExtResource("3_2fk2t")
 region = Rect2(0, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t1kiq"]
-atlas = ExtResource("3_2riel")
+atlas = ExtResource("3_2fk2t")
 region = Rect2(9, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cbrww"]
-atlas = ExtResource("3_2riel")
+atlas = ExtResource("3_2fk2t")
 region = Rect2(18, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m6hub"]
-atlas = ExtResource("3_2riel")
+atlas = ExtResource("3_2fk2t")
 region = Rect2(27, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_23shk"]
-atlas = ExtResource("4_6h1eg")
+atlas = ExtResource("4_iet7a")
 region = Rect2(0, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lw80g"]
-atlas = ExtResource("4_6h1eg")
+atlas = ExtResource("4_iet7a")
 region = Rect2(9, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x1cyf"]
-atlas = ExtResource("4_6h1eg")
+atlas = ExtResource("4_iet7a")
 region = Rect2(18, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_swj7m"]
-atlas = ExtResource("4_6h1eg")
+atlas = ExtResource("4_iet7a")
 region = Rect2(27, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xws1j"]
-atlas = ExtResource("4_7m0qv")
+atlas = ExtResource("5_pg2rd")
 region = Rect2(18, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tj2sw"]
-atlas = ExtResource("4_7m0qv")
+atlas = ExtResource("5_pg2rd")
 region = Rect2(9, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a1lmi"]
-atlas = ExtResource("4_7m0qv")
+atlas = ExtResource("5_pg2rd")
 region = Rect2(0, 0, 9, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvyvv"]
-atlas = ExtResource("4_7m0qv")
+atlas = ExtResource("5_pg2rd")
 region = Rect2(27, 0, 9, 11)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gm7vi"]
@@ -562,6 +560,9 @@ _data = {
 "walk-west": SubResource("Animation_joera")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3eib2"]
+size = Vector2(48, 80)
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ikjx0"]
 animation = &"player/idle-west"
 
@@ -633,16 +634,10 @@ graph_offset = Vector2(-88, 62)
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_xjiuu"]
 
 [node name="Player" type="CharacterBody2D"]
-z_index = 1
-collision_layer = 2
-motion_mode = 1
-script = ExtResource("1_vue70")
+script = ExtResource("1_1dl7r")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 6)
-scale = Vector2(1, 0.775)
-shape = SubResource("RectangleShape2D_3eib2")
-debug_color = Color(0, 0.6, 0.701961, 0.172549)
+[node name="Input Controller" type="Node" parent="."]
+script = ExtResource("2_sjoel")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]
 scale = Vector2(7, 7)
@@ -656,19 +651,25 @@ libraries = {
 "player": SubResource("AnimationLibrary_ulu1t")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
-anim_player = NodePath("../PlayerSprites/AnimationPlayer")
-active = true
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_xjiuu")
-parameters/conditions/idle = true
-parameters/conditions/walk = false
-parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)
-parameters/Walk/blend_position = Vector2(0, 0)
-
 [node name="Weapon" parent="." instance=ExtResource("6_ik4pt")]
 z_index = -1
 position = Vector2(-14, 20)
 rotation = 3.14159
 
-[connection signal="attack" from="." to="Weapon" method="_on_player_attack"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6)
+scale = Vector2(1, 0.775)
+shape = SubResource("RectangleShape2D_3eib2")
+debug_color = Color(0, 0.6, 0.701961, 0.172549)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
+anim_player = NodePath("../PlayerSprites/AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_xjiuu")
+parameters/conditions/idle = false
+parameters/conditions/walk = false
+parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)
+parameters/Walk/blend_position = Vector2(0, 0)
+
+[connection signal="weapon_use" from="Input Controller" to="Weapon" method="on_player_weapon_use"]

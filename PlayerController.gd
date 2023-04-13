@@ -3,31 +3,14 @@ extends CharacterBody2D
 const MOVE_SPEED = 300.0
 const CORNER_CORRECTION_RANGE = 20 #in pixels
 
-signal attack
-
-enum Direction{
-	north = 0,
-	east = 1,
-	south = 2,
-	west = 3,
-}
-
 @onready var _player_animation_tree = $AnimationTree
-@onready var _movement_animation_player = $PlayerSprites/AnimationPlayer  
-@export var idle_sprites: Array[Texture2D] = []
 
-func _process(delta):
-	detect_input()
 
 func _physics_process(_delta):
 	#Find out which way the character is facing.
 	control_player_movement()
 	play_movement_animations(player_is_moving())
 	move_and_slide()
-
-func detect_input():
-	if Input.is_action_pressed("default_attack"):
-		attack.emit()
 
 func control_player_movement():
 	#Reset velocity as to not slide around
