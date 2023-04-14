@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Bullet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://source/weapons/bullets/base_bullet.gd" id="1_fbebt"]
+
+[resource]
+script = ExtResource("1_fbebt")
+damage = 4

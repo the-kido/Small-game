@@ -1,24 +1,31 @@
 extends Node2D
 
-@onready var _gun_animation_tree = $GunAnimationTree
+#@onready var _gun_animation_tree = $AnimationTree
+@export var debug_weapon: PackedScene
 
 #Signals
 signal attack
 
-#Weapon values
+#Weapon values (TEMP)
 var reload_delay = 0.5
+var selected_weapon: BaseWeapon
 
-func change_weapon(weapon: BaseWeapon):
-	pass
+#Debugging
+func _ready():
+	change_weapon(debug_weapon)
 
-'''
-THIS IS DEBUGGING. DEFAUTL THIS TO SOME SORT OF "NEW LEVEL" SYSTEM TO START
-WITH A DEFAULT WEAPON
-'''
-@export var default_weapon: BaseWeapon
-#func _ready():
-#	change_weapon("")
+func change_weapon(weapon: PackedScene):
+	for child in get_children():
+		child.queue_free()
 
+	var new_weapon: BaseWeapon = weapon.instantiate()
+	add_child(new_weapon)
+	new_weapon.init(self)
+	init_new_weapon(new_weapon)
+	
+func init_new_weapon(weapon: BaseWeapon):
+	selected_weapon = weapon
+	reload_delay = weapon.reload_speed
 
 
 var _reloaded = true
@@ -30,15 +37,15 @@ func on_player_weapon_use(attack_inputs):
 	
 	#Set to false to filter clicks (filtered in the guard clause above)
 	_reloaded = false
-	#Will stop waiting when reloaded	
-	print(attack_inputs)
+	#Will stop waiting when reloaded
+	selected_weapon.use_weapon(attack_inputs)
+	
 	await reload()
 	
 	#Call the weapon_use function
 	
 	_reloaded = true
 	pass # Replace with function body.
-
 
 func reload():  
 	var reload_delay_recharge = 0

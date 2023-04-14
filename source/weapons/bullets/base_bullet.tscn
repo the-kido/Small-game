@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5vl8xb18snvk"]
+
+[ext_resource type="Script" path="res://source/weapons/bullets/base_bullet.gd" id="1_ejyyd"]
+[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bg4g6"]
+
+[node name="bullet" type="RigidBody2D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_ejyyd")
+damage = 5
+sprite = NodePath("Sprite2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_bg4g6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3.17232, 3.16)
+texture = ExtResource("2_gya27")

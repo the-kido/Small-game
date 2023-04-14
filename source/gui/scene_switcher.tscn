@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://debt536jbqthm"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://SceneSwitcher.gd" id="1_x1x8v"]
+[ext_resource type="Script" path="res://source/gui/SceneSwitcher.gd" id="1_x1x8v"]
 
 [sub_resource type="Animation" id="Animation_ged5e"]
 length = 0.001

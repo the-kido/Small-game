@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="Small game #1"
-run/main_scene="res://level_1.tscn"
+run/main_scene="res://assets/sprites/levels/level_1.tscn"
 config/features=PackedStringArray("4.0", "C#", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
-SceneSwitcher="*res://scene_switcher.tscn"
+SceneSwitcher="*res://source/gui/scene_switcher.tscn"
 
 [display]
 

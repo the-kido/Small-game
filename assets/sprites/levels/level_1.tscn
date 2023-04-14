@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bthp20ydrj5lx"]
+[gd_scene load_steps=5 format=3 uid="uid://b5415vet2vtwa"]
 
-[ext_resource type="PackedScene" uid="uid://b08e5exkky4tx" path="res://player.tscn" id="1_jtd0h"]
-[ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://tile_set_2.png" id="2_mrmhy"]
+[ext_resource type="PackedScene" uid="uid://6xj72112xkyb" path="res://source/player/player.tscn" id="1_jtd0h"]
+[ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/sprites/levels/tile_set_2.png" id="1_pddea"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marwd"]
-texture = ExtResource("2_mrmhy")
+texture = ExtResource("1_pddea")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
