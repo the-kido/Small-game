@@ -635,6 +635,8 @@ graph_offset = Vector2(-88, 62)
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_xjiuu"]
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_3mxg5")
 
 [node name="Input Controller" type="Node" parent="."]
