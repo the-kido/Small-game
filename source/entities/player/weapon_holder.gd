@@ -3,8 +3,6 @@ extends Node2D
 #@onready var _gun_animation_tree = $AnimationTree
 @export var debug_weapon: PackedScene
 
-#Signals
-signal attack
 
 #Weapon values (TEMP)
 var reload_delay = 0.5

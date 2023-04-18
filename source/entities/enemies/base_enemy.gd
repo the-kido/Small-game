@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends Entity
 class_name BaseEnemy
 
 @export var max_health: int
@@ -13,10 +13,13 @@ func inflict_damage(damage: int):
 	_health -= damage
 	if _health <= 0:
 		kill()
+	#color_pulsate(2, Color.RED)
 
+	
 func kill():
 	queue_free()
 	pass
 
 func _process(delta):
+	super(delta)
 	pass

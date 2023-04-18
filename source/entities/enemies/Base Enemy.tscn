@@ -1,15 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxoy0k5v7oewd"]
+[gd_scene load_steps=4 format=3 uid="uid://b71wt0kybp873"]
 
-[ext_resource type="Script" path="res://source/enemies/base_enemy.gd" id="1_dhwiv"]
-[ext_resource type="Texture2D" uid="uid://bgat1sola6eox" path="res://assets/sprites/enemies/base_enemy.png" id="1_r54n7"]
+[ext_resource type="Script" path="res://source/entities/enemies/base_enemy.gd" id="1_psicx"]
+[ext_resource type="Texture2D" uid="uid://bgat1sola6eox" path="res://assets/sprites/enemies/base_enemy.png" id="2_ghtbf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1dm21"]
 
 [node name="Base Enemy" type="RigidBody2D"]
 collision_layer = 4
 collision_mask = 11
-script = ExtResource("1_dhwiv")
-max_health = 10
+script = ExtResource("1_psicx")
+max_health = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(2, 2)
@@ -17,4 +17,4 @@ shape = SubResource("RectangleShape2D_1dm21")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(5, 5)
-texture = ExtResource("1_r54n7")
+texture = ExtResource("2_ghtbf")

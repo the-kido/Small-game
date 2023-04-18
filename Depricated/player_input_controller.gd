@@ -2,8 +2,7 @@ extends Node
 
 signal weapon_use(attack_inputs)
 
-
-
+ 
 var _filter_all_input = false
 func toggle_player_input(toggle: bool):
 	_filter_all_input = toggle

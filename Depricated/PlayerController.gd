@@ -5,7 +5,6 @@ const CORNER_CORRECTION_RANGE = 20 #in pixels
 
 @onready var _player_animation_tree = $AnimationTree
 
-
 func _physics_process(_delta):
 	#Find out which way the character is facing.
 	control_player_movement()
@@ -58,7 +57,6 @@ func corner_correction(movement_direction: Vector2):
 
 #Used to check for movement of the player for the player_is_moving() function
 var previous_frame_position = Vector2()
-
 func player_is_moving() -> bool:
 	if position == previous_frame_position:
 		previous_frame_position = position
@@ -76,5 +74,4 @@ func play_movement_animations(is_moving: bool):
 	
 	_player_animation_tree.set("parameters/Walk/blend_position", player_direction_normal)
 	_player_animation_tree.set("parameters/Idle/blend_position", player_direction_normal)
-
 

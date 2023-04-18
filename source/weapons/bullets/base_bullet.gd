@@ -6,10 +6,17 @@ class_name BaseBullet
 @onready var particle := $GPUParticles2D
 @onready var area_2d:= $Area2D
 
-signal OnBulletCollision(bullet: BaseBullet, body: Node2D)
-
+#When the bullet enters a collider
 func _on_area_2d_body_entered(body: Node2D):
-	OnBulletCollision.emit(self, body)
+	
+	if body is BaseEnemy:
+		var enemy: BaseEnemy = body
+		enemy.inflict_damage(damage)
+		destroy()
+	if body is TileMap:
+		destroy()
+		print("missed")
+	
 
 func destroy():
 	ParticleFactory.spawn_global_particle(particle, global_position, global_rotation+90)
