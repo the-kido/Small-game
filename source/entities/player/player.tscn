@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://cfrunnxqku0ah"]
+[gd_scene load_steps=53 format=3 uid="uid://ckvi4lw6uo4m7"]
 
 [ext_resource type="Script" path="res://source/entities/player/PlayerController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/entities/player/PlayerInputController.cs" id="2_7escu"]
@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/sprites/player/player_north.png" id="4_4lvjw"]
 [ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="5_3ebte"]
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
-[ext_resource type="Script" path="res://source/entities/player/weapon_holder.gd" id="7_ikp0y"]
-[ext_resource type="PackedScene" uid="uid://cm4rhjssjvkpg" path="res://source/weapons/bad_weapon.tscn" id="8_4bs3u"]
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseWeapon.tscn" id="9_6fn6c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
@@ -656,14 +654,11 @@ libraries = {
 "player": SubResource("AnimationLibrary_ulu1t")
 }
 
-[node name="Weapon Holder" type="Node2D" parent="."]
+[node name="Hand" type="Node2D" parent="."]
 position = Vector2(0, 20)
 rotation = 6.28319
-script = ExtResource("7_ikp0y")
-debug_weapon = ExtResource("8_4bs3u")
 
-[node name="Base Weapon" parent="Weapon Holder" instance=ExtResource("9_6fn6c")]
-initial_weapon = ExtResource("9_6fn6c")
+[node name="Base Weapon" parent="Hand" instance=ExtResource("9_6fn6c")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)

@@ -29,13 +29,9 @@ blend_mode = 1
 
 [node name="BadWeapon" instance=ExtResource("1_cpiaq")]
 script = ExtResource("2_n4p30")
-reload_speed = 0.5
 
 [node name="Sprite" parent="." index="0"]
 modulate = Color(0.87451, 0, 0.501961, 1)
 
 [node name="AnimationTree" parent="." index="2"]
 tree_root = SubResource("AnimationNodeBlendSpace2D_mewmb")
-
-[node name="Nuzzle" type="Node2D" parent="." index="3"]
-position = Vector2(41, 0)

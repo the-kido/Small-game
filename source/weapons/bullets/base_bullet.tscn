@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c5vl8xb18snvk"]
 
-[ext_resource type="Script" path="res://source/weapons/bullets/base_bullet.gd" id="1_ejyyd"]
+[ext_resource type="Script" path="res://source/weapons/bullets/Bullet.cs" id="1_typ3j"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
 
@@ -39,7 +39,7 @@ scale_curve = SubResource("CurveTexture_a6vhu")
 color_ramp = SubResource("GradientTexture1D_hdrk0")
 
 [node name="bullet" type="Node2D"]
-script = ExtResource("1_ejyyd")
+script = ExtResource("1_typ3j")
 damage = 5
 speed = 500
 
@@ -69,4 +69,4 @@ speed_scale = 1.61
 explosiveness = 0.99
 randomness = 0.1
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="OnArea2DBodyEntered"]

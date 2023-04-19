@@ -18,8 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 SceneSwitcher="*res://source/gui/scene_switcher.tscn"
-BulletFactory="*res://source/factories/bullet_factory.tscn"
 ParticleFactory="*res://source/factories/particle_factory.gd"
+BulletFactory="*res://source/factories/bullet_factory.tscn"
 
 [display]
 

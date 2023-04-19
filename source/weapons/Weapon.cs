@@ -4,41 +4,23 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-public partial class Weapon : Node2D
-{
+public partial class Weapon : Node2D {
 	[Export]
 	public float ReloadSpeed {get; set;}
-	private AnimationTree animationPlayer;
-	private static Node2D parentNode;
-	//public Weapon SelectedWeapon {get; private set;}
+	protected static Node2D parentNode;
 
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		GD.Print("ready!");
-		animationPlayer = (AnimationTree) GetNode("AnimationTree");
+	public override void _Ready() {
 		parentNode = (Node2D) GetParent();
 
 		((PlayerInputController) parentNode.GetNode("../Input Controller")).UseWeapon += onPlayerWeaponUse;
 	}
-	
-	#region Put this in a superset weapon, maybe "Gun" 
-	// public override void _Process(double delta)
-	// {
-	// 	FaceWeaponToCursor();
-	// }
-	// public virtual void FaceWeaponToCursor() {
-	// 	parentNode.LookAt(GetGlobalMousePosition());
-	// }
-	#endregion
 
 	public Weapon init(Node2D weaponHolder) {
 		parentNode = weaponHolder;
 		return this;
 	}
 	public virtual void useWeapon(string[] inputMap) {
-
 	}
 
 	public static void ChangeWeapon(PackedScene weapon) {
@@ -58,7 +40,9 @@ public partial class Weapon : Node2D
 		reloaded = false;
 
 		useWeapon(inputMap);
+		GD.Print("PEW");
 		await reload();
+
 
 		reloaded = true;
 	}
