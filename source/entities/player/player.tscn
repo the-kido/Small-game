@@ -663,6 +663,7 @@ script = ExtResource("7_ikp0y")
 debug_weapon = ExtResource("8_4bs3u")
 
 [node name="Base Weapon" parent="Weapon Holder" instance=ExtResource("9_6fn6c")]
+initial_weapon = ExtResource("9_6fn6c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
@@ -679,5 +680,3 @@ parameters/conditions/idle = false
 parameters/conditions/walk = false
 parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)
 parameters/Walk/blend_position = Vector2(0, 0)
-
-[connection signal="UseWeapon" from="Input Controller" to="Weapon Holder" method="on_player_weapon_use"]

@@ -8,77 +8,64 @@ public partial class Weapon : Node2D
 {
 	[Export]
 	public float ReloadSpeed {get; set;}
-	private AnimationPlayer animationPlayer;
-	private Node2D parentNode;
-	public Weapon SelectedWeapon {get; private set;}
+	private AnimationTree animationPlayer;
+	private static Node2D parentNode;
+	//public Weapon SelectedWeapon {get; private set;}
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		animationPlayer = (AnimationPlayer) GetNode("AnimationTree");
+		GD.Print("ready!");
+		animationPlayer = (AnimationTree) GetNode("AnimationTree");
 		parentNode = (Node2D) GetParent();
+
+		((PlayerInputController) parentNode.GetNode("../Input Controller")).UseWeapon += onPlayerWeaponUse;
 	}
+	
+	#region Put this in a superset weapon, maybe "Gun" 
+	// public override void _Process(double delta)
+	// {
+	// 	FaceWeaponToCursor();
+	// }
+	// public virtual void FaceWeaponToCursor() {
+	// 	parentNode.LookAt(GetGlobalMousePosition());
+	// }
+	#endregion
 
 	public Weapon init(Node2D weaponHolder) {
 		parentNode = weaponHolder;
 		return this;
 	}
-	public void useWeapon(string[] inputMap) {
-		
+	public virtual void useWeapon(string[] inputMap) {
+
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		FaceWeaponToCursor();
-	}
-	private void FaceWeaponToCursor() {
-		parentNode.LookAt(GetGlobalMousePosition());
-	}
-
-
-	public void ChangeWeapon(PackedScene weapon) {
-		foreach (Node child in GetChildren()) {
+	public static void ChangeWeapon(PackedScene weapon) {
+		foreach (Node child in parentNode.GetChildren()) {
 			child.QueueFree();
 		}
-		Weapon newWeapon = ((Weapon) weapon.Instantiate()).init(this);
-		AddChild(newWeapon);
-
-		SelectedWeapon = newWeapon;
-		ReloadSpeed = newWeapon.ReloadSpeed;
+		Weapon newWeapon = ((Weapon) weapon.Instantiate());
+		parentNode.AddChild(newWeapon);
 	}
 
 	private bool reloaded = true;
+
 	private async void onPlayerWeaponUse(string[] inputMap) {
 		if (!reloaded)
 			//reload() is taking its time.
 			return;
 		reloaded = false;
-		SelectedWeapon.useWeapon(inputMap);
-		GD.Print("waiting...");
 
+		useWeapon(inputMap);
 		await reload();
-		
-		GD.Print("Done waiting!");
 
 		reloaded = true;
 	}
 
 	private Task reload() {
-
-		//double reloadDelayRecharge = 0f;
-		int delay = (int) ReloadSpeed*1000;
+		int delay = (int) (ReloadSpeed * 1000);
 		return Task.Delay(delay);
-
-
-		// while (reloadDelayRecharge < reloadDelay) {
-		// 	int delay = (int) (GetProcessDeltaTime() * 1000f);
-		// 	await Task.Delay(delay);
-		// 	reloadDelayRecharge += GetProcessDeltaTime();
-		// }
-		// reloadDelayRecharge = 0;
-		// return ;
 	}
 }
 
