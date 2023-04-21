@@ -23,8 +23,7 @@ public partial class Gun : Weapon {
     
     public override void useWeapon(string[] inputMap) {
 
-        var burh = GetNode<BulletFactory>("/root/BulletFactory");
-        var newBullet = burh.SpawnBullet(bulletAsset);
+        var newBullet = GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset);
          //= BulletFactory.SpawnBullet(bulletAsset);
     	newBullet.init(nuzzle.GlobalPosition, nuzzle.GlobalRotation);
 

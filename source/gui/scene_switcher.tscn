@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://bgjvbh8e332oe"]
 
-[ext_resource type="Script" path="res://source/gui/SceneSwitcher.gd" id="1_x1x8v"]
+[ext_resource type="Script" path="res://source/gui/SceneSwitcher.cs" id="1_soq3g"]
 
 [sub_resource type="Animation" id="Animation_ged5e"]
 length = 0.001
@@ -39,7 +39,7 @@ _data = {
 }
 
 [node name="SceneSwitcher" type="Node"]
-script = ExtResource("1_x1x8v")
+script = ExtResource("1_soq3g")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

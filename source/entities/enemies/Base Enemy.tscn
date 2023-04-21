@@ -5,9 +5,10 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1dm21"]
 
-[node name="Base Enemy" type="RigidBody2D"]
+[node name="Base Enemy" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 11
+motion_mode = 1
 script = ExtResource("1_ylu0o")
 maxHealth = 20
 

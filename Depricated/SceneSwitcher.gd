@@ -10,6 +10,7 @@ func _change(action):
 	animation_player.play("panel_fade")
 	await $AnimationPlayer.animation_finished
 	action.call()
+	
 	animation_player.play_backwards("panel_fade")
 	await $AnimationPlayer.animation_finished
 	#Hide the layer behind everything else as to not be a disturbance. 

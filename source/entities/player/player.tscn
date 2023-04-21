@@ -636,7 +636,6 @@ graph_offset = Vector2(-88, 62)
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 5
-motion_mode = 1
 script = ExtResource("1_30x0s")
 
 [node name="Input Controller" type="Node" parent="."]
@@ -656,7 +655,6 @@ libraries = {
 
 [node name="Hand" type="Node2D" parent="."]
 position = Vector2(0, 20)
-rotation = 6.28319
 
 [node name="Base Weapon" parent="Hand" instance=ExtResource("9_6fn6c")]
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://cn1sctghsgg00"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_33ccp"]
-[ext_resource type="PackedScene" uid="uid://cvvekf77mkx0y" path="res://assets/sprites/levels/level_1.tscn" id="2_ys38q"]
+[ext_resource type="Script" path="res://source/gui/MainMenu.cs" id="1_w6nfc"]
+[ext_resource type="PackedScene" uid="uid://bi31hpeohcald" path="res://assets/sprites/levels/level_1.tscn" id="2_ys38q"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
-script = ExtResource("1_33ccp")
+script = ExtResource("1_w6nfc")
 level = ExtResource("2_ys38q")
 metadata/_edit_use_anchors_ = true
 
@@ -39,4 +39,4 @@ text = "Start thingy
 "
 metadata/_edit_use_anchors_ = true
 
-[connection signal="button_down" from="Panel/Button" to="." method="_on_button_button_down"]
+[connection signal="button_down" from="Panel/Button" to="." method="OnButtonDown"]
