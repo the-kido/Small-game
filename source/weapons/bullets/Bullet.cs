@@ -18,10 +18,8 @@ public partial class Bullet : Node2D {
     public event BulletCollisionEventHandler OnBulletDestroyed;
 
     private void OnArea2DEntered(Rid area_rid, Area2D area, int area_shape_index, int local_shape_index) {
-        GD.Print(area.Name);
 
         if (area is Damageable enemy) {
-            GD.Print("hit");
             enemy.Damage(new DamageInstance() {damage = damage, forceDirection = directionFacing});
             DestroyBullet();
         }
@@ -30,7 +28,6 @@ public partial class Bullet : Node2D {
         if (body is TileMap tileMap) {
             OnBulletDestroyed?.Invoke();
             DestroyBullet();
-            GD.Print("Missed");
         }
     }
     public virtual async void DestroyBullet() {

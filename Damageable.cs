@@ -23,10 +23,8 @@ public partial class Damageable : Area2D
 
 	private async void WaitForImmunityFrames(DamageInstance a) {
 		IsImmune = true;
-		GD.Print("Is immune");
 		await Task.Delay((int)(ImmunityFrames * 1000));
 		IsImmune = false;
-		GD.Print("Is no longer immune");
 	}
 
 	private Damageable() {
@@ -42,10 +40,6 @@ public partial class Damageable : Area2D
 		if (Health <= 0) {
 			OnDeath?.Invoke(damageInstance);
 		}
-	}
-
-	public void OnBodyEntered(Node body) {
-		GD.Print("wait what");
 	}
 }
 
