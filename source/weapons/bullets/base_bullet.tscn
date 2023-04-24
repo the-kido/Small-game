@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c5vl8xb18snvk"]
 
-[ext_resource type="Script" path="res://source/weapons/bullets/Bullet.cs" id="1_typ3j"]
+[ext_resource type="Script" path="res://source/weapons/bullets/BadBullet.cs" id="1_yelol"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
 
@@ -38,10 +38,13 @@ scale_max = 3.0
 scale_curve = SubResource("CurveTexture_a6vhu")
 color_ramp = SubResource("GradientTexture1D_hdrk0")
 
-[node name="bullet" type="Node2D"]
-script = ExtResource("1_typ3j")
+[node name="bullet" type="Node2D" node_paths=PackedStringArray("particles")]
+script = ExtResource("1_yelol")
+wiggleStrength = 5.0
 damage = 5
-speed = 500
+speed = 200
+particles = NodePath("GPUParticles2D")
+particleDeletionTime = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
@@ -51,7 +54,7 @@ texture = ExtResource("2_gya27")
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.57079
-collision_layer = 4
+collision_layer = 8
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
@@ -69,4 +72,5 @@ speed_scale = 1.61
 explosiveness = 0.99
 randomness = 0.1
 
-[connection signal="body_entered" from="Area2D" to="." method="OnArea2DBodyEntered"]
+[connection signal="area_shape_entered" from="Area2D" to="." method="OnArea2DEntered"]
+[connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]

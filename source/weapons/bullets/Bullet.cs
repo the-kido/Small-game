@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class Bullet : Node2D { 
 
@@ -7,39 +8,46 @@ public partial class Bullet : Node2D {
     private int damage;
     [Export(PropertyHint.Range, "-360,360,1,or_greater,or_less")] 
     private int speed;
+    [Export]
     private GpuParticles2D particles;
+    [Export(PropertyHint.Range, "0,or_greater")]
+    private int particleDeletionTime;
+    protected Vector2 directionFacing;
 
-    private void OnArea2DBodyEntered(Node2D body) {
-        switch (body) {
-            case Enemy e:
-                ((Enemy) body).inflictDamage(damage);
-                Destory();      
-                break;
-            case TileMap tm:
-                Destory();
-                GD.Print("Missed");
-                break;
+    public delegate void BulletCollisionEventHandler();
+    public event BulletCollisionEventHandler OnBulletDestroyed;
+
+    private void OnArea2DEntered(Rid area_rid, Area2D area, int area_shape_index, int local_shape_index) {
+        GD.Print(area.Name);
+
+        if (area is Damageable enemy) {
+            GD.Print("hit");
+            enemy.Damage(new DamageInstance() {damage = damage, forceDirection = directionFacing});
+            DestroyBullet();
         }
     }
-    private void Destory() {
-        GetNode<ParticleFactory>("/root/ParticleFactory").SpawnGlobalParticle(particles, GlobalPosition, GlobalRotation + 90);
-        //ParticleFactory.spawn_global_particle(particle, global_position, global_rotation+90)
-        QueueFree();
+    private void OnBodyEntered(Node2D body) {
+        if (body is TileMap tileMap) {
+            OnBulletDestroyed?.Invoke();
+            DestroyBullet();
+            GD.Print("Missed");
+        }
     }
-    private Vector2 direction;
+    public virtual async void DestroyBullet() {
+        
+        var newParticle = ParticleFactory.SpawnGlobalParticle(particles, GlobalPosition, GlobalRotation + 90);
+        QueueFree();
+        await Task.Delay(particleDeletionTime * 1000);
+        newParticle.QueueFree();
+    }
+
     public void init(Vector2 spawnPosition, float nuzzleRotation) {
         Rotation = nuzzleRotation;
-        direction = new Vector2(Mathf.Cos(nuzzleRotation), Mathf.Sin(nuzzleRotation));
+        directionFacing = new Vector2(Mathf.Cos(nuzzleRotation), Mathf.Sin(nuzzleRotation));
         Position = spawnPosition;
-        
     }
-    public override void _Ready()
-    {
-        base._Ready();
-        particles = (GpuParticles2D) GetNode("GPUParticles2D");
-    }
+    
     public override void _Process(double delta) {
-        Position += direction * (float) delta * speed;
-
+        Position += directionFacing * (float) delta * speed;
     }
  }

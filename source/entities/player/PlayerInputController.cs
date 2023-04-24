@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class PlayerInputController : Node
 {
@@ -8,17 +9,33 @@ public partial class PlayerInputController : Node
 	public delegate void UseWeaponEventHandler(string[] inputMap);
 	public bool FilterAllInput {set; get;} = false;
 
+
+	#region All attack related input methods 
 	private void DetectAttactInput() {
 		var inputMap = new List<string>();
 		if (Input.IsActionPressed("default_attack")) {
 			inputMap.Add("Left Click");
 		}
 		if (inputMap.Count > 0) {
-			EmitSignal(SignalName.UseWeapon, inputMap.ToArray());
+			OnAttackKeyHeld(inputMap.ToArray());
 		}
 	}
+	private bool reloaded = true;
+	private async void OnAttackKeyHeld(string[] inputMap) {
+		if (!reloaded)
+			return;
+		
+		reloaded = false;
+		
+		EmitSignal(SignalName.UseWeapon, inputMap);
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+		await Task.Delay((int)(GetNode("../Hand").GetNode<Weapon>("Weapon").ReloadSpeed * 1000));
+
+		reloaded = true;
+	}
+
+	#endregion 
+
 	public override void _Process(double delta)
 	{
 		if (FilterAllInput)

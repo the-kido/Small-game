@@ -7,7 +7,7 @@ public partial class Gun : Weapon {
     private Node2D nuzzle;
     public override void _Ready() {
         base._Ready();
-        bulletAsset = (PackedScene) GD.Load("res://source/weapons/bullets/base_bullet.tscn");
+        //bulletAsset = (PackedScene) GD.Load("res://source/weapons/bullets/base_bullet.tscn");
         nuzzle = (Node2D) GetNode("Nuzzle");
     }
     
@@ -15,10 +15,10 @@ public partial class Gun : Weapon {
     {
         base._Process(delta);
         FaceWeaponToCursor();
-
+        
     }
 	public virtual void FaceWeaponToCursor() {
-		parentNode.LookAt(GetGlobalMousePosition());
+		hand.LookAt(GetGlobalMousePosition());
 	}
     
     public override void useWeapon(string[] inputMap) {

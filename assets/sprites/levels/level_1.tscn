@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/sprites/levels/tile_set_2.png" id="1_pddea"]
 [ext_resource type="PackedScene" uid="uid://cbq3oscnsy8bt" path="res://source/entities/enemies/Base Enemy.tscn" id="2_wfut3"]
-[ext_resource type="PackedScene" uid="uid://ckvi4lw6uo4m7" path="res://source/entities/player/player.tscn" id="3_gker5"]
+[ext_resource type="PackedScene" uid="uid://jcxlvmiaw567" path="res://source/entities/player/player.tscn" id="3_gker5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marwd"]
 texture = ExtResource("1_pddea")

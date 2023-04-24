@@ -1,6 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cm4rhjssjvkpg"]
+[gd_scene load_steps=8 format=3]
 
-[ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseWeapon.tscn" id="1_cpiaq"]
+[ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="1_cpiaq"]
 [ext_resource type="Script" path="res://BadWeapon.gd" id="2_n4p30"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r8uib"]
