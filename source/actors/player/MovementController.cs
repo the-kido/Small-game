@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class PlayerController : Node
+public partial class MovementController : Node
 {
 	public const float MOVE_SPEED = 3.0f;
 	public const int CORNER_CORRECTION_RANGE = 25;

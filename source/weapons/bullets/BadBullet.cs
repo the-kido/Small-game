@@ -14,7 +14,7 @@ public partial class BadBullet : Bullet {
 
     public override void _Process(double delta)
     {  
-        base._Process(delta);
+        MoveBulletForward(delta);
         wigglewiggle(delta);
     }
 

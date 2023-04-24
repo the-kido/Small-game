@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public partial class PlayerInputController : Node
+public partial class InputController : Node
 {
 	[Signal]
 	public delegate void UseWeaponEventHandler(string[] inputMap);

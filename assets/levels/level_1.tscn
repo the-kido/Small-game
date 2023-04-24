@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bi31hpeohcald"]
+[gd_scene load_steps=6 format=3 uid="uid://c38pfkqgoj2ly"]
 
-[ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/sprites/levels/tile_set_2.png" id="1_pddea"]
-[ext_resource type="PackedScene" uid="uid://cbq3oscnsy8bt" path="res://source/entities/enemies/Base Enemy.tscn" id="2_wfut3"]
-[ext_resource type="PackedScene" uid="uid://jcxlvmiaw567" path="res://source/entities/player/player.tscn" id="3_gker5"]
+[ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/levels/tile_set_2.png" id="1_pddea"]
+[ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="2_wfut3"]
+[ext_resource type="PackedScene" path="res://assets/player.tscn" id="3_gker5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marwd"]
 texture = ExtResource("1_pddea")

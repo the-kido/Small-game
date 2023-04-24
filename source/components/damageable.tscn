@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbmfd54bqn4jb"]
+[gd_scene load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://Damageable.cs" id="1_jbypc"]
+[ext_resource type="Script" path="res://source/components/Damageable.cs" id="1_jbypc"]
 
 [node name="Damageable" type="Area2D"]
 collision_layer = 0

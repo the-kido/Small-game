@@ -16,7 +16,7 @@ public partial class Damageable : Area2D
 	
 
 	public delegate void HealthDepletedEventHandler(DamageInstance damageInstance);
-	public event HealthDepletedEventHandler Ondamaged;
+	public event HealthDepletedEventHandler OnDamaged;
 	public delegate void DeathEventHandler(DamageInstance damageInstance);
 	public event DeathEventHandler OnDeath;
 
@@ -29,14 +29,14 @@ public partial class Damageable : Area2D
 
 	private Damageable() {
 		MaxHealth = Health;
-		Ondamaged += WaitForImmunityFrames;
+		OnDamaged += WaitForImmunityFrames;
 	}
 	
 	public void Damage(DamageInstance damageInstance) {
 		if (IsImmune) return;
 
 		Health -= damageInstance.damage;
-		Ondamaged?.Invoke(damageInstance);
+		OnDamaged?.Invoke(damageInstance);
 		if (Health <= 0) {
 			OnDeath?.Invoke(damageInstance);
 		}
