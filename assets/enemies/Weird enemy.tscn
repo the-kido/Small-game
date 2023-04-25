@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqffuc80ll1k8"]
+
+[ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
+[ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
+[ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_m5e2g"]
+[ext_resource type="Texture2D" uid="uid://dmgqunuv56tv" path="res://assets/sprites/enemies/weird_enemy.png" id="3_ehjie"]
+[ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2o215"]
+size = Vector2(19, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0m8x3"]
+
+[node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent")]
+scale = Vector2(2, 2)
+collision_layer = 4
+collision_mask = 9
+script = ExtResource("1_lsih8")
+spamedBullet = ExtResource("2_lhrnb")
+DamageableComponent = NodePath("Damageable")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2o215")
+debug_color = Color(0.952941, 0, 0.564706, 0.337255)
+
+[node name="Damageable" parent="." instance=ExtResource("2_m5e2g")]
+scale = Vector2(1.18205, 1.20366)
+collision_layer = 4
+collision_mask = 8
+Health = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
+shape = SubResource("RectangleShape2D_0m8x3")
+debug_color = Color(0, 0.560784, 0.886275, 0.109804)
+
+[node name="WeirdEnemy" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("3_ehjie")
+
+[node name="Pathfinder" parent="." instance=ExtResource("5_ubg6x")]
+HoverAtSpawnPointDistance = 100

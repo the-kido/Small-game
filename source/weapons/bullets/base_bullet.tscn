@@ -38,13 +38,14 @@ scale_max = 3.0
 scale_curve = SubResource("CurveTexture_a6vhu")
 color_ramp = SubResource("GradientTexture1D_hdrk0")
 
-[node name="bullet" type="Node2D" node_paths=PackedStringArray("particles")]
+[node name="bullet" type="Node2D" node_paths=PackedStringArray("particles", "hitbox")]
 script = ExtResource("1_yelol")
-wiggleStrength = 5.0
+wiggleStrength = 3.0
 damage = 5
 speed = 200
 particles = NodePath("GPUParticles2D")
 particleDeletionTime = 1
+hitbox = NodePath("Area2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
@@ -54,8 +55,8 @@ texture = ExtResource("2_gya27")
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.57079
-collision_layer = 8
-collision_mask = 5
+collision_layer = 0
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CapsuleShape2D_3aaus")

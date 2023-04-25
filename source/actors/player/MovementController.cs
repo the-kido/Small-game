@@ -38,8 +38,6 @@ public partial class MovementController : Node
 
 		player.Velocity = direction * MOVE_SPEED * 100;
 
-		player.MoveAndSlide();
-
 		if (direction != Vector2.Zero) {
 			CornerCorrection(direction);
 		}

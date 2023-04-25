@@ -1,7 +1,8 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Utils;
+
 
 public partial class Damageable : Area2D
 {
@@ -20,7 +21,10 @@ public partial class Damageable : Area2D
 	public delegate void DeathEventHandler(DamageInstance damageInstance);
 	public event DeathEventHandler OnDeath;
 
-
+	public override void _Ready() {
+		ErrorUtils.AvoidEmptyCollisionLayers(this);
+	}
+	
 	private async void WaitForImmunityFrames(DamageInstance a) {
 		IsImmune = true;
 		await Task.Delay((int)(ImmunityFrames * 1000));

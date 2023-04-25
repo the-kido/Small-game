@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c38pfkqgoj2ly"]
+[gd_scene load_steps=8 format=3 uid="uid://c38pfkqgoj2ly"]
 
 [ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/levels/tile_set_2.png" id="1_pddea"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="2_wfut3"]
-[ext_resource type="PackedScene" path="res://assets/player.tscn" id="3_gker5"]
+[ext_resource type="PackedScene" uid="uid://b3buuc0f5ge1x" path="res://assets/player.tscn" id="3_gker5"]
+[ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="4_b0rc0"]
+[ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="5_s77ih"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marwd"]
 texture = ExtResource("1_pddea")
@@ -106,3 +108,13 @@ position = Vector2(289, 511)
 
 [node name="Player" parent="." instance=ExtResource("3_gker5")]
 position = Vector2(493, 365)
+
+[node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("4_b0rc0")]
+limit_left = 0
+limit_top = 0
+limit_right = 1155
+player = NodePath("../Player")
+tileMap = NodePath("../TileMap")
+
+[node name="Weird enemy" parent="." instance=ExtResource("5_s77ih")]
+position = Vector2(582, 593)

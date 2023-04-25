@@ -8,8 +8,9 @@ public partial class BadBullet : Bullet {
     private float wiggleStrength;
     public double wiggleDistance;
     
-    private BadBullet() {
-        wiggleDistance = wiggleStrength;
+    public override void _Ready() {
+        Random random = new();
+        wiggleDistance = (random.Next( (int) wiggleStrength * 2)) - wiggleStrength;
     }
 
     public override void _Process(double delta)

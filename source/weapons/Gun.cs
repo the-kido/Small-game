@@ -25,7 +25,7 @@ public partial class Gun : Weapon {
 
         var newBullet = GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset);
          //= BulletFactory.SpawnBullet(bulletAsset);
-    	newBullet.init(nuzzle.GlobalPosition, nuzzle.GlobalRotation);
+    	newBullet.init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
 
     }
 }
