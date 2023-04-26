@@ -30,16 +30,18 @@ public partial class MovementController : Node
 		PlayMovementAnimations(PlayerIsMoving);
 	}
 
+
+	public Vector2 playerDirection {get; private set;}
 	private void ControlPlayerMovement() {
-		var direction = new Vector2(
+		playerDirection = new Vector2(
 			Input.GetAxis("left", "right"),
 			Input.GetAxis("up", "down")
 		).Normalized();
 
-		player.Velocity = direction * MOVE_SPEED * 100;
+		player.Velocity = playerDirection * MOVE_SPEED * 100;
 
-		if (direction != Vector2.Zero) {
-			CornerCorrection(direction);
+		if (playerDirection != Vector2.Zero) {
+			CornerCorrection(playerDirection);
 		}
 	}
 	private void CornerCorrection(Vector2 movementDirection) {

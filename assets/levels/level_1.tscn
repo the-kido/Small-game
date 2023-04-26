@@ -110,6 +110,7 @@ position = Vector2(289, 511)
 position = Vector2(493, 365)
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("4_b0rc0")]
+zoom = Vector2(1.441, 1.441)
 limit_left = 0
 limit_top = 0
 limit_right = 1155
