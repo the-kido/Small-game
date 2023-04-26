@@ -32,4 +32,19 @@ public partial class BadBullet : Bullet {
 
         Position += vector;
     }
+    public override void DestroyBullet() {
+        QueueFree();
+        SpawnDestroyedParticle();
+    }   
+
+    public override void OnTilemapEntered(TileMap tileMap)
+    {
+        DestroyBullet();
+    }
+    public override void OnDamageableEntered(Damageable damageable, DamageInstance damageInstance)
+    {
+        damageable.Damage(damageInstance);
+        DestroyBullet();
+    }
+    
 }

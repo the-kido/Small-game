@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using KidoUtils;
 
 public partial class Gun : Weapon {
     [Export]

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
-using Utils;
+using KidoUtils;
 
 
 public partial class Damageable : Area2D

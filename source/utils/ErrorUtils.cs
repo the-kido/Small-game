@@ -1,5 +1,5 @@
 using Godot;
-namespace Utils;
+namespace KidoUtils;
 using System;
 
 public static class ErrorUtils {

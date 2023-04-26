@@ -1,6 +1,6 @@
 using Godot;
 using System;
-using Utils;
+using KidoUtils;
 
 public abstract partial class Actor : CharacterBody2D
 {
@@ -17,7 +17,6 @@ public abstract partial class Actor : CharacterBody2D
 
 		DamageableComponent.OnDeath += OnDeath;
 		DamageableComponent.OnDamaged += OnDamaged;
-		GD.Print("Donezo for ", Name);
 	}
 	public abstract void OnDeath(DamageInstance damageInstance);
 	public abstract void OnDamaged(DamageInstance damageInstance);
