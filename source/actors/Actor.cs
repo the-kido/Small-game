@@ -7,6 +7,10 @@ public abstract partial class Actor : CharacterBody2D
 	// Called when the node enters the scene tree for the first time.
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
+	
+	[Export]
+	public int MoveSpeed {get; private set;}
+	
 
 	public override void _Process(double delta) {
 		MoveAndSlide();

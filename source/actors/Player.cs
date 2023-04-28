@@ -3,6 +3,9 @@ using System;
 
 public partial class Player : Actor
 {
+    //Hide speed value for player.
+    private new int MoveSpeed;
+
     public override void _Ready() {
         base._Ready();
         DamageableComponent.Damage(new DamageInstance() {damage = 10});

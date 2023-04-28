@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3aaus"]
+radius = 7.0
+height = 28.0
 
 [sub_resource type="Gradient" id="Gradient_ak2hm"]
 offsets = PackedFloat32Array(0, 0.777778, 1)

@@ -18,6 +18,7 @@ collision_mask = 9
 script = ExtResource("1_lsih8")
 spamedBullet = ExtResource("2_lhrnb")
 DamageableComponent = NodePath("Damageable")
+MoveSpeed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2o215")
@@ -37,5 +38,7 @@ debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 scale = Vector2(3, 3)
 texture = ExtResource("3_ehjie")
 
-[node name="Pathfinder" parent="." instance=ExtResource("5_ubg6x")]
-HoverAtSpawnPointDistance = 100
+[node name="Pathfinder" parent="." node_paths=PackedStringArray("actor", "actorCollider") instance=ExtResource("5_ubg6x")]
+HoverAtSpawnPointDistance = 200
+actor = NodePath("..")
+actorCollider = NodePath("../CollisionShape2D")

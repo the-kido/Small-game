@@ -7,7 +7,7 @@ public partial class Enemy : Actor
 {
 
     [Export]
-    private Sprite2D sprite; 
+    private Sprite2D sprite;
 
     public override void _Ready() {
         base._Ready();
