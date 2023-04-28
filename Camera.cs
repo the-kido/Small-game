@@ -11,7 +11,9 @@ public partial class Camera : Camera2D
     
     //0.9 -- 1.4
     private const float SCALE_MAX = 1.4f, SCALE_MIN = 0.9f;
-    
+    private float diagonalLength;
+
+
     private MovementController movementController;
 
     public override void _Ready() {
@@ -26,6 +28,12 @@ public partial class Camera : Camera2D
         LimitRight = (int) (rect.End.X * ts.X * tileMap.Scale.X);
         LimitBottom = (int) (rect.End.Y * ts.Y * tileMap.Scale.Y);
         #endregion
+
+        Rect2 cameraRect = GetViewportRect();
+        Vector2 sides = cameraRect.Size - cameraRect.Position;
+        
+        diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
+
 
         importantObjects.Add(player);
 
@@ -51,8 +59,20 @@ public partial class Camera : Camera2D
         Vector2 topRight = importantObjectsRect.Size;
         Vector2 diff = topRight - bottomLeft;
 
+
+        //x: 823
+        //y: 464
+        float reg = Mathf.Sqrt(823^2 + 464^2); //The diagonal's length at zoom 1.4. Can't be more than this.
+
+
         float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
-        return null; //TODO. 
+        GD.Print(diagonal, " annd " , diagonalLength);
+        float dif = diagonal / diagonalLength;
+        GD.Print("Dif:", dif);
+
+        Zoom = Vector2.One / (dif);    
+
+        return diagonal; //TODO. 
 
         
 
