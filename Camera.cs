@@ -34,6 +34,7 @@ public partial class Camera : Camera2D
 		
 		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
 
+		diagonalLength *= 0.8f;
 
 		importantObjects.Add(player);
 
@@ -71,7 +72,7 @@ public partial class Camera : Camera2D
 		//GD.Print(diagonal, " annd " , diagonalLength);
 		float dif = diagonal / diagonalLength;
 		
-        dif *= 2f;
+        //dif *= 2f;
 
 		//GD.Print("Dif:", dif);
         dif = Mathf.Max(dif, 0.8f);

@@ -39,7 +39,7 @@ scale = Vector2(3, 3)
 texture = ExtResource("3_ehjie")
 
 [node name="Pathfinder" parent="." node_paths=PackedStringArray("actor", "agent") instance=ExtResource("5_ubg6x")]
-HoverAtSpawnPointDistance = 200
+HoverAtSpawnPointDistance = 500
 actor = NodePath("..")
 agent = NodePath("../NavigationAgent2D")
 

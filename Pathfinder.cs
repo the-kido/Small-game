@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class Pathfinder : Node2D
 {
@@ -8,103 +9,96 @@ public partial class Pathfinder : Node2D
     private int HoverAtSpawnPointDistance = 0;
     [Export]
     private Actor actor;
-  
     [Export]
     private NavigationAgent2D agent;
 
-    private Vector2 CONST = new(500, 300);
+    int pathOn = 0;
+    private Vector2[] goBetween = new Vector2[3];
+
 
     public override void _Ready() {
-        agent.TargetPosition = new Vector2(500,300);
+        for (int i = 0; i < 3; i++)
+            goBetween[i] = FindValidPatrolPoint();
+        
+        agent.TargetPosition = goBetween[0];
+        state = State.Walking;
     }
 
-    int pathOn;
-    public override void _Process(double delta) {
 
-        agent.GetCurrentNavigationPath();
+    public Vector2 FindValidPatrolPoint() {
+        Vector2 patrolPoint;
 
-        if (agent.IsNavigationFinished()) {
-            actor.Velocity = Vector2.Zero;
-            return;
+        Random rand = new((int)Time.GetTicksUsec());
+        
+        Vector2 randomDirection = Vector2.Zero;
+        //Create a random direction to go (from -1 to 1)
+        randomDirection.Y += (float) (rand.NextSingle() - 0.5f) * 2;
+        randomDirection.X += (float) (rand.NextSingle() - 0.5f) * 2;
+
+        //Get number between HoverAtSpawnPointDistance/2 and HoverAtSpawnPointDistance
+        float range = (rand.NextSingle() / 2 + 0.5f) * HoverAtSpawnPointDistance;
+
+        patrolPoint = randomDirection * range;
+        patrolPoint += GlobalPosition;
+        
+        return patrolPoint; 
+    }
+
+    
+    private enum State {
+        Idle,
+        Walking
+    }
+    State state;
+    
+    float stalledFor = 0;
+    public bool IsStalling(double delta) {
+        if (previousVelocity == actor.Velocity) {
+            
+            stalledFor += (float) delta;
+
+            if (stalledFor > 1) {
+                return true;
+            }
         }
+        else{
+            stalledFor = 0;
+        }
+
+        previousVelocity = actor.Velocity;
+        return false;
+    }
+    Vector2 previousVelocity;
+
+    public async void SwitchPatrolPoint() {
+        pathOn = (pathOn + 1) % 3;
+        
+        state = State.Idle;
+        //Technically the state should change to "idle"
+        await Task.Delay(5000);
+
+        state = State.Walking;
+
+        //..Then back to "patrolling". But in reality, I think patrolling and idle should be one in the same state. Both "patrolling".
+        agent.TargetPosition = goBetween[pathOn];
+        
+    }
+
+    public void MoveActorToNextPosition() {
         var direction = GlobalPosition.DirectionTo(agent.GetNextPathPosition());
         actor.Velocity = direction * 200;
-
     }
 
-    // public override void _Ready() {
-    //     if (actor is Player player) {
-    //         throw new ArrayTypeMismatchException("Players cannot have the Pathfinder component!");
-    //     }
+    public override void _Process(double delta) {
 
-    //     spawnPoint = GlobalPosition;
-    // }
-
-    // double stopTime = 0;
-    // private void Patrol(double delta) {
-    //     Vector2 goTo = Vector2.Zero;
-    //     Vector2 movementToPoint = actor.Velocity;
-
-    //     timeToMove += delta;
-    //     stopTime -= delta;
-    //     if (timeToMove >= 1.5) {
-    //         goTo = FindNewPatrolPoint(true, out movementToPoint, out stopTime);
-    //         timeToMove = 0;
-    //         actor.Velocity = movementToPoint;
-    //     }
-
-    //     if (stopTime <= 0) {
-    //         actor.Velocity = Vector2.Zero;
-    //     }
-        
-    //     if (actor.GlobalPosition.DistanceTo(goTo) < 10) {
-    //         actor.Velocity = Vector2.Zero;
-    //         goTo = Vector2.Zero;
-    //     }
-    //     if (actor.Velocity != movementToPoint) {
-    //         actor.Velocity = Vector2.Zero;
-    //         FindNewPatrolPoint(true, out movementToPoint, out stopTime);
-    //         actor.Velocity = movementToPoint;
-    //     }
-    // }
-
-    // public override void _Process(double delta) {
-    //    Patrol(delta);
-    // }       
-    
-    // int recurrsionCount = 0;
-    // private Vector2 FindNewPatrolPoint(bool isPatrolling, out Vector2 directionToPoint, out double stopTime) {
-        
-    //     Random rand = new((int)Time.GetTicksUsec());
-        
-    //     Vector2 randomDirection = Vector2.One;
-    //     //Create a random direction to go.
-    //     randomDirection.Y *= (float) (rand.NextDouble() - 0.5f) * HoverAtSpawnPointDistance * 2;
-    //     randomDirection.X += (float) (rand.NextDouble() - 0.5f) * HoverAtSpawnPointDistance * 2;
-        
-    //     //Add that offset to the character's patrol point.
-
-    //     Vector2 shiftTo = randomDirection;
-    //     shiftTo += isPatrolling ? spawnPoint : GlobalPosition;
-
-    //     stopTime = 1.5;
-    //     directionToPoint = GlobalPosition.DirectionTo(shiftTo).Normalized() * actor.MoveSpeed;
-
-    //     if (actor.TestMove(actor.GlobalTransform, directionToPoint * actor.MoveSpeed) && recurrsionCount <= 10) {
-    //         recurrsionCount++;
-    //         FindNewPatrolPoint(true, out var _, out var _);
-    //     }
-
-    //     recurrsionCount = 0;
-
-    //     // if (actor.GlobalPosition.DistanceTo(goTo) < 50) {
-    //     //     FindNewPatrolPoint(true);
-    //     // }
-
-        
-    //     return shiftTo;
-        
-    // }
-    
-    
+        if (state == State.Walking) {
+            
+            if (agent.IsNavigationFinished() || IsStalling(delta) == true) {
+                actor.Velocity = Vector2.Zero;
+                SwitchPatrolPoint(); 
+                return;
+            }
+            MoveActorToNextPosition();
+        }
+    }
 }

@@ -13,11 +13,11 @@ public partial class Player : Actor
     
     public override void OnDeath(DamageInstance damageInstance)
     {
-        GD.Print("NOOOO THE PLAYER IS DEADDD");
+        //GD.Print("NOOOO THE PLAYER IS DEADDD");
     }
 
     public override void OnDamaged(DamageInstance damageInstance)
     {
-        GD.Print("player says OW");
+        //GD.Print("player says OW");
     }
 }
