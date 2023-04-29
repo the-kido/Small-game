@@ -49,8 +49,6 @@ public partial class Camera : Camera2D
 
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
 
-        //Zoom = finalZoom;
-
 		Position = Position.Lerp(finalPosition, (float) delta * 2);
 
 	}
@@ -70,12 +68,12 @@ public partial class Camera : Camera2D
 
 
 		float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
-		GD.Print(diagonal, " annd " , diagonalLength);
+		//GD.Print(diagonal, " annd " , diagonalLength);
 		float dif = diagonal / diagonalLength;
 		
         dif *= 2f;
 
-		GD.Print("Dif:", dif);
+		//GD.Print("Dif:", dif);
         dif = Mathf.Max(dif, 0.8f);
 		
 		return Vector2.One / (dif); //TODO. 
@@ -124,12 +122,12 @@ public partial class Camera : Camera2D
 	private void OnBodyEntered(Node2D body) {
 		importantObjects.Add(body);
 		
-		GD.Print("ENTERED SOMETHING DID, ", body.Name);
+		// GD.Print("ENTERED SOMETHING DID, ", body.Name);
 	}
 	private void OnBodyLeave(Node2D body) {
 		importantObjects.Remove(body);
 
-		GD.Print("LEFT SOMETHING DID, ", body.Name);
+		// GD.Print("LEFT SOMETHING DID, ", body.Name);
 	}
 	
 }

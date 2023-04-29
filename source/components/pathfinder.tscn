@@ -2,5 +2,6 @@
 
 [ext_resource type="Script" path="res://Pathfinder.cs" id="1_n73yt"]
 
-[node name="Pathfinder" type="Node2D"]
+[node name="Pathfinder" type="Node2D" node_paths=PackedStringArray("agent")]
 script = ExtResource("1_n73yt")
+agent = NodePath("")
