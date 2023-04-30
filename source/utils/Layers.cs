@@ -1,6 +1,6 @@
 namespace KidoUtils;
 
-enum Layers: int {
+enum Layers: uint {
     Enviornment = 1,
     Player = 2,
     Enemies = 4,

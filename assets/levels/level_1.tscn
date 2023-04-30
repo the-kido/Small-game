@@ -34,9 +34,6 @@ position = Vector2(928, 365)
 [node name="Weird enemy" parent="." instance=ExtResource("5_s77ih")]
 position = Vector2(301, 567)
 
-[node name="Weird enemy2" parent="." instance=ExtResource("5_s77ih")]
-position = Vector2(908, 577)
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(502, 310)
 scale = Vector2(0.27, 0.27)

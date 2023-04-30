@@ -54,7 +54,7 @@ public abstract partial class Bullet : Node2D {
         newParticle.QueueFree();
     }
 
-    public void init(Vector2 spawnPosition, float nuzzleRotation, BulletFrom from) {
+    public void init(Vector2 spawnPosition, float radians, BulletFrom from) {
         if (hitbox.CollisionLayer != 0 || hitbox.CollisionMask != 0) {
             GD.PushError( $"The hitbox {hitbox.Name} for {hitbox.GetParent().Name} has collisions/masks already set. Default them to have nothing.");
             throw new Exception("Amazing");
@@ -71,8 +71,11 @@ public abstract partial class Bullet : Node2D {
                 break;
         }
         
-        Rotation = nuzzleRotation;
-        directionFacing = new Vector2(Mathf.Cos(nuzzleRotation), Mathf.Sin(nuzzleRotation));
+        Rotation = radians;
+        GD.Print("r", radians);
+
+        directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+        GD.Print("a ", directionFacing);
         Position = spawnPosition;
 
     }

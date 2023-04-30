@@ -14,16 +14,14 @@ public partial class Pathfinder : Node2D
 
     int pathOn = 0;
     private Vector2[] goBetween = new Vector2[3];
-
+    private State state = State.Walking;
 
     public override void _Ready() {
         for (int i = 0; i < 3; i++)
             goBetween[i] = FindValidPatrolPoint();
         
         agent.TargetPosition = goBetween[0];
-        state = State.Walking;
     }
-
 
     public Vector2 FindValidPatrolPoint() {
         Vector2 patrolPoint;
@@ -44,13 +42,6 @@ public partial class Pathfinder : Node2D
         return patrolPoint; 
     }
 
-    
-    private enum State {
-        Idle,
-        Walking
-    }
-    State state;
-    
     float stalledFor = 0;
     public bool IsStalling(double delta) {
         if (previousVelocity == actor.Velocity) {
@@ -72,14 +63,11 @@ public partial class Pathfinder : Node2D
 
     public async void SwitchPatrolPoint() {
         pathOn = (pathOn + 1) % 3;
-        
         state = State.Idle;
-        //Technically the state should change to "idle"
+
         await Task.Delay(5000);
 
         state = State.Walking;
-
-        //..Then back to "patrolling". But in reality, I think patrolling and idle should be one in the same state. Both "patrolling".
         agent.TargetPosition = goBetween[pathOn];
         
     }
@@ -89,10 +77,8 @@ public partial class Pathfinder : Node2D
         actor.Velocity = direction * 200;
     }
 
-    public override void _Process(double delta) {
-
+    public void PatrolUpdate(double delta) {
         if (state == State.Walking) {
-            
             if (agent.IsNavigationFinished() || IsStalling(delta) == true) {
                 actor.Velocity = Vector2.Zero;
                 SwitchPatrolPoint(); 
@@ -101,4 +87,9 @@ public partial class Pathfinder : Node2D
             MoveActorToNextPosition();
         }
     }
+    private enum State {
+        Idle,
+        Walking
+    }
 }
+
