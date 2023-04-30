@@ -70,12 +70,9 @@ public abstract partial class Bullet : Node2D {
                 hitbox.CollisionMask += (int) Layers.Enviornment + (int) Layers.Player;
                 break;
         }
-        
         Rotation = radians;
-        GD.Print("r", radians);
 
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
-        GD.Print("a ", directionFacing);
         Position = spawnPosition;
 
     }

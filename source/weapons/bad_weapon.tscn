@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://ewrspjoveeuh"]
+[gd_scene load_steps=7 format=3 uid="uid://ewrspjoveeuh"]
 
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="1_cpiaq"]
-[ext_resource type="Script" path="res://BadWeapon.gd" id="2_n4p30"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r8uib"]
 animation = &"north"
@@ -28,7 +27,8 @@ blend_point_3/pos = Vector2(-0.1, -1)
 blend_mode = 1
 
 [node name="BadWeapon" instance=ExtResource("1_cpiaq")]
-script = ExtResource("2_n4p30")
+bulletAsset = null
+ReloadSpeed = 0.0
 
 [node name="Sprite" parent="." index="0"]
 modulate = Color(0.87451, 0, 0.501961, 1)

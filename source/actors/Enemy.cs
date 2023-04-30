@@ -10,9 +10,10 @@ public partial class Enemy : Actor
     [Export]
     private Sprite2D sprite;
 
+    public StateMachine stateMachine;
+
     public override void _Ready() {
         base._Ready();
-        
     }
     public override void _Process(double delta)
     {
@@ -22,30 +23,23 @@ public partial class Enemy : Actor
     public Player VisiblePlayer() {
         //Not multiplayer safe (as is many things. This is most likely gonna be single player anyway.)
 
-
         //This is the most beutiful line to ever be written.
         foreach (Player player in Player.players) {
             if (player is null) continue;
             
             uint collisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
 
-
             var spaceState = GetWorld2D().DirectSpaceState;
-            // use global coordinates, not local to node
 
-            var query = PhysicsRayQueryParameters2D.Create(
+            var rayQuery = PhysicsRayQueryParameters2D.Create(
                 GlobalPosition, player.GlobalPosition, collisionMask, new Godot.Collections.Array<Rid> { GetRid() }
             );
 
-            var result = spaceState.IntersectRay(query);
+            var result = spaceState.IntersectRay(rayQuery);
 
             //If the only thing between the player and the enemy is just that -- the enemy and player -- then we good.
-            //GD.Print(result.Count);
-
-            
-            if ((Rid) result["collider"] == player.GetRid()) {
+            if (result.Count > 0 && (Rid) result["collider"] == player.GetRid())
                 return player;
-            }
         }
 
         return null;

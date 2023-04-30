@@ -24,4 +24,29 @@ public abstract partial class Actor : CharacterBody2D
 	}
 	public abstract void OnDeath(DamageInstance damageInstance);
 	public abstract void OnDamaged(DamageInstance damageInstance);
+
+
+	#region Methods
+	Vector2 previousVelocity;
+    public bool IsStalling(double delta, float timeStalled, ref float stallingTimer) {
+        if (previousVelocity == Velocity) {
+            
+            stallingTimer += (float) delta;
+
+            if (stallingTimer > timeStalled) {
+                return true;
+            }
+        }
+        else{
+            stallingTimer = 0;
+        }
+
+        previousVelocity = Velocity;
+        return false;
+    }
+	#endregion
+
+
 }
+
+

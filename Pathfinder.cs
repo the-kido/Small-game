@@ -35,30 +35,14 @@ public partial class Pathfinder : Node2D
 
         //Get number between HoverAtSpawnPointDistance/2 and HoverAtSpawnPointDistance
         float range = (rand.NextSingle() / 2 + 0.5f) * HoverAtSpawnPointDistance;
-
+        GD.Print(range);
         patrolPoint = randomDirection * range;
         patrolPoint += GlobalPosition;
         
         return patrolPoint; 
     }
 
-    float stalledFor = 0;
-    public bool IsStalling(double delta) {
-        if (previousVelocity == actor.Velocity) {
-            
-            stalledFor += (float) delta;
-
-            if (stalledFor > 1) {
-                return true;
-            }
-        }
-        else{
-            stalledFor = 0;
-        }
-
-        previousVelocity = actor.Velocity;
-        return false;
-    }
+    
     Vector2 previousVelocity;
 
     public async void SwitchPatrolPoint() {
@@ -77,9 +61,11 @@ public partial class Pathfinder : Node2D
         actor.Velocity = direction * 200;
     }
 
+    float stallingTimer;
     public void PatrolUpdate(double delta) {
+
         if (state == State.Walking) {
-            if (agent.IsNavigationFinished() || IsStalling(delta) == true) {
+            if (agent.IsNavigationFinished() || actor.IsStalling(delta, 1, ref stallingTimer) == true) {
                 actor.Velocity = Vector2.Zero;
                 SwitchPatrolPoint(); 
                 return;
@@ -93,3 +79,6 @@ public partial class Pathfinder : Node2D
     }
 }
 
+public class tempAI {
+    
+}

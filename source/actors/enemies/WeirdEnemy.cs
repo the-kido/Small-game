@@ -42,12 +42,13 @@ public partial class WeirdEnemy : Enemy {
     public override void _Process(double delta)
     {
         base._Process(delta);
+
         Player player = VisiblePlayer();
 
         if (EnemyForgetPlayer(player, delta, ref time)) {
             state = EnemyStates.Patrolling;
         }
-
+        
         if (player is not null) {
             visiblePlayer = player;
             state = EnemyStates.Attacking;
@@ -55,9 +56,7 @@ public partial class WeirdEnemy : Enemy {
             //Move this into the pathfinding thing.
             Velocity = Vector2.Zero;
         }
-
-        //TODO: Make the enemy stop following the player after some time.
-
+        
 
         if (state == EnemyStates.Attacking) {
             bloop += delta;
@@ -76,8 +75,6 @@ public partial class WeirdEnemy : Enemy {
         }
     }
     private void ShootConstantly(Player player) {
-        GD.Print(player);
-
         float angle = (player.GlobalPosition - GlobalPosition).Angle();
 
         GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(spamedBullet).init(Position, angle, BulletFrom.Enemy);
