@@ -9,22 +9,28 @@ using System.Collections.Generic;
 //The state machine will handle the switch between states and will call the method synonymous with that state?
 
 public class StateMachine {
-    List<Action> states;
+    //A list of tuples, where 1 is always the "ready" method and 2 is the "update" method.
 
-    Action currentState;
-    public void AddState(Func<object> stateMethod) {
+    Dictionary<Action, Action<double>> states = new();
 
+    Action currentInitialMethod;
+    Action<double> currentUpdateMethod;
+
+    public void AddState(Action initial, Action<double> update) {
+        states.Add(initial, update);
+        
     }
-    public void UpdateState() {
-        currentState?.Invoke();
-        var a = UpdateState;
-
+    public void UpdateState(double delta) {
+        currentUpdateMethod?.Invoke(delta);
     }
-    public void ChangeState(Action method) {
-        if (!states.Contains(method)) {
-            GD.PushError("The method ", method, " has not been added to this state machine!");
-            return;
-        }
-        currentState = method;
+
+    public void ChangeState(Action initial) {
+
+        if (!states.ContainsKey(initial))
+            throw new Exception($"The method {initial.ToString()} has not been added to this state machine!");
+
+        currentUpdateMethod = states[initial];
+        currentInitialMethod = initial;
+        currentInitialMethod?.Invoke();
     }
 }

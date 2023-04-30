@@ -10,7 +10,7 @@ public partial class Enemy : Actor
     [Export]
     private Sprite2D sprite;
 
-    public StateMachine stateMachine;
+    public StateMachine stateMachine = new();
 
     public override void _Ready() {
         base._Ready();
