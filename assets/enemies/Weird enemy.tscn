@@ -18,6 +18,7 @@ collision_mask = 11
 script = ExtResource("1_lsih8")
 spamedBullet = ExtResource("2_lhrnb")
 pathfinderComponent = NodePath("Pathfinder")
+HoverAtSpawnPointDistance = 500
 DamageableComponent = NodePath("Damageable")
 MoveSpeed = 100
 
@@ -39,9 +40,7 @@ debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 scale = Vector2(3, 3)
 texture = ExtResource("3_ehjie")
 
-[node name="Pathfinder" parent="." node_paths=PackedStringArray("actor", "agent") instance=ExtResource("5_ubg6x")]
-HoverAtSpawnPointDistance = 500
-actor = NodePath("..")
+[node name="Pathfinder" parent="." node_paths=PackedStringArray("agent") instance=ExtResource("5_ubg6x")]
 agent = NodePath("../NavigationAgent2D")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
