@@ -7,7 +7,14 @@ public enum EnemyStates {
     Attacking
 }
 
-public sealed partial class WeirdEnemy : PatrolEnemy {
+public sealed partial class WeirdEnemy : Enemy {
+    [Export] 
+    public Pathfinder pathfinderComponent;
+    [Export]
+    private int HoverAtSpawnPointDistance = 0;
+    [Export]
+    private PackedScene spamedBullet;
+
     
     //Somehow allow the choice of which state to change to when a state finishes. For instance, will an attacking state
     //always switch to patrolling if it no longer sees a player?
@@ -15,11 +22,14 @@ public sealed partial class WeirdEnemy : PatrolEnemy {
     
     public override void _Ready() {
         base._Ready();
+        
+        AttackState attackState = new(pathfinderComponent, spamedBullet);
+        PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
 
-        stateMachine.AddState(AttackingInit, AttackingUpdate);
-        stateMachine.AddState(PatrollingInit, PatrollingUpdate);
+        stateMachine.AddState(attackState, patrolState);
+        stateMachine.AddState(patrolState, attackState);
 
-        stateMachine.ChangeState(PatrollingInit);
+        stateMachine.ChangeState(patrolState);
     }
 
     public override void _Process(double delta) {

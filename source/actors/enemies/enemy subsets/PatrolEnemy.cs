@@ -4,20 +4,21 @@ using System.Threading.Tasks;
 using KidoUtils;
 
 
-public abstract partial class PatrolEnemy : Enemy {
+public sealed class PatrolState : AIState {
 
-    [Export] 
-    public Pathfinder pathfinderComponent;
-    [Export]
-    private int HoverAtSpawnPointDistance = 0;
-    [Export]
-    private PackedScene spamedBullet;
+    Pathfinder pathfinderComponent;
+    int HoverAtSpawnPointDistance;
+    public PatrolState(Pathfinder pathfinderComponent, int HoverAtSpawnPointDistance) {
+        this.HoverAtSpawnPointDistance = HoverAtSpawnPointDistance;
+        this.pathfinderComponent = pathfinderComponent;
+    }
 
     private Vector2[] goBetween = new Vector2[3];
     int pathOn = 0;
     private State state = State.Walking;
 
-    public void PatrollingInit() {
+    public override void Init() {
+        GD.Print(actor);
         for (int i = 0; i < 3; i++)
             goBetween[i] = FindValidPatrolPoint();
         pathfinderComponent.SetTargetPosition(goBetween[0]);
@@ -36,7 +37,8 @@ public abstract partial class PatrolEnemy : Enemy {
         float range = (rand.NextSingle() / 2 + 0.5f) * HoverAtSpawnPointDistance;
 
         Vector2 patrolPoint = randomDirection * range;
-        patrolPoint += GlobalPosition;
+        
+        patrolPoint += actor.GlobalPosition;
         
         return patrolPoint; 
     }
@@ -56,39 +58,18 @@ public abstract partial class PatrolEnemy : Enemy {
     }
 
     float stallingTimer = 0;
-    protected virtual void PatrollingUpdate(double delta) {
+    public override void Update(double delta) {
 
         if (state == State.Walking) {
-            if (pathfinderComponent.IsNavigationFinished() || IsStalling(delta, 1, ref stallingTimer) == true) {
-                Velocity = Vector2.Zero;
+            if (pathfinderComponent.IsNavigationFinished() || actor.IsStalling(delta, 1, ref stallingTimer) == true) {
+                actor.Velocity = Vector2.Zero;
                 SwitchPatrolPoint(); 
                 return;
             }
-            pathfinderComponent.UpdatePathfind(this);
+            pathfinderComponent.UpdatePathfind(actor);
         }
 
-        if (VisiblePlayer() is not null)
-            stateMachine.ChangeState(AttackingInit);
+        if (actor.VisiblePlayer() is not null)
+            stateMachine.ChangeState(stateToGoTo);
     } 
-
-    
-    
-
-
-
-    private bool EnemyForgetPlayer(Player player, double delta, ref float time) {
-        if (player is null) {
-            time += (float) delta;
-
-            if (time > 10) {
-                return true;
-            }
-        }
-        else{
-            time = 0;
-        }
-
-        return false;
-    }
-  
 }

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-
+using KidoUtils;
 
 
 //Make a class which can be instanced once.
@@ -15,25 +15,47 @@ public sealed class AttackState : AIState {
 
     #region attack state
 
-    public AttackState(AIState stateToGoTo, AIStateMachine stateMachine) : base(stateToGoTo, stateMachine) {
-        this.stateToGoTo = stateToGoTo;
-        this.stateMachine = stateMachine;
+    Pathfinder pathfinderComponent;
+    //Not all actors will have pathfinders, so the parameter is necessary.
+
+    PackedScene spamedBullet;
+    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet) {
+        this.pathfinderComponent = pathfinderComponent;
+        this.spamedBullet = bullet;
     }
 
-    protected override void Init() {
-        Velocity = Vector2.Zero;
+    private bool EnemyForgetPlayer(Player player, double delta, ref float time) {
+        if (player is null) {
+            time += (float) delta;
+
+            if (time > 10) {
+                return true;
+            }
+        }
+        else{
+            time = 0;
+        }
+
+        return false;
+    }
+
+
+    //I only want INIT to be called by the stateMachine. How can I fix this issue?
+    //Maybe init SHOULD be a lambda which is set by the state machine?
+    public override void Init() {
+        actor.Velocity = Vector2.Zero;
     }
 
     float forgetPlayerTimer = 0;
     double shootTimer = 0;
     float updateDistanceTimer = 0;
 
-    protected override void Update(double delta) {
+    public override void Update(double delta) {
         //Update relavent timers
         updateDistanceTimer += (float) delta;
         shootTimer += delta;
 
-        Player player = VisiblePlayer();
+        Player player = actor.VisiblePlayer();
 
         FinalAttackingMotion(player);
 
@@ -57,9 +79,9 @@ public sealed class AttackState : AIState {
             lastRememberedPlayer = player;
         }
         
-        float distanceToPlayer = GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
+        float distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
         if (distanceToPlayer > 250) {
-            pathfinderComponent.UpdatePathfind(this);
+            pathfinderComponent.UpdatePathfind(actor);
         }
 
         if (updateDistanceTimer < 1) return;
@@ -70,15 +92,15 @@ public sealed class AttackState : AIState {
         }
         else if (player is not null){
             float randFloat = new Random().NextSingle()- 0.5f * 100;
-            Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(GlobalPosition + Vector2.One*randFloat) * MoveSpeed*1.5f;
+            actor.Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f;
         }
     }
 
     private void Shoot(Player player) {
         if (player is null) return;
 
-        float angle = (player.GlobalPosition - GlobalPosition).Angle();
-        GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(spamedBullet).init(Position, angle, BulletFrom.Enemy);
+        float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
+        actor.GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(spamedBullet).init(actor.Position, angle, BulletFrom.Enemy);
     }
 
     #endregion
@@ -86,23 +108,36 @@ public sealed class AttackState : AIState {
 
 
 public abstract class AIState {
-    protected AIState stateToGoTo;
-    protected AIStateMachine stateMachine;
-    public AIState(AIState stateToGoTo, AIStateMachine stateMachine) {
-        this.stateToGoTo = stateToGoTo;
-        this.stateMachine = stateMachine;
-    }
+    
+
+    #region ISSUE
+    //How can I signify that this will be a solved variable when it's initialized in the state machine?
+    //This is very "honours system" rn. 
+    public AIState stateToGoTo;
+    public AIStateMachine stateMachine;
+    public Actor actor;
+    #endregion
+
+    public AIState() {}
    
-    protected abstract void Init();
-    protected abstract void Update(double delta);
+    public abstract void Init();
+    public abstract void Update(double delta);
 }
 
 public class AIStateMachine {
-    AIState currentState;
-    List<AIState> states;
+    public AIStateMachine(Actor actor) {
+        this.actor = actor;
+    }
 
-    public void AddState(AIState aiState) {
+    AIState currentState;
+    List<AIState> states = new();
+    Actor actor;
+
+    public void AddState(AIState aiState, AIState stateToGoTo) {
         states.Add(aiState);
+        aiState.actor = this.actor;
+        aiState.stateToGoTo = stateToGoTo;
+        aiState.stateMachine = this;
     }
     public void UpdateState(double delta) {
         currentState.Update(delta);

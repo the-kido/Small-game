@@ -44,9 +44,37 @@ public abstract partial class Actor : CharacterBody2D
         previousVelocity = Velocity;
         return false;
     }
+	
+	
+	public Player VisiblePlayer() {
+        //Not multiplayer safe (as is many things. This is most likely gonna be single player anyway.)
+
+        //This is the most beutiful line to ever be written.
+        foreach (Player player in Player.players) {
+            if (player is null) continue;
+            
+            uint collisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
+
+            var spaceState = GetWorld2D().DirectSpaceState;
+
+            var rayQuery = PhysicsRayQueryParameters2D.Create(
+                GlobalPosition, player.GlobalPosition, collisionMask, new Godot.Collections.Array<Rid> { GetRid() }
+            );
+
+            var result = spaceState.IntersectRay(rayQuery);
+
+            //If the only thing between the player and the enemy is just that -- the enemy and player -- then we good.
+            if (result.Count > 0 && (Rid) result["collider"] == player.GetRid())
+                return player;
+        }
+
+        return null;
+    }
 	#endregion
 
 
+
+	
 }
 
 
