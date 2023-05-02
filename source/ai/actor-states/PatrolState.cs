@@ -17,7 +17,6 @@ public sealed class PatrolState : AIState {
     private State state = State.Walking;
 
     public override void Init() {
-        GD.Print(actor);
         for (int i = 0; i < 3; i++)
             goBetween[i] = FindValidPatrolPoint();
         pathfinderComponent.SetTargetPosition(goBetween[0]);
