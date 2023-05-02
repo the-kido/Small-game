@@ -21,14 +21,14 @@ public sealed partial class WeirdEnemy : Enemy {
         AttackState attackState = new(pathfinderComponent, spamedBullet);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
 
-        stateMachine.AddState(attackState, patrolState);
-        stateMachine.AddState(patrolState, attackState);
+        StateMachine.AddState(attackState, patrolState);
+        StateMachine.AddState(patrolState, attackState);
 
-        stateMachine.ChangeState(patrolState);
+        StateMachine.ChangeState(patrolState);
     }
 
     public override void _Process(double delta) {
         base._Process(delta);
-        stateMachine.UpdateState(delta);
+        StateMachine.UpdateState(delta);
     }
 }

@@ -10,9 +10,9 @@ public partial class Enemy : Actor
     [Export]
     private Sprite2D sprite;
 
-    public AIStateMachine stateMachine;
+    public AIStateMachine StateMachine {get; init;}
     public Enemy() {
-        stateMachine = new(this);
+        StateMachine = new(this);
     }
 
     public override void _Ready() {
@@ -22,8 +22,6 @@ public partial class Enemy : Actor
     {
         base._Process(delta);
     }
-
-
 
     public async override void OnDeath(DamageInstance damageInstance) {
         
