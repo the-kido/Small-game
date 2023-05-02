@@ -11,10 +11,10 @@ public abstract partial class Actor : CharacterBody2D
 	[Export]
 	public int MoveSpeed {get; private set;}
 	
-
 	public override void _Process(double delta) {
 		MoveAndSlide();
 	}
+
 	public override void _Ready() {
 		//A safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
@@ -45,7 +45,7 @@ public abstract partial class Actor : CharacterBody2D
         return false;
     }
 	
-	
+    uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
 	public Player VisiblePlayer() {
         //Not multiplayer safe (as is many things. This is most likely gonna be single player anyway.)
 
@@ -53,12 +53,10 @@ public abstract partial class Actor : CharacterBody2D
         foreach (Player player in Player.players) {
             if (player is null) continue;
             
-            uint collisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
-
             var spaceState = GetWorld2D().DirectSpaceState;
 
             var rayQuery = PhysicsRayQueryParameters2D.Create(
-                GlobalPosition, player.GlobalPosition, collisionMask, new Godot.Collections.Array<Rid> { GetRid() }
+                GlobalPosition, player.GlobalPosition, raycastCollisionMask, new Godot.Collections.Array<Rid> { GetRid() }
             );
 
             var result = spaceState.IntersectRay(rayQuery);
@@ -70,11 +68,6 @@ public abstract partial class Actor : CharacterBody2D
 
         return null;
     }
+
 	#endregion
-
-
-
-	
 }
-
-

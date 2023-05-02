@@ -15,11 +15,6 @@ public sealed partial class WeirdEnemy : Enemy {
     [Export]
     private PackedScene spamedBullet;
 
-    
-    //Somehow allow the choice of which state to change to when a state finishes. For instance, will an attacking state
-    //always switch to patrolling if it no longer sees a player?
-    //I think so, so maybe instancing the AIstate should pass another state which it goes to?
-    
     public override void _Ready() {
         base._Ready();
         

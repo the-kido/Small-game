@@ -6,8 +6,8 @@ public static class bloop {
 		float centerX = (rect.Position.X + rect.Size.X) / 2;
         float centerY = (rect.Position.Y + rect.Size.Y) / 2;
         return new(centerX, centerY);
-
 	}
+	
 	public static int COOL(this int a) {
 		return a + 1;
 		//a.COOL();
