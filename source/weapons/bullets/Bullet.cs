@@ -39,6 +39,7 @@ public abstract partial class Bullet : Node2D {
 
     private void OnArea2DEntered(Rid area_rid, Area2D area, int area_shape_index, int local_shape_index) {
         if (area is Damageable damageable) {
+            if (damageable.IsImmune) return;
             OnDamageableEntered(damageable, BulletDamageInstance());
         }
     }

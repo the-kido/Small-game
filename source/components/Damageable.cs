@@ -12,23 +12,31 @@ public partial class Damageable : Area2D
 	[Export(PropertyHint.None, "In seconds: how long it takes for this entity to be hit again")]
 	private double ImmunityFrames {get; set;}
 	
-	private bool IsImmune = false;
 	private int MaxHealth {get; init;}
-	
+	public bool IsImmune {get; private set;} = false;
+
 
 	public delegate void HealthDepletedEventHandler(DamageInstance damageInstance);
 	public event HealthDepletedEventHandler OnDamaged;
 	public delegate void DeathEventHandler(DamageInstance damageInstance);
 	public event DeathEventHandler OnDeath;
 
+	public event Action SetToImmune;
+	public event Action SetToUnimmune;
+
 	public override void _Ready() {
 		ErrorUtils.AvoidEmptyCollisionLayers(this);
+
+		SetToImmune += () => IsImmune = true;
+        SetToUnimmune += () => IsImmune = false;
 	}
 	
 	private async void WaitForImmunityFrames(DamageInstance a) {
-		IsImmune = true;
+		SetToImmune?.Invoke();
+
 		await Task.Delay((int)(ImmunityFrames * 1000));
-		IsImmune = false;
+		
+		SetToUnimmune?.Invoke();
 	}
 
 	private Damageable() {
@@ -45,10 +53,18 @@ public partial class Damageable : Area2D
 			OnDeath?.Invoke(damageInstance);
 		}
 	}
+
+
+	#region disallow bullets to pass actor when going through immunity frames
+	
+
+
+	#endregion
+
 }
 
 
-public class DamageInstance : Object{
+public class DamageInstance {
 	public int damage = 0;
 	public bool isGrounded = true;
 	public Vector2 forceDirection;

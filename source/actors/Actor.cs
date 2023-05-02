@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using System.Threading.Tasks;
 using KidoUtils;
 
 public abstract partial class Actor : CharacterBody2D
@@ -21,12 +21,25 @@ public abstract partial class Actor : CharacterBody2D
 
 		DamageableComponent.OnDeath += OnDeath;
 		DamageableComponent.OnDamaged += OnDamaged;
+        DamageableComponent.OnDamaged += DamageFlash;
+
 	}
 	public abstract void OnDeath(DamageInstance damageInstance);
 	public abstract void OnDamaged(DamageInstance damageInstance);
 
 
 	#region Methods
+
+    private async void DamageFlash(DamageInstance _) {
+        Color color = new(1,1,1);
+        for (int i = 100; i > 0; i--) {
+            color.G = 1 - i / 100f;
+            color.B = 1 - i / 100f;
+            Modulate = color;
+            await Task.Delay(3);
+        }
+    }
+
 	Vector2 previousVelocity;
     public bool IsStalling(double delta, float timeStalled, ref float stallingTimer) {
         if (previousVelocity == Velocity) {
@@ -68,6 +81,7 @@ public abstract partial class Actor : CharacterBody2D
 
         return null;
     }
+
 
 	#endregion
 }
