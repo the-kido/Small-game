@@ -54,7 +54,7 @@ public partial class Gun : Weapon {
     }
     
 
-    public override void useWeapon(string[] inputMap) {
+    public override void useWeapon(List<InputType> inputMap) {
 
         var newBullet = GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset);
          //= BulletFactory.SpawnBullet(bulletAsset);

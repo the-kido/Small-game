@@ -15,7 +15,6 @@ public partial class Enemy : Actor
         StateMachine = new(this);
     }
 
-    
     public override void _Ready() {
         base._Ready();
     }

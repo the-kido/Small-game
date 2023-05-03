@@ -18,7 +18,7 @@ metadata/_edit_horizontal_guides_ = [464.0]
 position = Vector2(548, 597)
 
 [node name="Player" parent="." instance=ExtResource("3_gker5")]
-position = Vector2(768, 491)
+position = Vector2(761, 422)
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("4_b0rc0")]
 position = Vector2(749, 447)

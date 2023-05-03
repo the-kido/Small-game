@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public partial class InputController : Node
 {
-	public event Action<List<InputTypes>> UseWeapon;
+	public event Action<List<InputType>> UseWeapon;
 
 	// [Signal]
 	// public delegate void UseWeaponEventHandler(string[] inputMap);
@@ -22,16 +22,16 @@ public partial class InputController : Node
 			inputMap.Add(InputType.LeftClick);
 		}
 		if (inputMap.Count > 0) {
-			OnAttackKeyHeld(inputMap.ToArray());
+			OnAttackKeyHeld(inputMap);
 		}
 	}
 	private bool reloaded = true;
-	private async void OnAttackKeyHeld(string[] inputMap) {
+	private async void OnAttackKeyHeld(List<InputType> inputMap) {
 		if (!reloaded)
 			return;
 		
 		reloaded = false;
-		UseWeapon?.Invoke(inputMa);
+		UseWeapon?.Invoke(inputMap);
 
 		// EmitSignal(SignalName.UseWeapon, inputMap);
 
@@ -51,7 +51,7 @@ public partial class InputController : Node
 	}
 }
 
-enum InputType {
+public enum InputType {
 	LeftClick,
 	RightClick,
 }

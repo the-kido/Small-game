@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +18,7 @@ public abstract partial class Weapon : Node2D {
 	///<Summary>
 	///Can be overriden to implement functionality when the weapon is eventually used.
 	///</Summary>
-	public abstract void useWeapon(string[] inputMap);
+	public abstract void useWeapon(List<InputType> inputMap);
 
 	public void ChangeWeapon(PackedScene weapon) {
 		hand.GetNode<InputController>("../Input Controller").UseWeapon -= useWeapon;
