@@ -5,16 +5,21 @@ using System.Threading.Tasks;
 
 public partial class InputController : Node
 {
-	[Signal]
-	public delegate void UseWeaponEventHandler(string[] inputMap);
+	public event Action<List<InputTypes>> UseWeapon;
+
+	// [Signal]
+	// public delegate void UseWeaponEventHandler(string[] inputMap);
+	
 	public bool FilterAllInput {set; get;} = false;
 
 
 	#region All attack related input methods 
-	private void DetectAttactInput() {
-		var inputMap = new List<string>();
+	private void DetectAttackInput() {
+
+		List<InputType> inputMap = new();
+
 		if (Input.IsActionPressed("default_attack")) {
-			inputMap.Add("Left Click");
+			inputMap.Add(InputType.LeftClick);
 		}
 		if (inputMap.Count > 0) {
 			OnAttackKeyHeld(inputMap.ToArray());
@@ -26,8 +31,9 @@ public partial class InputController : Node
 			return;
 		
 		reloaded = false;
-		
-		EmitSignal(SignalName.UseWeapon, inputMap);
+		UseWeapon?.Invoke(inputMa);
+
+		// EmitSignal(SignalName.UseWeapon, inputMap);
 
 		await Task.Delay((int)(GetNode("../Hand").GetNode<Weapon>("Weapon").ReloadSpeed * 1000));
 
@@ -41,6 +47,11 @@ public partial class InputController : Node
 		if (FilterAllInput)
 			return;
 		
-		DetectAttactInput();
+		DetectAttackInput();
 	}
+}
+
+enum InputType {
+	LeftClick,
+	RightClick,
 }

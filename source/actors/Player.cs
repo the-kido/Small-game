@@ -28,13 +28,11 @@ public sealed partial class Player : Actor
     }
 
     #region signals
-    private void OnNearbyEnemyAreaEntered(Node2D body)  {
-        NearbyEnemies.Add( (Actor) body);
-        GD.Print("Body added: ", body);
-
-    }
+    
+    private void OnNearbyEnemyAreaEntered(Node2D body) =>
+        NearbyEnemies.Add((Actor) body);
     private void OnNearbyEnemyAreaExited(Node2D body) =>
-        NearbyEnemies.Remove( (Actor) body);
+        NearbyEnemies.Remove((Actor) body);
 
     #endregion
 }
