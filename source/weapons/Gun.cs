@@ -16,24 +16,32 @@ public partial class Gun : Weapon {
     {
         base._Process(delta);
         FaceWeaponToCursor();
-        
     }
     
+
+    
+
 	public virtual void FaceWeaponToCursor() {
         //Check if the player is clicking/pressing on the screen. 
 
         Actor see = null;
+
+
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
+
             PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
-            var ray = PhysicsRayQueryParameters2D.Create(nuzzle.GlobalPosition, enemy.GlobalPosition, mask);
+            var ray = PhysicsRayQueryParameters2D.Create(GlobalPosition, enemy.GlobalPosition, mask);
             var result = spaceState.IntersectRay(ray);
 
-
             if (result.Count > 0 && (Rid) result["collider"] == enemy.GetRid())
+            {
                 see = enemy;
                 break;
+            }
+
         }
-        GD.Print(see);
+        GD.Print(see is not null);
+
         if (see is not null)
             hand.LookAt(see.GlobalPosition);
         else
@@ -45,7 +53,6 @@ public partial class Gun : Weapon {
         
     }
     
-
 
     public override void useWeapon(string[] inputMap) {
 
