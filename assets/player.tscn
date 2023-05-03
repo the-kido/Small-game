@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://b3buuc0f5ge1x"]
+[gd_scene load_steps=57 format=3 uid="uid://b3buuc0f5ge1x"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -638,6 +638,9 @@ graph_offset = Vector2(-88, 62)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2fdih"]
 size = Vector2(55, 69)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
+radius = 443.245
+
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent")]
 disable_mode = 1
 collision_layer = 2
@@ -690,10 +693,21 @@ parameters/Walk/blend_position = Vector2(0, 0)
 [node name="Damageable" parent="." instance=ExtResource("8_spu4k")]
 collision_layer = 2
 collision_mask = 256
-Health = 10
+Health = 100
 ImmunityFrames = 1.0
 
 [node name="Hitbox" type="CollisionShape2D" parent="Damageable"]
 position = Vector2(0.5, 5.5)
 shape = SubResource("RectangleShape2D_2fdih")
 debug_color = Color(0.94902, 0, 0.572549, 0.0862745)
+
+[node name="Nearby Enemy Area" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nearby Enemy Area"]
+scale = Vector2(1, 0.611)
+shape = SubResource("CircleShape2D_so67i")
+
+[connection signal="body_entered" from="Nearby Enemy Area" to="." method="OnNearbyEnemyAreaEntered"]
+[connection signal="body_exited" from="Nearby Enemy Area" to="." method="OnNearbyEnemyAreaExited"]

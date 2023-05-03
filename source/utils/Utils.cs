@@ -3,6 +3,6 @@ using System.Threading.Tasks;
 
 namespace KidoUtils;
 
-static class KidoUtils {
-
+public class KidoUtils {
+    
 }

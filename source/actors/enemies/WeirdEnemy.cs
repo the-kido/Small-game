@@ -25,6 +25,7 @@ public sealed partial class WeirdEnemy : Enemy {
         StateMachine.AddState(patrolState, attackState);
 
         StateMachine.ChangeState(patrolState);
+
     }
 
     public override void _Process(double delta) {

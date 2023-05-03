@@ -29,18 +29,30 @@ public abstract partial class Actor : CharacterBody2D
 
 
 	#region Methods
+	Vector2 previousVelocity;
 
+
+    volatile int percentRed = 0;    
+    //Set the flashing to true.
+    //If another damage comes in, stop the other flashing and start a new flashing.    
     private async void DamageFlash(DamageInstance _) {
+        if (percentRed != 0) {
+            percentRed = 100;
+            return;
+        }
+        percentRed = 100;
+
         Color color = new(1,1,1);
-        for (int i = 100; i > 0; i--) {
-            color.G = 1 - i / 100f;
-            color.B = 1 - i / 100f;
+        while (percentRed > 0) {
+
+            color.G = 1 - percentRed / 100f;
+            color.B = 1 - percentRed / 100f;
             Modulate = color;
             await Task.Delay(3);
+            percentRed-=5;
         }
     }
 
-	Vector2 previousVelocity;
     public bool IsStalling(double delta, float timeStalled, ref float stallingTimer) {
         if (previousVelocity == Velocity) {
             
