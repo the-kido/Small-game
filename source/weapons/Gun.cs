@@ -23,7 +23,6 @@ public partial class Gun : Weapon {
     uint mask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
     public Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
-        Actor see = null;
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
 
             PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
@@ -31,13 +30,9 @@ public partial class Gun : Weapon {
             var result = spaceState.IntersectRay(ray);
 
             if (result.Count > 0 && (Rid) result["collider"] == enemy.GetRid())
-            {
-                see = enemy;
-                break;
-            }
+                return enemy;
         }
-        return see;
-        
+        return null;
     }
     
     public override void UpdateWeapon(List<InputType> inputMap) {
@@ -46,20 +41,19 @@ public partial class Gun : Weapon {
             
             if (see is not null) {
                 hand.LookAt(see.GlobalPosition);
-                OnAttackKeyHeld();
+                AttackAndReload();
             }
-            
             return;
         }
+
         if (inputMap.Contains(InputType.LeftClick)) {
             FaceWeaponToCursor();
-            OnAttackKeyHeld();
+            AttackAndReload();
         }
     }
 
-    public override void UseWeapon()
-    {
-        var newBullet = GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset);
-    	newBullet.init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
-    }
+    public override void UseWeapon() =>
+        GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset)
+            .init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
+            
 }

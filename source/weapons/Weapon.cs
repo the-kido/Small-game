@@ -21,7 +21,7 @@ public abstract partial class Weapon : Node2D {
 	public abstract void UpdateWeapon(List<InputType> inputMap);
 	public abstract void UseWeapon();
 	private bool reloaded = true;
-	public async void OnAttackKeyHeld() {
+	public async void AttackAndReload() {
 		if (!reloaded)
 			return;
 		
@@ -36,12 +36,9 @@ public abstract partial class Weapon : Node2D {
 	public void ChangeWeapon(PackedScene weapon) {
 		hand.GetNode<InputController>("../Input Controller").UpdateWeapon -= UpdateWeapon;
 
-		foreach (Node child in hand.GetChildren()) {
+		foreach (Node child in hand.GetChildren()) child.QueueFree();
 
-			child.QueueFree();
-		}
-		Weapon newWeapon = ((Weapon) weapon.Instantiate());
-		hand.AddChild(newWeapon);
+		hand.AddChild(weapon.Instantiate());
 	}
 }
 
