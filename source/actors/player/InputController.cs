@@ -5,40 +5,35 @@ using System.Threading.Tasks;
 
 public partial class InputController : Node
 {
-	public event Action<List<InputType>> UseWeapon;
+	//MAYBE Delegate this to another class for player GUI management? Idk tbh tho
+	[Export]
+	private PlayerHUD playerHUD;
 
-	// [Signal]
-	// public delegate void UseWeaponEventHandler(string[] inputMap);
-	
-	public bool FilterAllInput {set; get;} = false;
+	public event Action<List<InputType>> UpdateWeapon;
 
+	public bool FilterAllInput {get; private set;} = false;
+	private bool isAttackPressed = false;
+	public override void _Ready() {
+		playerHUD.OnAttackButtonPressed += () => isAttackPressed = !isAttackPressed;
+	}
 
 	#region All attack related input methods 
-	private void DetectAttackInput() {
+	private void UpdateAttackInput() {
 
 		List<InputType> inputMap = new();
 
+		if (isAttackPressed) {
+			inputMap.Add(InputType.AttackButtonPressed);
+		}
 		if (Input.IsActionPressed("default_attack")) {
 			inputMap.Add(InputType.LeftClick);
 		}
-		if (inputMap.Count > 0) {
-			OnAttackKeyHeld(inputMap);
-		}
+
+		UpdateWeapon?.Invoke(inputMap);
+		//OnAttackKeyHeld(inputMap);
+
 	}
-	private bool reloaded = true;
-	private async void OnAttackKeyHeld(List<InputType> inputMap) {
-		if (!reloaded)
-			return;
-		
-		reloaded = false;
-		UseWeapon?.Invoke(inputMap);
-
-		// EmitSignal(SignalName.UseWeapon, inputMap);
-
-		await Task.Delay((int)(GetNode("../Hand").GetNode<Weapon>("Weapon").ReloadSpeed * 1000));
-
-		reloaded = true;
-	}
+	
 
 	#endregion 
 
@@ -47,11 +42,12 @@ public partial class InputController : Node
 		if (FilterAllInput)
 			return;
 		
-		DetectAttackInput();
+		UpdateAttackInput();
 	}
 }
 
 public enum InputType {
 	LeftClick,
 	RightClick,
+	AttackButtonPressed,
 }

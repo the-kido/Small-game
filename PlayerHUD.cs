@@ -4,14 +4,22 @@ using System.Threading.Tasks;
 
 public partial class PlayerHUD : CanvasLayer
 {
+    
+    public event Action OnAttackButtonPressed;
+    
     [Export]
     Player player;
+
+    [Export]
+    Button attackButton;
     [Export]
     Label healthLable;
+
     
     string healthLableText = "♥: ";
     public override void _Ready()
     {
+        attackButton.Pressed += OnAttackButtonPressed;
         player.DamageableComponent.OnDamaged += UpdateHealth;
         player.DamageableComponent.OnDamaged += DamageFlash;
 

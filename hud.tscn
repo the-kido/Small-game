@@ -6,9 +6,10 @@
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("healthLable")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("attackButton", "healthLable")]
 layer = 10
 script = ExtResource("1_2d33i")
+attackButton = NodePath("Control/Button")
 healthLable = NodePath("Control/ColorRect/Label")
 
 [node name="Control" type="Control" parent="."]
@@ -40,3 +41,10 @@ text = "afawf
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 1211.0
+offset_top = 507.0
+offset_right = 1384.0
+offset_bottom = 604.0

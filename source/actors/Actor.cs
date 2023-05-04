@@ -2,11 +2,11 @@ using Godot;
 using System.Threading.Tasks;
 using KidoUtils;
 
-public abstract partial class Actor : CharacterBody2D
-{
+public abstract partial class Actor : CharacterBody2D, IInteractable {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
+    
 	
 	[Export]
 	public int MoveSpeed {get; private set;}
@@ -30,7 +30,6 @@ public abstract partial class Actor : CharacterBody2D
 
 	#region Methods
 	Vector2 previousVelocity;
-
 
     volatile int percentRed = 0;    
     //Set the flashing to true.
@@ -93,7 +92,6 @@ public abstract partial class Actor : CharacterBody2D
 
         return null;
     }
-
 
 	#endregion
 }

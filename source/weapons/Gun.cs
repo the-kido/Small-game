@@ -8,25 +8,22 @@ public partial class Gun : Weapon {
     private Node2D nuzzle;
     public override void _Ready() {
         base._Ready();
-        //bulletAsset = (PackedScene) GD.Load("res://source/weapons/bullets/base_bullet.tscn");
         nuzzle = (Node2D) GetNode("Nuzzle");
     }
     
     public override void _Process(double delta)
     {
         base._Process(delta);
-        FaceWeaponToCursor();
     }
     
-
-    
-
 	public virtual void FaceWeaponToCursor() {
+        hand.LookAt(GetGlobalMousePosition());
+	}
+
+    uint mask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
+    public Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
-
         Actor see = null;
-
-
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
 
             PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
@@ -38,27 +35,31 @@ public partial class Gun : Weapon {
                 see = enemy;
                 break;
             }
-
         }
-        GD.Print(see is not null);
-
-        if (see is not null)
-            hand.LookAt(see.GlobalPosition);
-        else
-		    hand.LookAt(GetGlobalMousePosition());
-
-	}
-    uint mask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
-    public void FaceWeaponToNearbyEnemy(List<Actor> enemies) {
+        return see;
         
     }
     
+    public override void UpdateWeapon(List<InputType> inputMap) {
+        if (inputMap.Contains(InputType.AttackButtonPressed)) {
+            Actor see = FindObjectToFace(Player.players[0].NearbyEnemies);
+            
+            if (see is not null) {
+                hand.LookAt(see.GlobalPosition);
+                OnAttackKeyHeld();
+            }
+            
+            return;
+        }
+        if (inputMap.Contains(InputType.LeftClick)) {
+            FaceWeaponToCursor();
+            OnAttackKeyHeld();
+        }
+    }
 
-    public override void useWeapon(List<InputType> inputMap) {
-
+    public override void UseWeapon()
+    {
         var newBullet = GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset);
-         //= BulletFactory.SpawnBullet(bulletAsset);
     	newBullet.init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
-
     }
 }

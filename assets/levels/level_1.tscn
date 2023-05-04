@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c38pfkqgoj2ly"]
+[gd_scene load_steps=10 format=3 uid="uid://c38pfkqgoj2ly"]
 
 [ext_resource type="TileSet" uid="uid://dblgoopfygonm" path="res://assets/levels/weirldTilemap.tres" id="1_v22a0"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="2_wfut3"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="5_s77ih"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="6_ib282"]
 [ext_resource type="PackedScene" uid="uid://cas7rly3nqcu2" path="res://hud.tscn" id="7_h7av8"]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7dfhi"]
 
@@ -19,6 +21,12 @@ position = Vector2(548, 597)
 
 [node name="Player" parent="." instance=ExtResource("3_gker5")]
 position = Vector2(761, 422)
+
+[node name="Input Controller" parent="Player" index="1" node_paths=PackedStringArray("playerHUD")]
+playerHUD = NodePath("../../HUD")
+
+[node name="AnimationTree" parent="Player" index="5"]
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_d565g")
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("4_b0rc0")]
 position = Vector2(749, 447)
@@ -48,3 +56,5 @@ layer_0/tile_data = PackedInt32Array(458754, 65536, 1, 458758, 65536, 1, 458757,
 
 [node name="HUD" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_h7av8")]
 player = NodePath("../Player")
+
+[editable path="Player"]
