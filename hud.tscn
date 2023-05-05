@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cas7rly3nqcu2"]
 
-[ext_resource type="Script" path="res://PlayerHUD.cs" id="1_2d33i"]
+[ext_resource type="Script" path="res://source/gui/PlayerHUD.cs" id="1_f4mui"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -8,7 +8,7 @@
 
 [node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("attackButton", "healthLable")]
 layer = 10
-script = ExtResource("1_2d33i")
+script = ExtResource("1_f4mui")
 attackButton = NodePath("Control/Button")
 healthLable = NodePath("Control/ColorRect/Label")
 

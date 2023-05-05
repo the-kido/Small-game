@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=3 uid="uid://btv44jyr6tfoa"]
 
-[ext_resource type="Script" path="res://Pathfinder.cs" id="1_n73yt"]
+[ext_resource type="Script" path="res://source/components/Pathfinder.cs" id="1_30j6m"]
 
 [node name="Pathfinder" type="Node2D" node_paths=PackedStringArray("agent")]
-script = ExtResource("1_n73yt")
+script = ExtResource("1_30j6m")
 agent = NodePath("")

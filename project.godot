@@ -17,9 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SceneSwitcher="*res://source/gui/scene_switcher.tscn"
-BulletFactory="*res://source/factories/bullet_factory.tscn"
-ParticleFactory="*res://source/factories/ParticleFactory.cs"
+BulletFactory="*res://source/autoload/bullet_factory.tscn"
+ParticleFactory="*res://source/autoload/ParticleFactory.cs"
+SceneSwitcher="*res://source/autoload/scene_switcher.tscn"
 
 [display]
 

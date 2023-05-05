@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://ce2fu80i6pekh"]
 
-[ext_resource type="Script" path="res://Camera.cs" id="1_l1w0u"]
+[ext_resource type="Script" path="res://source/gui/Camera.cs" id="1_kne7i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q5fci"]
 radius = 691.955
 
 [node name="Camera" type="Camera2D"]
-script = ExtResource("1_l1w0u")
+script = ExtResource("1_kne7i")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 7
