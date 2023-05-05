@@ -52,8 +52,10 @@ public partial class Gun : Weapon {
         }
     }
 
-    public override void UseWeapon() =>
+    public override void UseWeapon() {
+        
         GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset)
             .init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
-            
+        Camera.currentCamera.StartShake(10);
+    }
 }

@@ -83,7 +83,7 @@ blend_mode = 1
 [node name="Base Gun" type="Node2D"]
 script = ExtResource("1_hfubd")
 bulletAsset = ExtResource("2_ut7dw")
-ReloadSpeed = 0.1
+ReloadSpeed = 0.5
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = 2

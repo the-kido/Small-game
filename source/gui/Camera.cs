@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class Camera : Camera2D
 {
@@ -8,6 +9,12 @@ public partial class Camera : Camera2D
 	private Player player;
 	[Export]
 	private TileMap tileMap;
+
+	public static Camera currentCamera;
+	
+	public Camera() {
+		currentCamera = this;
+	}
 	
 	//0.9 -- 1.4
 	private const float SCALE_MAX = 1.4f, SCALE_MIN = 0.9f;
@@ -36,6 +43,7 @@ public partial class Camera : Camera2D
 		diagonalLength *= 0.8f;
 
 		importantObjects.Add(player);
+
 	}
 	public override void _Process(double delta) {
 
@@ -48,6 +56,8 @@ public partial class Camera : Camera2D
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
 
 		Position = Position.Lerp(finalPosition, (float) delta * 2);
+
+		UpdateShake(delta);
 
 	}
 
@@ -75,7 +85,9 @@ public partial class Camera : Camera2D
 
 		FinalCameraPosition += PlayerCameraShift() * 2;
 
-		return FinalCameraPosition / 7;
+		FinalCameraPosition += GetGlobalMousePosition() * 0.5f;
+
+		return FinalCameraPosition / 7.5f;
 	}
 
 	
@@ -102,11 +114,40 @@ public partial class Camera : Camera2D
 	}
 
 
+	float noiseI = 0;
+	private void UpdateShake(double delta) {
+		if (shakeStrength <= 0)
+			return;
 
+		shakeStrength -= 0.2f;
+
+		//tween.InterpolateValue (shakeStrength, 0, delta, 10, Tween.TransitionType.Linear, Tween.EaseType.In);
+		RandomNumberGenerator rand = new();
+		rand.Randomize();
+
+		noiseI += (float) delta * 300;
+
+		Offset = new(
+			noise.GetNoise2D(1, noiseI) * shakeStrength,
+			noise.GetNoise2D(100, noiseI) * shakeStrength
+		);
+	}
+	FastNoiseLite noise = new();
+	float shakeStrength = 0;
+	public void StartShake(float shakeStrength) {
+
+		var rand = new RandomNumberGenerator();
+		rand.Randomize();
+
+		this.shakeStrength = shakeStrength;
+	}
+
+	#region signal methods
 	private void OnBodyEntered(Node2D body) {
 		importantObjects.Add(body);
 	}
 	private void OnBodyLeave(Node2D body) {
 		importantObjects.Remove(body);
 	}
+	#endregion
 }
