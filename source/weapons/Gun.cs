@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using KidoUtils;
+using System.Threading.Tasks;
 
 public partial class Gun : Weapon {
     [Export]
@@ -21,7 +22,10 @@ public partial class Gun : Weapon {
 	}
 
     uint mask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
-    public Actor FindObjectToFace(List<Actor> enemies) {
+
+
+    private bool waiting = false;
+    private Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
 
@@ -34,21 +38,21 @@ public partial class Gun : Weapon {
         }
         return null;
     }
-    
+
     public override void UpdateWeapon(List<InputType> inputMap) {
         if (inputMap.Contains(InputType.AttackButtonPressed)) {
             Actor see = FindObjectToFace(Player.players[0].NearbyEnemies);
             
             if (see is not null) {
                 hand.LookAt(see.GlobalPosition);
-                AttackAndReload();
+                AttackAndReload(false);
             }
             return;
         }
 
         if (inputMap.Contains(InputType.LeftClick)) {
             FaceWeaponToCursor();
-            AttackAndReload();
+            AttackAndReload(true);
         }
     }
 
@@ -56,6 +60,6 @@ public partial class Gun : Weapon {
         
         GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(bulletAsset)
             .init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
-        Camera.currentCamera.StartShake(10);
+        Camera.currentCamera.StartShake((float) DebugHUD.instance.anySlider.Value, 300, 1);
     }
 }

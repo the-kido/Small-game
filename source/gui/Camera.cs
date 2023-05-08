@@ -110,36 +110,41 @@ public partial class Camera : Camera2D
 			size.Y = Mathf.Min(body.Position.Y, size.Y);
 		}
 		return new(pos,size);
-
 	}
 
-
-	float noiseI = 0;
+	float noiseIndex = 0;
+	FastNoiseLite noise = new();
+	float currentShakeStrength = 0;
+	float shakeSpeed;
+	double maxShakeTime;
+	double currentShakeTime;
 	private void UpdateShake(double delta) {
-		if (shakeStrength <= 0)
+		if (currentShakeTime <= 0)
 			return;
 
-		shakeStrength -= 0.2f;
+		currentShakeTime -= delta;
+		currentShakeStrength *= (float) (currentShakeTime / maxShakeTime); 
 
 		//tween.InterpolateValue (shakeStrength, 0, delta, 10, Tween.TransitionType.Linear, Tween.EaseType.In);
 		RandomNumberGenerator rand = new();
 		rand.Randomize();
 
-		noiseI += (float) delta * 300;
+		noiseIndex += (float) delta * shakeSpeed;
 
 		Offset = new(
-			noise.GetNoise2D(1, noiseI) * shakeStrength,
-			noise.GetNoise2D(100, noiseI) * shakeStrength
+			noise.GetNoise2D(1, noiseIndex) * currentShakeStrength,
+			noise.GetNoise2D(100, noiseIndex) * currentShakeStrength
 		);
 	}
-	FastNoiseLite noise = new();
-	float shakeStrength = 0;
-	public void StartShake(float shakeStrength) {
-
-		var rand = new RandomNumberGenerator();
-		rand.Randomize();
-
-		this.shakeStrength = shakeStrength;
+	
+	///<summary>
+	///shakeSpeed: 0 - frozen. 300 - decently fast. 
+	///</summary>
+	public void StartShake(float shakeStrength, int shakeSpeed, double shakeTime) {
+		this.currentShakeStrength = shakeStrength;
+		this.maxShakeTime = shakeTime;
+		this.currentShakeTime = shakeTime;
+		this.shakeSpeed = shakeSpeed;
 	}
 
 	#region signal methods

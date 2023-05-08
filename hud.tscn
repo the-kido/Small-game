@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cas7rly3nqcu2"]
+[gd_scene load_steps=5 format=3 uid="uid://cas7rly3nqcu2"]
 
 [ext_resource type="Script" path="res://source/gui/PlayerHUD.cs" id="1_f4mui"]
+[ext_resource type="Script" path="res://DebugHUD.cs" id="2_isn2q"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -48,3 +49,18 @@ offset_left = 1211.0
 offset_top = 507.0
 offset_right = 1384.0
 offset_bottom = 604.0
+
+[node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_isn2q")
+anySlider = NodePath("HSlider")
+
+[node name="HSlider" type="HSlider" parent="DEBUG"]
+layout_mode = 0
+offset_left = 164.0
+offset_top = -21.0
+offset_right = 438.0
+offset_bottom = 113.0

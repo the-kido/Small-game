@@ -21,14 +21,19 @@ public abstract partial class Weapon : Node2D {
 	public abstract void UpdateWeapon(List<InputType> inputMap);
 	public abstract void UseWeapon();
 	private bool reloaded = true;
-	public async void AttackAndReload() {
+	public async void AttackAndReload(bool immediate) {
 		if (!reloaded)
 			return;
 		
 		reloaded = false;
-		UseWeapon();
 
-		await Task.Delay((int)(ReloadSpeed * 1000));
+		if (immediate) {
+			UseWeapon();
+			await Task.Delay((int)(ReloadSpeed * 1000));
+		}else{
+			await Task.Delay((int)(ReloadSpeed * 1000));
+			UseWeapon();
+		}
 
 		reloaded = true;
 	}
