@@ -78,7 +78,7 @@ public partial class Camera : Camera2D
 
 
 		//				the scale factor 				The default zoom.
-		float dif = diagonal / diagonalLength * (SCALE_MAX + SCALE_MIN) / 2;
+		float dif = ((SCALE_MAX + SCALE_MIN) / 2) / (diagonal / diagonalLength);
 		//If the dif is greater than the max, set it to the lower number.
 
 		dif = Mathf.Min(dif, SCALE_MAX);

@@ -11,6 +11,9 @@ public partial class InputController : Node2D
 	[Export]
 	private PlayerHUD playerHUD;
 
+	[Export]
+	private Node2D hand;
+
 	//Weapon related events
 	public event Action UseWeapon;
 	public event Action<Vector2> UpdateWeapon;
@@ -52,7 +55,7 @@ public partial class InputController : Node2D
 
     private bool IsInteractableVisible(IInteractable interactable) {
         PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
-        var ray = PhysicsRayQueryParameters2D.Create(GlobalPosition, interactable.GetPosition(), (uint) Layers.Enviornment);
+        var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Enviornment);
         var result = spaceState.IntersectRay(ray);
         //if nothing hit the ray, they we good.
         if (result.Count <= 0) {

@@ -639,7 +639,7 @@ graph_offset = Vector2(-88, 62)
 size = Vector2(55, 69)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
-radius = 483.069
+radius = 591.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent")]
 disable_mode = 1
@@ -654,8 +654,9 @@ script = ExtResource("1_30x0s")
 player = NodePath("..")
 playerAnimationTree = NodePath("../AnimationTree")
 
-[node name="Input Controller" type="Node2D" parent="."]
+[node name="Input Controller" type="Node2D" parent="." node_paths=PackedStringArray("hand")]
 script = ExtResource("2_7escu")
+hand = NodePath("../Hand")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]
 scale = Vector2(7, 7)
