@@ -17,7 +17,7 @@ public partial class Camera : Camera2D
 	}
 	
 	//0.9 -- 1.4
-	private const float SCALE_MAX = 1.4f, SCALE_MIN = 0.9f;
+	private const float SCALE_MAX = 1.9f, SCALE_MIN = 1.5f;
 	private float diagonalLength;
 
 	private MovementController movementController;
@@ -38,9 +38,12 @@ public partial class Camera : Camera2D
 		Rect2 cameraRect = GetViewportRect();
 		Vector2 sides = cameraRect.Size - cameraRect.Position;
 		
-		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
 
-		diagonalLength *= 0.8f;
+		//Set diagonal lenght equal to the diagonal size of the USUAL Screne.
+
+		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
+		GD.Print(diagonalLength);
+		diagonalLength /= (SCALE_MAX + SCALE_MIN) * 2;
 
 		importantObjects.Add(player);
 
@@ -70,11 +73,20 @@ public partial class Camera : Camera2D
 		Vector2 diff = topRight - bottomLeft;
 
 		float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
-		float dif = diagonal / diagonalLength;
+
+		GD.Print("dia", diagonalLength, " rect: ", diagonal);
+
+
+		//				the scale factor 				The default zoom.
+		float dif = diagonal / diagonalLength * (SCALE_MAX + SCALE_MIN) / 2;
+		//If the dif is greater than the max, set it to the lower number.
+
+		dif = Mathf.Min(dif, SCALE_MAX);
+        
+		//if the dif is lower than the min, set it to the min.
+		dif = Mathf.Max(dif, SCALE_MIN);
 		
-        dif = Mathf.Max(dif, 0.8f);
-		
-		return Vector2.One / (dif); //TODO. 
+		return Vector2.One * (dif); //TODsO. 
 	}
 	
 

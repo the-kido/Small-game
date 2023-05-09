@@ -30,6 +30,7 @@ parameters/playback = SubResource("AnimationNodeStateMachinePlayback_d565g")
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("4_b0rc0")]
 position = Vector2(749, 447)
+zoom = Vector2(1.7, 1.7)
 player = NodePath("../Player")
 tileMap = NodePath("../NavigationRegion2D/TileMap")
 

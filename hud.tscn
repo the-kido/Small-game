@@ -26,6 +26,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
 offset_left = 17.0
 offset_top = 16.0
 offset_right = 133.0
