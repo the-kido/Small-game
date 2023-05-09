@@ -7,6 +7,9 @@ public abstract partial class Actor : CharacterBody2D {
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
     
+    [Export]
+    public CollisionShape2D CollisionShape {get; private set;}
+    
 	
 	[Export]
 	public int MoveSpeed {get; private set;}
@@ -93,17 +96,6 @@ public abstract partial class Actor : CharacterBody2D {
 
         return null;
     }
-
     
-    public bool IsInteractable()
-    {
-        return DamageableComponent.IsAlive;
-    }
-
-    public Vector2 GetPosition() {
-        return GlobalPosition;
-    }
-
-
     #endregion
 }

@@ -11,7 +11,7 @@ size = Vector2(19, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0m8x3"]
 
-[node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "DamageableComponent")]
+[node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "DamageableComponent", "CollisionShape")]
 scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
@@ -20,7 +20,8 @@ pathfinderComponent = NodePath("Pathfinder")
 HoverAtSpawnPointDistance = 250
 spamedBullet = ExtResource("2_lhrnb")
 DamageableComponent = NodePath("Damageable")
-MoveSpeed = 600
+CollisionShape = NodePath("Damageable/CollisionShape2D")
+MoveSpeed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2o215")

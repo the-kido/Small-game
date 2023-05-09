@@ -7,14 +7,17 @@ public partial class PlayerHUD : CanvasLayer
      
     [Export]
     public Player ConnectedPlayer {get; private set;}
+    [Export]
+    public PlayerTargetIndicator TargetIndicator {get; private set;}
+
 
     [Export]
     public ToggleAttackButton AttackButton {get; private set;}
+    [Export]
+    Label healthLable;
 
     #region move to seperate "health lable" class
 
-    [Export]
-    Label healthLable;
     string healthLableText = "♥: ";
     public override void _Ready()
     {

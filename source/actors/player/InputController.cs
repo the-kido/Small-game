@@ -5,7 +5,7 @@ using KidoUtils;
 
 using System.Threading.Tasks;
 
-public partial class InputController : Node2D
+public partial class InputController : Node
 {
 	//MAYBE Delegate this to another class for player GUI management? Idk tbh tho
 	[Export]
@@ -54,7 +54,7 @@ public partial class InputController : Node2D
     }
 
     private bool IsInteractableVisible(IInteractable interactable) {
-        PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
+        PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
         var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Enviornment);
         var result = spaceState.IntersectRay(ray);
         //if nothing hit the ray, they we good.
@@ -70,8 +70,8 @@ public partial class InputController : Node2D
         //Check if the player is clicking/pressing on the screen. 
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
 
-            PhysicsDirectSpaceState2D spaceState = GetWorld2D().DirectSpaceState;
-            var ray = PhysicsRayQueryParameters2D.Create(GlobalPosition, enemy.GlobalPosition, faceObjectMask);
+            PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
+            var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, enemy.GlobalPosition, faceObjectMask);
             var result = spaceState.IntersectRay(ray);
 
             if (result.Count > 0 && (Rid) result["collider"] == enemy.GetRid())
@@ -91,12 +91,19 @@ public partial class InputController : Node2D
 			return;
         }
 
-		//If the interactable is still in tact and is still visible, autoshoto it.
-        if(targettedObject?.IsInteractable() == true && IsInteractableVisible(targettedObject)) {
-			UpdateWeapon?.Invoke(targettedObject.GetPosition());
-			UseWeapon?.Invoke();
-			return;
-        }
+
+		if(targettedObject?.IsInteractable() == true) {
+
+			//Manipultate the target indicator to show which enemy you're autoshooting
+			playerHUD.TargetIndicator.Enable(true, targettedObject);
+
+			//If the interactable is still in tact and is still visible, autoshoot it.
+			if(IsInteractableVisible(targettedObject)) {
+				UpdateWeapon?.Invoke(targettedObject.GetPosition());
+				UseWeapon?.Invoke();
+				return;
+			}
+		}
 		
 		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) {
 
@@ -117,7 +124,7 @@ public partial class InputController : Node2D
 		}
 
 		//Default the weapon to point to the cursor.
-		UpdateWeapon?.Invoke(GetGlobalMousePosition());
+		UpdateWeapon?.Invoke(hand.GetGlobalMousePosition());
 	}
 
 	#endregion 

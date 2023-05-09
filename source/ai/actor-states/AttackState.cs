@@ -67,9 +67,8 @@ public sealed class AttackState : AIState {
         }
         
         if (distanceToPlayer > 250) {
-            GD.Print("pathfind");
             pathfinderComponent.UpdatePathfind(actor);
-        }
+         }
         
         if (updateDistanceTimer < 0.25f) return;
         updateDistanceTimer = 0;
@@ -81,10 +80,10 @@ public sealed class AttackState : AIState {
             pathfinderComponent.SetTargetPosition(lastRememberedPlayer.GlobalPosition);
         }
 
-        else if (player is not null){
-            float randFloat = new Random().NextSingle()- 0.5f * 100;
-            actor.Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f;
-        }
+        // else if (player is not null){
+        //     float randFloat = new Random().NextSingle()- 0.5f * 100;
+        //     actor.Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f;
+        // }
     }
     
 

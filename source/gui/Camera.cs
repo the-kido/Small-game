@@ -42,7 +42,6 @@ public partial class Camera : Camera2D
 		//Set diagonal lenght equal to the diagonal size of the USUAL Screne.
 
 		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
-		GD.Print(diagonalLength);
 		diagonalLength /= (SCALE_MAX + SCALE_MIN) * 2;
 
 		importantObjects.Add(player);
@@ -74,8 +73,6 @@ public partial class Camera : Camera2D
 
 		float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
 
-		GD.Print("dia", diagonalLength, " rect: ", diagonal);
-
 
 		//				the scale factor 				The default zoom.
 		float dif = ((SCALE_MAX + SCALE_MIN) / 2) / (diagonal / diagonalLength);
@@ -95,7 +92,6 @@ public partial class Camera : Camera2D
 		
 
 		finalCameraOffset += player.Position - GetLocalMousePosition();
-		GD.Print(GetLocalMousePosition());
 
 		return finalCameraOffset;
 	}

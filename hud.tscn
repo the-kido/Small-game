@@ -9,9 +9,10 @@
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("AttackButton", "healthLable")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "AttackButton", "healthLable")]
 layer = 10
 script = ExtResource("1_f4mui")
+TargetIndicator = NodePath("")
 AttackButton = NodePath("Control/Toggle Attack Button")
 healthLable = NodePath("Control/ColorRect/Label")
 

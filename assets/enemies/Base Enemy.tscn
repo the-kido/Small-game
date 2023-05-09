@@ -10,11 +10,12 @@ size = Vector2(42, 42)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1dm21"]
 size = Vector2(16, 17)
 
-[node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent")]
+[node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent", "CollisionShape")]
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_hxf2d")
 DamageableComponent = NodePath("Damageable")
+CollisionShape = NodePath("CollisionShape2D")
 
 [node name="Damageable" parent="." instance=ExtResource("2_sb4ia")]
 collision_layer = 4

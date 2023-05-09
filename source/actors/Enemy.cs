@@ -6,10 +6,6 @@ using KidoUtils;
 public partial class Enemy : Actor,  IInteractable
 {
 
-    //Used for fade in-out.
-    [Export]
-    private Sprite2D sprite;
-
     public AIStateMachine StateMachine {get; init;}
     public Enemy() {
         StateMachine = new(this);
@@ -33,5 +29,19 @@ public partial class Enemy : Actor,  IInteractable
     
     public override void OnDamaged(DamageInstance damageInstance) {
         
+    }
+
+
+    bool IInteractable.IsInteractable() {
+        return DamageableComponent.IsAlive;
+    }
+
+    Vector2 IInteractable.GetPosition() {
+        return GlobalPosition;
+    }
+
+    CollisionShape2D IInteractable.GetCollisionShape()
+    {
+        return CollisionShape;
     }
 }
