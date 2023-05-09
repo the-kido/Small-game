@@ -19,6 +19,11 @@ public sealed class PatrolState : AIState {
     public override void Init() {
         for (int i = 0; i < 3; i++)
             goBetween[i] = FindValidPatrolPoint();
+        
+        //Debug
+        goBetween[0] = new Vector2(500, 5000);
+        //Debug
+
         pathfinderComponent.SetTargetPosition(goBetween[0]);
     }
 
@@ -45,14 +50,23 @@ public sealed class PatrolState : AIState {
         Walking
     }
 
+
+    volatile bool isSwitching = false;
     public async void SwitchPatrolPoint() {
+
+        if (isSwitching) return;
+
         pathOn = (pathOn + 1) % 3;
         state = State.Idle;
 
+        isSwitching = true;
         await Task.Delay(5000);
+        isSwitching = false;
 
         state = State.Walking;
-        pathfinderComponent.SetTargetPosition(goBetween[pathOn]);
+        //pathfinderComponent.SetTargetPosition(goBetween[pathOn]);
+        pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
+        
     }
 
     float stallingTimer = 0;
@@ -64,8 +78,8 @@ public sealed class PatrolState : AIState {
                 SwitchPatrolPoint(); 
                 return;
             }
-            pathfinderComponent.UpdatePathfind(actor);
         }
+        pathfinderComponent.UpdatePathfind(actor);
 
         if (actor.VisiblePlayer() is not null)
             stateMachine.ChangeState(stateToGoTo);

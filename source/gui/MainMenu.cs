@@ -1,6 +1,5 @@
 using Godot;
-using System;
-
+using KidoUtils;
 public partial class MainMenu : Control
 {
 
@@ -8,6 +7,7 @@ public partial class MainMenu : Control
 	private Resource level = new Resource();
 
 	private void OnButtonDown() {
-		GetNode<SceneSwitcher>("/root/SceneSwitcher").ChangeSceneWithPackedMap((PackedScene) level);
+		KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher)	
+			.ChangeSceneWithPackedMap((PackedScene) level);
 	}
 }

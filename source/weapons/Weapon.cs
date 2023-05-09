@@ -12,34 +12,33 @@ public abstract partial class Weapon : Node2D {
 	public override void _Ready() {
 		hand = (Node2D) GetParent();
 		Name = "Weapon";
-		hand.GetNode<InputController>("../Input Controller").UpdateWeapon += UpdateWeapon;
+		InputController inputController = hand.GetNode<InputController>("../Input Controller");
+
+		inputController.UpdateWeapon += UpdateWeapon;
+		inputController.UseWeapon += UseAndReloadWeapon;
 	}
 
-	///<Summary>
-	///Can be overriden to implement functionality when the weapon is eventually used.
-	///</Summary>
-	public abstract void UpdateWeapon(List<InputType> inputMap);
-	public abstract void UseWeapon();
+	public abstract void UpdateWeapon(Vector2 attackDirection);
+	public abstract void Attack();
+
 	private bool reloaded = true;
-	public async void AttackAndReload(bool immediate) {
+	private async void UseAndReloadWeapon() {
 		if (!reloaded)
 			return;
 		
 		reloaded = false;
 
-		if (immediate) {
-			UseWeapon();
-			await Task.Delay((int)(ReloadSpeed * 1000));
-		}else{
-			await Task.Delay((int)(ReloadSpeed * 1000));
-			UseWeapon();
-		}
+		Attack();
+		await Task.Delay((int)(ReloadSpeed * 1000));
 
 		reloaded = true;
 	}
 
 	public void ChangeWeapon(PackedScene weapon) {
-		hand.GetNode<InputController>("../Input Controller").UpdateWeapon -= UpdateWeapon;
+		InputController inputController = hand.GetNode<InputController>("../Input Controller");
+
+		inputController.UpdateWeapon -= UpdateWeapon;
+		inputController.UseWeapon -= UseAndReloadWeapon;
 
 		foreach (Node child in hand.GetChildren()) child.QueueFree();
 

@@ -2,7 +2,7 @@ using Godot;
 using System.Threading.Tasks;
 using KidoUtils;
 
-public abstract partial class Actor : CharacterBody2D, IInteractable {
+public abstract partial class Actor : CharacterBody2D {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
@@ -10,7 +10,8 @@ public abstract partial class Actor : CharacterBody2D, IInteractable {
 	
 	[Export]
 	public int MoveSpeed {get; private set;}
-	
+    
+
 	public override void _Process(double delta) {
 		MoveAndSlide();
 	}
@@ -93,5 +94,16 @@ public abstract partial class Actor : CharacterBody2D, IInteractable {
         return null;
     }
 
-	#endregion
+    
+    public bool IsInteractable()
+    {
+        return DamageableComponent.IsAlive;
+    }
+
+    public Vector2 GetPosition() {
+        return GlobalPosition;
+    }
+
+
+    #endregion
 }

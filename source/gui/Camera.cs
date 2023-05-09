@@ -55,7 +55,7 @@ public partial class Camera : Camera2D
 
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
 
-		Position = Position.Lerp(finalPosition, (float) delta * 2);
+		Position = Position.Lerp(finalPosition, (float) delta * 2) ;
 
 		UpdateShake(delta);
 
@@ -77,6 +77,17 @@ public partial class Camera : Camera2D
 		return Vector2.One / (dif); //TODO. 
 	}
 	
+
+	public Vector2 ConstantCameraOffset() {
+		Vector2 finalCameraOffset = Vector2.Zero;
+		
+
+		finalCameraOffset += player.Position - GetLocalMousePosition();
+		GD.Print(GetLocalMousePosition());
+
+		return finalCameraOffset;
+	}
+
 	public Vector2 FinalCameraPosition(Vector2 importantObjectsRectCenter) {
 		
 		Vector2 FinalCameraPosition = Vector2.Zero;
@@ -85,9 +96,7 @@ public partial class Camera : Camera2D
 
 		FinalCameraPosition += PlayerCameraShift() * 2;
 
-		FinalCameraPosition += GetGlobalMousePosition() * 0.5f;
-
-		return FinalCameraPosition / 7.5f;
+		return FinalCameraPosition / 7f;
 	}
 
 	

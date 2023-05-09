@@ -1,16 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://cas7rly3nqcu2"]
+[gd_scene load_steps=7 format=3 uid="uid://cas7rly3nqcu2"]
 
 [ext_resource type="Script" path="res://source/gui/PlayerHUD.cs" id="1_f4mui"]
+[ext_resource type="Script" path="res://ToggleAttackButton.cs" id="2_b0xe6"]
 [ext_resource type="Script" path="res://DebugHUD.cs" id="2_isn2q"]
+[ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="2_lc21n"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("attackButton", "healthLable")]
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("AttackButton", "healthLable")]
 layer = 10
 script = ExtResource("1_f4mui")
-attackButton = NodePath("Control/Button")
+AttackButton = NodePath("Control/Toggle Attack Button")
 healthLable = NodePath("Control/ColorRect/Label")
 
 [node name="Control" type="Control" parent="."]
@@ -20,9 +22,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
-layout_mode = 0
 offset_left = 17.0
 offset_top = 16.0
 offset_right = 133.0
@@ -43,12 +46,23 @@ text = "afawf
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="Control"]
-layout_mode = 0
-offset_left = 1211.0
-offset_top = 507.0
-offset_right = 1384.0
-offset_bottom = 604.0
+[node name="Toggle Attack Button" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_top = -119.0
+offset_right = -23.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_lc21n")
+toggle_mode = true
+text = "⁂"
+script = ExtResource("2_b0xe6")
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider")]
 layout_mode = 3

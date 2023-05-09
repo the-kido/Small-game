@@ -1,4 +1,5 @@
 using Godot;
+using KidoUtils;
 using System;
 
 public partial class ParticleFactory : Node
@@ -6,7 +7,7 @@ public partial class ParticleFactory : Node
 	// Called when the node enters the scene tree for the first time.
 	private static Node factoryNode;
 	public override void _Ready() {
-		factoryNode = GetNode<ParticleFactory>("/root/ParticleFactory");
+		factoryNode = KidoUtils.Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
 	}
 
 	public static GpuParticles2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {

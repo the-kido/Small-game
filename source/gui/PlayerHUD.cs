@@ -4,30 +4,28 @@ using System.Threading.Tasks;
 
 public partial class PlayerHUD : CanvasLayer
 {
-    
-    public event Action OnAttackButtonPressed;
-    
+     
     [Export]
-    Player player;
+    public Player ConnectedPlayer {get; private set;}
 
     [Export]
-    Button attackButton;
+    public ToggleAttackButton AttackButton {get; private set;}
+
+    #region move to seperate "health lable" class
+
     [Export]
     Label healthLable;
-
-    
     string healthLableText = "♥: ";
     public override void _Ready()
     {
-        attackButton.Pressed += OnAttackButtonPressed;
-        player.DamageableComponent.OnDamaged += UpdateHealth;
-        player.DamageableComponent.OnDamaged += DamageFlash;
+        ConnectedPlayer.DamageableComponent.OnDamaged += UpdateHealth;
+        ConnectedPlayer.DamageableComponent.OnDamaged += DamageFlash;
 
         UpdateHealth(new DamageInstance(){damage = 0});
     }
 
     private void UpdateHealth(DamageInstance damage) {
-        healthLable.Text = healthLableText + player.DamageableComponent.Health.ToString();
+        healthLable.Text = healthLableText + ConnectedPlayer.DamageableComponent.Health.ToString();
     }
 
     volatile int percentRed = 0;    
@@ -50,4 +48,6 @@ public partial class PlayerHUD : CanvasLayer
             percentRed-=5;
         }
     }
+    #endregion
+
 }

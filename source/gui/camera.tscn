@@ -3,19 +3,19 @@
 [ext_resource type="Script" path="res://source/gui/Camera.cs" id="1_kne7i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q5fci"]
-radius = 691.955
+radius = 604.02
 
 [node name="Camera" type="Camera2D"]
 script = ExtResource("1_kne7i")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Important Objects" type="Area2D" parent="."]
 collision_layer = 7
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Important Objects"]
 scale = Vector2(1, 0.81)
 shape = SubResource("CircleShape2D_q5fci")
 debug_color = Color(1, 0, 0, 0)
 
-[connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
-[connection signal="body_exited" from="Area2D" to="." method="OnBodyLeave"]
+[connection signal="body_entered" from="Important Objects" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="Important Objects" to="." method="OnBodyLeave"]

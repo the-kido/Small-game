@@ -59,33 +59,44 @@ public sealed class AttackState : AIState {
 
 
     //Returns the motion while attacking
+
+    float distanceToPlayer = 0;
     private void FinalAttackingMotion(Player player) {
         if (player is not null) {
             lastRememberedPlayer = player;
         }
         
-        float distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
         if (distanceToPlayer > 250) {
+            GD.Print("pathfind");
             pathfinderComponent.UpdatePathfind(actor);
         }
+        
+        if (updateDistanceTimer < 0.25f) return;
+        updateDistanceTimer = 0;
+        actor.Velocity = Vector2.Zero;
 
-        if (updateDistanceTimer < 1) return;
-            updateDistanceTimer = 0;
+        distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
         
         if (distanceToPlayer > 250) {
             pathfinderComponent.SetTargetPosition(lastRememberedPlayer.GlobalPosition);
         }
+
         else if (player is not null){
             float randFloat = new Random().NextSingle()- 0.5f * 100;
             actor.Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f;
         }
     }
+    
 
     private void Shoot(Player player) {
+        return;
+
         if (player is null) return;
 
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
-        actor.GetNode<BulletFactory>("/root/BulletFactory").SpawnBullet(spamedBullet).init(actor.Position, angle, BulletFrom.Enemy);
+        KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
+            .SpawnBullet(spamedBullet)
+            .init(actor.Position, angle, BulletFrom.Enemy);
     }
 }
 

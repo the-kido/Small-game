@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using KidoUtils;
 
-public partial class Enemy : Actor
+public partial class Enemy : Actor,  IInteractable
 {
 
     //Used for fade in-out.

@@ -20,10 +20,12 @@ config/icon="res://icon.svg"
 BulletFactory="*res://source/autoload/bullet_factory.tscn"
 ParticleFactory="*res://source/autoload/ParticleFactory.cs"
 SceneSwitcher="*res://source/autoload/scene_switcher.tscn"
+GlobalCursor="*res://Global Cursor.tscn"
 
 [display]
 
-window/size/viewport_width=1400
+window/size/viewport_width=1013
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 
