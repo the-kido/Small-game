@@ -33,16 +33,21 @@ public sealed class AttackState : AIState {
 
     float forgetPlayerTimer = 0;
     double shootTimer = 0;
-    float updateDistanceTimer = 0;
+    float updatePathfind = 0;
 
     public override void Update(double delta) {
         //Update relavent timers
-        updateDistanceTimer += (float) delta;
+        updatePathfind += (float) delta;
         shootTimer += delta;
 
         Player player = actor.VisiblePlayer();
 
-        FinalAttackingMotion(player);
+        if (player is not null) {
+            lastRememberedPlayer = player;
+        }
+
+        UpdatePathfind();
+        FinalAttackingMotion();
 
         if (shootTimer >= 0.5f) {
             shootTimer = 0;
@@ -57,33 +62,30 @@ public sealed class AttackState : AIState {
 
     Player lastRememberedPlayer = Player.players[0];
 
-
-    //Returns the motion while attacking
-
     float distanceToPlayer = 0;
-    private void FinalAttackingMotion(Player player) {
-        if (player is not null) {
-            lastRememberedPlayer = player;
-        }
+
+    private void UpdatePathfind() {
         
-        if (distanceToPlayer > 250) {
-            pathfinderComponent.UpdatePathfind(actor);
-         }
-        
-        if (updateDistanceTimer < 0.25f) return;
-        updateDistanceTimer = 0;
-        actor.Velocity = Vector2.Zero;
+        if (updatePathfind < 0.25f) return;
 
         distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
+        updatePathfind = 0;
+        actor.Velocity = Vector2.Zero;
         
         if (distanceToPlayer > 250) {
             pathfinderComponent.SetTargetPosition(lastRememberedPlayer.GlobalPosition);
         }
+    }
+    private void FinalAttackingMotion() {
+        
+        if (distanceToPlayer > 250) {
+            pathfinderComponent.UpdatePathfind(actor);
+        }
 
-        // else if (player is not null){
-        //     float randFloat = new Random().NextSingle()- 0.5f * 100;
-        //     actor.Velocity = lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f;
-        // }
+        if (distanceToPlayer < 100) {
+            float randFloat = new Random().NextSingle()- 0.5f * 100;
+            actor.Velocity =  lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f; 
+        }
     }
     
 

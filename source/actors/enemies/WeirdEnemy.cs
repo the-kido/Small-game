@@ -11,6 +11,9 @@ public sealed partial class WeirdEnemy : Enemy {
     [Export] 
     public Pathfinder pathfinderComponent;
     [Export]
+    private AnimationPlayer animationPlayer;
+
+    [Export]
     private int HoverAtSpawnPointDistance = 0;
     [Export]
     private PackedScene spamedBullet;
@@ -19,13 +22,12 @@ public sealed partial class WeirdEnemy : Enemy {
         base._Ready();
         
         AttackState attackState = new(pathfinderComponent, spamedBullet);
-        PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
+        PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance, animationPlayer);
 
         StateMachine.AddState(attackState, patrolState);
         StateMachine.AddState(patrolState, attackState);
 
         StateMachine.ChangeState(patrolState);
-
     }
 
     public override void _Process(double delta) {
