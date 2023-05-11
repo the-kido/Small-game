@@ -21,7 +21,7 @@ public sealed partial class WeirdEnemy : Enemy {
     public override void _Ready() {
         base._Ready();
         
-        AttackState attackState = new(pathfinderComponent, spamedBullet);
+        AttackState attackState = new(pathfinderComponent, spamedBullet, animationPlayer);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance, animationPlayer);
 
         StateMachine.AddState(attackState, patrolState);

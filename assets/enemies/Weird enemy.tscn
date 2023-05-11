@@ -1,15 +1,37 @@
-[gd_scene load_steps=16 format=3 uid="uid://bqffuc80ll1k8"]
+[gd_scene load_steps=25 format=3 uid="uid://bqffuc80ll1k8"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_m5e2g"]
+[ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
 [ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
+[ext_resource type="Texture2D" uid="uid://c54io1euf8ibx" path="res://assets/sprites/enemies/ear.png" id="5_4akot"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2o215"]
 size = Vector2(19, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0m8x3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14qsf"]
+atlas = ExtResource("4_udhra")
+region = Rect2(0, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0q35e"]
+atlas = ExtResource("4_udhra")
+region = Rect2(10, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qcskq"]
+atlas = ExtResource("4_udhra")
+region = Rect2(20, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bvnof"]
+atlas = ExtResource("4_udhra")
+region = Rect2(30, 0, 10, 10)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ai5w2"]
+atlas = ExtResource("4_udhra")
+region = Rect2(40, 0, 10, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6kwcl"]
 atlas = ExtResource("4_xjf84")
@@ -33,6 +55,26 @@ region = Rect2(0, 0, 10, 10)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_thmwc"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14qsf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0q35e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qcskq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bvnof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ai5w2")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6kwcl")
@@ -73,19 +115,87 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:offset")
+tracks/1/path = NodePath(".:position")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.3, 0.65),
-"transitions": PackedFloat32Array(1, 6.06287, 0.217638),
+"transitions": PackedFloat32Array(1, 0.732043, 0.217638),
 "update": 0,
-"values": [Vector2(0, -1), Vector2(0, 1), Vector2(0, 0)]
+"values": [Vector2(0, -1), Vector2(0, 0.7), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Right Ear:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1.8025, 1),
+"update": 0,
+"values": [0.261799, 0.366519, -0.287979]
+}
+
+[sub_resource type="Animation" id="Animation_aeefh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right Ear:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.261799]
+}
+
+[sub_resource type="Animation" id="Animation_s4f62"]
+resource_name = "shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.2001, 0.5, 0.7, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Right Ear:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(-3, -0.5), Vector2(-2, -0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("left ear:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Vector2(3, -0.5), Vector2(4, -0.5)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5p4sf"]
 _data = {
-"flying": SubResource("Animation_cn85k")
+"RESET": SubResource("Animation_aeefh"),
+"flying": SubResource("Animation_cn85k"),
+"shoot": SubResource("Animation_s4f62")
 }
 
 [node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "DamageableComponent", "CollisionShape")]
@@ -116,15 +226,33 @@ shape = SubResource("RectangleShape2D_0m8x3")
 debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 
 [node name="WeirdEnemy" type="AnimatedSprite2D" parent="."]
+z_index = 2
+position = Vector2(0, -0.589036)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_thmwc")
+animation = &"attack"
 frame = 4
-offset = Vector2(0, -1.00032)
+offset = Vector2(0, 0.539469)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeirdEnemy"]
 libraries = {
 "": SubResource("AnimationLibrary_5p4sf")
 }
+
+[node name="Right Ear" type="Sprite2D" parent="WeirdEnemy"]
+z_as_relative = false
+position = Vector2(-2, -0.5)
+rotation = 0.261799
+scale = Vector2(1.01016, 0.99476)
+texture = ExtResource("5_4akot")
+offset = Vector2(-1, -1.5)
+
+[node name="left ear" type="Sprite2D" parent="WeirdEnemy"]
+z_as_relative = false
+position = Vector2(4, -0.5)
+texture = ExtResource("5_4akot")
+offset = Vector2(-1, -1.5)
+flip_h = true
 
 [node name="Pathfinder" parent="." node_paths=PackedStringArray("agent") instance=ExtResource("5_ubg6x")]
 agent = NodePath("../NavigationAgent2D")

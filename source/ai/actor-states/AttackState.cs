@@ -7,9 +7,13 @@ public sealed class AttackState : AIState {
     Pathfinder pathfinderComponent;
     //Not all actors will have pathfinders, so the parameter is necessary.
     PackedScene spamedBullet;
-    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet) {
+    AnimationPlayer animationPlayer;
+    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet, AnimationPlayer animationPlayer) {
         this.pathfinderComponent = pathfinderComponent;
         this.spamedBullet = bullet;
+
+        //bad
+        this.animationPlayer = animationPlayer;
     }
 
     private bool EnemyForgetPlayer(Player player, double delta, ref float time) {
@@ -90,11 +94,15 @@ public sealed class AttackState : AIState {
     
 
     private void Shoot(Player player) {
-        return;
+        animationPlayer.ClearQueue();
+        animationPlayer.Play("shoot");
+        
 
         if (player is null) return;
 
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
+        actor.Velocity =  (player.GlobalPosition - actor.GlobalPosition).Normalized() * 10;
+        
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
             .init(actor.Position, angle, BulletFrom.Enemy);
