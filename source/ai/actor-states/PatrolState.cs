@@ -7,12 +7,10 @@ public sealed class PatrolState : AIState {
 
     Pathfinder pathfinderComponent;
     int HoverAtSpawnPointDistance;
-    AnimationPlayer animationPlayer;
-    public PatrolState(Pathfinder pathfinderComponent, int HoverAtSpawnPointDistance, AnimationPlayer animationPlayer) {
+    public PatrolState(Pathfinder pathfinderComponent, int HoverAtSpawnPointDistance) {
         this.HoverAtSpawnPointDistance = HoverAtSpawnPointDistance;
         this.pathfinderComponent = pathfinderComponent;
         //help this i sbad
-        this.animationPlayer = animationPlayer;
     }
 
     private Vector2[] goBetween = new Vector2[3];
@@ -76,7 +74,6 @@ public sealed class PatrolState : AIState {
     public override void Update(double delta) {
 
         if (state == State.Walking) {
-            animationPlayer.Play("flying");
 
             if (pathfinderComponent.IsNavigationFinished() || actor.IsStalling(delta, 1, ref stallingTimer) == true) {
                 actor.Velocity = Vector2.Zero;

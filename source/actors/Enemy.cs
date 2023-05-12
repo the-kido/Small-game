@@ -6,17 +6,31 @@ using KidoUtils;
 public partial class Enemy : Actor,  IInteractable
 {
 
-    public AIStateMachine StateMachine {get; init;}
+
+    [Export]
+    public AnimationPlayer animationPlayer = new();
+
+    protected AIStateMachine StateMachine {get; init;}
+    protected AnimationController AnimationController {get; set;}
     public Enemy() {
         StateMachine = new(this);
     }
-
-    public override void _Ready() {
+    public override void _Ready()
+    {
         base._Ready();
+
+        #region animation init
+        AnimationController = new(animationPlayer);
+
+
+        #endregion
     }
+
+
     public override void _Process(double delta)
     {
         base._Process(delta);
+        StateMachine.UpdateState(delta);
     }
 
     public override void OnDeath(DamageInstance damageInstance)
@@ -31,6 +45,7 @@ public partial class Enemy : Actor,  IInteractable
         
     }
 
+    #region IInteractable
 
     bool IInteractable.IsInteractable() {
         return DamageableComponent.IsAlive;
@@ -44,4 +59,6 @@ public partial class Enemy : Actor,  IInteractable
     {
         return CollisionShape;
     }
+
+    #endregion
 }

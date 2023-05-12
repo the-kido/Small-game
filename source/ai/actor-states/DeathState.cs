@@ -36,7 +36,6 @@ public sealed class DeathState : AIState
         actor.QueueFree();
     }
 
-    public override void Update(double delta)
-    {
+    public override void Update(double delta) {
     }
 }

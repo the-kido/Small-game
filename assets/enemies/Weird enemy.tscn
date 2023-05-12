@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bqffuc80ll1k8"]
+[gd_scene load_steps=36 format=3 uid="uid://bqffuc80ll1k8"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
@@ -96,10 +96,66 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qb4g7"]
+animation = &"flying"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pof7e"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pkfos"]
+animation = &"shoot"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kw307"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m1hmf"]
+advance_mode = 2
+advance_condition = &"IsShooting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qudta"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_juq4m"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"IsIdle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w3cqh"]
+advance_mode = 2
+advance_condition = &"IsWalking"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_u5v2b"]
+states/Start/position = Vector2(268, 100)
+states/flying/node = SubResource("AnimationNodeAnimation_qb4g7")
+states/flying/position = Vector2(434, 82)
+states/idle/node = SubResource("AnimationNodeAnimation_pof7e")
+states/idle/position = Vector2(605, 69)
+states/shoot/node = SubResource("AnimationNodeAnimation_pkfos")
+states/shoot/position = Vector2(442, 174)
+transitions = ["Start", "flying", SubResource("AnimationNodeStateMachineTransition_kw307"), "flying", "shoot", SubResource("AnimationNodeStateMachineTransition_m1hmf"), "shoot", "flying", SubResource("AnimationNodeStateMachineTransition_qudta"), "flying", "idle", SubResource("AnimationNodeStateMachineTransition_juq4m"), "idle", "flying", SubResource("AnimationNodeStateMachineTransition_w3cqh")]
+graph_offset = Vector2(-131, 35)
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_a1g5k"]
+
+[sub_resource type="Animation" id="Animation_aeefh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right Ear:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
 [sub_resource type="Animation" id="Animation_cn85k"]
 resource_name = "flying"
 length = 0.90001
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -136,20 +192,17 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.261799, 0.366519, -0.287979]
 }
-
-[sub_resource type="Animation" id="Animation_aeefh"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Right Ear:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.261799]
+"update": 1,
+"values": [&"default"]
 }
 
 [sub_resource type="Animation" id="Animation_s4f62"]
@@ -190,11 +243,40 @@ tracks/2/keys = {
 "update": 1,
 "values": [Vector2(3, -0.5), Vector2(4, -0.5)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:animation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"attack"]
+}
+
+[sub_resource type="Animation" id="Animation_qxwt4"]
+resource_name = "idle"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 3, 4, 1]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5p4sf"]
 _data = {
 "RESET": SubResource("Animation_aeefh"),
 "flying": SubResource("Animation_cn85k"),
+"idle": SubResource("Animation_qxwt4"),
 "shoot": SubResource("Animation_s4f62")
 }
 
@@ -204,9 +286,9 @@ collision_layer = 4
 collision_mask = 11
 script = ExtResource("1_lsih8")
 pathfinderComponent = NodePath("Pathfinder")
-animationPlayer = NodePath("WeirdEnemy/AnimationPlayer")
 HoverAtSpawnPointDistance = 250
 spamedBullet = ExtResource("2_lhrnb")
+animationPlayer = NodePath("WeirdEnemy/AnimationPlayer")
 DamageableComponent = NodePath("Damageable")
 CollisionShape = NodePath("Damageable/CollisionShape2D")
 MoveSpeed = 100
@@ -227,12 +309,19 @@ debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 
 [node name="WeirdEnemy" type="AnimatedSprite2D" parent="."]
 z_index = 2
-position = Vector2(0, -0.589036)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_thmwc")
-animation = &"attack"
-frame = 4
+frame = 3
 offset = Vector2(0, 0.539469)
+
+[node name="AnimationTree" type="AnimationTree" parent="WeirdEnemy"]
+tree_root = SubResource("AnimationNodeStateMachine_u5v2b")
+anim_player = NodePath("../AnimationPlayer")
+advance_expression_base_node = NodePath("")
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_a1g5k")
+parameters/conditions/IsIdle = false
+parameters/conditions/IsShooting = false
+parameters/conditions/IsWalking = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeirdEnemy"]
 libraries = {
@@ -242,7 +331,6 @@ libraries = {
 [node name="Right Ear" type="Sprite2D" parent="WeirdEnemy"]
 z_as_relative = false
 position = Vector2(-2, -0.5)
-rotation = 0.261799
 scale = Vector2(1.01016, 0.99476)
 texture = ExtResource("5_4akot")
 offset = Vector2(-1, -1.5)

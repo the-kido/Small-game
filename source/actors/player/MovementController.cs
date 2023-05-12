@@ -75,7 +75,6 @@ public partial class MovementController : Node
 
 		playerAnimationTree.Set("parameters/Walk/blend_position", playerDirectionNormal);
 		playerAnimationTree.Set("parameters/Idle/blend_position", playerDirectionNormal);
-		
 	}
 }
 

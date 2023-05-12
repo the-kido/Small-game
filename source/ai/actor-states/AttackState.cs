@@ -4,17 +4,21 @@ using System;
 
 public sealed class AttackState : AIState {
 
+
     Pathfinder pathfinderComponent;
     //Not all actors will have pathfinders, so the parameter is necessary.
     PackedScene spamedBullet;
     AnimationPlayer animationPlayer;
-    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet, AnimationPlayer animationPlayer) {
+    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet) {
         this.pathfinderComponent = pathfinderComponent;
         this.spamedBullet = bullet;
-
-        //bad
-        this.animationPlayer = animationPlayer;
     }
+
+    #region events
+
+    public Action OnShoot;
+
+    #endregion
 
     private bool EnemyForgetPlayer(Player player, double delta, ref float time) {
         if (player is null) {
@@ -55,6 +59,7 @@ public sealed class AttackState : AIState {
 
         if (shootTimer >= 0.5f) {
             shootTimer = 0;
+            OnShoot?.Invoke();        
             Shoot(player);
         }
  
@@ -94,9 +99,7 @@ public sealed class AttackState : AIState {
     
 
     private void Shoot(Player player) {
-        animationPlayer.ClearQueue();
-        animationPlayer.Play("shoot");
-        
+        //Make this cleaner, idk if i wanna call this here.
 
         if (player is null) return;
 

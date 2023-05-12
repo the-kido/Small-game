@@ -18,7 +18,7 @@ public class AIStateMachine {
         aiState.stateMachine = this;
         aiState.stateToGoTo = stateToGoTo;
     }
-    public void UpdateState(double delta) => currentState.Update(delta);
+    public void UpdateState(double delta) => currentState?.Update(delta);
 
     public void ChangeState(AIState aiState)
     {
