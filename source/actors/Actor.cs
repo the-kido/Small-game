@@ -6,21 +6,18 @@ public abstract partial class Actor : CharacterBody2D {
 	// Called when the node enters the scene tree for the first time.
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
-    
+    [Export]
+    public AnimatedSprite2D flippedSprite {get; private set;}
     [Export]
     public CollisionShape2D CollisionShape {get; private set;}
-    
-	
 	[Export]
 	public int MoveSpeed {get; private set;}
     
 
-	public override void _Process(double delta) {
-		MoveAndSlide();
-	}
+	public override void _Process(double delta) => MoveAndSlide();
 
 	public override void _Ready() {
-		//A safety check for reasons
+        //A safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
 		DamageableComponent.OnDeath += OnDeath;
@@ -33,7 +30,6 @@ public abstract partial class Actor : CharacterBody2D {
 
 
 	#region Methods
-	Vector2 previousVelocity;
 
     volatile int percentRed = 0;    
     //Set the flashing to true.
@@ -56,22 +52,23 @@ public abstract partial class Actor : CharacterBody2D {
         }
     }
 
-    public bool IsStalling(double delta, float timeStalled, ref float stallingTimer) {
-        if (previousVelocity == Velocity) {
-            
-            stallingTimer += (float) delta;
+    
+    Vector2 previousFrame;
+    public bool IsStalling() {
+        Vector2 currentFrame = GlobalPosition;
 
-            if (stallingTimer > timeStalled) {
-                return true;
-            }
-        }
-        else{
-            stallingTimer = 0;
-        }
+        float distanceTo = previousFrame.DistanceTo(currentFrame);
+        if (distanceTo < 0.01) return true;
+        else previousFrame = currentFrame;
 
-        previousVelocity = Velocity;
         return false;
     }
+
+
+    public void Flip(bool flip) {
+        flippedSprite.FlipH = flip;
+    }
+
 	
     uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
 	public Player VisiblePlayer() {
@@ -81,13 +78,12 @@ public abstract partial class Actor : CharacterBody2D {
         foreach (Player player in Player.players) {
             if (player is null) continue;
             
-            var spaceState = GetWorld2D().DirectSpaceState;
 
             var rayQuery = PhysicsRayQueryParameters2D.Create(
                 GlobalPosition, player.GlobalPosition, raycastCollisionMask, new Godot.Collections.Array<Rid> { GetRid() }
             );
 
-            var result = spaceState.IntersectRay(rayQuery);
+            var result = GetWorld2D().DirectSpaceState.IntersectRay(rayQuery);
 
             //If the only thing between the player and the enemy is just that -- the enemy and player -- then we good.
             if (result.Count > 0 && (Rid) result["collider"] == player.GetRid())

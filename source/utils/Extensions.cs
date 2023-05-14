@@ -8,6 +8,11 @@ public static class bloop {
         return new(centerX, centerY);
 	}
 	
+	public static bool WithinRange(this Vector2 vector2, Vector2 other, float range) {
+		return (vector2.DistanceTo(other) <= range) ? true : false;
+	}
+	
+
 	public static int COOL(this int a) {
 		return a + 1;
 		//a.COOL();

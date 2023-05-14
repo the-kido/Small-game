@@ -20,7 +20,7 @@ metadata/_edit_horizontal_guides_ = [464.0]
 position = Vector2(548, 597)
 
 [node name="Player" parent="." instance=ExtResource("3_gker5")]
-position = Vector2(761, 422)
+position = Vector2(568, 428)
 
 [node name="Input Controller" parent="Player" index="1" node_paths=PackedStringArray("playerHUD")]
 playerHUD = NodePath("../../HUD")
@@ -35,11 +35,11 @@ player = NodePath("../Player")
 tileMap = NodePath("../NavigationRegion2D/TileMap")
 
 [node name="Base Enemy2" parent="." instance=ExtResource("2_wfut3")]
-position = Vector2(761, 365)
+position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
 
 [node name="Weird enemy" parent="." instance=ExtResource("5_s77ih")]
-position = Vector2(301, 567)
+position = Vector2(714, 597)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_7dfhi")

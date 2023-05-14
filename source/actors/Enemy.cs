@@ -18,12 +18,8 @@ public partial class Enemy : Actor,  IInteractable
     public override void _Ready()
     {
         base._Ready();
-
-        #region animation init
         AnimationController = new(animationPlayer);
-
-
-        #endregion
+        
     }
 
 
@@ -33,6 +29,7 @@ public partial class Enemy : Actor,  IInteractable
         StateMachine.UpdateState(delta);
     }
 
+
     public override void OnDeath(DamageInstance damageInstance)
     {
         DeathState noState = new(damageInstance);
@@ -41,9 +38,12 @@ public partial class Enemy : Actor,  IInteractable
         StateMachine.ChangeState(noState);
     }
     
+    
+
     public override void OnDamaged(DamageInstance damageInstance) {
         
     }
+
 
     #region IInteractable
 

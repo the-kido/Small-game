@@ -2,16 +2,17 @@ using Godot;
 using KidoUtils;
 using System;
 
-public sealed class AttackState : AIState {
+public sealed class DefaultAttackState : AIState {
 
 
     Pathfinder pathfinderComponent;
     //Not all actors will have pathfinders, so the parameter is necessary.
     PackedScene spamedBullet;
-    AnimationPlayer animationPlayer;
-    public AttackState(Pathfinder pathfinderComponent, PackedScene bullet) {
+    float attackDelay;
+    public DefaultAttackState(Pathfinder pathfinderComponent, PackedScene bullet, float attackDelay) {
         this.pathfinderComponent = pathfinderComponent;
         this.spamedBullet = bullet;
+        this.attackDelay = attackDelay;
     }
 
     #region events
@@ -55,12 +56,15 @@ public sealed class AttackState : AIState {
         }
 
         UpdatePathfind();
-        FinalAttackingMotion();
+        FinalAttackingMotion(player);
+        FlipActor(lastRememberedPlayer);
 
-        if (shootTimer >= 0.5f) {
-            shootTimer = 0;
-            OnShoot?.Invoke();        
-            Shoot(player);
+        if (shootTimer >= attackDelay) {
+            
+            if (player is not null) {
+                shootTimer = 0;
+                Shoot(player);
+            }
         }
  
         if (EnemyForgetPlayer(player, delta, ref forgetPlayerTimer)) {
@@ -85,9 +89,9 @@ public sealed class AttackState : AIState {
             pathfinderComponent.SetTargetPosition(lastRememberedPlayer.GlobalPosition);
         }
     }
-    private void FinalAttackingMotion() {
+    private void FinalAttackingMotion(Player visiblePlayer) {
         
-        if (distanceToPlayer > 250) {
+        if (distanceToPlayer > 250 || visiblePlayer is null) {
             pathfinderComponent.UpdatePathfind(actor);
         }
 
@@ -97,18 +101,20 @@ public sealed class AttackState : AIState {
         }
     }
     
-
     private void Shoot(Player player) {
-        //Make this cleaner, idk if i wanna call this here.
-
-        if (player is null) return;
+        OnShoot?.Invoke();
 
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
-        actor.Velocity =  (player.GlobalPosition - actor.GlobalPosition).Normalized() * 10;
+        actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
             .init(actor.Position, angle, BulletFrom.Enemy);
+    }
+    private void FlipActor(Player lastRememberedPlayer) {
+        //1 == right, -1 == left.
+        bool flip = MathF.Sign((lastRememberedPlayer.GlobalPosition - actor.GlobalPosition).X) == 1 ? false : true;
+        actor.Flip(flip);
     }
 }
 

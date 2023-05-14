@@ -13,6 +13,10 @@ public sealed class PatrolState : AIState {
         //help this i sbad
     }
 
+
+    public Action IsIdle;
+    public Action IsMoving;
+
     private Vector2[] goBetween = new Vector2[3];
     int pathOn = 0;
     private State state = State.Walking;
@@ -21,11 +25,11 @@ public sealed class PatrolState : AIState {
         for (int i = 0; i < 3; i++)
             goBetween[i] = FindValidPatrolPoint();
         
+        //SwitchPatrolPoint();
         //Debug
-        goBetween[0] = new Vector2(500, 5000);
-        //Debug
+        pathfinderComponent.SetTargetPosition(new(500,5000));
+        IsMoving?.Invoke();
 
-        pathfinderComponent.SetTargetPosition(goBetween[0]);
     }
 
     public Vector2 FindValidPatrolPoint() {
@@ -52,38 +56,50 @@ public sealed class PatrolState : AIState {
     }
 
 
-    volatile bool isSwitching = false;
     public async void SwitchPatrolPoint() {
+        if (state == State.Idle) return;
 
-        if (isSwitching) return;
+        IsIdle?.Invoke();
+        //stop its movements.
+        // pathfinderComponent.SetTargetPosition(actor.GlobalPosition);
 
         pathOn = (pathOn + 1) % 3;
         state = State.Idle;
 
-        isSwitching = true;
         await Task.Delay(5000);
-        isSwitching = false;
 
+        stateSwitchCooldown = 0;
         state = State.Walking;
+        IsMoving?.Invoke();
         //pathfinderComponent.SetTargetPosition(goBetween[pathOn]);
         pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
         
     }
 
-    float stallingTimer = 0;
+    double stateSwitchCooldown = 0;
     public override void Update(double delta) {
+        FlipActor();
+
+        stateSwitchCooldown += delta;
+        pathfinderComponent.UpdatePathfind(actor);
 
         if (state == State.Walking) {
+            if (stateSwitchCooldown < 1) return;
 
-            if (pathfinderComponent.IsNavigationFinished() || actor.IsStalling(delta, 1, ref stallingTimer) == true) {
+            if (actor.IsStalling()) {
                 actor.Velocity = Vector2.Zero;
                 SwitchPatrolPoint(); 
+                
                 return;
             }
         }
-        pathfinderComponent.UpdatePathfind(actor);
 
         if (actor.VisiblePlayer() is not null)
             stateMachine.ChangeState(stateToGoTo);
     } 
+
+    private void FlipActor() {
+        bool flip = MathF.Sign(actor.Velocity.X) == 1 ? false : true;
+        actor.Flip(flip);
+    }
 }

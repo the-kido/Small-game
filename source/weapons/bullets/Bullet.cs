@@ -18,8 +18,8 @@ public abstract partial class Bullet : Node2D {
 
     protected Vector2 directionFacing;
 
-    public delegate void BulletCollisionEventHandler();
-    public event BulletCollisionEventHandler OnBulletDestroyed;
+    // public delegate void BulletCollisionEventHandler();
+    // public event BulletCollisionEventHandler OnBulletDestroyed;
 
     #region abstract classes to inherit from
     
