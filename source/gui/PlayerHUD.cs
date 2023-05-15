@@ -6,8 +6,6 @@ public partial class PlayerHUD : CanvasLayer
 {
      
     [Export]
-    public Player ConnectedPlayer {get; private set;}
-    [Export]
     public PlayerTargetIndicator TargetIndicator {get; private set;}
 
 
@@ -16,6 +14,8 @@ public partial class PlayerHUD : CanvasLayer
     [Export]
     Label healthLable;
 
+    public Player ConnectedPlayer {get; set;}
+    
     #region move to seperate "health lable" class
 
     string healthLableText = "♥: ";

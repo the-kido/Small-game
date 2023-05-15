@@ -12,7 +12,7 @@ public partial class Camera : Camera2D
 
 	public static Camera currentCamera;
 	
-	public Camera() {
+	private Camera() {
 		currentCamera = this;
 	}
 	
@@ -20,10 +20,7 @@ public partial class Camera : Camera2D
 	private const float SCALE_MAX = 1.9f, SCALE_MIN = 1.5f;
 	private float diagonalLength;
 
-	private MovementController movementController;
-
 	public override void _Ready() {
-		movementController = player.GetNode<MovementController>("Movement Controller");
 		
 		#region initialize the size of the camera for this level
 		Vector2I ts = tileMap.TileSet.TileSize;
@@ -109,7 +106,7 @@ public partial class Camera : Camera2D
 
 	
 	private Vector2 PlayerCameraShift() {
-		Vector2 cameraShift = movementController.playerDirection * 100;
+		Vector2 cameraShift = player.Velocity.Normalized() * 100;
 		cameraShift.Y *= 1.5f;
 
 		return player.Position + cameraShift;

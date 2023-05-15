@@ -1,0 +1,361 @@
+[gd_scene load_steps=38 format=3 uid="uid://boy5wb6ut48od"]
+
+[ext_resource type="Script" path="res://AgroEnemyMiniBoss.cs" id="1_3njyc"]
+[ext_resource type="Texture2D" uid="uid://nklljvf78koa" path="res://assets/sprites/enemies/agro-guy.png" id="2_egbxo"]
+[ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/sprites/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
+[ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="3_i2isi"]
+[ext_resource type="Texture2D" uid="uid://b7x365xmp0l8a" path="res://assets/sprites/enemies/agro/agro-guy-preping-sheet.png" id="3_nc480"]
+[ext_resource type="Texture2D" uid="uid://b6js7gtjngrwl" path="res://assets/sprites/enemies/agro/agro-guy-running.png" id="4_6p7mc"]
+[ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="4_y3w8l"]
+[ext_resource type="Texture2D" uid="uid://71w6lvj63lpu" path="res://assets/sprites/enemies/agro/agro-guy-wake-up.png" id="6_o5gc5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rr0j3"]
+size = Vector2(14.8, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47qv2"]
+atlas = ExtResource("2_egbxo")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1gg3"]
+atlas = ExtResource("3_fd2p1")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_72t0d"]
+atlas = ExtResource("3_fd2p1")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ko7hp"]
+atlas = ExtResource("3_fd2p1")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n162q"]
+atlas = ExtResource("3_fd2p1")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o1mwt"]
+atlas = ExtResource("3_fd2p1")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6vkh"]
+atlas = ExtResource("3_nc480")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ea4ii"]
+atlas = ExtResource("3_nc480")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flh1j"]
+atlas = ExtResource("3_nc480")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l2aeh"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a7ofu"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oljiv"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1omr"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3o17o"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gevbv"]
+atlas = ExtResource("4_6p7mc")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6rju"]
+atlas = ExtResource("6_o5gc5")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6muy5"]
+atlas = ExtResource("6_o5gc5")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gm5uw"]
+atlas = ExtResource("6_o5gc5")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sse1t"]
+atlas = ExtResource("6_o5gc5")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f4ect"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47qv2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1gg3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_72t0d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ko7hp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n162q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o1mwt")
+}],
+"loop": true,
+"name": &"fatigue begin",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6vkh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ea4ii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flh1j")
+}],
+"loop": true,
+"name": &"preping",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l2aeh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a7ofu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oljiv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x1omr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3o17o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gevbv")
+}],
+"loop": true,
+"name": &"running",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6rju")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6muy5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gm5uw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sse1t")
+}],
+"loop": true,
+"name": &"wake up",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_06irh"]
+resource_name = "Preping"
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"preping"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 2]
+}
+
+[sub_resource type="Animation" id="Animation_230pt"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_7y5qe"]
+resource_name = "Running"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"running"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 5]
+}
+
+[sub_resource type="Animation" id="Animation_ulifk"]
+resource_name = "fatigue begin"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"fatigue begin"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_3drst"]
+resource_name = "Wake up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"wake up"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yqbrm"]
+_data = {
+"Preping": SubResource("Animation_06irh"),
+"RESET": SubResource("Animation_230pt"),
+"Running": SubResource("Animation_7y5qe"),
+"Wake up": SubResource("Animation_3drst"),
+"fatigue begin": SubResource("Animation_ulifk")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4cr6s"]
+size = Vector2(15, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d2kor"]
+size = Vector2(18.8, 16.8)
+
+[node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "rushCollisionArea", "animationPlayer", "DamageableComponent", "flippedSprite", "CollisionShape")]
+scale = Vector2(5, 5)
+disable_mode = 2
+collision_layer = 4
+collision_mask = 11
+motion_mode = 1
+slide_on_ceiling = false
+floor_block_on_wall = false
+script = ExtResource("1_3njyc")
+pathfinder = NodePath("Pathfinder")
+rushCollisionArea = NodePath("RushCollisionArea")
+animationPlayer = NodePath("AgroGuy/AnimationPlayer")
+DamageableComponent = NodePath("Damageable")
+flippedSprite = NodePath("AgroGuy")
+CollisionShape = NodePath("CollisionShape2D")
+MoveSpeed = 100
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.4, 0.5)
+shape = SubResource("RectangleShape2D_rr0j3")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="AgroGuy" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_f4ect")
+animation = &"preping"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AgroGuy"]
+libraries = {
+"": SubResource("AnimationLibrary_yqbrm")
+}
+
+[node name="Damageable" parent="." instance=ExtResource("3_i2isi")]
+position = Vector2(-1, 0)
+collision_layer = 4
+collision_mask = 8
+Health = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_4cr6s")
+debug_color = Color(1, 0.168627, 0.431373, 0)
+
+[node name="Pathfinder" parent="." node_paths=PackedStringArray("agent") instance=ExtResource("4_y3w8l")]
+agent = NodePath("NavigationAgent2D")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Pathfinder"]
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(1, 0.92549, 0, 1)
+
+[node name="RushCollisionArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RushCollisionArea"]
+shape = SubResource("RectangleShape2D_d2kor")
+debug_color = Color(0.619608, 0.533333, 0, 0)

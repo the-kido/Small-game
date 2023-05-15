@@ -641,22 +641,26 @@ size = Vector2(55, 69)
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
 radius = 591.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent", "CollisionShape")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent", "flippedSprite", "CollisionShape")]
+scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_gr76c")
 DamageableComponent = NodePath("Damageable")
+flippedSprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
 
-[node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("player", "playerAnimationTree")]
+[node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("player", "inputController", "playerAnimationTree")]
 script = ExtResource("1_30x0s")
 player = NodePath("..")
+inputController = NodePath("../Input Controller")
 playerAnimationTree = NodePath("../AnimationTree")
 
-[node name="Input Controller" type="Node" parent="." node_paths=PackedStringArray("hand")]
+[node name="Input Controller" type="Node" parent="." node_paths=PackedStringArray("attachedPlayer", "hand")]
 script = ExtResource("2_7escu")
+attachedPlayer = NodePath("..")
 hand = NodePath("../Hand")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]

@@ -5,6 +5,8 @@ public sealed partial class Player : Actor
 {
     //Hide speed value for player.
 
+    [Export]
+    public PlayerHUD HUD {get; private set;}
 
     private new int MoveSpeed;
 
@@ -13,22 +15,22 @@ public sealed partial class Player : Actor
 
     public override void _Ready() {
         base._Ready();
+
+        //Default some values
+        HUD.ConnectedPlayer = this;
         players[0] = this;
     }   
     
     public override void OnDeath(DamageInstance damageInstance)
     {
-        //Invisible bc fun
         Modulate = new Color(0,0,0,0);
     }
 
     public override void OnDamaged(DamageInstance damageInstance)
     {
-        //GD.Print("player says OW");
     }
 
     #region signals
-    
     private void OnNearbyEnemyAreaEntered(Node2D body) =>
         NearbyEnemies.Add((Actor) body);
     private void OnNearbyEnemyAreaExited(Node2D body) =>

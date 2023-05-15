@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmo3eaiw7qhle"
-path="res://.godot/imported/tile_set_2.png-a557387a669c8a5d557aee3ef6150a99.ctex"
+uid="uid://ia8ah50yw4cv"
+path="res://.godot/imported/agro guy.png-27ad46ed0a802a362a6209a3083a1445.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/levels/tile_set_2.png"
-dest_files=["res://.godot/imported/tile_set_2.png-a557387a669c8a5d557aee3ef6150a99.ctex"]
+source_file="res://assets/sprites/enemies/agro guy.png"
+dest_files=["res://.godot/imported/agro guy.png-27ad46ed0a802a362a6209a3083a1445.ctex"]
 
 [params]
 

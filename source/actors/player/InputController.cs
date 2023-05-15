@@ -7,28 +7,23 @@ using System.Threading.Tasks;
 
 public partial class InputController : Node
 {
-	//MAYBE Delegate this to another class for player GUI management? Idk tbh tho
 	[Export]
-	private PlayerHUD playerHUD;
+	private Player attachedPlayer;
+	private PlayerHUD playerHUD {
+		get {
+			return attachedPlayer.HUD;
+		}
+	}
 
 	[Export]
 	private Node2D hand;
-
-	//Weapon related events
+	public bool FilterAllInput {get; private set;} = false;
+	
+	#region ATTACK
 	public event Action UseWeapon;
 	public event Action<Vector2> UpdateWeapon;
-
 	private bool isHoveringOverGui = false;
-
-	public bool FilterAllInput {get; private set;} = false;
 	private bool isAutoAttackButtonToggled = false;
-	public override void _Ready() {
-		playerHUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
-		playerHUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
-		playerHUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
-	}
-
-	#region All attack related input methods 
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
 
@@ -129,12 +124,30 @@ public partial class InputController : Node
 
 	#endregion 
 
+	#region MOVEMENT
+	public event Action<Vector2> UpdateMovement;
+	private void ControlMovement() {
+		Vector2 direction = new Vector2(
+			Input.GetAxis("left", "right"),
+			Input.GetAxis("up", "down")
+		).Normalized();
+
+		UpdateMovement?.Invoke(direction);
+	}
+
+	#endregion
+	public override void _Ready() {
+		playerHUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
+		playerHUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
+		playerHUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
+	}
 	public override void _Process(double delta)
 	{
 		if (FilterAllInput)
 			return;
 		
 		ControlWeapon();
+		ControlMovement();
 	}
 }
 

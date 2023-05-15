@@ -18,28 +18,20 @@ public sealed partial class WeirdEnemy : Enemy {
     [Export]
     private float attackDelay;
 
-    public override void _Ready() {
-        base._Ready();
-        
+    public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
         DefaultAttackState attackState = new(pathfinderComponent, spamedBullet, attackDelay);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
-
         
-        AnimationController.AddAnimation(new("shoot", 2), ref attackState.OnShoot);
-        AnimationController.AddAnimation(new("idle", 1), ref patrolState.IsIdle);
-        AnimationController.AddAnimation(new("flying", 1), ref patrolState.IsMoving);
+        animationController.AddAnimation(new("shoot", 2), ref attackState.OnShoot);
+        animationController.AddAnimation(new("idle", 1), ref patrolState.IsIdle);
+        animationController.AddAnimation(new("flying", 1), ref patrolState.IsMoving);
 
-        patrolState.IsMoving += () => GD.Print("is moving");
-        patrolState.IsIdle += () => GD.Print("is idle");
+        stateMachine.AddState(attackState, patrolState);
+        stateMachine.AddState(patrolState, attackState);
 
-        //animationTree.Set("parameters/conditions/IsShooting", true);
-
-        StateMachine.AddState(attackState, patrolState);
-        StateMachine.AddState(patrolState, attackState);
-
-        StateMachine.ChangeState(patrolState);
+        //Set default state.
+        stateMachine.ChangeState(patrolState);
     }
-
 }
 
 public class AnimationController {
@@ -48,6 +40,13 @@ public class AnimationController {
 
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {
         setEvent += () => SetAnimation(animation);
+    }
+
+    public void StopCurrentAnimation(ref Action setEvent) {
+        setEvent += () => currentAnimation = AnimationInfo.none;
+        GD.Print("reset!");
+        //?
+        animationPlayer.Play("RESET");
     }
 
     public AnimationController(AnimationPlayer animationTree) {
@@ -63,15 +62,20 @@ public class AnimationController {
         if (currentAnimation.name == animation.name) return;
 
         currentAnimation = animation;
+
+        GD.Print("Playing: ", animation.name);
+
         animationPlayer.Play("RESET");
         animationPlayer.Stop();
         animationPlayer.Play(animation.name);
     }
 
     private void OnAnimationComplete(StringName name) {
+        GD.Print(name, " finished! Overriden..");
         currentAnimation = AnimationInfo.none;
     }
 }
+
 
 public struct AnimationInfo {
     public int priority;

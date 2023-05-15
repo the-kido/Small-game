@@ -74,7 +74,6 @@ public sealed class DefaultAttackState : AIState {
     }
 
     Player lastRememberedPlayer = Player.players[0];
-
     float distanceToPlayer = 0;
 
     private void UpdatePathfind() {
@@ -117,4 +116,5 @@ public sealed class DefaultAttackState : AIState {
         actor.Flip(flip);
     }
 }
+
 

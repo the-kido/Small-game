@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://by0owtwfhbrt2"]
 
-[ext_resource type="Script" path="res://source/actors/Enemy.cs" id="1_hxf2d"]
+[ext_resource type="Script" path="res://assets/enemies/RedBlobEnemy.cs" id="1_fluuk"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_sb4ia"]
 [ext_resource type="Texture2D" uid="uid://bgat1sola6eox" path="res://assets/sprites/enemies/base_enemy.png" id="3_fn2kq"]
 
@@ -21,7 +21,7 @@ _data = {
 [node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent", "CollisionShape")]
 collision_layer = 4
 collision_mask = 9
-script = ExtResource("1_hxf2d")
+script = ExtResource("1_fluuk")
 DamageableComponent = NodePath("Damageable")
 CollisionShape = NodePath("CollisionShape2D")
 

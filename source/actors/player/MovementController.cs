@@ -7,7 +7,9 @@ public partial class MovementController : Node
 	public const int CORNER_CORRECTION_RANGE = 25;
 
 	[Export] 
-	private CharacterBody2D player; 
+	private CharacterBody2D player;
+	[Export]
+	private InputController inputController;  
 	[Export]
 	private AnimationTree playerAnimationTree;
 	
@@ -22,26 +24,17 @@ public partial class MovementController : Node
 		}
 	}
 
-
-	//Move into Player
-	public override void _PhysicsProcess(double delta)
-	{
-		ControlPlayerMovement();
-		PlayMovementAnimations(PlayerIsMoving);
+	public override void _Ready() {
+		inputController.UpdateMovement += ControlPlayerMovement;
 	}
 
+	private void ControlPlayerMovement(Vector2 normalizedInput) {
+		player.Velocity = normalizedInput * MOVE_SPEED * 100;
 
-	public Vector2 playerDirection {get; private set;}
-	private void ControlPlayerMovement() {
-		playerDirection = new Vector2(
-			Input.GetAxis("left", "right"),
-			Input.GetAxis("up", "down")
-		).Normalized();
-
-		player.Velocity = playerDirection * MOVE_SPEED * 100;
-
-		if (playerDirection != Vector2.Zero) {
-			CornerCorrection(playerDirection);
+		if (normalizedInput != Vector2.Zero) {
+			CornerCorrection(normalizedInput);
+		} else {
+			PlayMovementAnimations(PlayerIsMoving);
 		}
 	}
 	private void CornerCorrection(Vector2 movementDirection) {

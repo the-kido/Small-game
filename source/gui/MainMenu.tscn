@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://source/gui/MainMenu.cs" id="1_w6nfc"]
-[ext_resource type="PackedScene" path="res://assets/levels/level_1.tscn" id="2_ys38q"]
+[ext_resource type="PackedScene" uid="uid://c38pfkqgoj2ly" path="res://assets/levels/debug/level_1.tscn" id="2_ys38q"]
 
 [node name="Main Menu" type="Control"]
 layout_mode = 3
