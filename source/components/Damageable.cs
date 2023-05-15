@@ -21,10 +21,8 @@ public partial class Damageable : Area2D
         }
     }
 
-	public delegate void HealthDepletedEventHandler(DamageInstance damageInstance);
-	public event HealthDepletedEventHandler OnDamaged;
-	public delegate void DeathEventHandler(DamageInstance damageInstance);
-	public event DeathEventHandler OnDeath;
+	public event Action<DamageInstance> OnDamaged;
+	public event Action<DamageInstance> OnDeath;
 
 	public event Action SetToImmune;
 	public event Action SetToUnimmune;
@@ -38,9 +36,7 @@ public partial class Damageable : Area2D
 	
 	private async void WaitForImmunityFrames(DamageInstance a) {
 		SetToImmune?.Invoke();
-
 		await Task.Delay((int)(ImmunityFrames * 1000));
-		
 		SetToUnimmune?.Invoke();
 	}
 

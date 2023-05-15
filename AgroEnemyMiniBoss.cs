@@ -65,9 +65,7 @@ public sealed class AgroEnemyRushState : AIState {
             damage.forceDirection = actor.Velocity;
             player.DamageableComponent.Damage(damage);
         }
-
         Bounce();
-
     }
    
     private void Bounce() {

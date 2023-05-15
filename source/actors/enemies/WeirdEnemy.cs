@@ -44,7 +44,6 @@ public class AnimationController {
 
     public void StopCurrentAnimation(ref Action setEvent) {
         setEvent += () => currentAnimation = AnimationInfo.none;
-        GD.Print("reset!");
         //?
         animationPlayer.Play("RESET");
     }
@@ -63,7 +62,6 @@ public class AnimationController {
 
         currentAnimation = animation;
 
-        GD.Print("Playing: ", animation.name);
 
         animationPlayer.Play("RESET");
         animationPlayer.Stop();
@@ -71,7 +69,6 @@ public class AnimationController {
     }
 
     private void OnAnimationComplete(StringName name) {
-        GD.Print(name, " finished! Overriden..");
         currentAnimation = AnimationInfo.none;
     }
 }

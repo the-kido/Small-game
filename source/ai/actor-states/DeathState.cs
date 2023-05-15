@@ -12,19 +12,13 @@ public sealed class DeathState : AIState
     public async override void Init() {
 
         //Temporary implementation jsut to make sure that this works the way I think it would yknow.
-
+        //in reality, i shoulda put all of this in update and used Delta but idk what I was thinking before.
         int deathSpeed = 1;
-
-        //No longer recieve damage.
-        actor.DamageableComponent.QueueFree();
-        actor.CollisionLayer = 0;
-        actor.CollisionMask = (int) Layers.Enviornment;
         
         Vector2 start = damageInstance.forceDirection * 100;
         actor.Velocity = start;
 
         Color color = new Color(1,1,1,1);
-
         for (float i = 10; i < 100; i+= deathSpeed) {
             color.A = 1 - i/100;
             actor.Modulate = color;
@@ -37,5 +31,8 @@ public sealed class DeathState : AIState
     }
 
     public override void Update(double delta) {
+
+
+
     }
 }

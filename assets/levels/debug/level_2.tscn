@@ -38,7 +38,6 @@ player = NodePath("../../Player")
 tileMap = NodePath("../../TileMap")
 
 [node name="Placed Enemies" type="Node2D" parent="."]
-process_mode = 4
 
 [node name="Weird enemy" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
 position = Vector2(345, 270)
