@@ -27,7 +27,7 @@ public partial class AgroEnemyMiniBoss : Enemy
         // animationController.AddAnimation(new("Running", 1), ref patrolState.IsMoving);
 
         animationController.AddAnimation(new("Preping", 1), ref rushState.OnPreparingToRush);
-        animationController.AddAnimation(new("Running", 1), ref rushState.OnRushing);
+        animationController.AddAnimation(new("Running", 1) {speed = 4}, ref rushState.OnRushing);
         animationController.AddAnimation(new("fatigue begin", 1), ref rushState.OnFallsTired);
         animationController.AddAnimation(new("Wake up", 2), ref rushState.OnWakesUp);
     }
@@ -45,6 +45,7 @@ public sealed class AgroEnemyRushState : AIState {
         this.rushCollisionArea = rushCollisionArea;
     }
 
+
     enum State {
         Preping,
         Rushing,
@@ -59,24 +60,28 @@ public sealed class AgroEnemyRushState : AIState {
     };
 
     private void OnBodyEntered(Node2D body) {
-        if (state is not State.Rushing) return;
-
         if (body is Player player) {
             damage.forceDirection = actor.Velocity;
             player.DamageableComponent.Damage(damage);
         }
-        Bounce();
     }
    
-    private void Bounce() {
-
-        Random random = new();
-
-        rushDirection = new Vector2( 
-            (random.NextSingle() - 0.5f) * 2, 
-            (random.NextSingle() - 0.5f) * 2 
-        ).Normalized();
+    private void Bounce(Vector2 normal) {
         
+        //Y goes down on godot, rememeber lol.
+
+        Vector2 newDirection = normal;
+
+        float rand = (new Random().NextSingle() - 0.5f) * 1.9f;
+
+        if (newDirection.X is 0) {
+            newDirection.X = rand;
+        }
+        else if (newDirection.Y is 0) {
+            newDirection.Y = rand;
+        }
+
+        rushDirection = newDirection.Normalized();
     }
     Vector2 rushDirection;
     
@@ -86,13 +91,20 @@ public sealed class AgroEnemyRushState : AIState {
     private void Rush() {
         //The 3 acts as a buffer just so that the monster doesnt start to slow down immediately.
         double mathxd = (slowDownLength - (time - slowDownBeginTime)) / slowDownLength;
-        double multiplier = Math.Min(mathxd, 1) * 3;
-        actor.Velocity = (rushDirection * actor.MoveSpeed) * (float) multiplier;
+        double multiplier = Math.Min(mathxd, 1) * 10;
+
+        Vector2 velocity = (rushDirection) * (float) multiplier; 
+        
+        KinematicCollision2D a = actor.MoveAndCollide(velocity);
+        FlipActor(rushDirection);
+
+        if (a is not null) {
+            OnBodyEntered((Node2D) a.GetCollider());
+            Bounce(a.GetNormal());
+        }
     }
 
-
     double time = 0;
-
     //              Loop                Loop        Once        Loop        Once
     public Action OnPreparingToRush, OnRushing, OnFallsTired, WhileTired, OnWakesUp;
 
@@ -104,8 +116,8 @@ public sealed class AgroEnemyRushState : AIState {
             //0 -- 2 -- 12 -- 15
             //1 4 and 6 are debugging values
             <= 2           => State.Preping,
-            > 2 and < 4    => State.Rushing,
-            > 4 and < 8     => State.Fatigued,
+            > 2 and < 12    => State.Rushing,
+            > 12 and < 16     => State.Fatigued,
             _              => State.Done
         };
 
@@ -127,6 +139,7 @@ public sealed class AgroEnemyRushState : AIState {
             case State.Rushing:
                 //Set the initial rush direction
                 rushDirection = (Player.players[0].GlobalPosition - actor.GlobalPosition).Normalized();
+                
                 OnRushing?.Invoke();
                 break;
 
@@ -143,11 +156,6 @@ public sealed class AgroEnemyRushState : AIState {
     public override void Update(double delta) {
         time += delta;
         UpdateState();
-        FlipActor();
-
-        if (rushCollisionArea.GetOverlappingBodies().Count > 0) {
-            Bounce();
-        }
 
         if (state is State.Fatigued) {
             WhileTired?.Invoke();
@@ -159,7 +167,8 @@ public sealed class AgroEnemyRushState : AIState {
     }
     public override void Init() {
         actor.Velocity = Vector2.Zero;
-        rushCollisionArea.BodyEntered += OnBodyEntered;
+        
+        //rushCollisionArea.BodyEntered += OnBodyEntered;
         
         //Might use this? Or, will try to use NORMALS to make a more accurate direction for the bouncy boi to go.
         rushCollisionArea.GetOverlappingBodies();
@@ -173,11 +182,12 @@ public sealed class AgroEnemyRushState : AIState {
         await Task.Delay(1000);
         
         stateMachine.ChangeState(stateToGoTo);
-        rushCollisionArea.BodyEntered -= OnBodyEntered;
+        
+        //rushCollisionArea.BodyEntered -= OnBodyEntered;
     }
 
-    private void FlipActor() {
-        bool flip = MathF.Sign(actor.Velocity.X) == 1 ? false : true;
+    private void FlipActor(Vector2 direction) {
+        bool flip = MathF.Sign(direction.X) == 1 ? false : true;
         actor.Flip(flip);
     }
 }

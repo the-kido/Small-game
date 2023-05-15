@@ -17,7 +17,7 @@ public sealed partial class WeirdEnemy : Enemy {
     private PackedScene spamedBullet;
     [Export]
     private float attackDelay;
-
+    
     public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
         DefaultAttackState attackState = new(pathfinderComponent, spamedBullet, attackDelay);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
@@ -61,7 +61,7 @@ public class AnimationController {
         if (currentAnimation.name == animation.name) return;
 
         currentAnimation = animation;
-
+        animationPlayer.SpeedScale = animation.speed;
 
         animationPlayer.Play("RESET");
         animationPlayer.Stop();
@@ -77,11 +77,11 @@ public class AnimationController {
 public struct AnimationInfo {
     public int priority;
     public string name;
+    public float speed = 1;
 
     public AnimationInfo(string name, int priority) {
         this.name = name;
         this.priority = priority;
     }
-
     public static AnimationInfo none = new("", -1);
 }

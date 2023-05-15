@@ -4,6 +4,11 @@ using System;
 
 public sealed class DefaultAttackState : AIState {
 
+    #region events
+
+    public Action OnShoot;
+
+    #endregion
 
     Pathfinder pathfinderComponent;
     //Not all actors will have pathfinders, so the parameter is necessary.
@@ -14,12 +19,6 @@ public sealed class DefaultAttackState : AIState {
         this.spamedBullet = bullet;
         this.attackDelay = attackDelay;
     }
-
-    #region events
-
-    public Action OnShoot;
-
-    #endregion
 
     private bool EnemyForgetPlayer(Player player, double delta, ref float time) {
         if (player is null) {
@@ -32,7 +31,6 @@ public sealed class DefaultAttackState : AIState {
         else{
             time = 0;
         }
-
         return false;
     }
 
@@ -40,35 +38,48 @@ public sealed class DefaultAttackState : AIState {
         actor.Velocity = Vector2.Zero;
     }
 
+    #region wow this is a big huge mess and this SUCKS 
     float forgetPlayerTimer = 0;
     double shootTimer = 0;
-    float updatePathfind = 0;
+    double updatePathfind = 0;
+    double playerSeenTimer;
+    #endregion
+
+    float stayAwayFromPlayerDistance = 250;
+    float moveAwayFromPlayerDistance = 100;
 
     public override void Update(double delta) {
-        //Update relavent timers
-        updatePathfind += (float) delta;
-        shootTimer += delta;
-
+        //Update the current visible player.
         Player player = actor.VisiblePlayer();
 
         if (player is not null) {
             lastRememberedPlayer = player;
+            playerSeenTimer += delta;
+        } else {
+            playerSeenTimer = 0;
+        }
+        
+        //Update relavent timers
+        updatePathfind += delta;
+        shootTimer += delta;
+
+        if (updatePathfind > 0.25) {
+            UpdatePathfind(player);
+            updatePathfind = 0;
         }
 
-        UpdatePathfind();
-        FinalAttackingMotion(player);
         FlipActor(lastRememberedPlayer);
+        Move(player);
 
         if (shootTimer >= attackDelay) {
-            
-            if (player is not null) {
-                shootTimer = 0;
-                Shoot(player);
-            }
+            if (playerSeenTimer < 1) return;
+
+            playerSeenTimer = 0;
+            shootTimer = 0;
+            Shoot(player);
         }
  
         if (EnemyForgetPlayer(player, delta, ref forgetPlayerTimer)) {
-
             stateMachine.ChangeState(stateToGoTo);
         }
     }
@@ -76,25 +87,25 @@ public sealed class DefaultAttackState : AIState {
     Player lastRememberedPlayer = Player.players[0];
     float distanceToPlayer = 0;
 
-    private void UpdatePathfind() {
-        
-        if (updatePathfind < 0.25f) return;
+    private void UpdatePathfind(Player currentlyVisiblePlayer) {
+        if (currentlyVisiblePlayer is not null) 
+            distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
+        else 
+            distanceToPlayer = 10000;
 
-        distanceToPlayer = actor.GlobalPosition.DistanceTo(lastRememberedPlayer.GlobalPosition);
-        updatePathfind = 0;
         actor.Velocity = Vector2.Zero;
         
-        if (distanceToPlayer > 250) {
+        if (distanceToPlayer > stayAwayFromPlayerDistance) {
             pathfinderComponent.SetTargetPosition(lastRememberedPlayer.GlobalPosition);
         }
     }
-    private void FinalAttackingMotion(Player visiblePlayer) {
+    private void Move(Player visiblePlayer) {
         
-        if (distanceToPlayer > 250 || visiblePlayer is null) {
+        if (distanceToPlayer > stayAwayFromPlayerDistance || visiblePlayer is null) {
             pathfinderComponent.UpdatePathfind(actor);
         }
 
-        if (distanceToPlayer < 100) {
+        if (distanceToPlayer < moveAwayFromPlayerDistance) {
             float randFloat = new Random().NextSingle()- 0.5f * 100;
             actor.Velocity =  lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f; 
         }
@@ -102,7 +113,6 @@ public sealed class DefaultAttackState : AIState {
     
     private void Shoot(Player player) {
         OnShoot?.Invoke();
-
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         

@@ -14,7 +14,7 @@ public sealed partial class Player : Actor
     public List<Actor> NearbyEnemies {get; private set;} = new();
     public static Player[] players {get; private set;} = new Player[4];
 
-    public override void _Ready () {
+    public override void _Ready() {
         base._Ready();
 
         //Default some values
@@ -22,22 +22,29 @@ public sealed partial class Player : Actor
         players[0] = this;
     }   
     
-    public override void OnDeath (DamageInstance damageInstance) {
+    public override void OnDeath(DamageInstance damageInstance) {
         //Freeze Camera
         //After the freeze, open the death GUI (in hud, invisible)
         PlayFreezeFrame(1000);
         Camera.currentCamera.StartShake(300, 300, 2);
         
+        //Make player immune to everything and anything all of the time
+        CollisionLayer = 0;
+        CollisionMask = 0;
+        DamageableComponent.QueueFree();
+
     }
 
-    public override void OnDamaged (DamageInstance damageInstance) {
+    public override void OnDamaged(DamageInstance damageInstance) {
         PlayFreezeFrame(300);
     }
 
-    private async void PlayFreezeFrame (int milliseconds) {
+    private async void PlayFreezeFrame(int milliseconds) {
         GetTree().Paused = true;
         await Task.Delay(milliseconds);
         GetTree().Paused = false;
+
+        
     }
 
     #region signals

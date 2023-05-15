@@ -5,17 +5,21 @@ public partial class PlayerTargetIndicator : Sprite2D
 {
 	
 	IInteractable target;
-	public void Enable(bool enable, IInteractable target) {
+	public void Enable(IInteractable target) {
 		this.target = target;
-		Visible = enable;
-		
+		Visible = true;
+	}
+
+	public void Disable() {
+		this.target = null;
+		Visible = false;
 	}
 
 	private void UpdatePosition() {
 		if (target is null) return;
 		
 		if (!target.IsInteractable()) {
-			Enable(false, null);
+			Disable();
 			return;
 		}
 
