@@ -6,6 +6,7 @@
 radius = 604.02
 
 [node name="Camera" type="Camera2D"]
+process_mode = 3
 script = ExtResource("1_kne7i")
 
 [node name="Important Objects" type="Area2D" parent="."]

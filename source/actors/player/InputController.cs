@@ -140,6 +140,8 @@ public partial class InputController : Node
 		playerHUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
 		playerHUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
 		playerHUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
+
+		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 	}
 	public override void _Process(double delta)
 	{
@@ -148,6 +150,10 @@ public partial class InputController : Node
 		
 		ControlWeapon();
 		ControlMovement();
+	}
+
+	private void OnDeath (DamageInstance _) {
+		FilterAllInput = true;
 	}
 }
 

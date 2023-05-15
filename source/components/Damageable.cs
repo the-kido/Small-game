@@ -46,7 +46,9 @@ public partial class Damageable : Area2D
 	}
 	
 	public void Damage(DamageInstance damageInstance) {
-		if (IsImmune) return;
+		
+		//If the actor is immune and the damage instance cannot override immunity frames, continue.
+		if (IsImmune && damageInstance.overridesImmunityFrames == false) return;
 
 		Health -= damageInstance.damage;
 		OnDamaged?.Invoke(damageInstance);
@@ -64,12 +66,3 @@ public partial class Damageable : Area2D
 
 }
 
-
-public class DamageInstance {
-	public int damage = 0;
-	public bool isGrounded = true;
-	public Vector2 forceDirection;
-
-	public DamageInstance() {}
-	//e.g
-}

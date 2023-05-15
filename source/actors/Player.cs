@@ -23,7 +23,11 @@ public sealed partial class Player : Actor
     }   
     
     public override void OnDeath (DamageInstance damageInstance) {
+        //Freeze Camera
+        //After the freeze, open the death GUI (in hud, invisible)
         PlayFreezeFrame(1000);
+        Camera.currentCamera.StartShake(300, 300, 2);
+        
     }
 
     public override void OnDamaged (DamageInstance damageInstance) {
