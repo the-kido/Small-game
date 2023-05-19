@@ -7,30 +7,25 @@ public partial class Enemy : Actor, IInteractable
 {
     [Export]
     private AnimationPlayer animationPlayer = new();
-
-    private AIStateMachine StateMachine {get; init;}
-    private AnimationController AnimationController {get; set;}
-    
-    public Enemy() {
-        StateMachine = new(this);
-    }
+    private AIStateMachine stateMachine;
     
     public override void _Ready() {
         base._Ready();
-        AnimationController = new(animationPlayer);
-        Init(AnimationController, StateMachine);
+
+        stateMachine = new(this);
+        
+        Init(new(animationPlayer), stateMachine);
     }
 
-    public override void _Process(double delta)
-    {
+    public override void _Process(double delta) {
         base._Process(delta);
-        StateMachine.UpdateState(delta);
+        stateMachine.UpdateState(delta);
     }
 
     public override void OnDeath(DamageInstance damageInstance) {
         DeathState noState = new(damageInstance);
-        StateMachine.AddState(noState, null);
-        StateMachine.ChangeState(noState);
+        stateMachine.AddState(noState, null);
+        stateMachine.ChangeState(noState);
 
         //No longer recieve damage.
         DamageableComponent.QueueFree();

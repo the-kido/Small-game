@@ -10,11 +10,11 @@ public partial class AgroEnemyMiniBoss : Enemy
     [Export]
     private Area2D rushCollisionArea;
     
-    public override void Init(AnimationController animationController, AIStateMachine stateMachine)
-    {
+    public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
         PatrolState patrolState = new(pathfinder, 400);
-        AgroEnemyRushState rushState = new(rushCollisionArea);
-        //AgroEnemyRushState rushState = new();
+        AnimationInfo runningAnimation = new("Running", 1) {speed = 4};
+
+        AgroEnemyRushState rushState = new(rushCollisionArea, runningAnimation);
 
         stateMachine.AddState(rushState, patrolState);
         stateMachine.AddState(patrolState, rushState);
@@ -23,11 +23,15 @@ public partial class AgroEnemyMiniBoss : Enemy
 
         animationController.StopCurrentAnimation(ref rushState.OnStateChanged);
 
-        // animationController.StopCurrentAnimation(ref patrolState.IsIdle);
-        // animationController.AddAnimation(new("Running", 1), ref patrolState.IsMoving);
+        animationController.StopCurrentAnimation(ref patrolState.IsIdle);
+
+        patrolState.IsIdle += () => GD.Print("Is idle");
+        patrolState.IsMoving += () => GD.Print("Is moving");
+
+        animationController.AddAnimation(new("Running", 1), ref patrolState.IsMoving);
 
         animationController.AddAnimation(new("Preping", 1), ref rushState.OnPreparingToRush);
-        animationController.AddAnimation(new("Running", 1) {speed = 4}, ref rushState.OnRushing);
+        animationController.AddAnimation(runningAnimation, ref rushState.OnRushing);
         animationController.AddAnimation(new("fatigue begin", 1), ref rushState.OnFallsTired);
         animationController.AddAnimation(new("Wake up", 2), ref rushState.OnWakesUp);
     }
@@ -35,16 +39,12 @@ public partial class AgroEnemyMiniBoss : Enemy
 
 public sealed class AgroEnemyRushState : AIState {
 
-    //if the boss sees the player, it waits for 2 seconds and plays a preperation animation (looped)
-    //once the 2 seconds are over, it initially jolts towards the player
-    //if the thing hits a wall, it bounces off, going at the 
-    //After 10 seconds of that, it slowly stops moving and then plops down in fatigue. then, it plays a getting up animation
-
     private Area2D rushCollisionArea {get; init;}
-    public AgroEnemyRushState (Area2D rushCollisionArea) {
+    private AnimationInfo runningAnimation {get; init;}
+    public AgroEnemyRushState (Area2D rushCollisionArea, AnimationInfo runningAnimation) {
         this.rushCollisionArea = rushCollisionArea;
+        this.runningAnimation = runningAnimation;
     }
-
 
     enum State {
         Preping,

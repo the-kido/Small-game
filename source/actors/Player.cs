@@ -33,6 +33,8 @@ public sealed partial class Player : Actor
         CollisionMask = 0;
         DamageableComponent.QueueFree();
 
+        HUD.ReviveMenu.Enable();
+
     }
 
     public override void OnDamaged(DamageInstance damageInstance) {

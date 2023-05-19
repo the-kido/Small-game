@@ -37,15 +37,18 @@ public sealed partial class WeirdEnemy : Enemy {
 public class AnimationController {
     
     AnimationPlayer animationPlayer;
-
+     
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {
         setEvent += () => SetAnimation(animation);
     }
 
     public void StopCurrentAnimation(ref Action setEvent) {
-        setEvent += () => currentAnimation = AnimationInfo.none;
-        //?
-        animationPlayer.Play("RESET");
+        setEvent += () => { 
+            currentAnimation = AnimationInfo.none;
+            animationPlayer.Play("RESET");
+        };
+
+        setEvent += () => GD.Print("reset!");
     }
 
     public AnimationController(AnimationPlayer animationTree) {
@@ -53,7 +56,7 @@ public class AnimationController {
         animationTree.AnimationFinished += OnAnimationComplete;
     }
 
-    AnimationInfo currentAnimation;    
+    AnimationInfo currentAnimation  = AnimationInfo.none;    
     private void SetAnimation(AnimationInfo animation) {
         
         //Animations of the same priority should still override the current animation.
@@ -74,9 +77,9 @@ public class AnimationController {
 }
 
 
-public struct AnimationInfo {
-    public int priority;
-    public string name;
+public class AnimationInfo {
+    public readonly int priority;
+    public readonly string name;
     public float speed = 1;
 
     public AnimationInfo(string name, int priority) {

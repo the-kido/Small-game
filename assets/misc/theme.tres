@@ -1,4 +1,7 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://ci4einl7b1225"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://ci4einl7b1225"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dv1mu"]
+bg_color = Color(0.133333, 0.0666667, 0.0666667, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxic4"]
 bg_color = Color(0.172549, 0.0470588, 0.027451, 1)
@@ -10,6 +13,12 @@ corner_radius_bottom_left = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_74ikl"]
 bg_color = Color(0.670588, 0.388235, 0.290196, 1)
 
+[sub_resource type="FontVariation" id="FontVariation_1usrd"]
+
 [resource]
+Button/font_sizes/font_size = 21
+Button/styles/disabled = SubResource("StyleBoxFlat_dv1mu")
 Button/styles/normal = SubResource("StyleBoxFlat_sxic4")
 Button/styles/pressed = SubResource("StyleBoxFlat_74ikl")
+Label/font_sizes/font_size = 80
+Label/fonts/font = SubResource("FontVariation_1usrd")

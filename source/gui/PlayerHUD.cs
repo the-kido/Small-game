@@ -7,10 +7,11 @@ public partial class PlayerHUD : CanvasLayer
      
     [Export]
     public PlayerTargetIndicator TargetIndicator {get; private set;}
-
-
     [Export]
     public ToggleAttackButton AttackButton {get; private set;}
+    [Export]
+    public ReviveMenu ReviveMenu {get; private set;}
+
     [Export]
     Label healthLable;
 

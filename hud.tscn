@@ -1,19 +1,54 @@
-[gd_scene load_steps=7 format=3 uid="uid://cas7rly3nqcu2"]
+[gd_scene load_steps=10 format=3 uid="uid://cas7rly3nqcu2"]
 
 [ext_resource type="Script" path="res://source/gui/PlayerHUD.cs" id="1_f4mui"]
 [ext_resource type="Script" path="res://ToggleAttackButton.cs" id="2_b0xe6"]
 [ext_resource type="Script" path="res://DebugHUD.cs" id="2_isn2q"]
 [ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="2_lc21n"]
+[ext_resource type="Script" path="res://source/gui/ReviveMenu.cs" id="5_kdcv6"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "AttackButton", "healthLable")]
+[sub_resource type="Animation" id="Animation_wjuk7"]
+resource_name = "Open"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Revive/ColorRect:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2000, 244), Vector2(224, 244)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Revive/ColorRect:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4, 1.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8q4wx"]
+_data = {
+"Open": SubResource("Animation_wjuk7")
+}
+
+[node name="HUD" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "AttackButton", "ReviveMenu", "healthLable")]
 layer = 10
 script = ExtResource("1_f4mui")
 TargetIndicator = NodePath("")
 AttackButton = NodePath("Control/Auto Aim Button")
+ReviveMenu = NodePath("Revive")
 healthLable = NodePath("Control/ColorRect/Label")
 
 [node name="Control" type="Control" parent="."]
@@ -81,3 +116,112 @@ offset_left = 164.0
 offset_top = -21.0
 offset_right = 438.0
 offset_bottom = 113.0
+
+[node name="Revive" type="Control" parent="." node_paths=PackedStringArray("animationPlayer")]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_kdcv6")
+animationPlayer = NodePath("Death Animation Player")
+
+[node name="ColorRect" type="ColorRect" parent="Revive"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2000.0
+offset_top = 244.0
+offset_right = 1552.0
+offset_bottom = -244.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.129412, 0.129412, 0.129412, 1)
+
+[node name="Label" type="Label" parent="Revive/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 214.0
+offset_right = -170.0
+offset_bottom = -352.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_lc21n")
+text = "boo
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Respawn" type="Button" parent="Revive/ColorRect"]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 240.0
+offset_right = 995.0
+offset_bottom = 376.0
+theme = ExtResource("2_lc21n")
+theme_override_font_sizes/font_size = 23
+disabled = true
+text = "You have no more respawn tokens.
+"
+
+[node name="Death Animation Player" type="AnimationPlayer" parent="Revive"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_8q4wx")
+}
+
+[node name="Dialogue" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="Background" type="ColorRect" parent="Dialogue"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -208.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Text Background" type="ColorRect" parent="Dialogue/Background"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -1436.0
+offset_top = -86.0
+offset_right = -24.0
+offset_bottom = 87.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue/Background/Text Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 17.0
+offset_right = -32.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "waffwwfa "
+fit_content = true
