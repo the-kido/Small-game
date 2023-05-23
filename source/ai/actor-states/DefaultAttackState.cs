@@ -253,7 +253,7 @@ public sealed class DefaultAttackState : AIState {
         
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
-            .init(actor.Position, angle, BulletFrom.Enemy);
+            .Init(actor.Position, angle, BulletFrom.Enemy);
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.

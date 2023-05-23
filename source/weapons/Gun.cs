@@ -21,7 +21,7 @@ public partial class Gun : Weapon {
  
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(this, PreloadedScene.BulletFactory)
             .SpawnBullet(bulletAsset)
-            .init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
+            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player);
         Camera.currentCamera.StartShake((float) DebugHUD.instance.anySlider.Value, 300, 1);
  
     }

@@ -5,8 +5,9 @@ using KidoUtils;
 
 public abstract partial class Bullet : Node2D { 
 
-    [Export]
-    private int damage;
+    protected abstract DamageInstance damage {get; set;}
+
+
     [Export(PropertyHint.Range, "-360,360,1,or_greater,or_less")] 
     private int speed;
     [Export]
@@ -23,23 +24,27 @@ public abstract partial class Bullet : Node2D {
 
     #region abstract classes to inherit from
     
-    public abstract void OnDamageableEntered(Damageable damageable, DamageInstance damageInstance);
-    public abstract void OnTilemapEntered(TileMap tileMap);
-    public abstract void DestroyBullet();
-    
+    public virtual void OnDamageableEntered(Damageable damageable, DamageInstance damageInstance) {
+        damageable.Damage(damageInstance);
+        DestroyBullet();
+    }
+    public virtual void OnTilemapEntered(TileMap tileMap) {
+        DestroyBullet();
+    }
+    public virtual void DestroyBullet() {
+        QueueFree();
+        SpawnDestroyedParticle();
+    }
     #endregion
 
-    
     private DamageInstance BulletDamageInstance() {
-        return new DamageInstance(){
-            damage = damage,
-            forceDirection = directionFacing,
-        };
+        DamageInstance damageInstance = damage;
+        damageInstance.forceDirection = directionFacing;
+        return damageInstance;
     }
 
-    private void OnArea2DEntered(Rid area_rid, Area2D area, int area_shape_index, int local_shape_index) {
+    private void OnArea2DEntered(Area2D area) {
         if (area is Damageable damageable) {
-            if (damageable.IsImmune) return;
             OnDamageableEntered(damageable, BulletDamageInstance());
         }
     }
@@ -55,7 +60,12 @@ public abstract partial class Bullet : Node2D {
         newParticle.QueueFree();
     }
 
-    public void init(Vector2 spawnPosition, float radians, BulletFrom from) {
+    public void Init(Vector2 spawnPosition, float radians, BulletFrom from) {
+        //Attach events
+        hitbox.AreaEntered += OnArea2DEntered;
+        hitbox.BodyEntered += OnBodyEntered;
+
+        //Force the layers & masks to be overrided by the init
         if (hitbox.CollisionLayer != 0 || hitbox.CollisionMask != 0) {
             GD.PushError( $"The hitbox {hitbox.Name} for {hitbox.GetParent().Name} has collisions/masks already set. Default them to have nothing.");
             throw new Exception("Amazing");
@@ -71,6 +81,7 @@ public abstract partial class Bullet : Node2D {
                 hitbox.CollisionMask += (int) Layers.Enviornment + (int) Layers.Player;
                 break;
         }
+
         Rotation = radians;
 
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
@@ -80,5 +91,8 @@ public abstract partial class Bullet : Node2D {
     public void MoveBulletForward(double delta) {
         Position += directionFacing * (float) delta * speed;
     }
-   
+
+    public override void _Process(double delta) {
+        MoveBulletForward(delta);
+    }
 }

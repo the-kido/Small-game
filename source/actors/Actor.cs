@@ -3,7 +3,10 @@ using System.Threading.Tasks;
 using KidoUtils;
 
 public abstract partial class Actor : CharacterBody2D {
-	// Called when the node enters the scene tree for the first time.
+	
+	[Export]
+	public EffectInflictable Effect {get; private set;}
+
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
     [Export]
@@ -23,6 +26,9 @@ public abstract partial class Actor : CharacterBody2D {
 		DamageableComponent.OnDeath += OnDeath;
 		DamageableComponent.OnDamaged += OnDamaged;
         DamageableComponent.OnDamaged += DamageFlash;
+        DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
+
+        Effect.Init(this, this.DamageableComponent);
 
 	}
 	public abstract void OnDeath(DamageInstance damageInstance);

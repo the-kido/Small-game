@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://b3buuc0f5ge1x"]
+[gd_scene load_steps=58 format=3 uid="uid://b3buuc0f5ge1x"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="8_spu4k"]
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="9_6fn6c"]
+[ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="10_rp2rn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
 atlas = ExtResource("3_24x38")
@@ -641,13 +642,14 @@ size = Vector2(55, 69)
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
 radius = 591.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_gr76c")
+Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
@@ -699,7 +701,7 @@ parameters/Walk/blend_position = Vector2(0, 0)
 [node name="Damageable" parent="." instance=ExtResource("8_spu4k")]
 collision_layer = 2
 collision_mask = 256
-Health = 100
+Health = 50
 ImmunityFrames = 1.0
 
 [node name="Hitbox" type="CollisionShape2D" parent="Damageable"]
@@ -715,6 +717,8 @@ collision_mask = 36
 scale = Vector2(1, 0.611)
 shape = SubResource("CircleShape2D_so67i")
 debug_color = Color(0.47451, 0.588235, 0, 0)
+
+[node name="StatusEffectComponent" parent="." instance=ExtResource("10_rp2rn")]
 
 [connection signal="body_entered" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaEntered"]
 [connection signal="body_exited" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaExited"]

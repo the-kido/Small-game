@@ -1,6 +1,6 @@
-[gd_scene load_steps=38 format=3 uid="uid://boy5wb6ut48od"]
+[gd_scene load_steps=39 format=3 uid="uid://fktd2hmwbgea"]
 
-[ext_resource type="Script" path="res://AgroEnemyMiniBoss.cs" id="1_3njyc"]
+[ext_resource type="Script" path="res://source/actors/enemies/AgroEnemyMiniBoss.cs" id="1_3njyc"]
 [ext_resource type="Texture2D" uid="uid://nklljvf78koa" path="res://assets/sprites/enemies/agro-guy.png" id="2_egbxo"]
 [ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/sprites/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="3_i2isi"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b6js7gtjngrwl" path="res://assets/sprites/enemies/agro/agro-guy-running.png" id="4_6p7mc"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="4_y3w8l"]
 [ext_resource type="Texture2D" uid="uid://71w6lvj63lpu" path="res://assets/sprites/enemies/agro/agro-guy-wake-up.png" id="6_o5gc5"]
+[ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="9_6ypl0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rr0j3"]
 size = Vector2(14.8, 13)
@@ -206,7 +207,7 @@ tracks/1/keys = {
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/path = NodePath(".:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
@@ -218,7 +219,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/path = NodePath(".:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -326,7 +327,7 @@ size = Vector2(15, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2kor"]
 size = Vector2(18.8, 16.8)
 
-[node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "rushCollisionArea", "animationPlayer", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "rushCollisionArea", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 scale = Vector2(5, 5)
 disable_mode = 2
 collision_layer = 4
@@ -338,6 +339,7 @@ script = ExtResource("1_3njyc")
 pathfinder = NodePath("Pathfinder")
 rushCollisionArea = NodePath("RushCollisionArea")
 animationPlayer = NodePath("AgroGuy/AnimationPlayer")
+Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("AgroGuy")
 CollisionShape = NodePath("CollisionShape2D")
@@ -382,3 +384,5 @@ collision_mask = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RushCollisionArea"]
 shape = SubResource("RectangleShape2D_d2kor")
 debug_color = Color(0.619608, 0.533333, 0, 0)
+
+[node name="StatusEffectComponent" parent="." instance=ExtResource("9_6ypl0")]

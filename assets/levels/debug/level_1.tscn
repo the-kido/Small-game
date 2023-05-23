@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dxp0su7l7vilr"]
+[gd_scene load_steps=10 format=3 uid="uid://c7mfiuu4djp0u"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="PackedScene" uid="uid://b3buuc0f5ge1x" path="res://assets/player.tscn" id="2_2pl6b"]
@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
 [ext_resource type="PackedScene" uid="uid://bk2bf3bk41fv4" path="res://enemy_target_indicator.tscn" id="6_yt11f"]
-[ext_resource type="PackedScene" uid="uid://cas7rly3nqcu2" path="res://hud.tscn" id="7_80iaj"]
+[ext_resource type="PackedScene" uid="uid://brrwww1ytf18o" path="res://gui.tscn" id="7_80iaj"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
@@ -19,8 +19,9 @@ metadata/_edit_horizontal_guides_ = [464.0]
 [node name="Base Enemy" parent="." instance=ExtResource("1_tonpy")]
 position = Vector2(548, 597)
 
-[node name="Player" parent="." instance=ExtResource("2_2pl6b")]
+[node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
 position = Vector2(568, 428)
+GUI = NodePath("../HUD")
 
 [node name="AnimationTree" parent="Player" index="5"]
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_d565g")

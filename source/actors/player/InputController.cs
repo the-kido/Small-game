@@ -9,10 +9,8 @@ public partial class InputController : Node
 {
 	[Export]
 	private Player attachedPlayer;
-	private PlayerHUD playerHUD {
-		get {
-			return attachedPlayer.HUD;
-		}
+	private GUI GUI {
+		get => attachedPlayer.GUI;
 	}
 
 	[Export]
@@ -24,6 +22,7 @@ public partial class InputController : Node
 	public event Action<Vector2> UpdateWeapon;
 	private bool isHoveringOverGui = false;
 	private bool isAutoAttackButtonToggled = false;
+	
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
 
@@ -85,13 +84,13 @@ public partial class InputController : Node
             targettedObject = FindInteractable(cursor.ObjectsInCursorRange);
 			
 			if (targettedObject is null) {
-				playerHUD.TargetIndicator.Disable();
+				GUI.TargetIndicator.Disable();
 			}
         }
 		
 		if(targettedObject?.IsInteractable() == true) {
 
-			playerHUD.TargetIndicator.Enable(targettedObject);
+			GUI.TargetIndicator.Enable(targettedObject);
 
 			//If the interactable is still in tact and is still visible, autoshoot it.
 			if(IsInteractableVisible(targettedObject)) {
@@ -136,9 +135,9 @@ public partial class InputController : Node
 
 	#endregion
 	public override void _Ready () {
-		playerHUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
-		playerHUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
-		playerHUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
+		GUI.HUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
+		GUI.HUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
+		GUI.HUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
 
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 	}

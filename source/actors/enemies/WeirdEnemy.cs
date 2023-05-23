@@ -45,7 +45,8 @@ public class AnimationController {
     public void StopCurrentAnimation(ref Action setEvent) {
         setEvent += () => { 
             currentAnimation = AnimationInfo.none;
-            animationPlayer.Play("RESET");
+            //animationPlayer.Stop();
+            //animationPlayer.Play("RESET");
         };
 
         setEvent += () => GD.Print("reset!");
@@ -62,6 +63,9 @@ public class AnimationController {
         //Animations of the same priority should still override the current animation.
         if (currentAnimation.priority > animation.priority) return;
         if (currentAnimation.name == animation.name) return;
+
+
+        GD.Print("Animation playing: ", animation.name);
 
         currentAnimation = animation;
         animationPlayer.SpeedScale = animation.speed;

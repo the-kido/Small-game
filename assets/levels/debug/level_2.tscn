@@ -1,19 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://cu8j1p57mg6va"]
+[gd_scene load_steps=9 format=3 uid="uid://cu0ceasurwo2r"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
 [ext_resource type="PackedScene" uid="uid://b3buuc0f5ge1x" path="res://assets/player.tscn" id="3_f3mkb"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
-[ext_resource type="PackedScene" uid="uid://cas7rly3nqcu2" path="res://hud.tscn" id="5_mlaxk"]
+[ext_resource type="PackedScene" uid="uid://brrwww1ytf18o" path="res://gui.tscn" id="5_mlaxk"]
 [ext_resource type="PackedScene" uid="uid://bk2bf3bk41fv4" path="res://enemy_target_indicator.tscn" id="6_flg8g"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
-[ext_resource type="PackedScene" uid="uid://boy5wb6ut48od" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
+[ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
 
 [node name="Level 2" type="Node2D"]
 
-[node name="Player" parent="." node_paths=PackedStringArray("HUD") instance=ExtResource("3_f3mkb")]
+[node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
-HUD = NodePath("../GUI/HUD")
+GUI = NodePath("../GUI/HUD")
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1

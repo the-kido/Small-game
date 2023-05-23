@@ -7,7 +7,7 @@ public sealed partial class Player : Actor
     //Hide speed value for player.
 
     [Export]
-    public PlayerHUD HUD {get; private set;}
+    public GUI GUI {get; private set;}
 
     private new int MoveSpeed;
 
@@ -18,13 +18,13 @@ public sealed partial class Player : Actor
         base._Ready();
 
         //Default some values
-        HUD.ConnectedPlayer = this;
+        GUI.ConnectedPlayer = this;
         players[0] = this;
     }   
     
     public override void OnDeath(DamageInstance damageInstance) {
-        //Freeze Camera
-        //After the freeze, open the death GUI (in hud, invisible)
+        
+        
         PlayFreezeFrame(1000);
         Camera.currentCamera.StartShake(300, 300, 2);
         
@@ -33,8 +33,7 @@ public sealed partial class Player : Actor
         CollisionMask = 0;
         DamageableComponent.QueueFree();
 
-        HUD.ReviveMenu.Enable();
-
+        GUI.SetCurrentMenu(GUI.ReviveMenu);
     }
 
     public override void OnDamaged(DamageInstance damageInstance) {
@@ -45,8 +44,6 @@ public sealed partial class Player : Actor
         GetTree().Paused = true;
         await Task.Delay(milliseconds);
         GetTree().Paused = false;
-
-        
     }
 
     #region signals

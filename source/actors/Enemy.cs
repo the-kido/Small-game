@@ -7,13 +7,12 @@ public partial class Enemy : Actor, IInteractable
 {
     [Export]
     private AnimationPlayer animationPlayer = new();
-    private AIStateMachine stateMachine;
     
+    private AIStateMachine stateMachine;
     public override void _Ready() {
         base._Ready();
 
         stateMachine = new(this);
-        
         Init(new(animationPlayer), stateMachine);
     }
 
@@ -27,9 +26,6 @@ public partial class Enemy : Actor, IInteractable
         stateMachine.AddState(noState, null);
         stateMachine.ChangeState(noState);
 
-        //No longer recieve damage.
-        DamageableComponent.QueueFree();
-        
         //Stop all collisions from happening
         CollisionLayer = 0;
         //Except for the enviornment, because the dead body can still interact with that.

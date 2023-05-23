@@ -11,9 +11,9 @@ public partial class AgroEnemyMiniBoss : Enemy
     private Area2D rushCollisionArea;
     
     public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
-        PatrolState patrolState = new(pathfinder, 400);
         AnimationInfo runningAnimation = new("Running", 1) {speed = 4};
-
+        
+        PatrolState patrolState = new(pathfinder, 400);
         AgroEnemyRushState rushState = new(rushCollisionArea, runningAnimation);
 
         stateMachine.AddState(rushState, patrolState);
@@ -21,19 +21,21 @@ public partial class AgroEnemyMiniBoss : Enemy
 
         stateMachine.ChangeState(patrolState);
 
-        animationController.StopCurrentAnimation(ref rushState.OnStateChanged);
-
-        animationController.StopCurrentAnimation(ref patrolState.IsIdle);
-
-        patrolState.IsIdle += () => GD.Print("Is idle");
-        patrolState.IsMoving += () => GD.Print("Is moving");
-
+        animationController.AddAnimation(new("RESET", 1), ref patrolState.IsIdle);
         animationController.AddAnimation(new("Running", 1), ref patrolState.IsMoving);
-
+        
+        // This isnt even needed? 
+        // animationController.StopCurrentAnimation(ref rushState.OnStateChanged);
+        
         animationController.AddAnimation(new("Preping", 1), ref rushState.OnPreparingToRush);
         animationController.AddAnimation(runningAnimation, ref rushState.OnRushing);
         animationController.AddAnimation(new("fatigue begin", 1), ref rushState.OnFallsTired);
         animationController.AddAnimation(new("Wake up", 2), ref rushState.OnWakesUp);
+    }
+
+    public override void _Ready() {
+        base._Ready();
+        DamageableComponent.OnDeath += (_) => Dialogue.Start("OH DARN I DIED");
     }
 }
 

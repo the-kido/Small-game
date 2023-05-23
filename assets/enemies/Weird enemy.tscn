@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bqffuc80ll1k8"]
+[gd_scene load_steps=26 format=3 uid="uid://bqffuc80ll1k8"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
 [ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
+[ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="7_o34sa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2o215"]
 size = Vector2(19, 20)
@@ -203,7 +204,7 @@ _data = {
 "shoot": SubResource("Animation_s4f62")
 }
 
-[node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
@@ -214,6 +215,7 @@ HoverAtSpawnPointDistance = 250
 spamedBullet = ExtResource("2_lhrnb")
 attackDelay = 1.0
 animationPlayer = NodePath("WeirdEnemy/AnimationPlayer")
+Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("WeirdEnemy")
 CollisionShape = NodePath("Damageable/CollisionShape2D")
@@ -251,3 +253,5 @@ agent = NodePath("../NavigationAgent2D")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 debug_enabled = true
+
+[node name="StatusEffectComponent" parent="." instance=ExtResource("7_o34sa")]

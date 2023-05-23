@@ -6,22 +6,24 @@ public partial class BadBullet : Bullet {
     
     [Export]
     private float wiggleStrength;
-    public double wiggleDistance;
+    private double wiggleDistance;
+
+    protected override DamageInstance damage {get; set;} = new DamageInstance{
+        damage = 5,
+        statusEffect = new PoisonEffect(),            
+    };
     
     public override void _Ready() {
         Random random = new();
         wiggleDistance = (random.Next( (int) wiggleStrength * 2)) - wiggleStrength;
     }
 
-    public override void _Process(double delta)
-    {  
-        MoveBulletForward(delta);
+    public override void _Process(double delta) {  
+        base._Process(delta);
         wigglewiggle(delta);
     }
 
-    //this is techically wrong
     private void wigglewiggle(double delta) {
-
         wiggleDistance += delta * 10;
         float magnitude = wiggleStrength * ((float) Mathf.Sin(wiggleDistance)); 
 
@@ -32,19 +34,4 @@ public partial class BadBullet : Bullet {
 
         Position += vector;
     }
-    public override void DestroyBullet() {
-        QueueFree();
-        SpawnDestroyedParticle();
-    }   
-
-    public override void OnTilemapEntered(TileMap tileMap)
-    {
-        DestroyBullet();
-    }
-    public override void OnDamageableEntered(Damageable damageable, DamageInstance damageInstance)
-    {
-        damageable.Damage(damageInstance);
-        DestroyBullet();
-    }
-    
 }
