@@ -104,7 +104,7 @@ offset_bottom = 97.0
 theme = SubResource("Theme_tsgnt")
 color = Color(0.223529, 0.223529, 0.223529, 1)
 
-[node name="Label" type="Label" parent="HUD/Health label background"]
+[node name="Label" type="Label" parent="HUD/Health label background" node_paths=PackedStringArray("healthLable")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,6 +117,7 @@ text = "afawf
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("3_pe3p1")
+healthLable = NodePath(".")
 
 [node name="Auto Aim Button" type="Button" parent="HUD"]
 layout_mode = 1
@@ -136,21 +137,6 @@ toggle_mode = true
 text = "⁂ Auto Aim ⁂
 "
 script = ExtResource("2_b0xe6")
-
-[node name="DEBUG" type="Control" parent="HUD" node_paths=PackedStringArray("anySlider")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 499.0
-offset_bottom = 113.0
-script = ExtResource("2_isn2q")
-anySlider = NodePath("Any Slider")
-
-[node name="Any Slider" type="HSlider" parent="HUD/DEBUG"]
-layout_mode = 0
-offset_left = 164.0
-offset_top = -21.0
-offset_right = 438.0
-offset_bottom = 113.0
 
 [node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label")]
 layout_mode = 1
@@ -286,3 +272,28 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
+
+[node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 499.0
+offset_bottom = 113.0
+script = ExtResource("2_isn2q")
+anySlider = NodePath("Any Slider")
+anyButton = NodePath("Button")
+
+[node name="Any Slider" type="HSlider" parent="DEBUG"]
+layout_mode = 0
+offset_left = 164.0
+offset_top = -21.0
+offset_right = 438.0
+offset_bottom = 113.0
+
+[node name="Button" type="Button" parent="DEBUG"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 16.0
+offset_right = 681.0
+offset_bottom = 95.0
+text = "Water Damage
+"

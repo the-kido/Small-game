@@ -99,7 +99,11 @@ public sealed class PatrolState : AIState {
     } 
 
     private void FlipActor() {
-        bool flip = MathF.Sign(actor.Velocity.X) == 1 ? false : true;
+        int val = MathF.Sign(actor.Velocity.X);
+        
+        if (val is 0) return;
+        
+        bool flip = val is -1;
         actor.Flip(flip);
     }
 }

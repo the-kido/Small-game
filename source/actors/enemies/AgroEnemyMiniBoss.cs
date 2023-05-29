@@ -30,7 +30,7 @@ public partial class AgroEnemyMiniBoss : Enemy
         animationController.AddAnimation(new("Preping", 1), ref rushState.OnPreparingToRush);
         animationController.AddAnimation(runningAnimation, ref rushState.OnRushing);
         animationController.AddAnimation(new("fatigue begin", 1), ref rushState.OnFallsTired);
-        animationController.AddAnimation(new("Wake up", 2), ref rushState.OnWakesUp);
+        animationController.AddAnimation(new("Wake up", 2) {resetPreviousAnimation = false}, ref rushState.OnWakesUp);
     }
 
     public override void _Ready() {
@@ -93,7 +93,7 @@ public sealed class AgroEnemyRushState : AIState {
     private void Rush() {
         //The 3 acts as a buffer just so that the monster doesnt start to slow down immediately.
         double mathxd = (slowDownLength - (time - slowDownBeginTime)) / slowDownLength;
-        double multiplier = Math.Min(mathxd, 1) * 10;
+        double multiplier = Math.Min(mathxd, 1) * actor.MoveSpeed/10;
 
         Vector2 velocity = (rushDirection) * (float) multiplier; 
         

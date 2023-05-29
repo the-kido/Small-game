@@ -13,6 +13,8 @@ public partial class Damageable : Area2D {
 	private int MaxHealth {get; init;}
 	public bool IsImmune {get; private set;} = false;
 
+	public float DamageMulitplier {get; set;} = 1;
+
 
 	public bool IsAlive {
         get {
@@ -27,7 +29,6 @@ public partial class Damageable : Area2D {
 	public event Action SetToUnimmune;
 
 	public override void _Ready() => ErrorUtils.AvoidEmptyCollisionLayers(this);
-
 
 	private async void WaitForImmunityFrames(DamageInstance a) {
 		SetToImmune?.Invoke();
@@ -52,7 +53,7 @@ public partial class Damageable : Area2D {
 		if (IsImmune && damageInstance.overridesImmunityFrames == false) 
 			return;
 
-		Health -= damageInstance.damage;
+		Health -= (int)(damageInstance.damage * DamageMulitplier);
 		OnDamaged?.Invoke(damageInstance);
 
 		if (Health <= 0) 

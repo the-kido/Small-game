@@ -195,6 +195,10 @@ public sealed class DefaultAttackState : AIState {
             playerSeenDuration += delta;
         }
 
+        if (EnemyForgetPlayer(player, delta, ref forgetPlayerTimer)) {
+            stateMachine.ChangeState(stateToGoTo);
+        }
+
         #region timers
         updatePathfindTimer += delta;
         if (updatePathfindTimer > 0.25) {
@@ -203,21 +207,20 @@ public sealed class DefaultAttackState : AIState {
 
         shootTimer += delta;
         if (shootTimer >= attackDelay) {
-            if (playerSeenDuration < 1) return;
-            playerSeenDuration = 0;
+            if (playerSeenDuration > 1) {
+                playerSeenDuration = 0;
 
-            shootTimer = 0;
-            actor.Velocity = Vector2.Zero;
-            Shoot(player);
+                shootTimer = 0;
+                actor.Velocity = Vector2.Zero;
+                Shoot(player);
+            }
         }
         #endregion
 
         FlipActor(lastRememberedPlayer);
         Move(player);
 
-        if (EnemyForgetPlayer(player, delta, ref forgetPlayerTimer)) {
-            stateMachine.ChangeState(stateToGoTo);
-        }
+        
     }
 
     Player lastRememberedPlayer = Player.players[0];

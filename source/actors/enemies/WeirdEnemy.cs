@@ -23,8 +23,12 @@ public sealed partial class WeirdEnemy : Enemy {
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
         
         animationController.AddAnimation(new("shoot", 2), ref attackState.OnShoot);
+
         animationController.AddAnimation(new("idle", 1), ref patrolState.IsIdle);
         animationController.AddAnimation(new("flying", 1), ref patrolState.IsMoving);
+
+        patrolState.IsIdle += () => GD.Print("is idle");
+        patrolState.IsMoving += () => GD.Print("is moving");
 
         stateMachine.AddState(attackState, patrolState);
         stateMachine.AddState(patrolState, attackState);
@@ -64,14 +68,14 @@ public class AnimationController {
         if (currentAnimation.priority > animation.priority) return;
         if (currentAnimation.name == animation.name) return;
 
-
-        GD.Print("Animation playing: ", animation.name);
-
         currentAnimation = animation;
         animationPlayer.SpeedScale = animation.speed;
 
-        animationPlayer.Play("RESET");
-        animationPlayer.Stop();
+        if (animation.resetPreviousAnimation) {
+            animationPlayer.Play("RESET");
+            animationPlayer.Stop();
+        }
+        
         animationPlayer.Play(animation.name);
     }
 
@@ -85,6 +89,9 @@ public class AnimationInfo {
     public readonly int priority;
     public readonly string name;
     public float speed = 1;
+
+    public bool resetPreviousAnimation = true;
+    
 
     public AnimationInfo(string name, int priority) {
         this.name = name;

@@ -229,7 +229,7 @@ debug_color = Color(0.952941, 0, 0.564706, 0.337255)
 scale = Vector2(1.18205, 1.20366)
 collision_layer = 4
 collision_mask = 8
-Health = 10
+Health = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 shape = SubResource("RectangleShape2D_0m8x3")
@@ -237,10 +237,10 @@ debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 
 [node name="WeirdEnemy" type="AnimatedSprite2D" parent="."]
 z_index = 2
-position = Vector2(0, -1)
+position = Vector2(0, 0.754487)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_thmwc")
-frame_progress = 0.0444129
+frame = 1
 offset = Vector2(0, 0.539469)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WeirdEnemy"]

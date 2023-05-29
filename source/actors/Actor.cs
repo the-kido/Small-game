@@ -14,7 +14,7 @@ public abstract partial class Actor : CharacterBody2D {
     [Export]
     public CollisionShape2D CollisionShape {get; private set;}
 	[Export]
-	public int MoveSpeed {get; private set;}
+	public int MoveSpeed {get; set;}
     
 
 	public override void _Process(double delta) => MoveAndSlide();
@@ -28,7 +28,7 @@ public abstract partial class Actor : CharacterBody2D {
         DamageableComponent.OnDamaged += DamageFlash;
         DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
 
-        Effect.Init(this, this.DamageableComponent);
+        Effect.Init(this);
 
 	}
 	public abstract void OnDeath(DamageInstance damageInstance);

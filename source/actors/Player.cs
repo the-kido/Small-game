@@ -8,11 +8,15 @@ public sealed partial class Player : Actor
 
     [Export]
     public GUI GUI {get; private set;}
+    [Export]
+    private AudioStreamPlayer2D epicSoundEffectPlayer;
+
 
     private new int MoveSpeed;
 
     public List<Actor> NearbyEnemies {get; private set;} = new();
     public static Player[] players {get; private set;} = new Player[4];
+
 
     public override void _Ready() {
         base._Ready();
@@ -20,12 +24,18 @@ public sealed partial class Player : Actor
         //Default some values
         GUI.ConnectedPlayer = this;
         players[0] = this;
+
+        GUI.HUD.healthLable.Init(this);
+        DamageableComponent.OnDamaged += GUI.HUD.healthLable.UpdateHealth;
+
+
     }   
     
+    
     public override void OnDeath(DamageInstance damageInstance) {
+        GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
         
-        
-        PlayFreezeFrame(1000);
+        PlayImpactFrames(1000);
         Camera.currentCamera.StartShake(300, 300, 2);
         
         //Make player immune to everything and anything all of the time
@@ -37,10 +47,10 @@ public sealed partial class Player : Actor
     }
 
     public override void OnDamaged(DamageInstance damageInstance) {
-        PlayFreezeFrame(300);
+        if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
     }
 
-    private async void PlayFreezeFrame(int milliseconds) {
+    private async void PlayImpactFrames(int milliseconds) {
         GetTree().Paused = true;
         await Task.Delay(milliseconds);
         GetTree().Paused = false;

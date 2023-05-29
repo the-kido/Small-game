@@ -219,7 +219,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
+tracks/1/enabled = true
 tracks/1/path = NodePath(".:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -352,6 +352,7 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AgroGuy" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_f4ect")
+animation = &"preping"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AgroGuy"]
 libraries = {

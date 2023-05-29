@@ -6,15 +6,19 @@ public partial class HealthLabelTemp : Label {
     #region move to seperate "health lable" class
     [Export]
     Label healthLable;
+    string healthLableText => "♥: " + player.DamageableComponent.Health.ToString();
 
-    string healthLableText = "♥: ";
+    private Player player;
     
     public void UpdateHealth(DamageInstance damage) {
-        healthLable.Text = healthLableText + damage.damage.ToString();
+        healthLable.Text = healthLableText;
         DamageFlash();
     }
 
-    public void Init(int health) => healthLable.Text = healthLableText + health.ToString();
+    public void Init(Player player) {
+        this.player = player;
+        healthLable.Text = healthLableText;
+    } 
 
     volatile int percentRed = 0;    
     //Set the flashing to true.

@@ -10,7 +10,7 @@ public partial class BadBullet : Bullet {
 
     protected override DamageInstance damage {get; set;} = new DamageInstance{
         damage = 5,
-        statusEffect = new PoisonEffect(),            
+        statusEffect = new FireEffect(),            
     };
     
     public override void _Ready() {
