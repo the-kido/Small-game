@@ -23,8 +23,13 @@ public sealed class FireEffect : IActorStatus {
         suppressImpactFrames = true,
     };
     
-    public override void Init(Actor actor) {}
-    public override void Disable(Actor actor) {}
+    GpuParticles2D fire;
+    public override void Init(Actor actor) {
+        fire = Effects.AddParticle(actor, Effects.Fire);
+    }
+    public override void Disable(Actor actor) {
+        Effects.RemoveParticle(fire);
+    }
 
     double damageTime;
     public float damagePeriod = 2;
@@ -55,13 +60,16 @@ public sealed class WetStatus : IPermanentStatus {
         };
     }
 
+    GpuParticles2D water;
     public override void Init(Actor actor) {
-        GD.Print("MOve speed reduced!");
+        water = Effects.AddParticle(actor, Effects.Wet);
+
         actor.MoveSpeed /= 10;
     }
 
     public override void Disable(Actor actor) {
         actor.MoveSpeed *= 10;
+        Effects.RemoveParticle(water);
     }
 }
 
@@ -71,16 +79,17 @@ public sealed class GasStatus : IPermanentStatus {
 
     public GasStatus() {
         opposites = new ConvertsTo[] {
+            
         };
     }
-
     public override void Disable(Actor actor) {
-        
+        Effects.RemoveParticle(gas);
     }
 
+    GpuParticles2D gas;
     //TODO: Just make this have a cute visual. Gas state should do nothing paticularly cool. 
-    public override void Init(Actor actor) {
-
+    public override void Init(Actor actor) {    
+        gas = Effects.AddParticle(actor, Effects.Gas);
     }
 }
 

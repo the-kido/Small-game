@@ -13,7 +13,16 @@ public partial class Damageable : Area2D {
 	private int MaxHealth {get; init;}
 	public bool IsImmune {get; private set;} = false;
 
-	public float DamageMulitplier {get; set;} = 1;
+	private float _damageMultiplier = 1f;
+	public float DamageMulitplier {
+		get => _damageMultiplier;
+		set {
+			if (value < 0) {
+				throw new ArgumentOutOfRangeException(nameof(value), "Range must be above 0");
+			}
+			_damageMultiplier = value;
+		}
+	}
 
 
 	public bool IsAlive {
@@ -53,7 +62,7 @@ public partial class Damageable : Area2D {
 		if (IsImmune && damageInstance.overridesImmunityFrames == false) 
 			return;
 
-		Health -= (int)(damageInstance.damage * DamageMulitplier);
+		Health -= (int)(damageInstance.damage * _damageMultiplier);
 		OnDamaged?.Invoke(damageInstance);
 
 		if (Health <= 0) 

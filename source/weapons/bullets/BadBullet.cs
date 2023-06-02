@@ -7,11 +7,6 @@ public partial class BadBullet : Bullet {
     [Export]
     private float wiggleStrength;
     private double wiggleDistance;
-
-    protected override DamageInstance damage {get; set;} = new DamageInstance{
-        damage = 5,
-        statusEffect = new FireEffect(),            
-    };
     
     public override void _Ready() {
         Random random = new();

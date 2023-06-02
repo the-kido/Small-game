@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dewg67pob5sxu"]
+
+[ext_resource type="Texture2D" uid="uid://s167pvk1hwnk" path="res://assets/effects/wet.png" id="1_2ko8d"]
+
+[sub_resource type="Gradient" id="Gradient_5cx1h"]
+offsets = PackedFloat32Array(0, 0.868512, 1)
+colors = PackedColorArray(0.637263, 0.6142, 0.74, 1, 0.9295, 0.91, 1, 1, 0.8895, 0.87, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3q6bi"]
+gradient = SubResource("Gradient_5cx1h")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8hwlg"]
+emission_shape = 3
+emission_box_extents = Vector3(5, 5, 1)
+particle_flag_disable_z = true
+gravity = Vector3(0, 20, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 3.0
+scale_max = 4.0
+color_ramp = SubResource("GradientTexture1D_3q6bi")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+z_index = 1
+amount = 2
+process_material = SubResource("ParticleProcessMaterial_8hwlg")
+texture = ExtResource("1_2ko8d")

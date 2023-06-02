@@ -9,10 +9,6 @@
 [ext_resource type="Script" path="res://source/gui/ReviveMenu.cs" id="5_kdcv6"]
 [ext_resource type="Script" path="res://source/gui/hud/DialogueBar.cs" id="7_olhhw"]
 
-[sub_resource type="Theme" id="Theme_tsgnt"]
-
-[sub_resource type="Theme" id="Theme_rprt4"]
-
 [sub_resource type="Animation" id="Animation_wjuk7"]
 resource_name = "Open"
 length = 2.0
@@ -74,120 +70,16 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
+[sub_resource type="Theme" id="Theme_tsgnt"]
+
+[sub_resource type="Theme" id="Theme_rprt4"]
+
 [node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "ReviveMenu")]
 layer = 10
 script = ExtResource("1_7vbvm")
 TargetIndicator = NodePath("")
 HUD = NodePath("HUD")
 ReviveMenu = NodePath("Revive")
-
-[node name="HUD" type="Control" parent="." node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-script = ExtResource("2_62of5")
-AttackButton = NodePath("Auto Aim Button")
-dialogueBar = NodePath("Dialogue Bar")
-healthLable = NodePath("Health label background/Label")
-
-[node name="Health label background" type="ColorRect" parent="HUD"]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 16.0
-offset_right = 133.0
-offset_bottom = 97.0
-theme = SubResource("Theme_tsgnt")
-color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Label" type="Label" parent="HUD/Health label background" node_paths=PackedStringArray("healthLable")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_rprt4")
-text = "afawf
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("3_pe3p1")
-healthLable = NodePath(".")
-
-[node name="Auto Aim Button" type="Button" parent="HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -196.0
-offset_top = -119.0
-offset_right = -23.0
-offset_bottom = -22.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("2_lc21n")
-toggle_mode = true
-text = "⁂ Auto Aim ⁂
-"
-script = ExtResource("2_b0xe6")
-
-[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-script = ExtResource("7_olhhw")
-Label = NodePath("Background/Text Background/RichTextLabel")
-
-[node name="Background" type="ColorRect" parent="HUD/Dialogue Bar"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -208.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Text Background" type="ColorRect" parent="HUD/Dialogue Bar/Background"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -1436.0
-offset_top = -86.0
-offset_right = -24.0
-offset_bottom = 87.0
-grow_horizontal = 0
-grow_vertical = 2
-color = Color(0.180392, 0.180392, 0.180392, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="HUD/Dialogue Bar/Background/Text Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 17.0
-offset_right = -32.0
-offset_bottom = -17.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "waffwwfa "
-fit_content = true
 
 [node name="Revive" type="Control" parent="." node_paths=PackedStringArray("animationPlayer", "close")]
 layout_mode = 3
@@ -272,6 +164,115 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
+
+[node name="HUD" type="Control" parent="." node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+script = ExtResource("2_62of5")
+AttackButton = NodePath("Auto Aim Button")
+dialogueBar = NodePath("Dialogue Bar")
+healthLable = NodePath("Health label background/Label")
+
+[node name="Health label background" type="ColorRect" parent="HUD"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 16.0
+offset_right = 133.0
+offset_bottom = 97.0
+theme = SubResource("Theme_tsgnt")
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Label" type="Label" parent="HUD/Health label background" node_paths=PackedStringArray("healthLable")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_rprt4")
+text = "afawf
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_pe3p1")
+healthLable = NodePath(".")
+
+[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("7_olhhw")
+Label = NodePath("Background/Text Background/RichTextLabel")
+
+[node name="Background" type="ColorRect" parent="HUD/Dialogue Bar"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -208.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Text Background" type="ColorRect" parent="HUD/Dialogue Bar/Background"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -1436.0
+offset_top = -86.0
+offset_right = -24.0
+offset_bottom = 87.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HUD/Dialogue Bar/Background/Text Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 17.0
+offset_right = -32.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "waffwwfa "
+fit_content = true
+
+[node name="Auto Aim Button" type="Button" parent="HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_top = -119.0
+offset_right = -23.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_lc21n")
+toggle_mode = true
+text = "⁂ Auto Aim ⁂
+"
+script = ExtResource("2_b0xe6")
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
 layout_mode = 3

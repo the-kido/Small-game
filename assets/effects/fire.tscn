@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://carnd6r1ccx1d"]
+
+[sub_resource type="Gradient" id="Gradient_db1di"]
+offsets = PackedFloat32Array(0.0444444, 0.392593, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.752941, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hjfuq"]
+gradient = SubResource("Gradient_db1di")
+
+[sub_resource type="Curve" id="Curve_3ipog"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fpixs"]
+curve = SubResource("Curve_3ipog")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vggbx"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 2, 0)
+particle_flag_disable_z = true
+spread = 47.4
+gravity = Vector3(0, -98, 0)
+angular_velocity_min = 77.8
+angular_velocity_max = 77.8
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+radial_accel_min = -94.19
+radial_accel_max = 100.0
+angle_min = -298.1
+angle_max = -46.5
+scale_min = 4.44
+scale_max = 11.53
+scale_curve = SubResource("CurveTexture_fpixs")
+color_ramp = SubResource("GradientTexture1D_hjfuq")
+
+[sub_resource type="Gradient" id="Gradient_sakxm"]
+offsets = PackedFloat32Array(0, 0.764706, 1)
+colors = PackedColorArray(0.31, 0.0651, 0.0651, 1, 0.11, 0.01397, 0.0033, 1, 0.109804, 0.0156863, 0.00392157, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gbr8w"]
+gradient = SubResource("Gradient_sakxm")
+
+[sub_resource type="Curve" id="Curve_j5qo6"]
+_data = [Vector2(0, 0.236364), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ijc5d"]
+curve = SubResource("Curve_j5qo6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k2fde"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 0, 1)
+particle_flag_disable_z = true
+gravity = Vector3(0, -40, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 15.0
+scale_max = 25.44
+scale_curve = SubResource("CurveTexture_ijc5d")
+color_ramp = SubResource("GradientTexture1D_gbr8w")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+amount = 24
+process_material = SubResource("ParticleProcessMaterial_vggbx")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+top_level = true
+z_index = -1
+process_material = SubResource("ParticleProcessMaterial_k2fde")

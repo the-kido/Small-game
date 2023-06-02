@@ -662,6 +662,7 @@ inputController = NodePath("../Input Controller")
 playerAnimationTree = NodePath("../AnimationTree")
 
 [node name="Input Controller" type="Node" parent="." node_paths=PackedStringArray("attachedPlayer", "hand")]
+process_mode = 3
 script = ExtResource("2_7escu")
 attachedPlayer = NodePath("..")
 hand = NodePath("../Hand")

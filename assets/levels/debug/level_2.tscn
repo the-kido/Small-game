@@ -52,7 +52,6 @@ process_mode = 4
 position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Placed Enemies" instance=ExtResource("7_5xse6")]
-process_mode = 4
 position = Vector2(438, 473)
 
 [node name="This guy is agro as frick" parent="Placed Enemies" instance=ExtResource("8_vrrcy")]

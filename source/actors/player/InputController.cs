@@ -15,11 +15,14 @@ public partial class InputController : Node
 
 	[Export]
 	private Node2D hand;
+	private Weapon weapon => hand.GetChild<Weapon>(0);
 	public bool FilterAllInput {get; private set;} = false;
 	
 	#region ATTACK
-	public event Action UseWeapon;
-	public event Action<Vector2> UpdateWeapon;
+	public event Action<double> UseWeapon;
+	public event Action<Vector2> UpdateWeaponDirection;
+	public event Action OnWeaponLetGo;
+
 	private bool isHoveringOverGui = false;
 	private bool isAutoAttackButtonToggled = false;
 	
@@ -29,16 +32,21 @@ public partial class InputController : Node
 		if (isAutoAttackButtonToggled) {
 			inputMap.Add(InputType.AutoAttackButtonToggled);
 		}
-		if (Input.IsActionJustPressed("default_attack")) {
-			inputMap.Add(InputType.LeftClicked);
-		}
-		if (Input.IsActionPressed("default_attack")) {
+
+		if (Input.IsActionJustPressed("utility_used"))
+			inputMap.Add(InputType.RightClickJustPressed);
+		
+		if (Input.IsActionPressed("default_attack")) 
 			inputMap.Add(InputType.LeftClickHold);
-		}
+
+		if (Input.IsActionJustReleased("default_attack"))
+			inputMap.Add(InputType.LeftClickJustReleased);
+
 		return inputMap;
 	}
-	private IInteractable targettedObject;
-    public IInteractable FindInteractable(List<Node2D> list) {
+    public IInteractable FindInteractableWithinCursor() {
+		List<Node2D> list = KidoUtils.Utils.GetPreloadedScene<GlobalCursor>(this, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
+
         foreach(Node2D node2d in list) {
             if (node2d is IInteractable) {
                 return (IInteractable) node2d;
@@ -74,50 +82,85 @@ public partial class InputController : Node
         return null;
     }
 
-	//This method does WAYY too much. Should be split up to avoid ultra confusion 
- 	private void ControlWeapon() {
+	enum WeaponControl { Autoaim, SelectedAutoaim, ManualAim }
+	
+	private WeaponControl useMethod; 
+	//This method does WAYY too much. Should be split up to avoid ultra confusion
+	private IInteractable targettedInteractable;
+
+	private void ControlUseMethod() {
 		List<InputType> inputMap = GetAttackInputs();
 
-		//If the player left clicks, find the nearest IInteractable to focus on.
-		if (inputMap.Contains(InputType.LeftClicked)) {
-			GlobalCursor cursor = KidoUtils.Utils.GetPreloadedScene<GlobalCursor>(this, PreloadedScene.GlobalCursor);
-            targettedObject = FindInteractable(cursor.ObjectsInCursorRange);
-			
-			if (targettedObject is null) {
-				GUI.TargetIndicator.Disable();
-			}
-        }
+		// Check if there is an interactable selected after right clicking.
+		if (inputMap.Contains(InputType.RightClickJustPressed)) targettedInteractable = FindInteractableWithinCursor();
+
+		// If something happened to the interactable, default to default aim method.
+		if (useMethod is WeaponControl.SelectedAutoaim && targettedInteractable is null) useMethod = WeaponControl.ManualAim;
 		
-		if(targettedObject?.IsInteractable() == true) {
+		if (inputMap.Contains(InputType.AutoAttackButtonToggled))
+			useMethod = WeaponControl.Autoaim;
+		else
+			useMethod = WeaponControl.ManualAim;
 
-			GUI.TargetIndicator.Enable(targettedObject);
+		// This is put last for most priority. If the player explicitly wants to target a unit, it should 
+		// Override any automation
+		if (targettedInteractable is not null) useMethod = WeaponControl.SelectedAutoaim;
 
-			//If the interactable is still in tact and is still visible, autoshoot it.
-			if(IsInteractableVisible(targettedObject)) {
-				UpdateWeapon?.Invoke(targettedObject.GetPosition());
-				UseWeapon?.Invoke();
+	}
+ 
+	private void ControlWeapon(double delta) {
+
+		List<InputType> inputMap = GetAttackInputs();
+
+		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
+
+		if (inputMap.Contains(InputType.RightClickJustPressed)) {
+            targettedInteractable = FindInteractableWithinCursor();
+
+			if (targettedInteractable is null)
+				GUI.TargetIndicator.Disable();
+			else
+				GUI.TargetIndicator.Enable(targettedInteractable);
+		}
+
+		if (useMethod is WeaponControl.SelectedAutoaim && targettedInteractable?.IsInteractable() == true) {
+			//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
+			if (weapon.WeaponType is Weapon.Type.HoldToCharge) {
+				UpdateWeaponDirection?.Invoke(targettedInteractable.GetPosition());
+				UseWeapon?.Invoke(delta);
+				return;
 			}
-			return;
+			
+			//If the interactable is still in tact and is still visible, autoshoot it.
+			if (IsInteractableVisible(targettedInteractable)) {
+				UpdateWeaponDirection?.Invoke(targettedInteractable.GetPosition());
+				UseWeapon?.Invoke(delta);
+			}
 		}
 		
-		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) {
+		if (useMethod is WeaponControl.Autoaim) {
             Actor see = FindObjectToFace(Player.players[0].NearbyEnemies);
             
+			if (weapon.WeaponType is Weapon.Type.HoldToCharge) {
+				UseWeapon?.Invoke(delta); 
+			}
+
             if (see is not null) {
-				UpdateWeapon?.Invoke(see.GlobalPosition);
-				UseWeapon?.Invoke();
+				UpdateWeaponDirection?.Invoke(see.GlobalPosition);
+				//This is literally the only solution i can  think of..
+				if (weapon.WeaponType is not Weapon.Type.HoldToCharge)
+					UseWeapon?.Invoke(delta);
             }
-            return;
         }
 		
-		if(isHoveringOverGui) return;
-
-		//If the player is aiming themselves, shoot where they're pointing. 
-		if (inputMap.Contains(InputType.LeftClickHold))
-			UseWeapon?.Invoke();
-		
-		//Default the weapon to point to the cursor.
-		UpdateWeapon?.Invoke(hand.GetGlobalMousePosition());
+		if (useMethod is WeaponControl.ManualAim ) {
+			//If the player is aiming themselves, shoot where they're pointing. 
+			if (inputMap.Contains(InputType.LeftClickHold))
+				UseWeapon?.Invoke(delta);
+			
+			//Default the weapon to point to the cursor.
+			UpdateWeaponDirection?.Invoke(hand.GetGlobalMousePosition());
+		}
 	}
 
 	#endregion 
@@ -134,31 +177,31 @@ public partial class InputController : Node
 	}
 
 	#endregion
-	public override void _Ready () {
+	public override void _Ready() {
 		GUI.HUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
 		GUI.HUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
 		GUI.HUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
 
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 	}
-	public override void _Process (double delta)
-	{
+	public override void _Process(double delta) {
 		if (FilterAllInput)
 			return;
-		
-		ControlWeapon();
 		ControlMovement();
+		ControlUseMethod();
+		ControlWeapon(delta);
 	}
 
-	private void OnDeath (DamageInstance _) {
+	private void OnDeath(DamageInstance _) {
 		FilterAllInput = true;
 		attachedPlayer.Velocity = Vector2.Zero;
 	}
 }
 
 public enum InputType {
-	LeftClicked,
+	RightClickJustPressed,
 	LeftClickHold,
+	LeftClickJustReleased,
 	RightClickHold,
 	AutoAttackButtonToggled,
 }

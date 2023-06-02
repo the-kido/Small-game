@@ -135,11 +135,11 @@ public sealed class DefaultAttackState : AIState {
 
     public Action OnShoot;
 
-    enum State {
-        Shooting,
-        Following,
-        BackingOff,
-    }
+    DamageInstance damage = new() {
+        damage = 5,
+        statusEffect = new FireEffect(),
+    };
+   
    
     Pathfinder pathfinderComponent;
     PackedScene spamedBullet;
@@ -256,7 +256,7 @@ public sealed class DefaultAttackState : AIState {
         
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
-            .Init(actor.Position, angle, BulletFrom.Enemy);
+            .Init(actor.Position, angle, BulletFrom.Enemy, damage);
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.

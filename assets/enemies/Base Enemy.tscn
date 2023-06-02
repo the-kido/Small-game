@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://by0owtwfhbrt2"]
+[gd_scene load_steps=11 format=3 uid="uid://by0owtwfhbrt2"]
 
 [ext_resource type="Script" path="res://assets/enemies/RedBlobEnemy.cs" id="1_fluuk"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_sb4ia"]
 [ext_resource type="Texture2D" uid="uid://bgat1sola6eox" path="res://assets/sprites/enemies/base_enemy.png" id="3_fn2kq"]
+[ext_resource type="Shader" path="res://assets/enemies/Base Enemy.gdshader" id="3_nvfwq"]
 [ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="4_13fcn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qx2ha"]
@@ -10,6 +11,9 @@ size = Vector2(32, 37)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1dm21"]
 size = Vector2(16, 17)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2xdi"]
+shader = ExtResource("3_nvfwq")
 
 [sub_resource type="Animation" id="Animation_7oqui"]
 resource_name = "new_animation"
@@ -20,6 +24,7 @@ _data = {
 }
 
 [node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("Effect", "DamageableComponent", "CollisionShape")]
+z_index = 1
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_fluuk")
@@ -43,6 +48,8 @@ shape = SubResource("RectangleShape2D_1dm21")
 debug_color = Color(0.976471, 0, 0.419608, 0.117647)
 
 [node name="Sprite" type="Sprite2D" parent="."]
+z_index = 1
+material = SubResource("ShaderMaterial_j2xdi")
 scale = Vector2(5, 5)
 texture = ExtResource("3_fn2kq")
 

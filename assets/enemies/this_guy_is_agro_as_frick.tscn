@@ -328,6 +328,7 @@ size = Vector2(15, 14)
 size = Vector2(18.8, 16.8)
 
 [node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "rushCollisionArea", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+z_index = 1
 scale = Vector2(5, 5)
 disable_mode = 2
 collision_layer = 4
@@ -351,6 +352,7 @@ shape = SubResource("RectangleShape2D_rr0j3")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AgroGuy" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_f4ect")
 animation = &"preping"
 

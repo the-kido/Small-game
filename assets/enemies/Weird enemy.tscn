@@ -205,6 +205,7 @@ _data = {
 }
 
 [node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+z_index = 1
 scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
@@ -236,7 +237,7 @@ shape = SubResource("RectangleShape2D_0m8x3")
 debug_color = Color(0, 0.560784, 0.886275, 0.109804)
 
 [node name="WeirdEnemy" type="AnimatedSprite2D" parent="."]
-z_index = 2
+z_index = 1
 position = Vector2(0, 0.754487)
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_thmwc")

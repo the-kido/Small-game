@@ -70,8 +70,8 @@ public partial class EffectInflictable : Node {
 
         ParseSynergies();
         StatusEffects.Add(effectInstance);
-        effectInstance.Reset();
         effectInstance.Init(actor);
+        effectInstance.Reset();
     }
 
     //Called from the actor this is attached to.

@@ -5,8 +5,7 @@ using KidoUtils;
 
 public abstract partial class Bullet : Node2D { 
 
-    protected abstract DamageInstance damage {get; set;}
-
+    private DamageInstance currentDamageInstance;
 
     [Export(PropertyHint.Range, "-360,360,1,or_greater,or_less")] 
     private int speed;
@@ -38,7 +37,7 @@ public abstract partial class Bullet : Node2D {
     #endregion
 
     private DamageInstance BulletDamageInstance() {
-        DamageInstance damageInstance = damage;
+        DamageInstance damageInstance = currentDamageInstance;
         damageInstance.forceDirection = directionFacing;
         return damageInstance;
     }
@@ -60,7 +59,7 @@ public abstract partial class Bullet : Node2D {
         newParticle.QueueFree();
     }
 
-    public void Init(Vector2 spawnPosition, float radians, BulletFrom from) {
+    public void Init(Vector2 spawnPosition, float radians, BulletFrom from, DamageInstance currentDamageInstance) {
         //Attach events
         hitbox.AreaEntered += OnArea2DEntered;
         hitbox.BodyEntered += OnBodyEntered;
@@ -83,6 +82,8 @@ public abstract partial class Bullet : Node2D {
         }
 
         Rotation = radians;
+
+        this.currentDamageInstance = currentDamageInstance;
 
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         Position = spawnPosition;

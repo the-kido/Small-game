@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0guw5xnd0ulf"]
+
+[ext_resource type="Texture2D" uid="uid://dplqe7s06n0jc" path="res://assets/effects/wooo.png" id="1_g82om"]
+
+[sub_resource type="Gradient" id="Gradient_kw1j0"]
+offsets = PackedFloat32Array(0, 0.84083, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nvg05"]
+gradient = SubResource("Gradient_kw1j0")
+
+[sub_resource type="Curve" id="Curve_nqxxj"]
+_data = [Vector2(0, 0.227273), 0.0, 0.0, 0, 0, Vector2(0.34375, 0.981818), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_v2tws"]
+curve = SubResource("Curve_nqxxj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hbe4j"]
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 106.08
+gravity = Vector3(0, -10, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+angular_velocity_min = -200.0
+angular_velocity_max = 200.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+tangential_accel_min = -6.0
+tangential_accel_max = 6.0
+damping_max = 7.56
+angle_max = 26.0
+scale_min = 3.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_v2tws")
+color = Color(0.901961, 0.94902, 1, 1)
+color_ramp = SubResource("GradientTexture1D_nvg05")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+process_material = SubResource("ParticleProcessMaterial_hbe4j")
+texture = ExtResource("1_g82om")
+lifetime = 2.0
+collision_base_size = 0.0

@@ -5,40 +5,55 @@ using System.Threading.Tasks;
 
 
 public abstract partial class Weapon : Node2D {
-	[Export]
-	public float ReloadSpeed {get; set;}
-	protected static Node2D hand;
 
+
+	//This type thing is relavent to the input controller.
+	public enum Type {
+		//1 click, 1 shot. Hold to constantly shoot.
+		InstantShot,
+		//Hold to shoot stronger
+		HoldToCharge,
+		//
+	}
+	public abstract Weapon.Type WeaponType {get; protected set;} 
+
+	[Export]
+	public float ReloadSpeed {get; private set;}
+	protected double reloadTimer = 0;
+
+	protected Node2D hand => (Node2D) GetParent();
 	public override void _Ready() {
-		hand = (Node2D) GetParent();
 		Name = "Weapon";
+
 		InputController inputController = hand.GetNode<InputController>("../Input Controller");
 
-		inputController.UpdateWeapon += UpdateWeapon;
-		inputController.UseWeapon += UseAndReloadWeapon;
+		inputController.UpdateWeaponDirection += UpdateWeapon;
+		inputController.UseWeapon += OnWeaponUsing;
+		inputController.OnWeaponLetGo += () => OnWeaponLetGo();
 	}
 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
+	public abstract void OnWeaponLetGo();
 	public abstract void Attack();
 
-	private bool reloaded = true;
-	private async void UseAndReloadWeapon() {
-		if (!reloaded)
+
+	//While the player is "using" (holding click for) the weapon.
+	//Can be overridden if need be
+	protected virtual void OnWeaponUsing(double delta) {
+		reloadTimer += delta;
+
+		if (reloadTimer < ReloadSpeed)
 			return;
 		
-		reloaded = false;
-
+		reloadTimer = 0;
 		Attack();
-		await Task.Delay((int)(ReloadSpeed * 1000));
-
-		reloaded = true;
 	}
 
 	public void ChangeWeapon(PackedScene weapon) {
 		InputController inputController = hand.GetNode<InputController>("../Input Controller");
 
-		inputController.UpdateWeapon -= UpdateWeapon;
-		inputController.UseWeapon -= UseAndReloadWeapon;
+		inputController.UpdateWeaponDirection -= UpdateWeapon;
+		inputController.UseWeapon -= OnWeaponUsing;
 
 		foreach (Node child in hand.GetChildren()) child.QueueFree();
 
