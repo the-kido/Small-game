@@ -8,9 +8,11 @@ public sealed partial class Player : Actor
 
     [Export]
     public GUI GUI {get; private set;}
+    
+    public InputController InputController => (InputController) FindChild("Input Controller");
+    
     [Export]
     private AudioStreamPlayer2D epicSoundEffectPlayer;
-
 
     private new int MoveSpeed;
 
@@ -27,12 +29,12 @@ public sealed partial class Player : Actor
 
         GUI.HUD.healthLable.Init(this);
         DamageableComponent.OnDamaged += GUI.HUD.healthLable.UpdateHealth;
-
-
+        DamageableComponent.OnDamaged += DamageFramePause;
+        DamageableComponent.OnDeath += OnDeath;
     }   
     
     
-    public override void OnDeath(DamageInstance damageInstance) {
+    public void OnDeath(DamageInstance damageInstance) {
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
         
         PlayImpactFrames(1000);
@@ -46,7 +48,7 @@ public sealed partial class Player : Actor
         GUI.SetCurrentMenu(GUI.ReviveMenu);
     }
 
-    public override void OnDamaged(DamageInstance damageInstance) {
+    public void DamageFramePause(DamageInstance damageInstance) {
         if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
     }
 

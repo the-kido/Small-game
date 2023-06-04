@@ -9,10 +9,13 @@ public partial class Enemy : Actor, IInteractable
     private AnimationPlayer animationPlayer = new();
     
     private AIStateMachine stateMachine;
+
     public override void _Ready() {
         base._Ready();
 
         stateMachine = new(this);
+        DamageableComponent.OnDeath += DeathAnimation;
+
         Init(new(animationPlayer), stateMachine);
     }
 
@@ -21,22 +24,22 @@ public partial class Enemy : Actor, IInteractable
         stateMachine.UpdateState(delta);
     }
 
-    public override void OnDeath(DamageInstance damageInstance) {
+    public void DeathAnimation(DamageInstance damageInstance) {
+
         DeathState noState = new(damageInstance);
         stateMachine.AddState(noState, null);
         stateMachine.ChangeState(noState);
+        
+        foreach (string name in animationPlayer.GetAnimationList()) {
+            if (name is not "death") continue;
+            animationPlayer.Play("death");
+        }
 
         //Stop all collisions from happening
         CollisionLayer = 0;
         //Except for the enviornment, because the dead body can still interact with that.
         CollisionMask = (int) Layers.Enviornment;
     }
-    
-
-    public override void OnDamaged(DamageInstance damageInstance) {
-        
-    }
-
     
     public virtual void Init(AnimationController animationController, AIStateMachine aIStateMachine) {
         throw new NotImplementedException();

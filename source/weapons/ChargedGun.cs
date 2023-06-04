@@ -14,6 +14,7 @@ public partial class ChargedGun : Weapon {
     DamageInstance damage = new() {
         statusEffect = new FireEffect(),
     };
+    BulletInstance bulletInstance => new(BulletFrom.Player, damage, BulletSpeed.Fast);
 
     private Node2D nuzzle => (Node2D) GetNode("Nuzzle");
     
@@ -22,21 +23,21 @@ public partial class ChargedGun : Weapon {
             .SpawnBullet(bulletAsset);
 
         damage.damage = (int) (maxDamage * strength);
-        GD.Print($"{damage.damage} DAMAGE WAS DEALT!");
 
-
-        bullet.Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player, damage);
+        bullet.Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, bulletInstance);
             
         Camera.currentCamera.StartShake((float) strength * 100, 300, 1);
     }
 
     float strength;
     public override void OnWeaponLetGo() {
-        GD.Print("weapon let go!");
 
         strength = (float) reloadTimer / ReloadSpeed;
-        Attack();
         reloadTimer = 0;
+        
+        //Dissallow spam
+        if (strength < 0.2) return;
+        Attack();
     }
 
     public override void UpdateWeapon(Vector2 attackDirection) {

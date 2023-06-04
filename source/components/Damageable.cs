@@ -32,7 +32,7 @@ public partial class Damageable : Area2D {
     }
 
 	public event Action<DamageInstance> OnDamaged;
-	public event Action<DamageInstance> OnDeath;
+	public Action<DamageInstance> OnDeath;
 
 	public event Action SetToImmune;
 	public event Action SetToUnimmune;

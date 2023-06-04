@@ -19,12 +19,13 @@ public partial class Gun : Weapon {
         damage = 5,
         statusEffect = new FireEffect(),
     };
-    
+    BulletInstance bulletInstance => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
+
     public override void Attack() {
  
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(this, PreloadedScene.BulletFactory)
             .SpawnBullet(bulletAsset)
-            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletFrom.Player, damage);
+            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, bulletInstance);
         Camera.currentCamera.StartShake((float) DebugHUD.instance.anySlider.Value, 300, 1);
     }
     public override void OnWeaponLetGo() {}

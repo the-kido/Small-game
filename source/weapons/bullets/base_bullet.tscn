@@ -43,7 +43,6 @@ color_ramp = SubResource("GradientTexture1D_hdrk0")
 [node name="bullet" type="Node2D" node_paths=PackedStringArray("particles", "hitbox")]
 script = ExtResource("1_yelol")
 wiggleStrength = 1.0
-speed = 2000
 particles = NodePath("GPUParticles2D")
 particleDeletionTime = 1
 hitbox = NodePath("Area2D")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://brrwww1ytf18o"]
+[gd_scene load_steps=18 format=3 uid="uid://brrwww1ytf18o"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="2_62of5"]
@@ -7,7 +7,49 @@
 [ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="2_lc21n"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="3_pe3p1"]
 [ext_resource type="Script" path="res://source/gui/ReviveMenu.cs" id="5_kdcv6"]
+[ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="7_1yp60"]
 [ext_resource type="Script" path="res://source/gui/hud/DialogueBar.cs" id="7_olhhw"]
+
+[sub_resource type="Theme" id="Theme_tsgnt"]
+
+[sub_resource type="Theme" id="Theme_rprt4"]
+
+[sub_resource type="Animation" id="Animation_kuql6"]
+resource_name = "Close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 872), Vector2(0, 1128)]
+}
+
+[sub_resource type="Animation" id="Animation_ggilv"]
+resource_name = "Open"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.7),
+"transitions": PackedFloat32Array(0.482967, 1.41421, 1),
+"update": 0,
+"values": [Vector2(0, 1128), Vector2(0, 840), Vector2(0, 872)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrhtd"]
+_data = {
+"Close": SubResource("Animation_kuql6"),
+"Open": SubResource("Animation_ggilv")
+}
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
 resource_name = "Open"
@@ -70,10 +112,6 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[sub_resource type="Theme" id="Theme_tsgnt"]
-
-[sub_resource type="Theme" id="Theme_rprt4"]
-
 [node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "ReviveMenu")]
 layer = 10
 script = ExtResource("1_7vbvm")
@@ -81,7 +119,170 @@ TargetIndicator = NodePath("")
 HUD = NodePath("HUD")
 ReviveMenu = NodePath("Revive")
 
+[node name="HUD" type="Control" parent="." node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+script = ExtResource("2_62of5")
+AttackButton = NodePath("Auto Aim Button")
+dialogueBar = NodePath("Dialogue Bar")
+healthLable = NodePath("Health label background/Label")
+
+[node name="Health label background" type="ColorRect" parent="HUD"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 16.0
+offset_right = 133.0
+offset_bottom = 97.0
+theme = SubResource("Theme_tsgnt")
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Label" type="Label" parent="HUD/Health label background" node_paths=PackedStringArray("healthLable")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_rprt4")
+text = "afawf
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_pe3p1")
+healthLable = NodePath(".")
+
+[node name="Auto Aim Button" type="Button" parent="HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_top = -119.0
+offset_right = -23.0
+offset_bottom = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_lc21n")
+toggle_mode = true
+text = "⁂ Auto Aim ⁂
+"
+script = ExtResource("2_b0xe6")
+
+[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label", "animationPlayer")]
+layout_mode = 1
+anchor_top = 0.719444
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 4
+script = ExtResource("7_olhhw")
+Label = NodePath("Background/Text Background/RichTextLabel")
+animationPlayer = NodePath("AnimationPlayer")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="ColorRect" parent="HUD/Dialogue Bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.038
+anchor_top = 0.036
+anchor_right = 0.962
+anchor_bottom = 0.927
+offset_left = 0.0399933
+offset_top = 0.0919991
+offset_right = -0.0401611
+offset_bottom = 11.119
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Text Background" type="ColorRect" parent="HUD/Dialogue Bar/Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.238
+anchor_right = 1.0
+anchor_bottom = 0.961
+offset_left = -0.212006
+offset_top = 54.0
+offset_right = -57.0
+offset_bottom = -43.041
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HUD/Dialogue Bar/Background/Text Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 17.0
+offset_right = -24.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[b] Hello you should not see this [/b]"
+fit_content = true
+visible_characters = 27
+visible_ratio = 0.9
+
+[node name="TextureRect" type="Control" parent="HUD/Dialogue Bar/Background"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_vertical = 2
+scale = Vector2(1.76, 1.76)
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Dialogue Bar/Background/TextureRect"]
+layout_mode = 1
+offset_left = 34.0909
+offset_top = -67.3295
+offset_right = 162.091
+offset_bottom = 60.6705
+texture = ExtResource("7_1yp60")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD/Dialogue Bar"]
+libraries = {
+"": SubResource("AnimationLibrary_xrhtd")
+}
+
+[node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 499.0
+offset_bottom = 113.0
+script = ExtResource("2_isn2q")
+anySlider = NodePath("Any Slider")
+anyButton = NodePath("Button")
+
+[node name="Any Slider" type="HSlider" parent="DEBUG"]
+layout_mode = 0
+offset_left = 164.0
+offset_top = -21.0
+offset_right = 438.0
+offset_bottom = 113.0
+
+[node name="Button" type="Button" parent="DEBUG"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 16.0
+offset_right = 681.0
+offset_bottom = 95.0
+text = "Water Damage
+"
+
 [node name="Revive" type="Control" parent="." node_paths=PackedStringArray("animationPlayer", "close")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,10 +303,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -164,137 +365,3 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
-
-[node name="HUD" type="Control" parent="." node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 6
-script = ExtResource("2_62of5")
-AttackButton = NodePath("Auto Aim Button")
-dialogueBar = NodePath("Dialogue Bar")
-healthLable = NodePath("Health label background/Label")
-
-[node name="Health label background" type="ColorRect" parent="HUD"]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 16.0
-offset_right = 133.0
-offset_bottom = 97.0
-theme = SubResource("Theme_tsgnt")
-color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Label" type="Label" parent="HUD/Health label background" node_paths=PackedStringArray("healthLable")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_rprt4")
-text = "afawf
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-script = ExtResource("3_pe3p1")
-healthLable = NodePath(".")
-
-[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label")]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-script = ExtResource("7_olhhw")
-Label = NodePath("Background/Text Background/RichTextLabel")
-
-[node name="Background" type="ColorRect" parent="HUD/Dialogue Bar"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -208.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Text Background" type="ColorRect" parent="HUD/Dialogue Bar/Background"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -1436.0
-offset_top = -86.0
-offset_right = -24.0
-offset_bottom = 87.0
-grow_horizontal = 0
-grow_vertical = 2
-color = Color(0.180392, 0.180392, 0.180392, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="HUD/Dialogue Bar/Background/Text Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 17.0
-offset_right = -32.0
-offset_bottom = -17.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "waffwwfa "
-fit_content = true
-
-[node name="Auto Aim Button" type="Button" parent="HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -196.0
-offset_top = -119.0
-offset_right = -23.0
-offset_bottom = -22.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("2_lc21n")
-toggle_mode = true
-text = "⁂ Auto Aim ⁂
-"
-script = ExtResource("2_b0xe6")
-
-[node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 499.0
-offset_bottom = 113.0
-script = ExtResource("2_isn2q")
-anySlider = NodePath("Any Slider")
-anyButton = NodePath("Button")
-
-[node name="Any Slider" type="HSlider" parent="DEBUG"]
-layout_mode = 0
-offset_left = 164.0
-offset_top = -21.0
-offset_right = 438.0
-offset_bottom = 113.0
-
-[node name="Button" type="Button" parent="DEBUG"]
-layout_mode = 0
-offset_left = 499.0
-offset_top = 16.0
-offset_right = 681.0
-offset_bottom = 95.0
-text = "Water Damage
-"

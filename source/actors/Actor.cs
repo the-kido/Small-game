@@ -6,7 +6,6 @@ public abstract partial class Actor : CharacterBody2D {
 	
 	[Export]
 	public EffectInflictable Effect {get; private set;}
-
 	[Export]
 	public Damageable DamageableComponent {get; private set;}
     [Export]
@@ -23,17 +22,12 @@ public abstract partial class Actor : CharacterBody2D {
         //A safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
-		DamageableComponent.OnDeath += OnDeath;
-		DamageableComponent.OnDamaged += OnDamaged;
         DamageableComponent.OnDamaged += DamageFlash;
         DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
 
         Effect.Init(this);
 
 	}
-	public abstract void OnDeath(DamageInstance damageInstance);
-	public abstract void OnDamaged(DamageInstance damageInstance);
-
 
 	#region Methods
 
@@ -41,6 +35,8 @@ public abstract partial class Actor : CharacterBody2D {
     //Set the flashing to true.
     //If another damage comes in, stop the other flashing and start a new flashing.    
     private async void DamageFlash(DamageInstance _) {
+        if (!DamageableComponent.IsAlive) return;
+
         if (percentRed != 0) {
             percentRed = 100;
             return;

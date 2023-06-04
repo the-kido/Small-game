@@ -354,7 +354,7 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="AgroGuy" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_f4ect")
-animation = &"preping"
+animation = &"fatigue begin"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AgroGuy"]
 libraries = {
@@ -365,7 +365,7 @@ libraries = {
 position = Vector2(-1, 0)
 collision_layer = 4
 collision_mask = 8
-Health = 50
+Health = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 position = Vector2(0.5, 0)

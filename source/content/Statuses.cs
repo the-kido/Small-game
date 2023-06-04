@@ -25,10 +25,10 @@ public sealed class FireEffect : IActorStatus {
     
     GpuParticles2D fire;
     public override void Init(Actor actor) {
-        fire = Effects.AddParticle(actor, Effects.Fire);
+        fire = ParticleFactory.AddParticle(actor, Effects.Fire);
     }
     public override void Disable(Actor actor) {
-        Effects.RemoveParticle(fire);
+        ParticleFactory.RemoveParticle(fire);
     }
 
     double damageTime;
@@ -62,14 +62,14 @@ public sealed class WetStatus : IPermanentStatus {
 
     GpuParticles2D water;
     public override void Init(Actor actor) {
-        water = Effects.AddParticle(actor, Effects.Wet);
+        water = ParticleFactory.AddParticle(actor, Effects.Wet);
 
         actor.MoveSpeed /= 10;
     }
 
     public override void Disable(Actor actor) {
         actor.MoveSpeed *= 10;
-        Effects.RemoveParticle(water);
+        ParticleFactory.RemoveParticle(water);
     }
 }
 
@@ -83,13 +83,13 @@ public sealed class GasStatus : IPermanentStatus {
         };
     }
     public override void Disable(Actor actor) {
-        Effects.RemoveParticle(gas);
+        ParticleFactory.RemoveParticle(gas);
     }
 
     GpuParticles2D gas;
     //TODO: Just make this have a cute visual. Gas state should do nothing paticularly cool. 
     public override void Init(Actor actor) {    
-        gas = Effects.AddParticle(actor, Effects.Gas);
+        gas = ParticleFactory.AddParticle(actor, Effects.Gas);
     }
 }
 

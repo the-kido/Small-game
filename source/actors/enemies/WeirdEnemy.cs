@@ -27,9 +27,6 @@ public sealed partial class WeirdEnemy : Enemy {
         animationController.AddAnimation(new("idle", 1), ref patrolState.IsIdle);
         animationController.AddAnimation(new("flying", 1), ref patrolState.IsMoving);
 
-        patrolState.IsIdle += () => GD.Print("is idle");
-        patrolState.IsMoving += () => GD.Print("is moving");
-
         stateMachine.AddState(attackState, patrolState);
         stateMachine.AddState(patrolState, attackState);
 
@@ -53,7 +50,6 @@ public class AnimationController {
             //animationPlayer.Play("RESET");
         };
 
-        setEvent += () => GD.Print("reset!");
     }
 
     public AnimationController(AnimationPlayer animationTree) {

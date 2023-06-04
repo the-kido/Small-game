@@ -212,7 +212,8 @@ public sealed class DefaultAttackState : AIState {
 
                 shootTimer = 0;
                 actor.Velocity = Vector2.Zero;
-                Shoot(player);
+                
+                if (player is not null) Shoot(player);
             }
         }
         #endregion
@@ -249,6 +250,8 @@ public sealed class DefaultAttackState : AIState {
         }
     }
     
+    BulletInstance bulletInstance => new(BulletFrom.Enemy, damage, BulletSpeed.KindaSlow);
+
     private void Shoot(Player player) {
         OnShoot?.Invoke();
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
@@ -256,7 +259,7 @@ public sealed class DefaultAttackState : AIState {
         
         KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
-            .Init(actor.Position, angle, BulletFrom.Enemy, damage);
+            .Init(actor.Position, angle, bulletInstance);
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.

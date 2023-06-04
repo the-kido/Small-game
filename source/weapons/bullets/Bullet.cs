@@ -7,7 +7,6 @@ public abstract partial class Bullet : Node2D {
 
     private DamageInstance currentDamageInstance;
 
-    [Export(PropertyHint.Range, "-360,360,1,or_greater,or_less")] 
     private int speed;
     [Export]
     private GpuParticles2D particles;
@@ -18,8 +17,8 @@ public abstract partial class Bullet : Node2D {
 
     protected Vector2 directionFacing;
 
-    // public delegate void BulletCollisionEventHandler();
-    // public event BulletCollisionEventHandler OnBulletDestroyed;
+    protected event Action OnCollided;
+    
 
     #region abstract classes to inherit from
     
@@ -27,10 +26,13 @@ public abstract partial class Bullet : Node2D {
         damageable.Damage(damageInstance);
         DestroyBullet();
     }
+    
     public virtual void OnTilemapEntered(TileMap tileMap) {
         DestroyBullet();
     }
+    
     public virtual void DestroyBullet() {
+        OnCollided?.Invoke();
         QueueFree();
         SpawnDestroyedParticle();
     }
@@ -59,7 +61,7 @@ public abstract partial class Bullet : Node2D {
         newParticle.QueueFree();
     }
 
-    public void Init(Vector2 spawnPosition, float radians, BulletFrom from, DamageInstance currentDamageInstance) {
+    public void Init(Vector2 spawnPosition, float radians, BulletInstance bulletInfo) {
         //Attach events
         hitbox.AreaEntered += OnArea2DEntered;
         hitbox.BodyEntered += OnBodyEntered;
@@ -70,7 +72,7 @@ public abstract partial class Bullet : Node2D {
             throw new Exception("Amazing");
         }
 
-        switch (from) {
+        switch (bulletInfo.from) {
             case BulletFrom.Player:
                 hitbox.CollisionLayer += (int) Layers.PlayerProjectile;
                 hitbox.CollisionMask += (int) Layers.Enviornment + (int) Layers.Enemies;
@@ -83,12 +85,13 @@ public abstract partial class Bullet : Node2D {
 
         Rotation = radians;
 
-        this.currentDamageInstance = currentDamageInstance;
+        this.speed = (int) bulletInfo.speed;
+        this.currentDamageInstance = bulletInfo.damage;
 
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
         Position = spawnPosition;
-
     }
+
     public void MoveBulletForward(double delta) {
         Position += directionFacing * (float) delta * speed;
     }
@@ -96,4 +99,18 @@ public abstract partial class Bullet : Node2D {
     public override void _Process(double delta) {
         MoveBulletForward(delta);
     }
+}
+
+public record BulletInstance (BulletFrom from, DamageInstance damage, BulletSpeed speed) {
+
+}
+
+// Makes debugging easier. 
+public enum BulletSpeed : int {
+    VerySlow = 100,
+    KindaSlow = 250,
+    Slow = 500,
+    Fast = 1000,
+    VeryFast = 1500,
+    Instant = 2000,
 }

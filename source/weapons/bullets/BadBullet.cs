@@ -8,7 +8,11 @@ public partial class BadBullet : Bullet {
     private float wiggleStrength;
     private double wiggleDistance;
     
+    GpuParticles2D particle;
     public override void _Ready() {
+        particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
+        OnCollided += () => ParticleFactory.RemoveParticle(particle);
+
         Random random = new();
         wiggleDistance = (random.Next( (int) wiggleStrength * 2)) - wiggleStrength;
     }

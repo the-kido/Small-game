@@ -9,15 +9,36 @@ public partial class InputController : Node
 {
 	[Export]
 	private Player attachedPlayer;
-	private GUI GUI {
-		get => attachedPlayer.GUI;
-	}
+	private GUI GUI  => attachedPlayer.GUI;
 
 	[Export]
 	private Node2D hand;
 	private Weapon weapon => hand.GetChild<Weapon>(0);
-	public bool FilterAllInput {get; private set;} = false;
+	public bool FilterAllInput {get; set;} = false;
 	
+	#region DIALOGUE
+	private bool WithinDialogueBar() {
+		var rect = GUI.HUD.dialogueBar.GetGlobalRect();
+		var mouse_position = GUI.HUD.dialogueBar.GetGlobalMousePosition();
+
+		return rect.HasPoint(mouse_position);
+	}
+	private DialoguePlayer dialoguePlayer => GUI.HUD.dialogueBar.dialoguePlayer;
+	private void DialogueControlInit() {
+
+
+	}
+	private bool ClickedOnDialogueBar() => (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) ? true : false; 
+	
+	private void ContinueDialogue() {
+		if (ClickedOnDialogueBar()) {
+			dialoguePlayer.OnClicked?.Invoke();
+		}
+	}	
+
+	#endregion
+
+
 	#region ATTACK
 	public event Action<double> UseWeapon;
 	public event Action<Vector2> UpdateWeaponDirection;
@@ -177,12 +198,15 @@ public partial class InputController : Node
 	}
 
 	#endregion
+	
 	public override void _Ready() {
 		GUI.HUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
 		GUI.HUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
 		GUI.HUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
 
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
+		
+		GUI.HUD.dialogueBar.Ready += DialogueControlInit;
 	}
 	public override void _Process(double delta) {
 		if (FilterAllInput)
@@ -190,8 +214,11 @@ public partial class InputController : Node
 		ControlMovement();
 		ControlUseMethod();
 		ControlWeapon(delta);
-	}
 
+		ContinueDialogue();
+
+		// It's only fair the next method starts with a C as well
+	}
 	private void OnDeath(DamageInstance _) {
 		FilterAllInput = true;
 		attachedPlayer.Velocity = Vector2.Zero;
