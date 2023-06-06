@@ -35,9 +35,10 @@ public partial class AgroEnemyMiniBoss : Enemy
 
     public override void _Ready() {
         base._Ready();
-        string[] dialogue = new string[] {"HELLO?", "HEYOO!?"};
+
+        DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
         // TODO: OK this is a problem.
-        DamageableComponent.OnDeath += (_) => Player.players[0].GUI.HUD.dialogueBar.dialoguePlayer.Start(dialogue);
+        DamageableComponent.OnDeath += (_) => Player.players[0].GUI.HUD.dialogueBar.player.Start(dialogue, new());
     }
 }
 

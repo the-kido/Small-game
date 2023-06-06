@@ -14,6 +14,7 @@ public partial class MovementController : Node
 	private AnimationTree playerAnimationTree;
 	
 	private Vector2 previousFramePosition = new Vector2();
+
 	private bool PlayerIsMoving {
 		get {
 			if (player.Position == previousFramePosition) {
@@ -26,6 +27,8 @@ public partial class MovementController : Node
 
 	public override void _Ready() {
 		inputController.UpdateMovement += ControlPlayerMovement;
+		// Used in case the player is holding the move button even when the input is frozen. Resets velocity to nothing.
+		inputController.OnFilterModeChanged += (changed) => player.Velocity = changed ? Vector2.Zero : player.Velocity;
 	}
 
 	private void ControlPlayerMovement(Vector2 normalizedInput) {
@@ -37,6 +40,7 @@ public partial class MovementController : Node
 			PlayMovementAnimations(PlayerIsMoving);
 		}
 	}
+
 	private void CornerCorrection(Vector2 movementDirection) {
 		if (player.TestMove(player.GlobalTransform, new Vector2(0, movementDirection.Y))) {
 			//Find where exactly this object's corner is offseted. 

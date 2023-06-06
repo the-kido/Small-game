@@ -9,31 +9,38 @@ public partial class InputController : Node
 {
 	[Export]
 	private Player attachedPlayer;
-	private GUI GUI  => attachedPlayer.GUI;
+	private GUI GUI => attachedPlayer.GUI;
 
 	[Export]
 	private Node2D hand;
 	private Weapon weapon => hand.GetChild<Weapon>(0);
-	public bool FilterAllInput {get; set;} = false;
+	
+	bool filterNonUiInput = false;
+	public bool FilterNonUiInput {
+		get {
+			return filterNonUiInput;
+		}
+		set {
+			OnFilterModeChanged?.Invoke(value);
+			filterNonUiInput = value;
+		}
+	}
+	public event Action<bool> OnFilterModeChanged;
 	
 	#region DIALOGUE
+	private DialoguePlayer dialoguePlayer => GUI.HUD.dialogueBar.player;
 	private bool WithinDialogueBar() {
 		var rect = GUI.HUD.dialogueBar.GetGlobalRect();
 		var mouse_position = GUI.HUD.dialogueBar.GetGlobalMousePosition();
-
 		return rect.HasPoint(mouse_position);
 	}
-	private DialoguePlayer dialoguePlayer => GUI.HUD.dialogueBar.dialoguePlayer;
 	private void DialogueControlInit() {
-
-
+		dialoguePlayer.DialogueStarted += (info) => FilterNonUiInput = info.pausePlayerInput;
+		dialoguePlayer.DialogueEnded += () => FilterNonUiInput = false; 
 	}
-	private bool ClickedOnDialogueBar() => (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) ? true : false; 
 	
 	private void ContinueDialogue() {
-		if (ClickedOnDialogueBar()) {
-			dialoguePlayer.OnClicked?.Invoke();
-		}
+		if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) dialoguePlayer.OnClicked?.Invoke();
 	}	
 
 	#endregion
@@ -188,7 +195,7 @@ public partial class InputController : Node
 
 	#region MOVEMENT
 	public event Action<Vector2> UpdateMovement;
-	private void ControlMovement() {
+	private void GetMovementInput() {
 		Vector2 direction = new Vector2(
 			Input.GetAxis("left", "right"),
 			Input.GetAxis("up", "down")
@@ -209,18 +216,22 @@ public partial class InputController : Node
 		GUI.HUD.dialogueBar.Ready += DialogueControlInit;
 	}
 	public override void _Process(double delta) {
-		if (FilterAllInput)
+		// Allow player to interact with UI even if input is filtered.
+		ContinueDialogue();
+		
+		if (FilterNonUiInput) {
+			// How do I avoid this?
+			attachedPlayer.Velocity = Vector2.Zero;
 			return;
-		ControlMovement();
+		}
+		
+		GetMovementInput();
 		ControlUseMethod();
 		ControlWeapon(delta);
-
-		ContinueDialogue();
-
 		// It's only fair the next method starts with a C as well
 	}
 	private void OnDeath(DamageInstance _) {
-		FilterAllInput = true;
+		FilterNonUiInput = true;
 		attachedPlayer.Velocity = Vector2.Zero;
 	}
 }

@@ -24,9 +24,9 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(1, 1),
+"transitions": PackedFloat32Array(2.2974, 1),
 "update": 0,
-"values": [Vector2(0, 872), Vector2(0, 1128)]
+"values": [Vector2(0, 781), Vector2(0, 1128)]
 }
 
 [sub_resource type="Animation" id="Animation_ggilv"]
@@ -42,7 +42,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5, 0.7),
 "transitions": PackedFloat32Array(0.482967, 1.41421, 1),
 "update": 0,
-"values": [Vector2(0, 1128), Vector2(0, 840), Vector2(0, 872)]
+"values": [Vector2(0, 1128), Vector2(0, 770), Vector2(0, 781)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xrhtd"]
@@ -176,16 +176,19 @@ text = "⁂ Auto Aim ⁂
 "
 script = ExtResource("2_b0xe6")
 
-[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label", "animationPlayer")]
+[node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label", "PortraitRect", "animationPlayer")]
 layout_mode = 1
-anchor_top = 0.719444
+anchor_top = 0.635185
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.915741
+offset_top = 442.0
+offset_bottom = 442.003
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 4
 script = ExtResource("7_olhhw")
 Label = NodePath("Background/Text Background/RichTextLabel")
+PortraitRect = NodePath("Background/TextureRect/TextureRect")
 animationPlayer = NodePath("AnimationPlayer")
 metadata/_edit_use_anchors_ = true
 
@@ -303,10 +306,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 1011.2
-offset_top = -394.0
-offset_right = 2484.2
-offset_bottom = 394.0
+offset_left = 2000.0
+offset_top = 173.0
+offset_right = 3473.0
+offset_bottom = 961.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)

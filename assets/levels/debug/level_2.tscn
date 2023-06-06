@@ -37,6 +37,7 @@ tileMap = NodePath("../../TileMap")
 [node name="Placed Enemies" type="Node2D" parent="."]
 
 [node name="Weird enemy" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
+process_mode = 4
 position = Vector2(833, 396)
 
 [node name="Weird enemy2" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
@@ -52,6 +53,7 @@ process_mode = 4
 position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Placed Enemies" instance=ExtResource("7_5xse6")]
+process_mode = 4
 position = Vector2(438, 473)
 
 [node name="This guy is agro as frick" parent="Placed Enemies" instance=ExtResource("8_vrrcy")]

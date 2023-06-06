@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://b3buuc0f5ge1x"]
+[gd_scene load_steps=60 format=3 uid="uid://b3buuc0f5ge1x"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="9_6fn6c"]
 [ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="11_laf6i"]
+[ext_resource type="Script" path="res://source/actors/player/OnPlayerIndicator.cs" id="12_0iht3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
 atlas = ExtResource("3_24x38")
@@ -724,6 +725,20 @@ debug_color = Color(0.47451, 0.588235, 0, 0)
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_laf6i")
+
+[node name="On-Player Indicators" type="Control" parent="." node_paths=PackedStringArray("progressBar")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("12_0iht3")
+progressBar = NodePath("ProgressBar")
+
+[node name="ProgressBar" type="ProgressBar" parent="On-Player Indicators"]
+layout_mode = 0
+offset_left = -46.7391
+offset_top = -71.7391
+offset_right = 51.2609
+offset_bottom = -44.7391
+value = 1.33
 
 [connection signal="body_entered" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaEntered"]
 [connection signal="body_exited" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaExited"]

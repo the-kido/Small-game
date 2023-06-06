@@ -3,10 +3,19 @@ using Godot;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+
+// This should just make it easier to customize the dialogue
+public struct DialogueInfo {
+    public bool pausePlayerInput = true;
+
+	public DialogueInfo() {}
+}
+
 public partial class DialogueBar : Control {
     [Export]
     public RichTextLabel Label {get; private set;} 
-    
+    [Export]
+    public TextureRect PortraitRect;
     [Export]
     public AnimationPlayer animationPlayer;
     
@@ -19,24 +28,27 @@ public partial class DialogueBar : Control {
         animationPlayer.Play("Close");
     }
 
-    public override void _Process(double delta) => dialoguePlayer.Update(delta);
+    public override void _Process(double delta) => player.Update(delta);
     public override void _Ready() {
-        dialoguePlayer.Init(this);
+        player.Init(this);
         
-        // When the closing animation plays, "THEN" set the dialogue bar to invisible.
+        // When the closing animation finishes playing, "THEN" set the dialogue bar to invisible.
         animationPlayer.AnimationFinished += (name) => {
             if (name == "Close") Visible = false;
         };
     }
-    public DialoguePlayer dialoguePlayer = new();
+    public DialoguePlayer player = new();
 }
 
 // ?
 public class DialoguePlayer {
-    
+
     public Action OnClicked;
+
+    public event Action<DialogueInfo> DialogueStarted;
+    public event Action DialogueEnded;
+
     public void Init(DialogueBar bar) {
-        GD.Print("INiT!");
         this.bar = bar;
         OnClicked += ContinueDialogue;
     }
@@ -52,16 +64,25 @@ public class DialoguePlayer {
     double progress;
 
     char currentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
+
+    public void UpdatePortraitImage(double delta) {
+        currentDialogue[lineAt].portrait.PlayAnimation(delta);
+        bar.PortraitRect.Texture = currentDialogue[lineAt].portrait.CurrentSprite;
+    }
+
     public void Update(double delta) {
+        // If there's no dialogue, then there's no point in updating.
+        if (currentDialogue.Length == 0) return;
+
+        UpdatePortraitImage(delta);
         if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
-        
+
         //bar.Label.VisibleCharacters = (int) MathF.Min(bar.Label.VisibleCharacters, bar.Label.Text.Length);
         
         // Skip spaces.
         if (currentCharacter == ' ') progress += 1;
-        
         progress += delta * 10;
-
+        
         bar.Label.VisibleCharacters = (int) progress;
     }
 
@@ -76,7 +97,6 @@ public class DialoguePlayer {
         } else {
             // Go to the next line.
             lineAt += 1;
-            GD.Print(lineAt, currentDialogue.Length);
             bar.Label.Text = currentDialogue[lineAt].text;
             progress = 0;
         }
@@ -84,72 +104,28 @@ public class DialoguePlayer {
     }
     DialogueLine[] currentDialogue = new DialogueLine[0];
 
-    private void ResetBar(DialogueLine nextText) {
-        bar.Label.Text = nextText.text;
+    private void ResetBar(DialogueLine next) {
+        bar.Label.Text = next.text;
         progress = 0;
         lineAt = 0;
         bar.Label.VisibleCharacters = 0;
+        bar.PortraitRect.Texture = next.portrait.CurrentSprite;
     }
 
-    public void Start(DialogueLine[] dialogue) {
+    public void Start(DialogueLine[] dialogue, DialogueInfo info) {
+        DialogueStarted?.Invoke(info);
         currentDialogue = dialogue;
         bar.Enable();
         ResetBar(dialogue[0]);
     }
 
     private void Close() {
-        ResetBar("");
+        DialogueEnded?.Invoke();
+        progress = 0;
+        lineAt = 0;
+        bar.Label.VisibleCharacters = 0;
+
         bar.Disable();
         currentDialogue = new DialogueLine[0];
-    }
-}
-
-public struct DialogueLine {
-    public string text;
-    public Portrait portrait; 
-    public DialogueLine(string text, Portrait portrait) {
-        this.text = text;
-        this.portrait = portrait;
-    }
-}
-
-// How can I make easily referenced portraits that I can use? 
-// I only need a handful for a handful of characters. Then, they should be statically referable by
-// any class that wishes to use the portrait, whether animated or not.
-public struct Portraits {
-    
-    static SpriteFrames bossSprites => ResourceLoader.Load<SpriteFrames>("");
-    static Dictionary<string, Portrait> boss = new() {
-        {"Happy", new(bossSprites.Animations) },
-    }
-}
-
-public struct Portrait {
-    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, currentFrame);
-    //Some animations may loop and are not played once.
-    public bool loop = false;
-    SpriteFrames sprites;
-
-    int currentFrame => (int) Mathf.Floor( (float) progress);
-
-    bool isAnimated => sprites.GetFrameCount(animationName) > 1;
-
-    string animationName;
-    public Portrait(SpriteFrames sprites, string animationName) {
-        this.sprites = sprites;
-        this.animationName = animationName;
-    }
-
-    double progress = 0;
-    bool isFinished => currentFrame == (sprites.GetFrameCount(animationName) - 1);
-    public void PlayAnimation(double delta) {
-        if (!isAnimated) return;
-        
-        if (isFinished) {
-            if (loop) progress = 0;
-            else return;
-        }
-
-        progress += delta;
     }
 }
