@@ -1,32 +1,22 @@
 using Godot;
-using System.Collections.Generic;
-using System.Linq;
 using KidoUtils;
-using System.Threading.Tasks;
 
-public partial class Gun : Weapon {
+
+public abstract partial class  Gun : Weapon {
     [Export]
-    public PackedScene bulletAsset; 
-    private Node2D nuzzle => (Node2D) GetNode("Nuzzle");
+    private PackedScene bulletAsset;
 
-    public override Type WeaponType {get; protected set;} = Type.InstantShot;
-
-    public override void UpdateWeapon(Vector2 shootTo) {
-        hand.LookAt(shootTo);
-    }
-
-    DamageInstance damage = new() {
-        damage = 5,
-        statusEffect = new FireEffect(),
-    };
-    BulletInstance bulletInstance => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
-
-    public override void Attack() {
- 
-        KidoUtils.Utils.GetPreloadedScene<BulletFactory>(this, PreloadedScene.BulletFactory)
+    protected abstract DamageInstance damage {get; init;}
+    protected abstract BulletInstance BulletInstance();
+    
+    protected Node2D nuzzle => (Node2D) GetNode("Nuzzle");
+    protected void SpawnBulletInstance() => 
+            KidoUtils.Utils.GetPreloadedScene<BulletFactory>(this, PreloadedScene.BulletFactory) 
             .SpawnBullet(bulletAsset)
-            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, bulletInstance);
-        Camera.currentCamera.StartShake((float) DebugHUD.instance.anySlider.Value, 300, 1);
+            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
+
+    public override void UpdateWeapon(Vector2 attackDirection) {
+        hand.LookAt(attackDirection);
     }
-    public override void OnWeaponLetGo() {}
 }
+

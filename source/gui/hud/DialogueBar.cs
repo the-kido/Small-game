@@ -7,7 +7,6 @@ using System.Collections.Generic;
 // This should just make it easier to customize the dialogue
 public struct DialogueInfo {
     public bool pausePlayerInput = true;
-
 	public DialogueInfo() {}
 }
 
@@ -28,41 +27,33 @@ public partial class DialogueBar : Control {
         animationPlayer.Play("Close");
     }
 
-    public override void _Process(double delta) => player.Update(delta);
+    public override void _Process(double delta) => DialoguePlayer.Update(delta);
     public override void _Ready() {
-        player.Init(this);
+        DialoguePlayer = new(this);
         
         // When the closing animation finishes playing, "THEN" set the dialogue bar to invisible.
         animationPlayer.AnimationFinished += (name) => {
             if (name == "Close") Visible = false;
         };
     }
-    public DialoguePlayer player = new();
+    public DialoguePlayer DialoguePlayer {get; private set;}
 }
 
-// ?
 public class DialoguePlayer {
-
+    // Publicly referable fields / events
     public Action OnClicked;
-
     public event Action<DialogueInfo> DialogueStarted;
     public event Action DialogueEnded;
 
-    public void Init(DialogueBar bar) {
-        this.bar = bar;
-        OnClicked += ContinueDialogue;
-    }
-
-    //used to continue dialogue
-    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length;
-
-    //used for... closing gui ?!
-    private bool IsDialogueFinished => currentDialogue.Length - 1 == lineAt && IsPhraseFinished;
-
+    // Fields
+    DialogueLine[] currentDialogue = new DialogueLine[0];
     private DialogueBar bar;
     int lineAt = 0;
-    double progress;
+    double lineProgress;
 
+    // Helpful expression-bodied members used throughout the class
+    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length;
+    private bool IsDialogueFinished => currentDialogue.Length - 1 == lineAt && IsPhraseFinished;
     char currentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
@@ -74,19 +65,22 @@ public class DialoguePlayer {
         // If there's no dialogue, then there's no point in updating.
         if (currentDialogue.Length == 0) return;
 
+        // Update portrait even if the text has stopped typing
         UpdatePortraitImage(delta);
-        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
 
-        //bar.Label.VisibleCharacters = (int) MathF.Min(bar.Label.VisibleCharacters, bar.Label.Text.Length);
+        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
         
         // Skip spaces.
-        if (currentCharacter == ' ') progress += 1;
-        progress += delta * 10;
+        if (currentCharacter == ' ') lineProgress += 1;
+        lineProgress += delta * currentDialogue[lineAt].charactersPerSecond;
         
-        bar.Label.VisibleCharacters = (int) progress;
+        bar.Label.VisibleCharacters = (int) lineProgress;
     }
 
     public void ContinueDialogue() {
+        // Make sure that the player cannot click on the dialogue bar as it's going down.
+        if (currentDialogue.Length == 0) return;
+        
         if (IsDialogueFinished) {
             Close();
             return;
@@ -95,37 +89,40 @@ public class DialoguePlayer {
         if (!IsPhraseFinished) {
             bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
         } else {
-            // Go to the next line.
+            UpdateToNextLine();
             lineAt += 1;
-            bar.Label.Text = currentDialogue[lineAt].text;
-            progress = 0;
         }
-
     }
-    DialogueLine[] currentDialogue = new DialogueLine[0];
-
-    private void ResetBar(DialogueLine next) {
-        bar.Label.Text = next.text;
-        progress = 0;
-        lineAt = 0;
+    private void UpdateToNextLine() {
+        bar.Label.Text = currentDialogue[lineAt].text;
+        lineProgress = 0;
         bar.Label.VisibleCharacters = 0;
-        bar.PortraitRect.Texture = next.portrait.CurrentSprite;
     }
+
 
     public void Start(DialogueLine[] dialogue, DialogueInfo info) {
         DialogueStarted?.Invoke(info);
+
         currentDialogue = dialogue;
         bar.Enable();
-        ResetBar(dialogue[0]);
+        
+        // Initialize to the next line, otherwise as soon as the bar opens it will have old stuff on it
+        UpdateToNextLine();
     }
 
     private void Close() {
         DialogueEnded?.Invoke();
-        progress = 0;
+
+        lineProgress = 0;
         lineAt = 0;
         bar.Label.VisibleCharacters = 0;
 
         bar.Disable();
         currentDialogue = new DialogueLine[0];
+    }
+
+    public DialoguePlayer(DialogueBar bar) {
+        this.bar = bar;
+        OnClicked += ContinueDialogue;
     }
 }

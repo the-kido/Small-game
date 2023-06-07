@@ -1,9 +1,9 @@
 using Godot;
 
 public struct DialogueLine {
-
     public static DialogueLine Empty = new("", Portraits.None);
     public string text;
+    public float charactersPerSecond = 10;
     public Portrait portrait; 
     public DialogueLine(string text, Portrait portrait) {
         this.text = text;
@@ -12,23 +12,24 @@ public struct DialogueLine {
 }
 
 public struct Portrait {
-    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, currentFrame);
-    //Some animations may loop and are not played once.
     public bool loop = false;
+    public float fps = 10;
+
+    double progress = 0;
+
+    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, currentFrame);
+    int currentFrame => (int) Mathf.Floor( (float) progress);
+    bool isAnimated => sprites.GetFrameCount(animationName) > 1;
+    bool isFinished => currentFrame == (sprites.GetFrameCount(animationName) - 1);
+
+
     SpriteFrames sprites;
     string animationName;
-
-    int currentFrame => (int) Mathf.Floor( (float) progress);
-
-    bool isAnimated => sprites.GetFrameCount(animationName) > 1;
-
     public Portrait(SpriteFrames sprites, string animationName) {
         this.sprites = sprites;
         this.animationName = animationName;
     }
 
-    double progress = 0;
-    bool isFinished => currentFrame == (sprites.GetFrameCount(animationName) - 1);
     public void PlayAnimation(double delta) {
 
         if (!isAnimated) return;
@@ -38,6 +39,6 @@ public struct Portrait {
             else return;
         }
 
-        progress += delta*10;
+        progress += delta * fps;
     }
 }

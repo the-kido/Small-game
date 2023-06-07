@@ -6,11 +6,17 @@ public partial class GUI : CanvasLayer {
      
     [Export]
     public PlayerTargetIndicator TargetIndicator {get; private set;}
-    
-    [Export]
-    public HUD HUD;
 
-    public Player ConnectedPlayer {get; set;}
+    #region HUD
+    [Export]
+    private HUD HUD;
+    // Make easier access to important member fields of HUD above for encapsulation purposes
+    public ToggleAttackButton AttackButton => HUD.AttackButton;
+    public DialogueBar DialogueBar => HUD.dialogueBar;
+    public DialoguePlayer DialoguePlayer => HUD.dialogueBar.DialoguePlayer;
+    public HealthLabelTemp HealthLable => HUD.healthLable;
+    #endregion
+
     
     #region All Menus
     [Export]

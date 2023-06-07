@@ -2,8 +2,12 @@ using Godot;
 
 public partial class BulletFactory : Node {
     public Bullet SpawnBullet(PackedScene bulletPrototype) {
-
+        
+        
         Bullet newBullet = (Bullet) bulletPrototype.Instantiate();
+        
+        GD.Print(newBullet);
+        
         AddChild(newBullet);
         
         if (newBullet is not Bullet) {

@@ -38,7 +38,7 @@ public partial class AgroEnemyMiniBoss : Enemy
 
         DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
         // TODO: OK this is a problem.
-        DamageableComponent.OnDeath += (_) => Player.players[0].GUI.HUD.dialogueBar.player.Start(dialogue, new());
+        DamageableComponent.OnDeath += (_) => Player.players[0].GUI.DialoguePlayer.Start(dialogue, new());
     }
 }
 
@@ -51,13 +51,7 @@ public sealed class AgroEnemyRushState : AIState {
         this.runningAnimation = runningAnimation;
     }
 
-    enum State {
-        Preping,
-        Rushing,
-        Fatigued,
-        //When the AI finall stops rushing the player and stops being tired. It wakes up.
-        Done,
-    }
+    
     State state = State.Done; 
 
     DamageInstance damage = new() {
@@ -170,16 +164,12 @@ public sealed class AgroEnemyRushState : AIState {
             Rush();
         }
     }
+    
     public override void Init() {
         actor.Velocity = Vector2.Zero;
-        
-        //rushCollisionArea.BodyEntered += OnBodyEntered;
-        
-        //Might use this? Or, will try to use NORMALS to make a more accurate direction for the bouncy boi to go.
-        rushCollisionArea.GetOverlappingBodies();
-        
         time = 0;
     }
+
     private async void LeaveState() {
         OnWakesUp?.Invoke();
 
@@ -187,12 +177,18 @@ public sealed class AgroEnemyRushState : AIState {
         await Task.Delay(1000);
         
         stateMachine.ChangeState(stateToGoTo);
-        
-        //rushCollisionArea.BodyEntered -= OnBodyEntered;
     }
 
     private void FlipActor(Vector2 direction) {
         bool flip = MathF.Sign(direction.X) == 1 ? false : true;
         actor.Flip(flip);
+    }
+
+    enum State {
+        Preping,
+        Rushing,
+        Fatigued,
+        //When the AI finall stops rushing the player and stops being tired. It wakes up.
+        Done,
     }
 }

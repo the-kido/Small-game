@@ -28,23 +28,19 @@ public partial class InputController : Node
 	public event Action<bool> OnFilterModeChanged;
 	
 	#region DIALOGUE
-	private DialoguePlayer dialoguePlayer => GUI.HUD.dialogueBar.player;
 	private bool WithinDialogueBar() {
-		var rect = GUI.HUD.dialogueBar.GetGlobalRect();
-		var mouse_position = GUI.HUD.dialogueBar.GetGlobalMousePosition();
+		var rect = GUI.DialogueBar.GetGlobalRect();
+		var mouse_position = GUI.DialogueBar.GetGlobalMousePosition();
 		return rect.HasPoint(mouse_position);
 	}
 	private void DialogueControlInit() {
-		dialoguePlayer.DialogueStarted += (info) => FilterNonUiInput = info.pausePlayerInput;
-		dialoguePlayer.DialogueEnded += () => FilterNonUiInput = false; 
+		GUI.DialoguePlayer.DialogueStarted += (info) => FilterNonUiInput = info.pausePlayerInput;
+		GUI.DialoguePlayer.DialogueEnded += () => FilterNonUiInput = false; 
 	}
 	
-	private void ContinueDialogue() {
-		if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) dialoguePlayer.OnClicked?.Invoke();
-	}	
+	private void ContinueDialogue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.OnClicked?.Invoke();}	
 
 	#endregion
-
 
 	#region ATTACK
 	public event Action<double> UseWeapon;
@@ -206,14 +202,16 @@ public partial class InputController : Node
 
 	#endregion
 	
+	// The (very tightly coupled) glue
+
 	public override void _Ready() {
-		GUI.HUD.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
-		GUI.HUD.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
-		GUI.HUD.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
+		GUI.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
+		GUI.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
+		GUI.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
 
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 		
-		GUI.HUD.dialogueBar.Ready += DialogueControlInit;
+		GUI.DialogueBar.Ready += DialogueControlInit;
 	}
 	public override void _Process(double delta) {
 		// Allow player to interact with UI even if input is filtered.
@@ -234,12 +232,4 @@ public partial class InputController : Node
 		FilterNonUiInput = true;
 		attachedPlayer.Velocity = Vector2.Zero;
 	}
-}
-
-public enum InputType {
-	RightClickJustPressed,
-	LeftClickHold,
-	LeftClickJustReleased,
-	RightClickHold,
-	AutoAttackButtonToggled,
 }

@@ -4,35 +4,28 @@ using System.Threading.Tasks;
 
 public sealed partial class Player : Actor
 {
-    //Hide speed value for player.
-
+    // Public fields
     [Export]
     public GUI GUI {get; private set;}
-    
-    public InputController InputController => (InputController) FindChild("Input Controller");
-    
-    [Export]
-    private AudioStreamPlayer2D epicSoundEffectPlayer;
-
-    private new int MoveSpeed;
-
     public List<Actor> NearbyEnemies {get; private set;} = new();
+    // This shouldn't be abused; multiplayer support may (?) happen in the future
     public static Player[] players {get; private set;} = new Player[4];
 
+    // IDK If this is even staying
+    [Export]
+    private AudioStreamPlayer2D epicSoundEffectPlayer;
 
     public override void _Ready() {
         base._Ready();
 
         //Default some values
-        GUI.ConnectedPlayer = this;
         players[0] = this;
 
-        GUI.HUD.healthLable.Init(this);
-        DamageableComponent.OnDamaged += GUI.HUD.healthLable.UpdateHealth;
+        GUI.HealthLable.Init(this);
+        DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
     }   
-    
     
     public void OnDeath(DamageInstance damageInstance) {
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;

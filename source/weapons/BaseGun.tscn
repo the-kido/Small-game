@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://buuyxsrfjvmqd"]
 
-[ext_resource type="Script" path="res://source/weapons/ChargedGun.cs" id="1_r3b6v"]
+[ext_resource type="Script" path="res://source/content/weapons/ChargedGun.cs" id="1_d7w4p"]
+[ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_6x1e6"]
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="2_e4ea4"]
-[ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_vc1qu"]
 
 [sub_resource type="Animation" id="Animation_6niuk"]
 length = 0.001
@@ -81,8 +81,8 @@ blend_point_3/pos = Vector2(-0.1, -1)
 blend_mode = 1
 
 [node name="Base Gun" type="Node2D"]
-script = ExtResource("1_r3b6v")
-bulletAsset = ExtResource("2_vc1qu")
+script = ExtResource("1_d7w4p")
+bulletAsset = ExtResource("2_6x1e6")
 ReloadSpeed = 2.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
