@@ -9,12 +9,9 @@ public partial class InputController : Node
 {
 	[Export]
 	private Player attachedPlayer;
-	private GUI GUI => attachedPlayer.GUI;
-
 	[Export]
 	private Node2D hand;
-	private Weapon weapon => hand.GetChild<Weapon>(0);
-	
+
 	bool filterNonUiInput = false;
 	public bool FilterNonUiInput {
 		get {
@@ -27,6 +24,9 @@ public partial class InputController : Node
 	}
 	public event Action<bool> OnFilterModeChanged;
 	
+	private GUI GUI => attachedPlayer.GUI;
+	
+
 	#region DIALOGUE
 	private bool WithinDialogueBar() {
 		var rect = GUI.DialogueBar.GetGlobalRect();
@@ -46,9 +46,11 @@ public partial class InputController : Node
 	public event Action<double> UseWeapon;
 	public event Action<Vector2> UpdateWeaponDirection;
 	public event Action OnWeaponLetGo;
-
+	
 	private bool isHoveringOverGui = false;
 	private bool isAutoAttackButtonToggled = false;
+	
+	private Weapon weapon => hand.GetChild<Weapon>(0);
 	
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
@@ -91,7 +93,6 @@ public partial class InputController : Node
     }
  
 	uint faceObjectMask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
-    private bool waiting = false;
     private Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {
@@ -107,36 +108,30 @@ public partial class InputController : Node
     }
 
 	enum WeaponControl { Autoaim, SelectedAutoaim, ManualAim }
-	
 	private WeaponControl useMethod; 
-	//This method does WAYY too much. Should be split up to avoid ultra confusion
-	private IInteractable targettedInteractable;
 
-	private void ControlUseMethod() {
+	private WeaponControl GetUseMethod(IInteractable targettedInteractable) {
 		List<InputType> inputMap = GetAttackInputs();
 
-		// Check if there is an interactable selected after right clicking.
-		if (inputMap.Contains(InputType.RightClickJustPressed)) targettedInteractable = FindInteractableWithinCursor();
-
 		// If something happened to the interactable, default to default aim method.
-		if (useMethod is WeaponControl.SelectedAutoaim && targettedInteractable is null) useMethod = WeaponControl.ManualAim;
+		if (useMethod is WeaponControl.SelectedAutoaim && targettedInteractable is null) return WeaponControl.ManualAim;
 		
-		if (inputMap.Contains(InputType.AutoAttackButtonToggled))
-			useMethod = WeaponControl.Autoaim;
-		else
-			useMethod = WeaponControl.ManualAim;
+
+		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) return WeaponControl.Autoaim;
 
 		// This is put last for most priority. If the player explicitly wants to target a unit, it should 
-		// Override any automation
-		if (targettedInteractable is not null) useMethod = WeaponControl.SelectedAutoaim;
-
+		if (targettedInteractable is not null && targettedInteractable.IsInteractable()) return WeaponControl.SelectedAutoaim;
+		
+		// Default to manual aim
+		return WeaponControl.ManualAim;
 	}
- 
-	private void ControlWeapon(double delta) {
-
+	
+	private void UpdateWeapon(double delta) {
 		List<InputType> inputMap = GetAttackInputs();
 
 		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
+
+		IInteractable targettedInteractable = null;
 
 		if (inputMap.Contains(InputType.RightClickJustPressed)) {
             targettedInteractable = FindInteractableWithinCursor();
@@ -146,8 +141,10 @@ public partial class InputController : Node
 			else
 				GUI.TargetIndicator.Enable(targettedInteractable);
 		}
+		
+		useMethod = GetUseMethod(targettedInteractable);
 
-		if (useMethod is WeaponControl.SelectedAutoaim && targettedInteractable?.IsInteractable() == true) {
+		if (useMethod is WeaponControl.SelectedAutoaim) {
 			//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
 			if (weapon.WeaponType is Weapon.Type.HoldToCharge) {
 				UpdateWeaponDirection?.Invoke(targettedInteractable.GetPosition());
@@ -222,11 +219,8 @@ public partial class InputController : Node
 			attachedPlayer.Velocity = Vector2.Zero;
 			return;
 		}
-		
 		GetMovementInput();
-		ControlUseMethod();
-		ControlWeapon(delta);
-		// It's only fair the next method starts with a C as well
+		UpdateWeapon(delta);
 	}
 	private void OnDeath(DamageInstance _) {
 		FilterNonUiInput = true;
