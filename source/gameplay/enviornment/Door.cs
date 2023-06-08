@@ -18,8 +18,12 @@ public partial class Door : Area2D {
     [Export]
     Vector2 doorOpeningDirection;
 
+    // [Export]
+    // DoorLink doorLink;
+
     [Export]
-    DoorLink doorLink;
+    NodePath otherDoor;
+
 
     //PackedScene nextLevel; 
     [Export]
@@ -32,13 +36,13 @@ public partial class Door : Area2D {
     bool openOnLevelComplete = true;
 
     public void OpenOtherDoor() {
-
+        // Player.players[0].Position = 
     }
 
     public override void _Ready() {
         ErrorUtils.AvoidEmptyCollisionLayers(this);
          
-        doorLink.OnSceneSwitched += OpenOtherDoor;
+        // doorLink.OnSceneSwitched += OpenOtherDoor;
         
         BodyEntered += OnEnterArea;
 
@@ -63,6 +67,7 @@ public partial class Door : Area2D {
         if (body is Player player) {
             SceneSwitcher sceneSwitcher = KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(body, PreloadedScene.SceneSwitcher); 
             sceneSwitcher.ChangeSceneWithPath(nextLevel);
+            sceneSwitcher.OnSceneSwitched += () => GD.Print (GetNode(otherDoor));
         }
     }
 
