@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://bk2bf3bk41fv4"]
-
-[ext_resource type="Texture2D" uid="uid://bymduyx6ty51e" path="res://assets/sprites/target_indicator.png" id="1_jso3t"]
-[ext_resource type="Script" path="res://PlayerTargetIndicator.cs" id="2_py8ou"]
-
-[node name="TargetEnemyCursor" type="Sprite2D"]
-scale = Vector2(2.99, 2.99)
-texture = ExtResource("1_jso3t")
-script = ExtResource("2_py8ou")

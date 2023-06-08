@@ -25,8 +25,8 @@ public partial class SceneSwitcher : Node
 		canvasLayer.Layer = -128;
 	}
 
-	public void ChangeSceneWithPath(Resource scene) {
-		ChangeScene(() => GetTree().ChangeSceneToFile(scene.ResourcePath));
+	public void ChangeSceneWithPath(string resourcePath) {
+		ChangeScene(() => GetTree().ChangeSceneToFile(resourcePath));
 	}
 
 	public void ChangeSceneWithPackedMap(PackedScene scene) {

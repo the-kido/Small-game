@@ -39,6 +39,8 @@ public partial class AgroEnemyMiniBoss : Enemy
         DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
         // TODO: OK this is a problem.
         DamageableComponent.OnDeath += (_) => Player.players[0].GUI.DialoguePlayer.Start(dialogue, new());
+        DamageableComponent.OnDeath += (_) => ResourceLoader.Load<Condition>("res://assets/levels/debug/weird_door.tres").OnConditionAchieved?.Invoke();
+        
     }
 }
 

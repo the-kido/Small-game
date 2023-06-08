@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 public partial class GUI : CanvasLayer {
      
     [Export]
-    public PlayerTargetIndicator TargetIndicator {get; private set;}
+    public SelectedTargetIndicator TargetIndicator {get; private set;}
 
     #region HUD
     [Export]

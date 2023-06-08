@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public partial class PlayerTargetIndicator : Sprite2D
-{
+public partial class SelectedTargetIndicator : Sprite2D {
 	
 	IInteractable target;
 	public void Enable(IInteractable target) {

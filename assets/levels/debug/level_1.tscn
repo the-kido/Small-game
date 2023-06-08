@@ -1,16 +1,52 @@
-[gd_scene load_steps=10 format=3 uid="uid://c7mfiuu4djp0u"]
+[gd_scene load_steps=19 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
-[ext_resource type="PackedScene" uid="uid://b3buuc0f5ge1x" path="res://assets/player.tscn" id="2_2pl6b"]
+[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="2_2pl6b"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
-[ext_resource type="PackedScene" uid="uid://bk2bf3bk41fv4" path="res://enemy_target_indicator.tscn" id="6_yt11f"]
-[ext_resource type="PackedScene" uid="uid://brrwww1ytf18o" path="res://gui.tscn" id="7_80iaj"]
+[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="6_yt11f"]
+[ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="7_80iaj"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="8_x5fdu"]
+[ext_resource type="Resource" uid="uid://bt77pn1okwgns" path="res://assets/levels/debug/door1-2.tres" id="9_6xlrv"]
+[ext_resource type="Resource" uid="uid://ckp47yb06udk5" path="res://assets/levels/debug/weird_door.tres" id="10_5ckxf"]
+[ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="11_pi73g"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7dfhi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_358yl"]
+size = Vector2(83, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25iva"]
+atlas = ExtResource("11_pi73g")
+region = Rect2(0, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ina8f"]
+atlas = ExtResource("11_pi73g")
+region = Rect2(4, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1e3un"]
+atlas = ExtResource("11_pi73g")
+region = Rect2(8, 0, 4, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x85ds"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25iva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ina8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1e3un")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Level 1" type="Node2D"]
 metadata/_edit_vertical_guides_ = [823.0]
@@ -53,5 +89,23 @@ layer_0/tile_data = PackedInt32Array(458754, 65536, 1, 458758, 65536, 1, 458757,
 
 [node name="HUD" parent="." node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("7_80iaj")]
 TargetIndicator = NodePath("../TargetEnemyCursor")
+
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("sprite")]
+position = Vector2(1061, 362)
+collision_mask = 2
+script = ExtResource("8_x5fdu")
+doorLink = ExtResource("9_6xlrv")
+nextLevel = "res://assets/levels/debug/level_2.tscn"
+sprite = NodePath("AnimatedSprite2D")
+condition = ExtResource("10_5ckxf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_358yl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Area2D"]
+position = Vector2(24, 0)
+scale = Vector2(9, 9)
+sprite_frames = SubResource("SpriteFrames_x85ds")
+speed_scale = 0.1
 
 [editable path="Player"]

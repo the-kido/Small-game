@@ -1,14 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://brrwww1ytf18o"]
+[gd_scene load_steps=18 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="2_62of5"]
-[ext_resource type="Script" path="res://ToggleAttackButton.cs" id="2_b0xe6"]
-[ext_resource type="Script" path="res://DebugHUD.cs" id="2_isn2q"]
 [ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="2_lc21n"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="3_pe3p1"]
+[ext_resource type="Script" path="res://source/gui/hud/ToggleAttackButton.cs" id="5_itoma"]
 [ext_resource type="Script" path="res://source/gui/ReviveMenu.cs" id="5_kdcv6"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="7_1yp60"]
 [ext_resource type="Script" path="res://source/gui/hud/DialogueBar.cs" id="7_olhhw"]
+[ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -174,7 +174,7 @@ theme = ExtResource("2_lc21n")
 toggle_mode = true
 text = "⁂ Auto Aim ⁂
 "
-script = ExtResource("2_b0xe6")
+script = ExtResource("5_itoma")
 
 [node name="Dialogue Bar" type="Control" parent="HUD" node_paths=PackedStringArray("Label", "PortraitRect", "animationPlayer")]
 layout_mode = 1
@@ -264,7 +264,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 499.0
 offset_bottom = 113.0
-script = ExtResource("2_isn2q")
+script = ExtResource("8_or5hb")
 anySlider = NodePath("Any Slider")
 anyButton = NodePath("Button")
 
@@ -306,10 +306,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 1011.2
-offset_top = -394.0
-offset_right = 2484.2
-offset_bottom = 394.0
+offset_left = 2000.0
+offset_top = 173.0
+offset_right = 3473.0
+offset_bottom = 961.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)

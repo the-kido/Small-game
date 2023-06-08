@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
 [ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
-[ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="7_o34sa"]
+[ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="7_o34sa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2o215"]
 size = Vector2(19, 20)

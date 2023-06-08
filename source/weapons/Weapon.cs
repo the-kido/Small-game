@@ -1,11 +1,13 @@
+using System;
 using Godot;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
 
 public abstract partial class Weapon : Node2D {
- 
+
+	// Passes the added weapon
+	public event Action<Weapon> WeaponAdded;
+	// Passes the removed weapon
+ 	public event Action<Weapon> WeaponRemoved;
+
 	public abstract Weapon.Type WeaponType {get; protected set;} 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
 	public virtual void OnWeaponLetGo() {}
@@ -50,12 +52,16 @@ public abstract partial class Weapon : Node2D {
 		inputController.UseWeapon -= OnWeaponUsing;
 		inputController.OnWeaponLetGo -= OnWeaponLetGo;
 
+		WeaponRemoved?.Invoke(this);
+
 		// Remove all of the weapon's nodes held by the hand
 		foreach (Node child in hand.GetChildren()) 
 			child.QueueFree();
 
 		// Add the new weapon
-		hand.AddChild(weapon.Instantiate());
+		Weapon newWeapon = weapon.Instantiate<Weapon>(); 
+		hand.AddChild(newWeapon);
+		WeaponAdded?.Invoke(newWeapon);
 
 	}
 

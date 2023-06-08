@@ -1,19 +1,55 @@
-[gd_scene load_steps=9 format=3 uid="uid://cu0ceasurwo2r"]
+[gd_scene load_steps=18 format=3 uid="uid://dlywmwh4smgpf"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
-[ext_resource type="PackedScene" uid="uid://b3buuc0f5ge1x" path="res://assets/player.tscn" id="3_f3mkb"]
+[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="3_f3mkb"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
-[ext_resource type="PackedScene" uid="uid://brrwww1ytf18o" path="res://gui.tscn" id="5_mlaxk"]
-[ext_resource type="PackedScene" uid="uid://bk2bf3bk41fv4" path="res://enemy_target_indicator.tscn" id="6_flg8g"]
+[ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="4_inxih"]
+[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="5_vkma2"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="9_g8jdp"]
+[ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="10_0o2b1"]
+[ext_resource type="Resource" uid="uid://bt77pn1okwgns" path="res://assets/levels/debug/door1-2.tres" id="10_xswwi"]
+[ext_resource type="Resource" uid="uid://ckp47yb06udk5" path="res://assets/levels/debug/weird_door.tres" id="11_x3hj7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
+size = Vector2(83, 143)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25iva"]
+atlas = ExtResource("10_0o2b1")
+region = Rect2(0, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ina8f"]
+atlas = ExtResource("10_0o2b1")
+region = Rect2(4, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1e3un"]
+atlas = ExtResource("10_0o2b1")
+region = Rect2(8, 0, 4, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n3a5e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25iva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ina8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1e3un")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Level 2" type="Node2D"]
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
-GUI = NodePath("../GUI/HUD")
+GUI = NodePath("../GUI/GUI")
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
@@ -24,15 +60,15 @@ layer_0/tile_data = PackedInt32Array(0, 65536, 1, 65536, 65536, 1, 131072, 65536
 
 [node name="GUI" type="Node2D" parent="."]
 
-[node name="TargetEnemyCursor" parent="GUI" instance=ExtResource("6_flg8g")]
-
-[node name="HUD" parent="GUI" node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("5_mlaxk")]
-TargetIndicator = NodePath("../TargetEnemyCursor")
-
 [node name="Camera" parent="GUI" node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("2_xg7am")]
 position = Vector2(0, 467)
 player = NodePath("../../Player")
 tileMap = NodePath("../../TileMap")
+
+[node name="GUI" parent="GUI" node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("4_inxih")]
+TargetIndicator = NodePath("../TargetEnemyCursor")
+
+[node name="TargetEnemyCursor" parent="GUI" instance=ExtResource("5_vkma2")]
 
 [node name="Placed Enemies" type="Node2D" parent="."]
 
@@ -56,3 +92,23 @@ position = Vector2(438, 473)
 
 [node name="This guy is agro as frick" parent="Placed Enemies" instance=ExtResource("8_vrrcy")]
 position = Vector2(384, 712)
+
+[node name="Gameplay" type="Node2D" parent="."]
+
+[node name="Area2D" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("sprite")]
+position = Vector2(1012, 502)
+collision_mask = 2
+script = ExtResource("9_g8jdp")
+doorLink = ExtResource("10_xswwi")
+nextLevel = "res://assets/levels/debug/level_1.tscn"
+sprite = NodePath("AnimatedSprite2D")
+condition = ExtResource("11_x3hj7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/Area2D"]
+shape = SubResource("RectangleShape2D_tj11t")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Gameplay/Area2D"]
+position = Vector2(24, 0)
+scale = Vector2(9, 9)
+sprite_frames = SubResource("SpriteFrames_n3a5e")
+speed_scale = 0.1

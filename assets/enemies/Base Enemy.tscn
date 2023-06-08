@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://assets/enemies/RedBlobEnemy.cs" id="1_fluuk"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_sb4ia"]
 [ext_resource type="Texture2D" uid="uid://bgat1sola6eox" path="res://assets/sprites/enemies/base_enemy.png" id="3_fn2kq"]
-[ext_resource type="PackedScene" uid="uid://bkms61xticbof" path="res://status_effect_component.tscn" id="4_13fcn"]
+[ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="4_13fcn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qx2ha"]
 size = Vector2(32, 37)

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ckp47yb06udk5"]
+
+[ext_resource type="Script" path="res://source/resources/Condition.cs" id="1_wooyw"]
+
+[resource]
+script = ExtResource("1_wooyw")
+metadata/_editor_prop_ptr_temp = NodePath("")
+metadata/_editor_prop_ptr_oth = NodePath("")
