@@ -1,12 +1,15 @@
 using Godot;
 using System;
 using KidoUtils;
+using System.Collections.Generic;
 
 // When the level finishes, the door opens
 
 public partial class Level {
     public Action OnLevelCompleted; 
     public static Level currentLevel;
+
+    public Dictionary<string, Door> doors;
 
 }
 
@@ -40,6 +43,8 @@ public partial class Door : Area2D {
     }
 
     public override void _Ready() {
+        Level.currentLevel.doors.Add(this.Name, this);
+
         ErrorUtils.AvoidEmptyCollisionLayers(this);
          
         // doorLink.OnSceneSwitched += OpenOtherDoor;
@@ -51,8 +56,8 @@ public partial class Door : Area2D {
         } else {
             condition.OnConditionAchieved += OpenDoor;
         } 
-
-        //Level.currentLevel.OnLevelCompleted += OpenDoor;
+    
+        Level.currentLevel.OnLevelCompleted += () => Level.currentLevel.doors[this.Name].OpenDoor();
     }
 
     bool opened = true;
