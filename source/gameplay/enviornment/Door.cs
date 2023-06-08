@@ -13,10 +13,13 @@ public partial class Level {
 public partial class Door : Area2D {
     // if there's some sort of condition for the door to open, we of course do not want to open it.
     [Export]
-    DoorLink doorLink;
+    string nextLevel;
 
     [Export]
-    string nextLevel;
+    Vector2 doorOpeningDirection;
+
+    [Export]
+    DoorLink doorLink;
 
     //PackedScene nextLevel; 
     [Export]
@@ -28,9 +31,14 @@ public partial class Door : Area2D {
     [Export]
     bool openOnLevelComplete = true;
 
+    public void OpenOtherDoor() {
+
+    }
+
     public override void _Ready() {
-        
         ErrorUtils.AvoidEmptyCollisionLayers(this);
+         
+        doorLink.OnSceneSwitched += OpenOtherDoor;
         
         BodyEntered += OnEnterArea;
 
@@ -53,11 +61,8 @@ public partial class Door : Area2D {
         if (!opened) return;
         
         if (body is Player player) {
-            GD.Print(doorLink.direction1);
-            GD.Print(doorLink.firstDoor);
-            GD.Print(doorLink.secondDoor);
-
-            KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(body, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(nextLevel);
+            SceneSwitcher sceneSwitcher = KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(body, PreloadedScene.SceneSwitcher); 
+            sceneSwitcher.ChangeSceneWithPath(nextLevel);
         }
     }
 

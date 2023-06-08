@@ -1,8 +1,11 @@
 using Godot;
 using System;
 
-public partial class SceneSwitcher : Node
-{
+public partial class SceneSwitcher : Node {
+
+
+	public event Action OnSceneSwitched;
+
 	private CanvasLayer canvasLayer;
 	private AnimationPlayer animationPlayer;
 	public override void _Ready(){
@@ -10,13 +13,15 @@ public partial class SceneSwitcher : Node
 		animationPlayer = (AnimationPlayer) GetNode("AnimationPlayer");
 	}
 
-	private async void ChangeScene(Func<object> changeSceneTo) {
+	private async void ChangeScene(Action changeSceneTo) {
+		
 		canvasLayer.Layer = 127;
 		animationPlayer.Play("panel_fade");
 		
 		await ToSignal(animationPlayer, "animation_finished");
 
 		changeSceneTo.Invoke();
+		OnSceneSwitched?.Invoke();
 
 		animationPlayer.PlayBackwards("panel_fade");
 

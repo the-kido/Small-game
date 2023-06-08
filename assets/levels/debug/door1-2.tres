@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_amc0f")
+firstDoor = NodePath("Gameplay/Area2D")
 direction1 = Vector2(13, 14)
 direction2 = Vector2(0, 0)
 metadata/_editor_prop_ptr_firstDoor = NodePath(".")
-metadata/_editor_prop_ptr_secondDoor = NodePath(".")
+metadata/_editor_prop_ptr_secondDoor = NodePath("../Player/Nearby Interactable Area")
