@@ -7,6 +7,5 @@ public partial class Condition : Resource {
     public Action OnConditionAchieved;
     Condition() =>
         OnConditionAchieved += () => achieved = true;
-    
 
 }

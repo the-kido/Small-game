@@ -11,8 +11,6 @@ public class AnimationController {
     public void StopCurrentAnimation(ref Action setEvent) {
         setEvent += () => { 
             currentAnimation = AnimationInfo.none;
-            //animationPlayer.Stop();
-            //animationPlayer.Play("RESET");
         };
     }
 

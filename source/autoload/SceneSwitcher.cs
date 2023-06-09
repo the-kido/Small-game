@@ -3,8 +3,7 @@ using System;
 
 public partial class SceneSwitcher : Node {
 
-
-	public event Action OnSceneSwitched;
+	public static event Action SceneSwitched;
 
 	private CanvasLayer canvasLayer;
 	private AnimationPlayer animationPlayer;
@@ -21,7 +20,7 @@ public partial class SceneSwitcher : Node {
 		await ToSignal(animationPlayer, "animation_finished");
 
 		changeSceneTo.Invoke();
-		OnSceneSwitched?.Invoke();
+		SceneSwitched?.Invoke();
 
 		animationPlayer.PlayBackwards("panel_fade");
 
