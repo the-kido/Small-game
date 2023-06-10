@@ -26,8 +26,6 @@ public partial class Level : Node {
         ChangeLevel();
 
         NextWave();
-
-        GD.Print(Level.currentLevel.Name, "Level");
     }
     int waveAt = 0;
     private async void NextWave() {

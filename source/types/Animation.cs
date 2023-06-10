@@ -4,7 +4,6 @@ public class AnimationController {
     
      
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {
-        if (animationPlayerFreed) return;
         
         setEvent += () => SetAnimation(animation);
     }
@@ -28,13 +27,13 @@ public class AnimationController {
 
     AnimationInfo currentAnimation  = AnimationInfo.none;    
     private void SetAnimation(AnimationInfo animation) {
-        
+        if (animationPlayerFreed) return;
+
         //Animations of the same priority should still override the current animation.
         if (currentAnimation.priority > animation.priority) return;
         if (currentAnimation.name == animation.name) return;
 
         currentAnimation = animation;
-
         
         animationPlayer.SpeedScale = animation.speed;
 
