@@ -2,9 +2,10 @@ using Godot;
 using System;
 public class AnimationController {
     
-    AnimationPlayer animationPlayer;
      
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {
+        if (animationPlayerFreed) return;
+        
         setEvent += () => SetAnimation(animation);
     }
 
@@ -14,8 +15,14 @@ public class AnimationController {
         };
     }
 
+    //I literally don't know how to solve this issue so this is what you're getting.
+    bool animationPlayerFreed = false;
+
+    AnimationPlayer animationPlayer;
     public AnimationController(AnimationPlayer animationTree) {
         this.animationPlayer = animationTree;
+        animationPlayer.TreeExited += () => animationPlayerFreed = true;
+
         animationTree.AnimationFinished += OnAnimationComplete;
     }
 
@@ -27,6 +34,8 @@ public class AnimationController {
         if (currentAnimation.name == animation.name) return;
 
         currentAnimation = animation;
+
+        
         animationPlayer.SpeedScale = animation.speed;
 
         if (animation.resetPreviousAnimation) {
@@ -56,4 +65,5 @@ public class AnimationInfo {
         this.priority = priority;
     }
     public static AnimationInfo none = new("", -1);
+
 }

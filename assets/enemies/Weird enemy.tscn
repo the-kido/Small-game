@@ -253,6 +253,5 @@ libraries = {
 agent = NodePath("../NavigationAgent2D")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("7_o34sa")]

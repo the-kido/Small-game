@@ -6,7 +6,7 @@ public abstract partial class  Gun : Weapon {
     [Export]
     private PackedScene bulletAsset;
 
-    protected abstract DamageInstance damage {get; init;}
+    protected abstract DamageInstance damage {get;}
     protected abstract BulletInstance BulletInstance();
     
     protected Node2D nuzzle => (Node2D) GetNode("Nuzzle");

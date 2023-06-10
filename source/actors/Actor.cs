@@ -13,20 +13,21 @@ public abstract partial class Actor : CharacterBody2D {
     [Export]
     public CollisionShape2D CollisionShape {get; private set;}
 	[Export]
+
+    // Stats
 	public int MoveSpeed {get; set;}
-    
+    public float DamageDealingMultplier {get; set;} = 1;
 
 	public override void _Process(double delta) => MoveAndSlide();
 
 	public override void _Ready() {
-        //A safety check for reasons
+        // safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
         DamageableComponent.OnDamaged += DamageFlash;
         DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
 
         Effect.Init(this);
-
 	}
 
 	#region Methods
@@ -54,7 +55,6 @@ public abstract partial class Actor : CharacterBody2D {
         }
     }
 
-    
     Vector2 previousFrame;
     public bool IsStalling() {
         Vector2 currentFrame = GlobalPosition;
@@ -66,23 +66,18 @@ public abstract partial class Actor : CharacterBody2D {
         return false;
     }
 
+    public void Flip(bool flip) => flippedSprite.FlipH = flip;
 
-    public void Flip(bool flip) {
-        flippedSprite.FlipH = flip;
-    }
-
-	
-    uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
 
 
     //Checks to see if this actor can see a player with a ___ pixel width to make sure things like
     //bullets will have enough room to be shot without colliding into a wall for instance. 
 
+    uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
     /// <Summary>
     /// Gap (in pixels) from the center of the actor
     /// </Summary>
 	public Player VisiblePlayer(int gap = 0) {
-        
         
         /* Struggling to figure out this gap thing.
         int[] raycastPoints = new int[] {gap/2, -gap/2};

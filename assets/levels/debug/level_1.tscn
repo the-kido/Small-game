@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=20 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="8_x5fdu"]
 [ext_resource type="Resource" uid="uid://ckp47yb06udk5" path="res://assets/levels/debug/weird_door.tres" id="10_5ckxf"]
 [ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="11_pi73g"]
+[ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
@@ -54,7 +55,7 @@ doors = [NodePath("Door 1")]
 metadata/_edit_vertical_guides_ = [823.0]
 metadata/_edit_horizontal_guides_ = [464.0]
 
-[node name="Base Enemy" parent="." instance=ExtResource("1_tonpy")]
+[node name="Hillbilly" parent="." instance=ExtResource("1_tonpy")]
 position = Vector2(548, 597)
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
@@ -97,6 +98,7 @@ position = Vector2(1061, 362)
 collision_mask = 2
 script = ExtResource("8_x5fdu")
 nextLevel = "res://assets/levels/debug/level_2.tscn"
+doorOpeningDirection = Vector2i(-1, 0)
 sprite = NodePath("AnimatedSprite2D")
 condition = ExtResource("10_5ckxf")
 
@@ -108,5 +110,8 @@ position = Vector2(24, 0)
 scale = Vector2(9, 9)
 sprite_frames = SubResource("SpriteFrames_x85ds")
 speed_scale = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("12_2c1uv")
 
 [editable path="Player"]

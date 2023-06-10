@@ -56,7 +56,7 @@ public sealed class AgroEnemyRushState : AIState {
     
     State state = State.Done; 
 
-    DamageInstance damage = new() {
+    DamageInstance damage => new(actor) {
         damage = 10,
     };
 

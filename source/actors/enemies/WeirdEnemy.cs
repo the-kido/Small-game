@@ -1,13 +1,5 @@
-using System;
 using Godot;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-public enum EnemyStates {
-    Patrolling,
-    Attacking
-}
-
+ 
 public sealed partial class WeirdEnemy : Enemy {
     [Export] 
     public Pathfinder pathfinderComponent;

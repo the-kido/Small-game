@@ -7,14 +7,19 @@ public partial class ChargedGun : Gun {
     
     // Overriding relavent properties / methods
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
-	protected override DamageInstance damage {get; init;} = new() {
-         statusEffect = new FireEffect() 
+
+	protected override DamageInstance damage => new(player) {
+        statusEffect = new FireEffect(), 
+        damage = (int) (MAX_DAMAGE * strength)
     };
 	protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
 
+
+    
 	public override void Attack() {
-        damage.damage = (int) (MAX_DAMAGE * strength);
+
         SpawnBulletInstance();
+        
         Camera.currentCamera.StartShake(strength * 100, 300, 1);
     }
 

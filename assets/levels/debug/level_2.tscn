@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dlywmwh4smgpf"]
+[gd_scene load_steps=19 format=3 uid="uid://dlywmwh4smgpf"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -11,7 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="9_g8jdp"]
 [ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="10_0o2b1"]
-[ext_resource type="Resource" uid="uid://ckp47yb06udk5" path="res://assets/levels/debug/weird_door.tres" id="11_x3hj7"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_vytqf"]
+[ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
 size = Vector2(83, 143)
@@ -45,9 +46,10 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Level 2" type="Node2D"]
+[node name="Level 2" type="Node"]
 script = ExtResource("1_68dsa")
 doors = [NodePath("Gameplay/Door 1")]
+waves = [NodePath("Waves/Wave 1"), NodePath("")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
@@ -63,7 +65,7 @@ layer_0/tile_data = PackedInt32Array(0, 65536, 1, 65536, 65536, 1, 131072, 65536
 [node name="GUI" type="Node2D" parent="."]
 
 [node name="Camera" parent="GUI" node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("2_xg7am")]
-position = Vector2(0, 467)
+position = Vector2(8, 473)
 player = NodePath("../../Player")
 tileMap = NodePath("../../TileMap")
 
@@ -74,27 +76,6 @@ TargetIndicator = NodePath("../TargetEnemyCursor")
 
 [node name="Placed Enemies" type="Node2D" parent="."]
 
-[node name="Weird enemy" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
-process_mode = 4
-position = Vector2(833, 396)
-
-[node name="Weird enemy2" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
-process_mode = 4
-position = Vector2(533, 202)
-
-[node name="Weird enemy3" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
-process_mode = 4
-position = Vector2(503, 681)
-
-[node name="Weird enemy4" parent="Placed Enemies" instance=ExtResource("4_0ta41")]
-position = Vector2(926, 806)
-
-[node name="Base Enemy" parent="Placed Enemies" instance=ExtResource("7_5xse6")]
-position = Vector2(438, 473)
-
-[node name="This guy is agro as frick" parent="Placed Enemies" instance=ExtResource("8_vrrcy")]
-position = Vector2(384, 712)
-
 [node name="Gameplay" type="Node2D" parent="."]
 
 [node name="Door 1" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("sprite")]
@@ -102,8 +83,8 @@ position = Vector2(1012, 502)
 collision_mask = 2
 script = ExtResource("9_g8jdp")
 nextLevel = "res://assets/levels/debug/level_1.tscn"
+doorOpeningDirection = Vector2i(-1, 0)
 sprite = NodePath("AnimatedSprite2D")
-condition = ExtResource("11_x3hj7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/Door 1"]
 shape = SubResource("RectangleShape2D_tj11t")
@@ -113,3 +94,32 @@ position = Vector2(24, 0)
 scale = Vector2(9, 9)
 sprite_frames = SubResource("SpriteFrames_n3a5e")
 speed_scale = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("13_w1ius")
+
+[node name="Waves" type="Node" parent="."]
+
+[node name="Wave 1" type="Node" parent="Waves"]
+script = ExtResource("12_vytqf")
+
+[node name="Weird enemy4" parent="Waves/Wave 1" instance=ExtResource("4_0ta41")]
+position = Vector2(926, 806)
+
+[node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
+position = Vector2(438, 473)
+
+[node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
+position = Vector2(384, 712)
+
+[node name="Wave 2" type="Node" parent="Waves"]
+script = ExtResource("12_vytqf")
+
+[node name="Weird enemy" parent="Waves/Wave 2" instance=ExtResource("4_0ta41")]
+position = Vector2(833, 396)
+
+[node name="Weird enemy2" parent="Waves/Wave 2" instance=ExtResource("4_0ta41")]
+position = Vector2(533, 202)
+
+[node name="Weird enemy3" parent="Waves/Wave 2" instance=ExtResource("4_0ta41")]
+position = Vector2(503, 681)

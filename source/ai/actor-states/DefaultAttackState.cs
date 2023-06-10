@@ -135,7 +135,7 @@ public sealed class DefaultAttackState : AIState {
 
     public Action OnShoot;
 
-    DamageInstance damage = new() {
+    DamageInstance damage => new(actor) {
         damage = 5,
         statusEffect = new FireEffect(),
     };

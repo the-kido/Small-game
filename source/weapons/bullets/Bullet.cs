@@ -101,12 +101,10 @@ public abstract partial class Bullet : Node2D {
     }
 }
 
-public record BulletInstance (BulletFrom from, DamageInstance damage, BulletSpeed speed) {
-
-}
+public record BulletInstance (BulletFrom from, DamageInstance damage, BulletSpeed speed);
 
 // Makes debugging easier. 
-public enum BulletSpeed : int {
+public enum BulletSpeed : uint {
     VerySlow = 100,
     KindaSlow = 250,
     Slow = 500,

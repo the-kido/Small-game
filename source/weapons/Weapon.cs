@@ -19,7 +19,9 @@ public abstract partial class Weapon : Node2D {
 	public float ReloadSpeed {get; private set;} = 1;
 	protected double reloadTimer = 0;
 
-	protected Node2D hand => (Node2D) GetParent();
+	protected Node2D hand => GetParent<Node2D>();
+	protected Player player => hand.GetParent<Player>();
+	
 	public override void _Ready() {
 		Init();
 		InputController inputController = hand.GetNode<InputController>("../Input Controller");
@@ -28,8 +30,6 @@ public abstract partial class Weapon : Node2D {
 		inputController.UseWeapon += OnWeaponUsing;
 		inputController.OnWeaponLetGo += OnWeaponLetGo;
 	}
-
-	
 
 
 	//While the player is "using" (holding click for) the weapon.

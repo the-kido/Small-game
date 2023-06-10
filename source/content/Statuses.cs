@@ -1,7 +1,6 @@
 using Godot;
 
 public sealed class FireEffect : IActorStatus {
-    public static FireEffect instance = new();
     public override float duration {get; protected set;} = 10;
     public override ConvertsTo[] opposites { get; init;}
     //use nameof to get the name of the class that it is incompatible with. 
@@ -18,18 +17,20 @@ public sealed class FireEffect : IActorStatus {
         };
     }
 
-    private DamageInstance damage = new() {
-        damage = 2,
-        suppressImpactFrames = true,
-    };
+    private DamageInstance damage;
     
     GpuParticles2D fire;
     public override void Init(Actor actor) {
+        
+        damage = new(actor) {
+            damage = 2,
+            suppressImpactFrames = true,
+        };
+
         fire = ParticleFactory.AddParticle(actor, Effects.Fire);
     }
-    public override void Disable(Actor actor) {
+    public override void Disable(Actor actor) =>
         ParticleFactory.RemoveParticle(fire);
-    }
 
     double damageTime;
     public float damagePeriod = 2;
@@ -45,7 +46,6 @@ public sealed class FireEffect : IActorStatus {
 }
 
 public sealed class WetStatus : IPermanentStatus {
-    public static WetStatus instance = new();
 
     public override ConvertsTo[] opposites {get; init;}
     public override string[] incompatibles {get; init;}
@@ -63,7 +63,6 @@ public sealed class WetStatus : IPermanentStatus {
     GpuParticles2D water;
     public override void Init(Actor actor) {
         water = ParticleFactory.AddParticle(actor, Effects.Wet);
-
         actor.MoveSpeed /= 10;
     }
 
@@ -93,8 +92,10 @@ public sealed class GasStatus : IPermanentStatus {
     }
 }
 
+
+// Fire and electricity ? 
+// Or fire and gas ?
 public sealed class PlasmaEffect : IActorStatus {
-    public static FireEffect instance = new();
     public override float duration {get; protected set;} = 10;
     public override ConvertsTo[] opposites { get; init;}
     //use nameof to get the name of the class that it is incompatible with. 
@@ -102,12 +103,10 @@ public sealed class PlasmaEffect : IActorStatus {
 
     public override void Init(Actor actor) { 
         //init the effect too. 
-        actor.DamageableComponent.DamageMulitplier += 0.5f;
+        actor.DamageableComponent.DamageTakenMulitplier += 0.5f;
     }
     public override void Disable(Actor actor) {
-        actor.DamageableComponent.DamageMulitplier -= 0.5f;
+        actor.DamageableComponent.DamageTakenMulitplier -= 0.5f;
     }
-    public override void Update(Actor actor, double delta){
-        
-    }
+    public override void Update(Actor actor, double delta) {}
 }

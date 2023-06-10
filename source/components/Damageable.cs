@@ -13,14 +13,14 @@ public partial class Damageable : Area2D {
 	private int MaxHealth {get; init;}
 	public bool IsImmune {get; private set;} = false;
 
-	private float _damageMultiplier = 1f;
-	public float DamageMulitplier {
-		get => _damageMultiplier;
+	private float _damageTakenMultiplier = 1f;
+	public float DamageTakenMulitplier {
+		get => _damageTakenMultiplier;
 		set {
 			if (value < 0) {
 				throw new ArgumentOutOfRangeException(nameof(value), "Range must be above 0");
 			}
-			_damageMultiplier = value;
+			_damageTakenMultiplier = value;
 		}
 	}
 
@@ -40,6 +40,7 @@ public partial class Damageable : Area2D {
 	public override void _Ready() => ErrorUtils.AvoidEmptyCollisionLayers(this);
 
 	private async void WaitForImmunityFrames(DamageInstance a) {
+		
 		SetToImmune?.Invoke();
 		await Task.Delay((int)(ImmunityFrames * 1000));
 		SetToUnimmune?.Invoke();
@@ -59,15 +60,13 @@ public partial class Damageable : Area2D {
 		if (!IsAlive) return;
 
 		//If the actor is immune and the damage instance cannot override immunity frames, continue.
-		if (IsImmune && damageInstance.overridesImmunityFrames == false) 
-			return;
+		if (IsImmune && damageInstance.overridesImmunityFrames == false) return;
 
-		Health -= (int)(damageInstance.damage * _damageMultiplier);
+		Health -= (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageMultiplier);
 		OnDamaged?.Invoke(damageInstance);
 
 		if (Health <= 0) 
 			OnDeath?.Invoke(damageInstance);
 	}
-
 }
 

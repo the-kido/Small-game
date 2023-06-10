@@ -5,12 +5,11 @@ using System.Collections.Generic;
 public partial class EffectInflictable : Node {
 
 
-
-    //Every effectinflictable will  have 1 of these instances. 
-    public IActorStatus fireEffect = new FireEffect(), wetStatus = new WetStatus();
-
-
     public List<IActorStatus> StatusEffects {get; private set;} = new();
+    void ClearAllEffects(DamageInstance _) {
+        for (int i = 0; i < StatusEffects.Count; i++) RemoveEffect(StatusEffects[i]);
+    }
+
     private Actor actor;
     
     private void ParseSynergies() {
@@ -19,15 +18,20 @@ public partial class EffectInflictable : Node {
 
     public void Init(Actor actor) {
         this.actor = actor;
+
+
+        actor.DamageableComponent.OnDeath += ClearAllEffects;
+
         actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
 
         //Debug
-        DamageInstance waterDamage = new() {
+        DamageInstance waterDamage = new(actor) {
             damage = 3,
             statusEffect = new WetStatus(),
         };
 
-        DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
+
+    DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
     }
     private void UpdateEffectHealth(DamageInstance damageInstance) {
         foreach (IActorStatus effect in StatusEffects) {
@@ -40,7 +44,6 @@ public partial class EffectInflictable : Node {
         //Of the effect?
 
         //TODO: Temporary solution: If the name is the same, don't add it again.
-
 
         foreach (IActorStatus effect in StatusEffects) {
             if (statusEffect.ToString() == effect.ToString()) return false;
@@ -76,13 +79,13 @@ public partial class EffectInflictable : Node {
 
     //Called from the actor this is attached to.
     public override void _Process(double delta) {
+        
         foreach (IActorStatus effect in StatusEffects.ToArray()) {
             effect.UpdateTimer(delta);
             effect.Update(actor, delta);
 
             foreach (ConvertsTo convertsTo in effect.opposites) {
                 if (convertsTo.Progress >= 10) {
-                    GD.Print("Replaced ", effect, " with ", convertsTo.goTo);
                     RemoveEffect(effect);
                     Add(convertsTo.goTo);
                 }

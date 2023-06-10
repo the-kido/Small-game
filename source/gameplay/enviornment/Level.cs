@@ -1,29 +1,50 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public partial class Level : Node{
-
-	
+public partial class Level : Node {
 	public new static event Action<Level> Ready;
 
-
+    [ExportCategory("Doors")]
     [Export]
     public Godot.Collections.Array<NodePath> doors = new();
 
+    [ExportCategory("Waves")]
+    [Export]
+    private Godot.Collections.Array<NodePath> waves = new();
+
     public Door GetLinkedDoor(string name) {
-        foreach (NodePath door in doors) {
-            Door _door = GetNode<Door>(door);
+        foreach (NodePath doorPath in doors) {
+            Door door = GetNode<Door>(doorPath);
 
-            GD.Print(_door.Name, name);
-
-            if (_door.Name == name) 
-                return _door;
+            if (door.Name == name) return door;
         }
         return null;
     }
     public override void _Ready() {
         ChangeLevel();
+
+        NextWave();
+
+        GD.Print(Level.currentLevel.Name, "Level");
+    }
+    int waveAt = 0;
+    private async void NextWave() {
+
+        await Task.Delay(500);
+        
+
+        if (waveAt >= waves.Count - 1) {
+            LevelCompleted?.Invoke();
+            GD.Print("Level completed!");    
+            return;
+        }
+
+        GetNode<EnemyWave>(waves[waveAt]).StartWave();
+        GetNode<EnemyWave>(waves[waveAt]).WaveFinished += NextWave;
+        waveAt += 1;
+
     }
 
     private void ChangeLevel() {

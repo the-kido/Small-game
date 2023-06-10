@@ -4,7 +4,7 @@ using KidoUtils;
 public partial class Door : Area2D {
     // if there's some sort of condition for the door to open, we of course do not want to open it.
     [Export]
-    NodePath nextLevel;
+    string nextLevel;
 
     [Export]
     Vector2I doorOpeningDirection;
@@ -19,14 +19,18 @@ public partial class Door : Area2D {
             // A static dictionary. When the player goes thru door, the list will reset, the new doors will add to it _Ready()
             // and the old door will check if there's a new door of the same name / number.
 
+
     public override void _Ready() {
         ErrorUtils.AvoidEmptyCollisionLayers(this);
         
         BodyEntered += OnEnterArea;
 
         // Set up how the door will be opened
+
         if (condition is null) {
-            Level.currentLevel.LevelCompleted += OpenDoor;
+            
+            Level.Ready += (level) => level.LevelCompleted += OpenDoor;
+
         } else {
             if (condition.achieved) {
                 OpenDoor();
@@ -38,6 +42,9 @@ public partial class Door : Area2D {
 
     bool opened = false;
     public void OpenDoor() {
+        // don't open twice. 
+        if (opened) return;
+
         opened = true;
         sprite.Play("default");
     }

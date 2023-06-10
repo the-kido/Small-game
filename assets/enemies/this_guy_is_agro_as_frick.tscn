@@ -376,7 +376,6 @@ debug_color = Color(1, 0.168627, 0.431373, 0)
 agent = NodePath("NavigationAgent2D")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="Pathfinder"]
-debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(1, 0.92549, 0, 1)
 
