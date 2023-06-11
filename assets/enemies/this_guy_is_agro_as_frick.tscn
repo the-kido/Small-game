@@ -1,7 +1,6 @@
-[gd_scene load_steps=39 format=3 uid="uid://fktd2hmwbgea"]
+[gd_scene load_steps=37 format=3 uid="uid://fktd2hmwbgea"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/AgroEnemyMiniBoss.cs" id="1_3njyc"]
-[ext_resource type="Texture2D" uid="uid://nklljvf78koa" path="res://assets/sprites/enemies/agro-guy.png" id="2_egbxo"]
 [ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/sprites/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="3_i2isi"]
 [ext_resource type="Texture2D" uid="uid://b7x365xmp0l8a" path="res://assets/sprites/enemies/agro/agro-guy-preping-sheet.png" id="3_nc480"]
@@ -12,10 +11,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rr0j3"]
 size = Vector2(14.8, 13)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_47qv2"]
-atlas = ExtResource("2_egbxo")
-region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g1gg3"]
 atlas = ExtResource("3_fd2p1")
@@ -93,7 +88,7 @@ region = Rect2(48, 0, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_47qv2")
+"texture": SubResource("AtlasTexture_g1gg3")
 }],
 "loop": true,
 "name": &"default",
@@ -354,7 +349,6 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="AgroGuy" type="AnimatedSprite2D" parent="."]
 z_index = 1
 sprite_frames = SubResource("SpriteFrames_f4ect")
-animation = &"fatigue begin"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AgroGuy"]
 libraries = {
