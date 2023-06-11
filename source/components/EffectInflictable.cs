@@ -130,9 +130,6 @@ public abstract class IActorStatus {
             
             if (damage.statusEffect.GetType() == opposites[i].type) {
                 opposites[i].IncreaseProgress(damage.damage);
-
-                GD.Print(damage.statusEffect.GetType(), opposites[i].Progress);
-                
                 return;
             }
         } 
