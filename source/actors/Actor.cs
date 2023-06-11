@@ -18,17 +18,16 @@ public abstract partial class Actor : CharacterBody2D {
 	public int MoveSpeed {get; set;}
     public float DamageDealingMultplier {get; set;} = 1;
 
+    // 
+
 	public override void _Process(double delta) => MoveAndSlide();
 
 	public override void _Ready() {
         // safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
-
         DamageableComponent.OnDamaged += DamageFlash;
         
-        DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
-
         Effect.Init(this);
 	}
 
@@ -70,8 +69,6 @@ public abstract partial class Actor : CharacterBody2D {
     }
 
     public void Flip(bool flip) => flippedSprite.FlipH = flip;
-
-
 
     //Checks to see if this actor can see a player with a ___ pixel width to make sure things like
     //bullets will have enough room to be shot without colliding into a wall for instance. 

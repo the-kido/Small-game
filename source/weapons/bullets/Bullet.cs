@@ -5,7 +5,7 @@ using KidoUtils;
 
 public abstract partial class Bullet : Node2D { 
 
-    private DamageInstance currentDamageInstance;
+    private DamageInstance damageInstance;
 
     private int speed;
     [Export]
@@ -38,17 +38,12 @@ public abstract partial class Bullet : Node2D {
     }
     #endregion
 
-    private DamageInstance BulletDamageInstance() {
-        DamageInstance damageInstance = currentDamageInstance;
-        damageInstance.forceDirection = directionFacing;
-        return damageInstance;
-    }
-
     private void OnArea2DEntered(Area2D area) {
         if (area is Damageable damageable) {
-            OnDamageableEntered(damageable, BulletDamageInstance());
+            OnDamageableEntered(damageable, damageInstance);
         }
     }
+    
     private void OnBodyEntered(Node2D body) {
         if (body is TileMap tileMap) {
             OnTilemapEntered(tileMap);
@@ -59,6 +54,12 @@ public abstract partial class Bullet : Node2D {
         var newParticle = ParticleFactory.SpawnGlobalParticle(particles, GlobalPosition, GlobalRotation + 90);
         await Task.Delay(particleDeletionTime * 1000);
         newParticle.QueueFree();
+    }
+
+    private DamageInstance GetBulletDamageInstance(BulletInstance bulletInfo, Vector2 direction) {
+        DamageInstance damageInstance = bulletInfo.damage;
+        damageInstance.forceDirection = direction; 
+        return damageInstance;
     }
 
     public void Init(Vector2 spawnPosition, float radians, BulletInstance bulletInfo) {
@@ -84,11 +85,11 @@ public abstract partial class Bullet : Node2D {
         }
 
         Rotation = radians;
-
-        this.speed = (int) bulletInfo.speed;
-        this.currentDamageInstance = bulletInfo.damage;
-
+        speed = (int) bulletInfo.speed;
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+
+        damageInstance = GetBulletDamageInstance(bulletInfo, directionFacing);
+
         Position = spawnPosition;
     }
 

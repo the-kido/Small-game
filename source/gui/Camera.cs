@@ -36,14 +36,14 @@ public partial class Camera : Camera2D
 		Vector2 sides = cameraRect.Size - cameraRect.Position;
 		
 
-		//Set diagonal lenght equal to the diagonal size of the USUAL Screne.
-
+		//Set diagonal lenght equal to the diagonal size of the USUAL scene.
+		
 		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
 		diagonalLength /= (SCALE_MAX + SCALE_MIN) * 2;
 
 		importantObjects.Add(player);
-
 	}
+
 	public override void _Process(double delta) {
 
 		Rect2 importantObjectsRect = ImportantObjectsRect();
@@ -61,7 +61,6 @@ public partial class Camera : Camera2D
 	}
 
 	private List<Node2D> importantObjects = new();
-
 
 	public Vector2 FinalCameraZoom(Rect2 importantObjectsRect) {
 		Vector2 bottomLeft = importantObjectsRect.Position;
@@ -83,10 +82,8 @@ public partial class Camera : Camera2D
 		return Vector2.One * (dif); //TODsO. 
 	}
 	
-
 	public Vector2 ConstantCameraOffset() {
 		Vector2 finalCameraOffset = Vector2.Zero;
-		
 
 		finalCameraOffset += player.Position - GetLocalMousePosition();
 

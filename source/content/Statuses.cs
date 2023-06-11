@@ -31,9 +31,9 @@ public sealed class FireEffect : IActorStatus {
         fire = ParticleFactory.AddParticle(actor, Effects.Fire);
     }
     public override void Disable(Actor actor) {
+        actor.Modulate -= new Color(0.3f, 0.2f, 0f);
 
         ParticleFactory.RemoveParticle(fire);
-
     }
 
     double damageTime;

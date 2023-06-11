@@ -24,7 +24,6 @@ public partial class Damageable : Area2D {
 		}
 	}
 
-
 	public bool IsAlive {
         get {
             return Health <= 0 ? false : true;
@@ -41,23 +40,23 @@ public partial class Damageable : Area2D {
 
 	private async void WaitForImmunityFrames(DamageInstance a) {
 		
-		SetToImmune?.Invoke();
+		IsImmune = true;
 		await Task.Delay((int)(ImmunityFrames * 1000));
-		SetToUnimmune?.Invoke();
+		IsImmune = false;
 	}
 
 	private Damageable() {
 		MaxHealth = Health;
-		
-		SetToImmune += () => IsImmune = true;
-        SetToUnimmune += () => IsImmune = false;
 
 		OnDamaged += WaitForImmunityFrames;
+
+		// QueueFree in order to not take more damage
 		OnDeath += (_) => QueueFree();
 	}
 	
-	private PackedScene damageText = ResourceLoader.Load<PackedScene>("res://source/autoload/damage_text.tscn");
-	private DamageText NewDamageText(int damage) {
+	private static readonly PackedScene damageText = ResourceLoader.Load<PackedScene>("res://source/autoload/damage_text.tscn");
+
+	private DamageText SpawnDamageText(int damage) {
 		
 		DamageText instance = damageText.Instantiate<DamageText>();
 		
@@ -67,20 +66,31 @@ public partial class Damageable : Area2D {
 
 		return instance;
 	}
-	public void Damage(DamageInstance damageInstance) {
-		if (!IsAlive) return;
+	private int GetTotalDamage(DamageInstance damageInstance) {
+		return (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageDealtMultiplier);
+	}
+	private bool CanTakeDamage(DamageInstance damageInstance) {
+		// Or not, maybe just allow a dead entity to take damage. Who am I to judge.
+		if (!IsAlive) return false;
 
 		//If the actor is immune and the damage instance cannot override immunity frames, continue.
-		if (IsImmune && damageInstance.overridesImmunityFrames == false) return;
+		if (IsImmune && damageInstance.overridesImmunityFrames == false) return false;
 
-		int damage = (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageMultiplier);
-		Health -= damage;
+		// it passes the test. pog champ
+		return true;
+	}
+
+	public void Damage(DamageInstance damageInstance) {
+		if (!CanTakeDamage(damageInstance)) return;
+		
+		int totalDamage = GetTotalDamage(damageInstance);
+
+		Health -= totalDamage;
 		OnDamaged?.Invoke(damageInstance);
+		
+		SpawnDamageText(totalDamage);
 
-		NewDamageText(damage);
-
-		if (Health <= 0) 
-			OnDeath?.Invoke(damageInstance);
+		if (Health <= 0) OnDeath?.Invoke(damageInstance);
 	}
 }
 

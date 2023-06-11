@@ -19,19 +19,18 @@ public partial class EffectInflictable : Node {
     public void Init(Actor actor) {
         this.actor = actor;
 
+        actor.DamageableComponent.OnDamaged += (damageInstance) => Add(damageInstance.statusEffect);
+        actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
 
         actor.DamageableComponent.OnDeath += ClearAllEffects;
 
-        actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
-
-        //Debug
+        // Debug
         DamageInstance waterDamage = new(actor) {
             damage = 3,
             statusEffect = new WetStatus(),
         };
-
-
-    DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
+        DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
+        // Debug
     }
     private void UpdateEffectHealth(DamageInstance damageInstance) {
         foreach (IActorStatus effect in StatusEffects) {

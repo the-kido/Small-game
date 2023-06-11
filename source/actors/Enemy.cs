@@ -3,8 +3,8 @@ using System;
 using System.Threading.Tasks;
 using KidoUtils;
 
-public partial class Enemy : Actor, IInteractable
-{
+public partial class Enemy : Actor, IInteractable {
+    
     [Export]
     private AnimationPlayer animationPlayer = new();
     
@@ -55,8 +55,7 @@ public partial class Enemy : Actor, IInteractable
         return GlobalPosition;
     }
 
-    CollisionShape2D IInteractable.GetCollisionShape()
-    {
+    CollisionShape2D IInteractable.GetCollisionShape() {
         return CollisionShape;
     }
 

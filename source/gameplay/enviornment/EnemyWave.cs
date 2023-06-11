@@ -7,8 +7,7 @@ public partial class EnemyWave : Node {
     // this will have children of type ENEMY. It defaults to 
     // no process but when the wave starts there "is" a process 
     
-    static private PackedScene enemySpawnIndicator = ResourceLoader.Load<PackedScene>("res://source/autoload/enemy_spawn_indicator.tscn");
-
+    static private readonly PackedScene enemySpawnIndicator = ResourceLoader.Load<PackedScene>("res://source/autoload/enemy_spawn_indicator.tscn");
 
     public event Action WaveFinished;
 

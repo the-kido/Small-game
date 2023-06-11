@@ -12,15 +12,16 @@ public struct DialogueLine {
 }
 
 public struct Portrait {
-    public bool loop = false;
+    public bool loopAnimation = false;
     public float fps = 10;
 
     double progress = 0;
 
-    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, currentFrame);
-    int currentFrame => (int) Mathf.Floor( (float) progress);
-    bool isAnimated => sprites.GetFrameCount(animationName) > 1;
-    bool isFinished => currentFrame == (sprites.GetFrameCount(animationName) - 1);
+    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
+
+    int CurrentFrame => (int) Mathf.Floor( (float) progress);
+    bool IsAnimated => sprites.GetFrameCount(animationName) > 1;
+    bool IsFinished => CurrentFrame == (sprites.GetFrameCount(animationName) - 1);
 
 
     SpriteFrames sprites;
@@ -32,10 +33,10 @@ public struct Portrait {
 
     public void PlayAnimation(double delta) {
 
-        if (!isAnimated) return;
+        if (!IsAnimated) return;
         
-        if (isFinished) {
-            if (loop) progress = 0;
+        if (IsFinished) {
+            if (loopAnimation) progress = 0;
             else return;
         }
 

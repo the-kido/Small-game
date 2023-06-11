@@ -25,9 +25,9 @@ public partial class Level : Node {
     }
     public override void _Ready() {
         ChangeLevel();
-
         NextWave();
     }
+    
     int waveAt = 0;
     private async void NextWave() {
 

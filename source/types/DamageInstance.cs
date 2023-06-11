@@ -8,8 +8,8 @@ public record DamageInstance {
 	public bool suppressImpactFrames = false;
 	public IActorStatus statusEffect = null;
 
-	public float damageMultiplier = 1;
+	public float damageDealtMultiplier = 1;
 	public DamageInstance(Actor actor) {
-		this.damageMultiplier = actor.DamageDealingMultplier;
+		this.damageDealtMultiplier = actor.DamageDealingMultplier;
 	}
 }

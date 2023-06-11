@@ -24,10 +24,8 @@ public partial class ReloadVisual : ProgressBar {
         newWeapon.WeaponAdded += SubcribeToEvents;
         newWeapon.WeaponRemoved += UnsubToEvents;
 
-        
         InputController inputController = hand.GetNode<InputController>("../Input Controller");
 
-        
         inputController.UseWeapon += UpdateBar;
         inputController.OnWeaponLetGo += ResetBar;
     }

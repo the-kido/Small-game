@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 public partial class DamageTextManager : Node {
     public static DamageTextManager instance;
-    public override void _Ready() {
+    public DamageTextManager() {
         instance = this;
     }
 

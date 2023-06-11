@@ -15,7 +15,7 @@ public partial class DamageText : Node2D {
     private void PlayAnimation(double delta) {
         newShift.X += (float) (xSpeed * delta);
 
-        newShift.Y = -50 * MathF.Sin((float) time * 4f);
+        newShift.Y = -50 * MathF.Sin((float) timeAlive * 4f);
 
         Vector2 shift = new(
             newShift.X - previousShift.X,
@@ -27,17 +27,16 @@ public partial class DamageText : Node2D {
         Position += shift;
     }
 
-    double time;
+    double timeAlive;
 
     public override void _Process(double delta) {
-        time += delta;
+        timeAlive += delta;
         PlayAnimation(delta);
-
     }
 
-    public void Init(int damage, Vector2 globalPosition) {
+    public void Init(int totalDamage, Vector2 globalPosition) {
 
-        Color color = damage switch {
+        Color color = totalDamage switch {
             < 0 => new(0.7f, 0.95f, 0.61f),     // Heal
             < 3 => new(0.81f, 0.1f, 0.1f),      // Bad
             < 6 => new(0.9f, 0.5f, 0.1f),       // Decent
@@ -47,7 +46,7 @@ public partial class DamageText : Node2D {
         };
         Modulate = color;
 
-        label.Text = damage.ToString();
+        label.Text = totalDamage.ToString();
 
         GlobalPosition = globalPosition;
 

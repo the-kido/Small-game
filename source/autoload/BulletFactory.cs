@@ -10,7 +10,7 @@ public partial class BulletFactory : Node {
         if (newBullet is not Bullet) {
             GD.PushError("The PackedScene", bulletPrototype.ResourcePath, "was not of type Bullet");
             return null;
-        }            
+        }
         return newBullet;
     }
 }
