@@ -12,7 +12,7 @@ public struct Portraits {
         return temp;
     }
     public static Dictionary<string, Portrait> boss = new() {
-        {"Happy", new(bossSprites(), "happy") {loop = true} },
+        {"Happy", new(bossSprites(), "happy") {loopAnimation = true} },
         {"Sad", new(bossSprites(), "sad") }
 
     };
