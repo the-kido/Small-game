@@ -1,0 +1,77 @@
+[gd_scene load_steps=11 format=3 uid="uid://dhimmel1x1qqk"]
+
+[ext_resource type="Texture2D" uid="uid://b8f8dpqcij03k" path="res://assets/sprites/enemy_spawn_indicator.png" id="1_uts7y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5ye3"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q31nt"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ull7d"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tets5"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmxfh"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1iyr"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_giopl"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itwwt"]
+atlas = ExtResource("1_uts7y")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f1dps"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n5ye3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q31nt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ull7d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tets5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmxfh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1iyr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_giopl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itwwt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 16.0
+}]
+
+[node name="EnemySpawnIndicator" type="Node2D"]
+scale = Vector2(3, 3)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+z_index = -1
+position = Vector2(0, 5.33333)
+sprite_frames = SubResource("SpriteFrames_f1dps")
+autoplay = "default"
+frame_progress = 0.932108

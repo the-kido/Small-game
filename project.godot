@@ -14,6 +14,7 @@ config/name="Small game #1"
 run/main_scene="res://assets/levels/debug/level_2.tscn"
 config/features=PackedStringArray("4.0", "C#", "Mobile")
 config/icon="res://icon.svg"
+config/windows_native_icon="res://assets/mythings.ico"
 
 [autoload]
 
@@ -21,6 +22,7 @@ BulletFactory="*res://source/autoload/bullet_factory.tscn"
 ParticleFactory="*res://source/autoload/ParticleFactory.cs"
 SceneSwitcher="*res://source/autoload/scene_switcher.tscn"
 GlobalCursor="*res://Global Cursor.tscn"
+DamageTextManager="*res://source/autoload/DamageTextManager.cs"
 
 [display]
 

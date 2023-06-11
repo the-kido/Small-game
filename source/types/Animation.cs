@@ -1,17 +1,14 @@
 using Godot;
 using System;
 public class AnimationController {
-    
      
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {
-        
         setEvent += () => SetAnimation(animation);
     }
 
     public void StopCurrentAnimation(ref Action setEvent) {
-        setEvent += () => { 
-            currentAnimation = AnimationInfo.none;
-        };
+        setEvent += () => currentAnimation = AnimationInfo.none;
+        
     }
 
     //I literally don't know how to solve this issue so this is what you're getting.
@@ -55,14 +52,11 @@ public class AnimationInfo {
     public readonly int priority;
     public readonly string name;
     public float speed = 1;
-
     public bool resetPreviousAnimation = true;
-    
 
     public AnimationInfo(string name, int priority) {
         this.name = name;
         this.priority = priority;
-    }
+    }   
     public static AnimationInfo none = new("", -1);
-
 }

@@ -56,14 +56,28 @@ public partial class Damageable : Area2D {
 		OnDeath += (_) => QueueFree();
 	}
 	
+	private PackedScene damageText = ResourceLoader.Load<PackedScene>("res://source/autoload/damage_text.tscn");
+	private DamageText NewDamageText(int damage) {
+		
+		DamageText instance = damageText.Instantiate<DamageText>();
+		
+		instance.Init(damage, GlobalPosition);
+		
+		DamageTextManager.instance.AddDamageText(instance);
+
+		return instance;
+	}
 	public void Damage(DamageInstance damageInstance) {
 		if (!IsAlive) return;
 
 		//If the actor is immune and the damage instance cannot override immunity frames, continue.
 		if (IsImmune && damageInstance.overridesImmunityFrames == false) return;
 
-		Health -= (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageMultiplier);
+		int damage = (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageMultiplier);
+		Health -= damage;
 		OnDamaged?.Invoke(damageInstance);
+
+		NewDamageText(damage);
 
 		if (Health <= 0) 
 			OnDeath?.Invoke(damageInstance);

@@ -26,11 +26,15 @@ public sealed class FireEffect : IActorStatus {
             damage = 2,
             suppressImpactFrames = true,
         };
-
+        
+        actor.Modulate += new Color(0.3f, 0.2f, 0f);
         fire = ParticleFactory.AddParticle(actor, Effects.Fire);
     }
-    public override void Disable(Actor actor) =>
+    public override void Disable(Actor actor) {
+
         ParticleFactory.RemoveParticle(fire);
+
+    }
 
     double damageTime;
     public float damagePeriod = 2;

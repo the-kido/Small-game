@@ -20,6 +20,8 @@ public class Utils {
 
             case PreloadedScene.GlobalCursor:
                 return node.GetNode<T>("/root/GlobalCursor");
+            case PreloadedScene.DamageTextManager:
+                return node.GetNode<T>("/root/DamageTextMultiplier");
         }
         return default(T);
     }
@@ -43,5 +45,6 @@ public enum PreloadedScene {
     ParticleFactory,
     SceneSwitcher,
     GlobalCursor,
+    DamageTextManager,
 
 }

@@ -36,9 +36,8 @@ public partial class MovementController : Node
 
 		if (normalizedInput != Vector2.Zero) {
 			CornerCorrection(normalizedInput);
-		} else {
-			PlayMovementAnimations(PlayerIsMoving);
 		}
+		PlayMovementAnimations(PlayerIsMoving);
 	}
 
 	private void CornerCorrection(Vector2 movementDirection) {

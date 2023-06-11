@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public partial class Level : Node {
+
 	public new static event Action<Level> Ready;
 
     [ExportCategory("Doors")]
@@ -31,11 +32,9 @@ public partial class Level : Node {
     private async void NextWave() {
 
         await Task.Delay(500);
-        
 
-        if (waveAt >= waves.Count - 1) {
+        if (waveAt > waves.Count - 1) {
             LevelCompleted?.Invoke();
-            GD.Print("Level completed!");    
             return;
         }
 

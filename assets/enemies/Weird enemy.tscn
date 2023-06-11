@@ -223,6 +223,7 @@ CollisionShape = NodePath("Damageable/CollisionShape2D")
 MoveSpeed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7.62939e-06, -1.90735e-06)
 shape = SubResource("RectangleShape2D_2o215")
 debug_color = Color(0.952941, 0, 0.564706, 0.337255)
 

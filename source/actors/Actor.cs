@@ -24,7 +24,9 @@ public abstract partial class Actor : CharacterBody2D {
         // safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
+
         DamageableComponent.OnDamaged += DamageFlash;
+        
         DamageableComponent.OnDamaged += (damageInstance) => Effect.Add(damageInstance.statusEffect);
 
         Effect.Init(this);
@@ -35,6 +37,8 @@ public abstract partial class Actor : CharacterBody2D {
     volatile int percentRed = 0;    
     //Set the flashing to true.
     //If another damage comes in, stop the other flashing and start a new flashing.    
+    Color increaseByColor = new(0, 0.05f, 0.05f);
+
     private async void DamageFlash(DamageInstance _) {
         if (!DamageableComponent.IsAlive) return;
 
@@ -43,15 +47,14 @@ public abstract partial class Actor : CharacterBody2D {
             return;
         }
         percentRed = 100;
+        Modulate -= new Color(0, 1f, 1f);
 
-        Color color = new(1,1,1);
         while (percentRed > 0) {
 
-            color.G = 1 - percentRed / 100f;
-            color.B = 1 - percentRed / 100f;
-            Modulate = color;
+            Modulate += increaseByColor;
             await Task.Delay(3);
-            percentRed-=5;
+
+            percentRed -= 5;
         }
     }
 

@@ -49,7 +49,7 @@ animations = [{
 [node name="Level 2" type="Node"]
 script = ExtResource("1_68dsa")
 doors = [NodePath("Gameplay/Door 1")]
-waves = [NodePath("Waves/Wave 1"), NodePath("")]
+waves = [NodePath("Waves/Wave 1"), NodePath("Waves/Wave 2")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)

@@ -194,6 +194,8 @@ public partial class InputController : Node
 			Input.GetAxis("up", "down")
 		).Normalized();
 
+
+		GD.Print("Updaee");
 		UpdateMovement?.Invoke(direction);
 	}
 
