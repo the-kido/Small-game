@@ -9,9 +9,6 @@ public partial class AgroEnemyMiniBoss : Enemy
     [Export]
     private Pathfinder pathfinder;
 
-    [Export]
-    private Area2D rushCollisionArea;
-
 	protected override List<Loot> DeathDrops {get; init;} = LootTable.GENERIC_ENEMY_DROPS;
 
 
@@ -19,7 +16,7 @@ public partial class AgroEnemyMiniBoss : Enemy
         AnimationInfo runningAnimation = new("Running", 1) {speed = 4};
         
         PatrolState patrolState = new(pathfinder, 400);
-        AgroEnemyRushState rushState = new(rushCollisionArea, runningAnimation);
+        AgroEnemyRushState rushState = new();
 
         stateMachine.AddState(rushState, patrolState);
         stateMachine.AddState(patrolState, rushState);
@@ -41,7 +38,8 @@ public partial class AgroEnemyMiniBoss : Enemy
     public override void _Ready() {
         base._Ready();
 
-        DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
+        // DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
+        DialogueLine[] dialogue = DialogueLines.lines["Kill Agro Boss"];
         // TODO: OK this is a problem.
         DamageableComponent.OnDeath += (_) => Player.players[0].GUI.DialoguePlayer.Start(dialogue, new());
         DamageableComponent.OnDeath += (_) => ResourceLoader.Load<Condition>("res://assets/levels/debug/weird_door.tres").OnConditionAchieved?.Invoke();
@@ -51,24 +49,17 @@ public partial class AgroEnemyMiniBoss : Enemy
 
 public sealed class AgroEnemyRushState : AIState {
 
-    private Area2D rushCollisionArea {get; init;}
-    private AnimationInfo runningAnimation {get; init;}
-    public AgroEnemyRushState (Area2D rushCollisionArea, AnimationInfo runningAnimation) {
-        this.rushCollisionArea = rushCollisionArea;
-        this.runningAnimation = runningAnimation;
-    }
-
     
     State state = State.Done; 
 
-    DamageInstance damage => new(actor) {
+    DamageInstance Damage => new(actor) {
         damage = 10,
     };
 
     private void OnBodyEntered(Node2D body) {
         if (body is Player player) {
-            damage.forceDirection = actor.Velocity;
-            player.DamageableComponent.Damage(damage);
+            Damage.forceDirection = actor.Velocity;
+            player.DamageableComponent.Damage(Damage);
         }
     }
    
@@ -92,11 +83,11 @@ public sealed class AgroEnemyRushState : AIState {
     Vector2 rushDirection;
     
     //Make sure you update this to reflex the lenght of the rush mode.
-    int slowDownBeginTime = 8; //seconds
-    double slowDownLength = 4; //seconds
+    const int SLOW_DOWN_BEGIN_TIME = 8; //seconds
+    const double SLOW_DOWN_LENGTH = 4; //seconds
     private void Rush() {
         //The 3 acts as a buffer just so that the monster doesnt start to slow down immediately.
-        double mathxd = (slowDownLength - (time - slowDownBeginTime)) / slowDownLength;
+        double mathxd = (SLOW_DOWN_LENGTH - (time - SLOW_DOWN_BEGIN_TIME)) / SLOW_DOWN_LENGTH;
         double multiplier = Math.Min(mathxd, 1) * actor.MoveSpeed/10;
 
         Vector2 velocity = (rushDirection) * (float) multiplier; 
@@ -133,7 +124,6 @@ public sealed class AgroEnemyRushState : AIState {
         } 
     }
     public Action OnStateChanged;
-    private Player targettedPlayer;
 
     private void OnStateSwitched(State state) {
         actor.Velocity = Vector2.Zero;
@@ -187,7 +177,7 @@ public sealed class AgroEnemyRushState : AIState {
     }
 
     private void FlipActor(Vector2 direction) {
-        bool flip = MathF.Sign(direction.X) == 1 ? false : true;
+        bool flip = MathF.Sign(direction.X) != 1;
         actor.Flip(flip);
     }
 

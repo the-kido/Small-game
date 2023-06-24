@@ -1,13 +1,36 @@
 using Godot;
+using System.Collections.Generic;
+
+
+
+
+public static class DialogueLines {
+
+
+    public static readonly Dictionary<string, DialogueLine[]> lines = new()
+    {
+
+        // Agro boss
+        {"Kill Agro Boss", new DialogueLine[] {
+            new("AGRO ENEMY DEATH-1", Portraits.boss["Happy"]),
+            new("AGRO ENEMY DEATH-2", Portraits.boss["Sad"]),
+        }
+
+        },
+    };
+
+}
 
 public struct DialogueLine {
-    public static DialogueLine Empty = new("", Portraits.None);
+    public static readonly DialogueLine Empty = new("", Portraits.None);
     public string text;
     public float charactersPerSecond = 10;
     public Portrait portrait; 
     public DialogueLine(string text, Portrait portrait) {
+        
         this.text = text;
         this.portrait = portrait;
+        
     }
 }
 
@@ -17,15 +40,15 @@ public struct Portrait {
 
     double progress = 0;
 
-    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
+    readonly public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
 
-    int CurrentFrame => (int) Mathf.Floor( (float) progress);
-    bool IsAnimated => sprites.GetFrameCount(animationName) > 1;
-    bool IsFinished => CurrentFrame == (sprites.GetFrameCount(animationName) - 1);
+    readonly int CurrentFrame => (int) Mathf.Floor( (float) progress);
+    readonly bool IsAnimated => sprites.GetFrameCount(animationName) > 1;
+    readonly bool IsFinished => CurrentFrame == (sprites.GetFrameCount(animationName) - 1);
 
 
-    SpriteFrames sprites;
-    string animationName;
+    readonly SpriteFrames sprites;
+    readonly string animationName;
     public Portrait(SpriteFrames sprites, string animationName) {
         this.sprites = sprites;
         this.animationName = animationName;

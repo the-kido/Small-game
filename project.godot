@@ -74,6 +74,12 @@ utility_used={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/content/translation/temo.en.translation", "res://assets/content/translation/temo.fr.translation")
+locale/test="fr"
+locale/fallback="fr"
+
 [layer_names]
 
 2d_physics/layer_1="Environment"

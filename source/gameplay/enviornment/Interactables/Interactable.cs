@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using KidoUtils;
 
 public abstract partial class Interactable : AnimatedSprite2D {
@@ -12,7 +11,7 @@ public abstract partial class Interactable : AnimatedSprite2D {
 
 
     private void SetIndicatorVisibility(bool isVisible) {
-
+        Visible = isVisible;
     }
 
     // NOTE: This will 100% break when there are several players
@@ -25,11 +24,11 @@ public abstract partial class Interactable : AnimatedSprite2D {
     }
 
 	public override void _Ready() {
+        // Enforce the proper layers
         range.CollisionLayer = (uint) Layers.Environment;
         range.CollisionMask = (uint) Layers.Player;
+
         range.BodyEntered += OnBodyEntered;
 	}
-
-
 }
 

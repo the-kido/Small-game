@@ -89,20 +89,24 @@ public class DialoguePlayer {
         if (!IsPhraseFinished) {
             bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
         } else {
-            UpdateToNextLine();
             lineAt += 1;
+            UpdateToNextLine();
         }
     }
     private void UpdateToNextLine() {
-        bar.Label.Text = currentDialogue[lineAt].text;
+        bar.Label.Text = bar.Label.Tr(currentDialogue[lineAt].text);
+
         lineProgress = 0;
         bar.Label.VisibleCharacters = 0;
     }
 
+    
 
     public void Start(DialogueLine[] dialogue, DialogueInfo info) {
+        
         DialogueStarted?.Invoke(info);
 
+        
         currentDialogue = dialogue;
         bar.Enable();
         

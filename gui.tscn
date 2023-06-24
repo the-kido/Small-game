@@ -98,8 +98,8 @@ offset_left = 499.0
 offset_top = 16.0
 offset_right = 681.0
 offset_bottom = 95.0
-text = "Water Damage
-"
+scale = Vector2(0.998639, 1)
+text = "AGRO ENEMY DEATH-1"
 
 [node name="Revive" type="Control" parent="." node_paths=PackedStringArray("animationPlayer", "close")]
 visible = false
@@ -123,10 +123,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)

@@ -77,7 +77,7 @@ radius = 26.0192
 [node name="Level 2" type="Node"]
 script = ExtResource("1_68dsa")
 doors = [NodePath("Gameplay/Door 1")]
-waves = [NodePath("Waves/Wave 2"), NodePath("Waves/Wave 1")]
+waves = [NodePath("Waves/Wave 1"), NodePath("Waves/Wave 2")]
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
@@ -161,10 +161,10 @@ position = Vector2(503, 681)
 position = Vector2(519, 574)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_uy1k1")
-frame_progress = 0.52232
+frame_progress = 0.366557
 
 [node name="Area2D" type="Area2D" parent="Interactable"]
-collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable/Area2D"]
 shape = SubResource("CircleShape2D_acxxr")
