@@ -25,7 +25,7 @@ public abstract partial class Interactable : AnimatedSprite2D {
     }
 
 	public override void _Ready() {
-        range.CollisionLayer = (uint) Layers.Enviornment;
+        range.CollisionLayer = (uint) Layers.Environment;
         range.CollisionMask = (uint) Layers.Player;
         range.BodyEntered += OnBodyEntered;
 	}
