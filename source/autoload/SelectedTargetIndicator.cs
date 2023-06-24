@@ -3,8 +3,8 @@ using System;
 
 public partial class SelectedTargetIndicator : Sprite2D {
 	
-	IInteractable target;
-	public void Enable(IInteractable target) {
+	IPlayerAttackable target;
+	public void Enable(IPlayerAttackable target) {
 		this.target = target;
 		Visible = true;
 	}

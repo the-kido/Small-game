@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KidoUtils;
 using LootTables;
 
-public abstract partial class Enemy : Actor, IInteractable {
+public abstract partial class Enemy : Actor, IPlayerAttackable {
     
     [Export]
     private AnimationPlayer animationPlayer = new();
@@ -50,9 +50,9 @@ public abstract partial class Enemy : Actor, IInteractable {
 
     #region IInteractable
 
-    bool IInteractable.IsInteractable() => DamageableComponent.IsAlive;
+    bool IPlayerAttackable.IsInteractable() => DamageableComponent.IsAlive;
 
-    Vector2 IInteractable.GetPosition() => GlobalPosition;
+    Vector2 IPlayerAttackable.GetPosition() => GlobalPosition;
 
 
     ///<Summary>

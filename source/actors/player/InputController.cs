@@ -70,18 +70,18 @@ public partial class InputController : Node
 
 		return inputMap;
 	}
-    public IInteractable FindInteractableWithinCursor() {
+    public IPlayerAttackable FindInteractableWithinCursor() {
 		List<Node2D> list = KidoUtils.Utils.GetPreloadedScene<GlobalCursor>(this, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
 
         foreach(Node2D node2d in list) {
-            if (node2d is IInteractable) {
-                return (IInteractable) node2d;
+            if (node2d is IPlayerAttackable) {
+                return (IPlayerAttackable) node2d;
             }
         }
         return null;
     }
 
-    private bool IsInteractableVisible(IInteractable interactable) {
+    private bool IsInteractableVisible(IPlayerAttackable interactable) {
         PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
         var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Enviornment);
         var result = spaceState.IntersectRay(ray);
@@ -110,7 +110,7 @@ public partial class InputController : Node
 	enum WeaponControl { Autoaim, SelectedAutoaim, ManualAim }
 	private WeaponControl useMethod; 
 
-	private WeaponControl GetUseMethod(IInteractable targettedInteractable) {
+	private WeaponControl GetUseMethod(IPlayerAttackable targettedInteractable) {
 		List<InputType> inputMap = GetAttackInputs();
 
 		// If something happened to the interactable, default to default aim method.
@@ -127,34 +127,34 @@ public partial class InputController : Node
 		return WeaponControl.ManualAim;
 	}
 	
-	IInteractable targettedInteractable = null;
+	IPlayerAttackable targettedAttackable = null;
 	private void UpdateWeapon(double delta) {
 		List<InputType> inputMap = GetAttackInputs();
 
 		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
 
 		if (inputMap.Contains(InputType.RightClickJustPressed)) {
-            targettedInteractable = FindInteractableWithinCursor();
+            targettedAttackable = FindInteractableWithinCursor();
 
-			if (targettedInteractable is null)
+			if (targettedAttackable is null)
 				GUI.TargetIndicator.Disable();
 			else
-				GUI.TargetIndicator.Enable(targettedInteractable);
+				GUI.TargetIndicator.Enable(targettedAttackable);
 		}
 		
-		useMethod = GetUseMethod(targettedInteractable);
+		useMethod = GetUseMethod(targettedAttackable);
 
 		if (useMethod is WeaponControl.SelectedAutoaim) {
 			//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
 			if (weapon.WeaponType is Weapon.Type.HoldToCharge) {
-				UpdateWeaponDirection?.Invoke(targettedInteractable.GetPosition());
+				UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 				UseWeapon?.Invoke(delta);
 				return;
 			}
 			
 			//If the interactable is still in tact and is still visible, autoshoot it.
-			if (IsInteractableVisible(targettedInteractable)) {
-				UpdateWeaponDirection?.Invoke(targettedInteractable.GetPosition());
+			if (IsInteractableVisible(targettedAttackable)) {
+				UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 				UseWeapon?.Invoke(delta);
 			}
 		}

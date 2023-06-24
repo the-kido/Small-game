@@ -1,6 +1,6 @@
 using Godot;
 
-public interface IInteractable {
+public interface IPlayerAttackable {
 
     public bool IsInteractable();
     public Vector2 GetPosition();
