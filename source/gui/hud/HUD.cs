@@ -11,5 +11,9 @@ public partial class HUD : Control {
     [Export]
     public HealthLabelTemp healthLable;
 
+    //Coins label
+    [Export]
+    public CoinsLabel coinsLabel;   
+
 }
 

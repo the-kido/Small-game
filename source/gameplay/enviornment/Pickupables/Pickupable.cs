@@ -3,36 +3,12 @@ using System;
 
 public abstract partial class Pickupable : Node2D {
 
-    public void SplashOut() {
-        splashIndex = 0;
-        direction = direction.Random();
-
-    }   
-
-    // default to 1 to avoid the splash when instanced.
-    float splashIndex = 1;
-    const int SPLASH_SPEED = 200;
-    Vector2 direction = Vector2.Zero;
-
-    private void SplashUpdate(double delta) {
-        if (splashIndex > 1) return;
-
-        splashIndex += (float) delta;
-
-        Position += direction * (float) delta * SPLASH_SPEED * MathF.Log10(splashIndex);
-    }
-
-}
-
-public abstract partial class Pickupable : Node2D {
-
     public static PackedScene PackedScene {get; private set;} 
 
 	public sealed override void _Process(double delta) {
         Player.players.ForEach(player => Update(player, delta));
         SplashUpdate(delta);
 	}
-
 
     [Export]
     protected float Speed {get; set;} = 1;
@@ -73,4 +49,28 @@ public abstract partial class Pickupable : Node2D {
         Vector2 followDirection = GlobalPosition.DirectionTo(player.GlobalPosition);
         GlobalPosition += followDirection * magnitude; 
     }
+}
+
+
+// Implement all of the "splashing" stuff (yes, i really couldn't think of a better name) seperately from the main stuff.
+public abstract partial class Pickupable : Node2D {
+
+    public void SplashOut() {
+        splashIndex = 0;
+        direction = direction.Random();
+    }
+
+    // default to 1 to avoid the splash when instanced.
+    float splashIndex = 1;
+    const int SPLASH_SPEED = 200;
+    Vector2 direction = Vector2.Zero;
+
+    private void SplashUpdate(double delta) {
+        if (splashIndex > 1) return;
+
+        splashIndex += (float) delta;
+
+        Position += direction * (float) delta * SPLASH_SPEED * MathF.Log10(splashIndex);
+    }
+
 }
