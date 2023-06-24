@@ -45,7 +45,7 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
         //Stop all collisions from happening
         CollisionLayer = 0;
         //Except for the enviornment, because the dead body can still interact with that.
-        CollisionMask = (int) Layers.Enviornment;
+        CollisionMask = (int) Layers.Environment;
     }
 
     #region IInteractable

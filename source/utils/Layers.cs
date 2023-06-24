@@ -1,7 +1,7 @@
 namespace KidoUtils;
 
 enum Layers: uint {
-    Enviornment = 1,
+    Environment = 1,
     Player = 2,
     Enemies = 4,
     PlayerProjectile = 8,

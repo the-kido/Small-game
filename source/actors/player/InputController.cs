@@ -83,7 +83,7 @@ public partial class InputController : Node
 
     private bool IsInteractableVisible(IPlayerAttackable interactable) {
         PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
-        var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Enviornment);
+        var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Environment);
         var result = spaceState.IntersectRay(ray);
         //if nothing hit the ray, they we good.
         if (result.Count <= 0) {
@@ -92,7 +92,7 @@ public partial class InputController : Node
         return false;
     }
  
-	uint faceObjectMask = (uint) Layers.Enviornment + (uint) Layers.Enemies;
+	uint faceObjectMask = (uint) Layers.Environment + (uint) Layers.Enemies;
     private Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
         foreach (Actor enemy in Player.players[0].NearbyEnemies) {

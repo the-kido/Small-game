@@ -76,11 +76,11 @@ public abstract partial class Bullet : Node2D {
         switch (bulletInfo.from) {
             case BulletFrom.Player:
                 hitbox.CollisionLayer += (int) Layers.PlayerProjectile;
-                hitbox.CollisionMask += (int) Layers.Enviornment + (int) Layers.Enemies;
+                hitbox.CollisionMask += (int) Layers.Environment + (int) Layers.Enemies;
                 break;
             case BulletFrom.Enemy:
                 hitbox.CollisionLayer += (int) Layers.EnemyProjectile;
-                hitbox.CollisionMask += (int) Layers.Enviornment + (int) Layers.Player;
+                hitbox.CollisionMask += (int) Layers.Environment + (int) Layers.Player;
                 break;
         }
 

@@ -74,7 +74,7 @@ public abstract partial class Actor : CharacterBody2D {
     //Checks to see if this actor can see a player with a ___ pixel width to make sure things like
     //bullets will have enough room to be shot without colliding into a wall for instance. 
 
-    uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Enviornment;
+    uint raycastCollisionMask = (uint) Layers.Player + (uint) Layers.Environment;
     /// <Summary>
     /// Gap (in pixels) from the center of the actor
     /// </Summary>
