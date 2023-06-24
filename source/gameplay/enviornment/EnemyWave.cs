@@ -17,7 +17,7 @@ public partial class EnemyWave : Node {
 
         // play cool animations, too.
 
-        foreach (CharacterBody2D child in GetChildren()) {
+        foreach (Enemy child in GetChildren()) {
             Node2D instance = enemySpawnIndicator.Instantiate<Node2D>();
             Level.currentLevel.AddChild(instance);
             indicators.Add(instance);
@@ -27,12 +27,12 @@ public partial class EnemyWave : Node {
         await Task.Delay(1000);
 
         ProcessMode = ProcessModeEnum.Always;
-        foreach (CharacterBody2D child in GetChildren()) {
-            child.Visible = true;
+
+        foreach (Enemy child in GetChildren()) {
+            SetChildVisibility(child, true);
         }
-        foreach (Node2D indicator in indicators) {
-            Level.currentLevel.RemoveChild(indicator);
-        }
+
+        indicators.ForEach(indicator => Level.currentLevel.RemoveChild(indicator));
     }
 
     int totalEnemies; 
@@ -44,15 +44,20 @@ public partial class EnemyWave : Node {
         }
     }
 
+    private void SetChildVisibility(Enemy child, bool isEnabled) {
+        child.Visible = isEnabled;
+        child.CollisionShape.Disabled = !isEnabled;
+    }
+
     public override void _Ready() {
         totalEnemies = GetChildCount();
         
         foreach (Enemy child in GetChildren()) {
-            // enforce that the process type is inherited.  
-            child.ProcessMode = ProcessModeEnum.Inherit;
+            // enforce that the process type is inherited. 
             child.DamageableComponent.OnDeath += ReduceEnemyTotal;
-            // hide the children
-            child.Visible = false;
+            child.ProcessMode = ProcessModeEnum.Inherit;
+
+            SetChildVisibility(child, false);
         }
         
         ProcessMode = ProcessModeEnum.Disabled;
