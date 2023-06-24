@@ -13,6 +13,7 @@ public abstract partial class Enemy : Actor, IInteractable {
         base._Ready();
 
         stateMachine = new(this);
+        
         DamageableComponent.OnDeath += DeathAnimation;
         DamageableComponent.OnDeath += DropLootTable;
 
@@ -20,19 +21,15 @@ public abstract partial class Enemy : Actor, IInteractable {
     }
 
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
-
     protected abstract List<Loot> DeathDrops {get; init;}
+
 
     public override void _Process(double delta) {
         base._Process(delta);
         stateMachine.UpdateState(delta);
     }
 
-    public void DropLootTable(DamageInstance _) {
-        foreach (Loot loot in DeathDrops) {
-            loot.Init(this);
-        }
-    }
+    public void DropLootTable(DamageInstance _) => DeathDrops.ForEach(loot => loot.Init(this));
 
     public void DeathAnimation(DamageInstance damageInstance) {
 
@@ -53,17 +50,10 @@ public abstract partial class Enemy : Actor, IInteractable {
 
     #region IInteractable
 
-    bool IInteractable.IsInteractable() {
-        return DamageableComponent.IsAlive;
-    }
+    bool IInteractable.IsInteractable() => DamageableComponent.IsAlive;
 
-    Vector2 IInteractable.GetPosition() {
-        return GlobalPosition;
-    }
+    Vector2 IInteractable.GetPosition() => GlobalPosition;
 
-    CollisionShape2D IInteractable.GetCollisionShape() {
-        return CollisionShape;
-    }
 
     ///<Summary>
     ///Define the states and animations that you want this enemy to have. That is all.

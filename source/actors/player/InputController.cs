@@ -120,18 +120,18 @@ public partial class InputController : Node
 		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) return WeaponControl.Autoaim;
 
 		// This is put last for most priority. If the player explicitly wants to target a unit, it should 
+		
 		if (targettedInteractable is not null && targettedInteractable.IsInteractable()) return WeaponControl.SelectedAutoaim;
 		
 		// Default to manual aim
 		return WeaponControl.ManualAim;
 	}
 	
+	IInteractable targettedInteractable = null;
 	private void UpdateWeapon(double delta) {
 		List<InputType> inputMap = GetAttackInputs();
 
 		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
-
-		IInteractable targettedInteractable = null;
 
 		if (inputMap.Contains(InputType.RightClickJustPressed)) {
             targettedInteractable = FindInteractableWithinCursor();
