@@ -1,9 +1,11 @@
 using Godot;
+using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 
 public partial class GUI : CanvasLayer {
      
+
     [Export]
     public SelectedTargetIndicator TargetIndicator {get; private set;}
 
@@ -22,6 +24,9 @@ public partial class GUI : CanvasLayer {
     [Export]
     public ReviveMenu ReviveMenu {get; private set;}
     #endregion
+
+        
+    public static List<GUI> PlayerGUIs {get; private set;} = new List<GUI>();
 
     public IMenu CurrentMenu {get; private set;}
     
@@ -42,9 +47,7 @@ public partial class GUI : CanvasLayer {
         };
     }
 
-    public override void _Ready() {
-        
-    }
+    public override void _Ready() => PlayerGUIs.Add(this);
 }
 
 

@@ -1,5 +1,7 @@
 using Godot;
+using LootTables;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public partial class AgroEnemyMiniBoss : Enemy
@@ -9,8 +11,11 @@ public partial class AgroEnemyMiniBoss : Enemy
 
     [Export]
     private Area2D rushCollisionArea;
-    
-    public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
+
+	protected override List<Loot> DeathDrops {get; init;} = LootTable.GENERIC_ENEMY_DROPS;
+
+
+	protected sealed override void Init(AnimationController animationController, AIStateMachine stateMachine) {
         AnimationInfo runningAnimation = new("Running", 1) {speed = 4};
         
         PatrolState patrolState = new(pathfinder, 400);

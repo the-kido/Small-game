@@ -36,9 +36,10 @@ public abstract partial class Actor : CharacterBody2D {
     volatile int percentRed = 0;    
     //Set the flashing to true.
     //If another damage comes in, stop the other flashing and start a new flashing.    
-    Color increaseByColor = new(0, 0.05f, 0.05f);
+    Color increaseByColor = new(0, 0.05f, 0.05f, 0);
 
     private async void DamageFlash(DamageInstance _) {
+        
         if (!DamageableComponent.IsAlive) return;
 
         if (percentRed != 0) {
@@ -46,7 +47,7 @@ public abstract partial class Actor : CharacterBody2D {
             return;
         }
         percentRed = 100;
-        Modulate -= new Color(0, 1f, 1f);
+        Modulate -= new Color(0, 1f, 1f, 0);
 
         while (percentRed > 0) {
 

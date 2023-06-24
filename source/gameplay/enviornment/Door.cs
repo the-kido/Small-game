@@ -21,6 +21,9 @@ public partial class Door : Area2D {
             // and the old door will check if there's a new door of the same name / number.
 
     public override void _Ready() {
+
+        condition.wakeup();
+        
         ErrorUtils.AvoidEmptyCollisionLayers(this);
         
         BodyEntered += OnEnterArea;
@@ -73,19 +76,9 @@ public partial class Door : Area2D {
             SceneSwitcher.SceneSwitched += OnSceneSwitched;
         }
     }
-
+    
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {
         if (doorSprite.Frame + 1 == doorSprite.SpriteFrames.GetFrameCount("default")) doorSprite.Pause();
 	}
-}
-
-
-public partial class LevelSwitcher : Node {
-    [Export]
-    string nextLevel;
-    public void SwitchLevel() {
-        SceneSwitcher sceneSwitcher = KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher); 
-        sceneSwitcher.ChangeSceneWithPath(nextLevel);
-    }
 }

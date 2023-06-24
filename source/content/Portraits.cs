@@ -14,6 +14,5 @@ public struct Portraits {
     public static Dictionary<string, Portrait> boss = new() {
         {"Happy", new(bossSprites(), "happy") {loopAnimation = true} },
         {"Sad", new(bossSprites(), "sad") }
-
     };
 }

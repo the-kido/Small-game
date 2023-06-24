@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace KidoUtils;
 
-
 public class Utils {
 
     public static T GetPreloadedScene<T>(Node node, PreloadedScene preloadedScene) where T : GodotObject {
@@ -20,23 +19,15 @@ public class Utils {
 
             case PreloadedScene.GlobalCursor:
                 return node.GetNode<T>("/root/GlobalCursor");
+            
             case PreloadedScene.DamageTextManager:
                 return node.GetNode<T>("/root/DamageTextMultiplier");
+
+            case PreloadedScene.PickupablesManager:
+                return node.GetNode<T>("/root/PickupablesManager");
         }
+
         return default(T);
-    }
-
-
-    public static bool NodeSeesPoint(Node2D from, Vector2 toPosition, uint blockingMask) {
-        PhysicsDirectSpaceState2D spaceState = from.GetWorld2D().DirectSpaceState;
-        var ray = PhysicsRayQueryParameters2D.Create(from.GlobalPosition, toPosition, blockingMask);
-        var result = spaceState.IntersectRay(ray);
-
-        //if nothing hit the ray, they we good.
-        if (result.Count <= 0) {
-            return true;
-        }
-        return false;
     }
 }
 
@@ -46,5 +37,6 @@ public enum PreloadedScene {
     SceneSwitcher,
     GlobalCursor,
     DamageTextManager,
+    PickupablesManager,
 
 }

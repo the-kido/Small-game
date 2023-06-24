@@ -27,11 +27,11 @@ public sealed class FireEffect : IActorStatus {
             suppressImpactFrames = true,
         };
         
-        actor.Modulate += new Color(0.3f, 0.2f, 0f);
+        // actor.Modulate += new Color(0.3f, 0.2f, 0f);
         fire = ParticleFactory.AddParticle(actor, Effects.Fire);
     }
     public override void Disable(Actor actor) {
-        actor.Modulate -= new Color(0.3f, 0.2f, 0f);
+        // actor.Modulate -= new Color(0.3f, 0.2f, 0f);
 
         ParticleFactory.RemoveParticle(fire);
     }

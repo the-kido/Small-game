@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Godot;
- 
+using LootTables;
+
 public sealed partial class WeirdEnemy : Enemy {
     [Export] 
     public Pathfinder pathfinderComponent;
@@ -9,8 +11,10 @@ public sealed partial class WeirdEnemy : Enemy {
     private PackedScene spamedBullet;
     [Export]
     private float attackDelay;
-    
-    public override void Init(AnimationController animationController, AIStateMachine stateMachine) {
+
+	protected override List<Loot> DeathDrops {get; init;} = LootTable.GENERIC_ENEMY_DROPS;
+
+	protected sealed override void Init(AnimationController animationController, AIStateMachine stateMachine) {
         DefaultAttackState attackState = new(pathfinderComponent, spamedBullet, attackDelay);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
         

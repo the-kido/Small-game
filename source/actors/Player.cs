@@ -9,7 +9,7 @@ public sealed partial class Player : Actor
     public GUI GUI {get; private set;}
     public List<Actor> NearbyEnemies {get; private set;} = new();
     // This shouldn't be abused; multiplayer support may (?) happen in the future
-    public static Player[] players {get; private set;} = new Player[4];
+    public static List<Player> players {get; private set;} = new List<Player>();
 
     // IDK If this is even staying
     [Export]
@@ -19,7 +19,7 @@ public sealed partial class Player : Actor
         base._Ready();
 
         //Default some values
-        players[0] = this;
+        players.Add(this);
 
         GUI.HealthLable.Init(this);
         DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;

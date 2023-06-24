@@ -1,13 +1,12 @@
 using Godot;
-using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using KidoUtils;
+using LootTables;
 
-public partial class Enemy : Actor, IInteractable {
+public abstract partial class Enemy : Actor, IInteractable {
     
     [Export]
     private AnimationPlayer animationPlayer = new();
-    
     private AIStateMachine stateMachine;
 
     public override void _Ready() {
@@ -15,13 +14,24 @@ public partial class Enemy : Actor, IInteractable {
 
         stateMachine = new(this);
         DamageableComponent.OnDeath += DeathAnimation;
+        DamageableComponent.OnDeath += DropLootTable;
 
         Init(new(animationPlayer), stateMachine);
     }
 
+    protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
+
+    protected abstract List<Loot> DeathDrops {get; init;}
+
     public override void _Process(double delta) {
         base._Process(delta);
         stateMachine.UpdateState(delta);
+    }
+
+    public void DropLootTable(DamageInstance _) {
+        foreach (Loot loot in DeathDrops) {
+            loot.Init(this);
+        }
     }
 
     public void DeathAnimation(DamageInstance damageInstance) {
@@ -39,10 +49,6 @@ public partial class Enemy : Actor, IInteractable {
         CollisionLayer = 0;
         //Except for the enviornment, because the dead body can still interact with that.
         CollisionMask = (int) Layers.Enviornment;
-    }
-    
-    public virtual void Init(AnimationController animationController, AIStateMachine aIStateMachine) {
-        throw new NotImplementedException();
     }
 
     #region IInteractable

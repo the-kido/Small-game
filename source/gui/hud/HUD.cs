@@ -10,5 +10,6 @@ public partial class HUD : Control {
     public DialogueBar dialogueBar;
     [Export]
     public HealthLabelTemp healthLable;
+
 }
 
