@@ -5,10 +5,7 @@ using System.Collections.Generic;
 
 
 // This should just make it easier to customize the dialogue
-public struct DialogueInfo {
-    public bool pausePlayerInput = true;
-	public DialogueInfo() {}
-}
+public record DialogueInfo (bool PausePlayerInput = true);
 
 public partial class DialogueBar : Control {
     [Export]
@@ -46,15 +43,15 @@ public class DialoguePlayer {
     public event Action DialogueEnded;
 
     // Fields
-    DialogueLine[] currentDialogue = new DialogueLine[0];
-    private DialogueBar bar;
+    DialogueLine[] currentDialogue = Array.Empty<DialogueLine>();
+    private readonly DialogueBar bar;
     int lineAt = 0;
     double lineProgress;
 
     // Helpful expression-bodied members used throughout the class
     private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length;
     private bool IsDialogueFinished => currentDialogue.Length - 1 == lineAt && IsPhraseFinished;
-    char currentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
+    char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
         currentDialogue[lineAt].portrait.PlayAnimation(delta);
@@ -71,7 +68,7 @@ public class DialoguePlayer {
         if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
         
         // Skip spaces.
-        if (currentCharacter == ' ') lineProgress += 1;
+        if (CurrentCharacter == ' ') lineProgress += 1;
         lineProgress += delta * currentDialogue[lineAt].charactersPerSecond;
         
         bar.Label.VisibleCharacters = (int) lineProgress;
@@ -122,7 +119,7 @@ public class DialoguePlayer {
         bar.Label.VisibleCharacters = 0;
 
         bar.Disable();
-        currentDialogue = new DialogueLine[0];
+        currentDialogue = Array.Empty<DialogueLine>();
     }
 
     public DialoguePlayer(DialogueBar bar) {

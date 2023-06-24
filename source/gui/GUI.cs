@@ -17,6 +17,8 @@ public partial class GUI : CanvasLayer {
     public DialogueBar DialogueBar => HUD.dialogueBar;
     public DialoguePlayer DialoguePlayer => HUD.dialogueBar.DialoguePlayer;
     public HealthLabelTemp HealthLable => HUD.healthLable;
+    public CoinsLabel CoinsLable => HUD.coinsLabel;
+
     #endregion
 
     

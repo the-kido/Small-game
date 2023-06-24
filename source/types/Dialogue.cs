@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public static class DialogueLines {
 
 
-    public static readonly Dictionary<string, DialogueLine[]> lines = new()
+    public static readonly Dictionary<string, DialogueLine[]> Lines = new()
     {
 
         // Agro boss
