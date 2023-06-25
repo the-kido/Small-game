@@ -10,10 +10,10 @@ public partial class HUD : Control {
     public DialogueBar dialogueBar;
     [Export]
     public HealthLabelTemp healthLable;
-
-    //Coins label
     [Export]
     public CoinsLabel coinsLabel;   
+    [Export]
+    public InteractButton interactButton;
 
 }
 

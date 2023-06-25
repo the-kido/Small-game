@@ -64,7 +64,7 @@ public partial class Door : Area2D {
         Vector2 newPos = newDoor.GlobalPosition;
         newPos += newDoor.doorOpeningDirection * 100;
         
-        Player.players[0].GlobalPosition = newPos;
+        Player.Players[0].GlobalPosition = newPos;
     }
 
     private void OnEnterArea(Node2D body) {

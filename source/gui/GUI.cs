@@ -4,7 +4,6 @@ using System;
 using System.Threading.Tasks;
 
 public partial class GUI : CanvasLayer {
-     
 
     [Export]
     public SelectedTargetIndicator TargetIndicator {get; private set;}
@@ -18,16 +17,15 @@ public partial class GUI : CanvasLayer {
     public DialoguePlayer DialoguePlayer => HUD.dialogueBar.DialoguePlayer;
     public HealthLabelTemp HealthLable => HUD.healthLable;
     public CoinsLabel CoinsLable => HUD.coinsLabel;
+    public InteractButton InteractButton => HUD.interactButton;
 
     #endregion
-
     
     #region All Menus
     [Export]
     public ReviveMenu ReviveMenu {get; private set;}
     #endregion
 
-        
     public static List<GUI> PlayerGUIs {get; private set;} = new List<GUI>();
 
     public IMenu CurrentMenu {get; private set;}
@@ -36,9 +34,9 @@ public partial class GUI : CanvasLayer {
         CurrentMenu?.Switch();
         CurrentMenu = null;
     }
+
     public void SetCurrentMenu(IMenu newMenu) {
         CurrentMenu?.Switch();
-
 
         CurrentMenu = newMenu;
         

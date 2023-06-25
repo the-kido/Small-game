@@ -6,7 +6,7 @@ public abstract partial class Pickupable : Node2D {
     public static PackedScene PackedScene {get; private set;} 
 
 	public sealed override void _Process(double delta) {
-        Player.players.ForEach(player => Update(player, delta));
+        Player.Players.ForEach(player => Update(player, delta));
         SplashUpdate(delta);
 	}
 

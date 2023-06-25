@@ -12,14 +12,14 @@ public partial class EnemyWave : Node {
     public event Action WaveFinished;
 
 
-    List<Node2D> indicators = new();
+    readonly List<Node2D> indicators = new();
     public async void StartWave() {
 
         // play cool animations, too.
 
-        foreach (Enemy child in GetChildren()) {
+        foreach (Enemy child in EnemyChildren) {
             Node2D instance = enemySpawnIndicator.Instantiate<Node2D>();
-            Level.currentLevel.AddChild(instance);
+            Level.CurrentLevel.AddChild(instance);
             indicators.Add(instance);
             instance.GlobalPosition = child.GlobalPosition;
         }
@@ -28,11 +28,11 @@ public partial class EnemyWave : Node {
 
         ProcessMode = ProcessModeEnum.Always;
 
-        foreach (Enemy child in GetChildren()) {
+        foreach (Enemy child in EnemyChildren) {
             SetChildVisibility(child, true);
         }
 
-        indicators.ForEach(indicator => Level.currentLevel.RemoveChild(indicator));
+        indicators.ForEach(indicator => Level.CurrentLevel.RemoveChild(indicator));
     }
 
     int totalEnemies; 
@@ -44,15 +44,18 @@ public partial class EnemyWave : Node {
         }
     }
 
-    private void SetChildVisibility(Enemy child, bool isEnabled) {
+    private static void SetChildVisibility(Enemy child, bool isEnabled) {
         child.Visible = isEnabled;
         child.CollisionShape.Disabled = !isEnabled;
     }
+
+    public readonly List<Enemy> EnemyChildren = new();
 
     public override void _Ready() {
         totalEnemies = GetChildCount();
         
         foreach (Enemy child in GetChildren()) {
+            EnemyChildren.Add(child);
             // enforce that the process type is inherited. 
             child.DamageableComponent.OnDeath += ReduceEnemyTotal;
             child.ProcessMode = ProcessModeEnum.Inherit;

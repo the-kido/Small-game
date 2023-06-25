@@ -86,7 +86,7 @@ public abstract partial class Actor : CharacterBody2D {
         foreach (int )
         */
 
-        foreach (Player player in Player.players) {
+        foreach (Player player in Player.Players) {
             if (player is null) continue;
             
 

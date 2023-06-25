@@ -34,7 +34,7 @@ public partial class InputController : Node
 		return rect.HasPoint(mouse_position);
 	}
 	private void DialogueControlInit() {
-		GUI.DialoguePlayer.DialogueStarted += (info) => FilterNonUiInput = info.pausePlayerInput;
+		GUI.DialoguePlayer.DialogueStarted += (info) => FilterNonUiInput = info.PausePlayerInput;
 		GUI.DialoguePlayer.DialogueEnded += () => FilterNonUiInput = false; 
 	}
 	
@@ -95,7 +95,7 @@ public partial class InputController : Node
 	uint faceObjectMask = (uint) Layers.Environment + (uint) Layers.Enemies;
     private Actor FindObjectToFace(List<Actor> enemies) {
         //Check if the player is clicking/pressing on the screen. 
-        foreach (Actor enemy in Player.players[0].NearbyEnemies) {
+        foreach (Actor enemy in Player.Players[0].NearbyEnemies) {
 
             PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
             var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, enemy.GlobalPosition, faceObjectMask);
@@ -160,7 +160,7 @@ public partial class InputController : Node
 		}
 		
 		if (useMethod is WeaponControl.Autoaim) {
-            Actor see = FindObjectToFace(Player.players[0].NearbyEnemies);
+            Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
             
 			if (weapon.WeaponType is Weapon.Type.HoldToCharge) {
 				UseWeapon?.Invoke(delta); 
@@ -187,6 +187,7 @@ public partial class InputController : Node
 	#endregion 
 
 	#region MOVEMENT
+	
 	public event Action<Vector2> UpdateMovement;
 	private void GetMovementInput() {
 		Vector2 direction = new Vector2(
@@ -199,9 +200,24 @@ public partial class InputController : Node
 
 	#endregion
 	
+	#region INTERACTABLES
+
+	public event Action Interacted;
+	private void InvokeInteracted() {
+		// this is a seperate method incase I wanna add some more logic to this sometime
+		Interacted?.Invoke();
+	}
+
+	private void InitInteractableButton() {
+		GUI.InteractButton.Pressed += InvokeInteracted;
+	}
+
+	#endregion
 	// The (very tightly coupled) glue
 
 	public override void _Ready() {
+		attachedPlayer.InputController = this;
+
 		GUI.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
 		GUI.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
 		GUI.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
@@ -209,6 +225,8 @@ public partial class InputController : Node
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 		
 		GUI.DialogueBar.Ready += DialogueControlInit;
+
+		InitInteractableButton();
 	}
 	public override void _Process(double delta) {
 		// Allow player to interact with UI even if input is filtered.

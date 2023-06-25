@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=17 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://source/gui/hud/ToggleAttackButton.cs" id="4_13lqt"]
 [ext_resource type="Script" path="res://source/gui/hud/DialogueBar.cs" id="5_i761r"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="6_lqvlh"]
+[ext_resource type="Script" path="res://source/gui/hud/InteractButton.cs" id="7_mrwpn"]
 [ext_resource type="Script" path="res://source/gui/hud/CoinsLabel.cs" id="7_yaa1g"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
@@ -49,7 +50,44 @@ _data = {
 "Open": SubResource("Animation_ggilv")
 }
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel")]
+[sub_resource type="Animation" id="Animation_y57l1"]
+resource_name = "show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2018, 447), Vector2(1684, 447)]
+}
+
+[sub_resource type="Animation" id="Animation_gjelb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2018, 447)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4dhoq"]
+_data = {
+"RESET": SubResource("Animation_gjelb"),
+"show": SubResource("Animation_y57l1")
+}
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,6 +101,7 @@ AttackButton = NodePath("Auto Aim Button")
 dialogueBar = NodePath("Dialogue Bar")
 healthLable = NodePath("Health label background/Label")
 coinsLabel = NodePath("Coins")
+interactButton = NodePath("Interact")
 
 [node name="Health label background" type="ColorRect" parent="."]
 layout_mode = 0
@@ -188,6 +227,23 @@ texture = ExtResource("6_lqvlh")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Dialogue Bar"]
 libraries = {
 "": SubResource("AnimationLibrary_xrhtd")
+}
+
+[node name="Interact" type="Button" parent="." node_paths=PackedStringArray("animationPlayer")]
+layout_mode = 0
+offset_left = 2018.0
+offset_top = 447.0
+offset_right = 2087.0
+offset_bottom = 478.0
+scale = Vector2(2.95382, 2.89017)
+text = "interact
+"
+script = ExtResource("7_mrwpn")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Interact"]
+libraries = {
+"": SubResource("AnimationLibrary_4dhoq")
 }
 
 [node name="Coins" type="Label" parent="."]

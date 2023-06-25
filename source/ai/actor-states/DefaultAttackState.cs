@@ -224,7 +224,7 @@ public sealed class DefaultAttackState : AIState {
         
     }
 
-    Player lastRememberedPlayer = Player.players[0];
+    Player lastRememberedPlayer = Player.Players[0];
     float distanceToPlayer = 0;
 
     private void UpdatePathfind(Player currentlyVisiblePlayer) {

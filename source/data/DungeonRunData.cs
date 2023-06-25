@@ -13,5 +13,22 @@ public static class DungeonRunData {
             _coins = value;
         }
     }
+
+
+
+
+    public static event Action FreezeWave;
+    private static int _freezeOrbs = 0;
+    public static int FreezeOrbs {
+        get => _freezeOrbs;
+        set {
+            if (value >= 3) {
+                FreezeWave?.Invoke();
+                _freezeOrbs = 0;
+            } else {
+                _freezeOrbs = value;
+            }
+        }
+    }
     
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=22 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="11_pi73g"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="12_48p24"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_78176"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
@@ -56,9 +57,6 @@ doors = [NodePath("Door 1")]
 metadata/_edit_vertical_guides_ = [823.0]
 metadata/_edit_horizontal_guides_ = [464.0]
 
-[node name="Hillbilly" parent="." instance=ExtResource("1_tonpy")]
-position = Vector2(548, 597)
-
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
 position = Vector2(568, 428)
 GUI = NodePath("../HUD")
@@ -71,13 +69,6 @@ position = Vector2(749, 447)
 zoom = Vector2(1.7, 1.7)
 player = NodePath("../Player")
 tileMap = NodePath("../NavigationRegion2D/TileMap")
-
-[node name="Base Enemy2" parent="." instance=ExtResource("1_tonpy")]
-position = Vector2(776, 137)
-scale = Vector2(3.12, 3.12)
-
-[node name="Weird enemy" parent="." instance=ExtResource("4_rymms")]
-position = Vector2(714, 597)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_7dfhi")
@@ -118,5 +109,20 @@ nextLevel = "res://assets/levels/debug/level_2.tscn"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("12_2c1uv")
+
+[node name="Waves" type="Node" parent="."]
+
+[node name="wave" type="Node" parent="Waves"]
+script = ExtResource("12_78176")
+
+[node name="Hillbilly" parent="Waves/wave" instance=ExtResource("1_tonpy")]
+position = Vector2(548, 597)
+
+[node name="Base Enemy2" parent="Waves/wave" instance=ExtResource("1_tonpy")]
+position = Vector2(776, 137)
+scale = Vector2(3.12, 3.12)
+
+[node name="Weird enemy" parent="Waves/wave" instance=ExtResource("4_rymms")]
+position = Vector2(714, 597)
 
 [editable path="Player"]
