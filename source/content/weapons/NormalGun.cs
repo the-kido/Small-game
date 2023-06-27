@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public partial class NormalGun : Gun {
    
-    protected override DamageInstance damage => new(player) {
+    protected override DamageInstance damage => new(Player) {
         statusEffect = new FireEffect(),
         damage = 5, 
     }; 

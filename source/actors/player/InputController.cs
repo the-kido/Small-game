@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using KidoUtils;
 
 using System.Threading.Tasks;
+using System.Reflection.Metadata;
 
 public partial class InputController : Node
 {
@@ -39,6 +40,14 @@ public partial class InputController : Node
 	}
 	
 	private void ContinueDialogue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.OnClicked?.Invoke();}	
+
+	#endregion
+
+	#region HELD WEAPON
+
+	public void UpdateHeldWeapon(int slot) {
+		hand.GetChild<Weapon>(0).ChangeWeapon(attachedPlayer.GetWeapon(slot));
+	}
 
 	#endregion
 
@@ -215,6 +224,14 @@ public partial class InputController : Node
 	#endregion
 	// The (very tightly coupled) glue
 
+	#region GUI
+	public event Action LeftClicked; 
+
+	private void InvokeLeftClickedWhenClickedSpecificallyForGUIPurposesOnly() {
+		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
+	}
+	#endregion
+
 	public override void _Ready() {
 		attachedPlayer.InputController = this;
 
@@ -231,6 +248,7 @@ public partial class InputController : Node
 	public override void _Process(double delta) {
 		// Allow player to interact with UI even if input is filtered.
 		ContinueDialogue();
+		InvokeLeftClickedWhenClickedSpecificallyForGUIPurposesOnly();
 		
 		if (FilterNonUiInput) {
 			// How do I avoid this?
@@ -239,6 +257,7 @@ public partial class InputController : Node
 		}
 		GetMovementInput();
 		UpdateWeapon(delta);
+
 	}
 	private void OnDeath(DamageInstance _) {
 		FilterNonUiInput = true;

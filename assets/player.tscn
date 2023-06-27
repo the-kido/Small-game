@@ -704,7 +704,7 @@ parameters/Walk/blend_position = Vector2(0, 0)
 [node name="Damageable" parent="." instance=ExtResource("8_spu4k")]
 collision_layer = 2
 collision_mask = 256
-Health = 50
+Health = 1
 ImmunityFrames = 1.0
 
 [node name="Hitbox" type="CollisionShape2D" parent="Damageable"]

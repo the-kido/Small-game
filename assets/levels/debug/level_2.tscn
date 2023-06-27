@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_vytqf"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 [ext_resource type="Texture2D" uid="uid://b8k4i1dvi8hib" path="res://assets/sprites/gui/interactable_arrow.png" id="16_xfrix"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/DialogueInteractable.cs" id="17_qxxeh"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/Chest.cs" id="17_e6l5u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
 size = Vector2(83, 143)
@@ -163,8 +163,8 @@ position = Vector2(519, 574)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_uy1k1")
 frame_progress = 0.366557
-script = ExtResource("17_qxxeh")
-dialogueName = "Kill Agro Boss"
+script = ExtResource("17_e6l5u")
+chestLootTable = "Generic Chest Items"
 range = NodePath("Area2D")
 
 [node name="Area2D" type="Area2D" parent="Interactable"]

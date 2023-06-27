@@ -18,14 +18,14 @@ public partial class ReviveMenu : Control, IMenu{
         close.Pressed += () => Disable?.Invoke();
     }
 
-    public void Enable() {
+    public void Enable(Player _) {
         Visible = true;
         animationPlayer.Play("Open");
 
         //Clear all methods the event is attached to.
         if (Disable is not null) {
             foreach (Delegate func in Disable.GetInvocationList()) {
-                Disable -= (func as Action);
+                Disable -= func as Action;
             }
         }
     }
@@ -34,3 +34,4 @@ public partial class ReviveMenu : Control, IMenu{
         animationPlayer.Play("Open", -1, -1);
     }
 }
+

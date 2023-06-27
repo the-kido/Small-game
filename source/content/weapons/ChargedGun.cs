@@ -2,23 +2,28 @@ using KidoUtils;
 using System;
 using Godot;
 
-public partial class ChargedGun : Gun {
+public sealed partial class ChargedGun : Gun {
     const int MAX_DAMAGE = 10;
     
     // Overriding relavent properties / methods
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
+    new public static PackedScene PackedSceneResource {get; set;}
 
-	protected override DamageInstance damage => new(player) {
+
+	protected override DamageInstance damage => new(Player) {
         statusEffect = new FireEffect(), 
         damage = (int) (MAX_DAMAGE * strength)
     };
-	protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
+
+    public static PackedScene Temp {get; set;} = ResourceLoader.Load<PackedScene>("res://source/weapons/BaseGun.tscn");
+
+    protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
 
 
     
 	public override void Attack() {
-
         SpawnBulletInstance();
+        
         
         Camera.currentCamera.StartShake(strength * 100, 300, 1);
     }

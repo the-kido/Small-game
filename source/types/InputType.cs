@@ -5,5 +5,4 @@ public enum InputType {
 	LeftClickJustReleased,
 	RightClickHold,
 	AutoAttackButtonToggled,
-	Interacted,
 }

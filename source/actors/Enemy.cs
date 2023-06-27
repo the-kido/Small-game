@@ -21,7 +21,7 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     }
 
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
-    protected abstract List<Loot> DeathDrops {get; init;}
+    protected abstract List<ItemDrop> DeathDrops {get; init;}
 
 
     public override void _Process(double delta) {

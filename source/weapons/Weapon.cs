@@ -1,14 +1,25 @@
 using System;
 using Godot;
 
+
+public interface IChestItem {
+	public static PackedScene Temp {get; set;} 
+}
+
 public abstract partial class Weapon : Node2D {
+
+	[Export]
+	public Sprite2D Sprite {get; private set;}
+
+	public static PackedScene PackedSceneResource {get; protected set;}
+	public PackedScene packedScene => PackedSceneResource;
 
 	// Passes the added weapon
 	public event Action<Weapon> WeaponAdded;
 	// Passes the removed weapon
  	public event Action<Weapon> WeaponRemoved;
 
-	public abstract Weapon.Type WeaponType {get; protected set;} 
+	public abstract Type WeaponType {get; protected set;} 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
 	public virtual void OnWeaponLetGo() {}
 	public abstract void Attack();
@@ -19,12 +30,12 @@ public abstract partial class Weapon : Node2D {
 	public float ReloadSpeed {get; private set;} = 1;
 	protected double reloadTimer = 0;
 
-	protected Node2D hand => GetParent<Node2D>();
-	protected Player player => hand.GetParent<Player>();
-	
-	public override void _Ready() {
+	protected Node2D Hand => GetParent<Node2D>();
+	protected Player Player => Hand.GetParent<Player>();
+
+    public override void _Ready() {
 		Init();
-		InputController inputController = hand.GetNode<InputController>("../Input Controller");
+		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
 
 		inputController.UpdateWeaponDirection += UpdateWeapon;
 		inputController.UseWeapon += OnWeaponUsing;
@@ -44,9 +55,9 @@ public abstract partial class Weapon : Node2D {
 		Attack();
 	}
 
-	public void ChangeWeapon(PackedScene weapon) {	
+	public void ChangeWeapon(Weapon weapon) {	
 
-		InputController inputController = hand.GetNode<InputController>("../Input Controller");
+		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
 
 		inputController.UpdateWeaponDirection -= UpdateWeapon;
 		inputController.UseWeapon -= OnWeaponUsing;
@@ -55,13 +66,16 @@ public abstract partial class Weapon : Node2D {
 		WeaponRemoved?.Invoke(this);
 
 		// Remove all of the weapon's nodes held by the hand
-		foreach (Node child in hand.GetChildren()) 
+
+		GD.Print(weapon.GetParent());
+
+		foreach (Node child in Hand.GetChildren()) {
 			child.QueueFree();
+		}
 
 		// Add the new weapon
-		Weapon newWeapon = weapon.Instantiate<Weapon>(); 
-		hand.AddChild(newWeapon);
-		WeaponAdded?.Invoke(newWeapon);
+		Hand.AddChild(weapon);
+		WeaponAdded?.Invoke(weapon);
 
 	}
 

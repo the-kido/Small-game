@@ -11,6 +11,19 @@ public sealed partial class Player : Actor
 
     public InputController InputController;
 
+    #region Held weapons
+    public int SelectedWeaponIndex {get; private set;} = 0;
+    
+    private Weapon[] weapons = new Weapon[3];
+
+    public Weapon GetWeapon(int index) => weapons[index];
+
+    public void SetWeapon(Weapon weapon, int index) {
+        weapons[index] = weapon;
+        InputController.UpdateHeldWeapon(index);
+    }
+    #endregion
+
 
     // This shouldn't be abused; multiplayer support may (?) happen in the future
     public static List<Player> Players {get; private set;}
@@ -22,10 +35,13 @@ public sealed partial class Player : Actor
     public override void _Ready() {
         base._Ready();
 
+        weapons[0] = GetNode("Hand").GetChild<Weapon>(0);
+
         //Default some values
         Players = new() { this };
 
-        GUI.HealthLable.Init(this);
+        GUI.Init(this);
+        
         DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
@@ -42,7 +58,7 @@ public sealed partial class Player : Actor
         CollisionMask = 0;
         DamageableComponent.QueueFree();
 
-        GUI.SetCurrentMenu(GUI.ReviveMenu);
+        GUI.OpenReviveMenu();
     }
 
     public void DamageFramePause(DamageInstance damageInstance) {

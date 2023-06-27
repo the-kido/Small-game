@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvp5o73q03vs5"]
+[gd_scene load_steps=11 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="PackedScene" uid="uid://crdkmn1ouh8k2" path="res://hud.tscn" id="2_ckuxr"]
 [ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="2_lc21n"]
-[ext_resource type="Script" path="res://source/gui/ReviveMenu.cs" id="5_kdcv6"]
+[ext_resource type="Script" path="res://source/gui/menus/ReviveMenu.cs" id="5_kdcv6"]
+[ext_resource type="Script" path="res://source/gui/menus/ChestMenu.cs" id="6_iybjn"]
+[ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="7_8aqmd"]
 [ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
@@ -67,12 +69,13 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "ReviveMenu")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu")]
 layer = 10
 script = ExtResource("1_7vbvm")
 TargetIndicator = NodePath("")
 HUD = NodePath("HUD")
-ReviveMenu = NodePath("Revive")
+reviveMenu = NodePath("Revive")
+chestMenu = NodePath("ChestMenu")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
 
@@ -185,3 +188,169 @@ root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
+
+[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemStatsOverview", "ItemPreviews", "newItemImage", "switchItemButton")]
+visible = false
+layout_mode = 3
+anchor_left = 0.11
+anchor_top = 0.11
+anchor_right = 0.89
+anchor_bottom = 0.89
+offset_left = 0.799988
+offset_top = 0.199989
+offset_right = 0.199951
+offset_bottom = -0.200073
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_iybjn")
+itemStatsOverview = NodePath("Item Stats Overview")
+ItemPreviews = NodePath("Item Preview")
+newItemImage = NodePath("New Item Description/Image")
+switchItemButton = NodePath("Item Stats Overview/ColorRect/Switch to item button")
+
+[node name="New Item Description" type="ColorRect" parent="ChestMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.233
+anchor_top = 0.39
+anchor_right = 0.764
+anchor_bottom = 1.038
+offset_left = 0.199127
+offset_top = -0.3797
+offset_right = 5.29224
+offset_bottom = 0.00231934
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.12549, 0.12549, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Image" type="TextureRect" parent="ChestMenu/New Item Description"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 21.0
+offset_right = 279.0
+offset_bottom = 274.0
+texture = ExtResource("7_8aqmd")
+
+[node name="Text Description" type="RichTextLabel" parent="ChestMenu/New Item Description"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4325
+anchor_top = 0.0384617
+anchor_right = 0.9865
+anchor_bottom = 0.989843
+offset_right = -155.2
+offset_bottom = -182.452
+scale = Vector2(1.5, 1.5)
+text = "Description
+For those who care ennough
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="Item Preview" type="Control" parent="ChestMenu"]
+layout_mode = 1
+anchor_left = 0.233133
+anchor_top = 0.064133
+anchor_right = 0.769539
+anchor_bottom = 0.280285
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="1" type="ColorRect" parent="ChestMenu/Item Preview"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.23
+anchor_bottom = 1.0
+offset_right = 0.309998
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="2" type="ColorRect" parent="ChestMenu/Item Preview"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.23
+anchor_bottom = 1.0
+offset_left = 312.0
+offset_right = 312.31
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="3" type="ColorRect" parent="ChestMenu/Item Preview"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.23
+anchor_bottom = 1.0
+offset_left = 610.0
+offset_right = 610.31
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12549, 0.12549, 0.12549, 1)
+
+[node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Item Stats Overview" type="Control" parent="ChestMenu"]
+visible = false
+anchors_preset = 0
+offset_right = 268.0
+offset_bottom = 328.0
+scale = Vector2(1.19595, 1.19595)
+
+[node name="ColorRect" type="ColorRect" parent="ChestMenu/Item Stats Overview"]
+layout_mode = 0
+offset_right = 268.0
+offset_bottom = 328.0
+mouse_filter = 1
+color = Color(0.215686, 0.215686, 0.215686, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ChestMenu/Item Stats Overview/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0298507
+anchor_top = 0.027439
+anchor_right = 0.970149
+anchor_bottom = 0.158537
+offset_bottom = 212.0
+mouse_filter = 1
+text = "This weapon sucks
+Damage: 0
+Reload Speed: 100s
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="Switch to item button" type="Button" parent="ChestMenu/Item Stats Overview/ColorRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0298507
+anchor_top = 0.832317
+anchor_right = 0.940298
+anchor_bottom = 0.951219
+offset_right = 8.0
+offset_bottom = 8.0
+mouse_filter = 1
+text = "Switch"
+metadata/_edit_use_anchors_ = true

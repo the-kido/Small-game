@@ -9,7 +9,7 @@ public partial class AgroEnemyMiniBoss : Enemy
     [Export]
     private Pathfinder pathfinder;
 
-	protected override List<Loot> DeathDrops {get; init;} = LootTable.GENERIC_ENEMY_DROPS;
+	protected override List<ItemDrop> DeathDrops {get; init;} = EnemyLootTable.GENERIC_ENEMY_DROPS;
 
 
 	protected sealed override void Init(AnimationController animationController, AIStateMachine stateMachine) {

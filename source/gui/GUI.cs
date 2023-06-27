@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 public partial class GUI : CanvasLayer {
 
+    private Player player;
+    public void Init(Player player) {
+        this.player = player;
+        HealthLable.Init(player);
+    }
+
     [Export]
     public SelectedTargetIndicator TargetIndicator {get; private set;}
 
@@ -19,33 +25,57 @@ public partial class GUI : CanvasLayer {
     public CoinsLabel CoinsLable => HUD.coinsLabel;
     public InteractButton InteractButton => HUD.interactButton;
 
+    private void CoverHUD(bool cover) => HUD.Cover(cover);
+
+
     #endregion
     
     #region All Menus
     [Export]
-    public ReviveMenu ReviveMenu {get; private set;}
+    private ReviveMenu reviveMenu;
+    [Export]
+    public ChestMenu chestMenu;
+
     #endregion
 
+    #region Menu open methods
+    public void OpenReviveMenu() => SetCurrentMenu(reviveMenu);
+
+
+    public void OpenChestMenu(Weapon newWeapon) {
+        SetCurrentMenu(chestMenu);
+        chestMenu.SetItems(newWeapon);
+    }
+
+    #endregion
+
+    // TODO: this kimbda usless no ?  
     public static List<GUI> PlayerGUIs {get; private set;} = new List<GUI>();
 
     public IMenu CurrentMenu {get; private set;}
     
     private void CloseCurrentMenu() {
+        CoverHUD(false);
         CurrentMenu?.Switch();
         CurrentMenu = null;
     }
 
-    public void SetCurrentMenu(IMenu newMenu) {
+    private void SetCurrentMenu(IMenu newMenu) {
+        CoverHUD(true);
+
         CurrentMenu?.Switch();
 
         CurrentMenu = newMenu;
         
-        CurrentMenu?.Enable();
+        CurrentMenu?.Enable(player);
 
         CurrentMenu.Disable += () => {
             CloseCurrentMenu();
         };
     }
+
+
+
 
     public override void _Ready() => PlayerGUIs.Add(this);
 }
