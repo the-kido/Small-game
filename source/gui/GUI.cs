@@ -68,7 +68,7 @@ public partial class GUI : CanvasLayer {
         CurrentMenu = newMenu;
         
         CurrentMenu?.Enable(player);
-
+        
         CurrentMenu.Disable += () => {
             CloseCurrentMenu();
         };

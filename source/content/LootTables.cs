@@ -52,7 +52,7 @@ public static class ChestLootTable {
 
     public static readonly Dictionary<string, List<ChestItemDrop>> ALL_TABLES = new() {
         {"Generic Chest Items", new() { 
-            new(WeirdGun.Temp, 1f)
+            new(WeirdGun.PackedSceneResource, 1f)
             }
         },
         

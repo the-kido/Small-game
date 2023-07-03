@@ -11,8 +11,8 @@ public abstract partial class Weapon : Node2D {
 	[Export]
 	public Sprite2D Sprite {get; private set;}
 
-	public static PackedScene PackedSceneResource {get; protected set;}
-	public PackedScene packedScene => PackedSceneResource;
+	// Only get from the static PackedSceneResource.
+	public abstract PackedScene PackedScene {get;}
 
 	// Passes the added weapon
 	public event Action<Weapon> WeaponAdded;
@@ -25,7 +25,6 @@ public abstract partial class Weapon : Node2D {
 	public abstract void Attack();
 	public virtual void Init() {}
 
-
 	[Export]
 	public float ReloadSpeed {get; private set;} = 1;
 	protected double reloadTimer = 0;
@@ -36,12 +35,12 @@ public abstract partial class Weapon : Node2D {
     public override void _Ready() {
 		Init();
 		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
+		//if (inputController is null) return;
 
 		inputController.UpdateWeaponDirection += UpdateWeapon;
 		inputController.UseWeapon += OnWeaponUsing;
 		inputController.OnWeaponLetGo += OnWeaponLetGo;
 	}
-
 
 	//While the player is "using" (holding click for) the weapon.
 	//Can be overridden if need be
@@ -56,7 +55,6 @@ public abstract partial class Weapon : Node2D {
 	}
 
 	public void ChangeWeapon(Weapon weapon) {	
-
 		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
 
 		inputController.UpdateWeaponDirection -= UpdateWeapon;
@@ -67,16 +65,15 @@ public abstract partial class Weapon : Node2D {
 
 		// Remove all of the weapon's nodes held by the hand
 
-		GD.Print(weapon.GetParent());
-
 		foreach (Node child in Hand.GetChildren()) {
 			child.QueueFree();
 		}
-
 		// Add the new weapon
-		Hand.AddChild(weapon);
+		Hand.AddChild(weapon.PackedScene.Instantiate());
 		WeaponAdded?.Invoke(weapon);
 
+		// just making sur ethis is also removed.
+		QueueFree();
 	}
 
 	//This type thing is relavent to the input controller.

@@ -138,6 +138,9 @@ public partial class InputController : Node
 	
 	IPlayerAttackable targettedAttackable = null;
 	private void UpdateWeapon(double delta) {
+
+		if (hand.GetChildren().Count is 0) return;
+		
 		List<InputType> inputMap = GetAttackInputs();
 
 		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
@@ -184,7 +187,8 @@ public partial class InputController : Node
         }
 		
 		if (useMethod is WeaponControl.ManualAim ) {
-			//If the player is aiming themselves, shoot where they're pointing. 
+			//If the player is aiming themselves, shoot where they're pointing.
+
 			if (inputMap.Contains(InputType.LeftClickHold))
 				UseWeapon?.Invoke(delta);
 			

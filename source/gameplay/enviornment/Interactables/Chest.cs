@@ -25,15 +25,16 @@ public partial class Chest : Interactable {
 
     }
 
+    private void A(Weapon oldWeapon, Player player) {
+        containedWeapon = oldWeapon;
+        player.GUI.chestMenu.OnWeaponReplaced -= (oldWeapon) => A(oldWeapon, player);
+    }
+    
     protected override void OnInteracted(Player player) {
         // figure out how i'm gonna randomize this.
-        player.GUI.chestMenu.OnWeaponReplaced += (oldWeapon) => {
-            AddChild(containedWeapon);
-            // would this even work what the
-            containedWeapon = oldWeapon;
-        };
+        player.GUI.chestMenu.OnWeaponReplaced += (oldWeapon) => A(oldWeapon, player);
         
-        player.GUI.OpenChestMenu(containedWeapon.packedScene.Instantiate<Weapon>());
+        player.GUI.OpenChestMenu(containedWeapon.PackedScene.Instantiate<Weapon>());
         
     }
 }

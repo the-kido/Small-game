@@ -12,6 +12,8 @@ Sprite = NodePath("Sprite2D")
 ReloadSpeed = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.57079
+scale = Vector2(4.89195, 4.98834)
 texture = ExtResource("3_v7rhi")
 
 [node name="Nuzzle" type="Node2D" parent="."]

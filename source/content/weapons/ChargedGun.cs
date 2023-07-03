@@ -7,7 +7,10 @@ public sealed partial class ChargedGun : Gun {
     
     // Overriding relavent properties / methods
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
-    new public static PackedScene PackedSceneResource {get; set;}
+    
+
+	public static readonly PackedScene PackedSceneResource = ResourceLoader.Load<PackedScene>("res://source/weapons/BaseGun.tscn");
+    public override PackedScene PackedScene {get => PackedSceneResource;}
 
 
 	protected override DamageInstance damage => new(Player) {
@@ -15,7 +18,6 @@ public sealed partial class ChargedGun : Gun {
         damage = (int) (MAX_DAMAGE * strength)
     };
 
-    public static PackedScene Temp {get; set;} = ResourceLoader.Load<PackedScene>("res://source/weapons/BaseGun.tscn");
 
     protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
 
