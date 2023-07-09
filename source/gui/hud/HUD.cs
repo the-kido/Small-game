@@ -17,10 +17,7 @@ public partial class HUD : Control {
 
     [Export]
     public HUDCover HUDCover;
-    public override void _Ready() {
-        GD.Print(HUDCover);
-    }
-
+    
     public void Cover(bool enable) {
         HUDCover.Enable(enable);
     }

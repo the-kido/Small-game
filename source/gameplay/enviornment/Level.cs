@@ -32,7 +32,6 @@ public partial class Level : Node {
     private int waveAt = 0;
 
     public static bool Temp() {
-        GD.Print("waves amt",CurrentLevel.waves.Count, "Wave@", CurrentLevel.waveAt);
         return CurrentLevel.waves.Count < CurrentLevel.waveAt;
     }
     public static EnemyWave CurrentWave => CurrentLevel.GetNode<EnemyWave>(CurrentLevel.waves[CurrentLevel.waveAt]);

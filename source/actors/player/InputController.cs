@@ -80,11 +80,11 @@ public partial class InputController : Node
 		return inputMap;
 	}
     public IPlayerAttackable FindInteractableWithinCursor() {
-		List<Node2D> list = KidoUtils.Utils.GetPreloadedScene<GlobalCursor>(this, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
+		List<Node2D> list = Utils.GetPreloadedScene<GlobalCursor>(this, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
 
         foreach(Node2D node2d in list) {
-            if (node2d is IPlayerAttackable) {
-                return (IPlayerAttackable) node2d;
+            if (node2d is IPlayerAttackable attackable) {
+                return attackable;
             }
         }
         return null;
@@ -102,7 +102,7 @@ public partial class InputController : Node
     }
  
 	uint faceObjectMask = (uint) Layers.Environment + (uint) Layers.Enemies;
-    private Actor FindObjectToFace(List<Actor> enemies) {
+    private Actor FindObjectToFace(List<Actor> _) {
         //Check if the player is clicking/pressing on the screen. 
         foreach (Actor enemy in Player.Players[0].NearbyEnemies) {
 
@@ -186,7 +186,9 @@ public partial class InputController : Node
             }
         }
 		
-		if (useMethod is WeaponControl.ManualAim ) {
+		if (useMethod is WeaponControl.ManualAim) {
+
+			if (isHoveringOverGui) return;
 			//If the player is aiming themselves, shoot where they're pointing.
 
 			if (inputMap.Contains(InputType.LeftClickHold))
@@ -235,13 +237,10 @@ public partial class InputController : Node
 		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
 	}
 	#endregion
-
 	public override void _Ready() {
 		attachedPlayer.InputController = this;
 
-		GUI.AttackButton.OnAttackButtonPressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
-		GUI.AttackButton.OnMouseEntered += () => isHoveringOverGui = true;
-		GUI.AttackButton.OnMouseExited += () => isHoveringOverGui = false;
+		GUI.AttackButton.Pressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
 
 		attachedPlayer.DamageableComponent.OnDeath += OnDeath;
 		

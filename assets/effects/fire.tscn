@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://carnd6r1ccx1d"]
+[gd_scene load_steps=11 format=3 uid="uid://d2age2i033f5c"]
 
 [sub_resource type="Gradient" id="Gradient_db1di"]
 offsets = PackedFloat32Array(0.0444444, 0.392593, 1)
@@ -18,20 +18,21 @@ curve = SubResource("Curve_3ipog")
 emission_shape = 3
 emission_box_extents = Vector3(20, 10, 0)
 particle_flag_disable_z = true
-spread = 47.4
+spread = 50.0
 gravity = Vector3(0, -98, 0)
 angular_velocity_min = 77.8
 angular_velocity_max = 77.8
 orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
-radial_accel_min = -94.19
-radial_accel_max = 100.0
+radial_accel_min = -100.0
+radial_accel_max = 50.0
 angle_min = -298.1
 angle_max = -46.5
 scale_min = 4.44
 scale_max = 11.53
 scale_curve = SubResource("CurveTexture_fpixs")
 color_ramp = SubResource("GradientTexture1D_hjfuq")
+attractor_interaction_enabled = false
 
 [sub_resource type="Gradient" id="Gradient_sakxm"]
 offsets = PackedFloat32Array(0, 0.764706, 1)
@@ -60,8 +61,10 @@ scale_curve = SubResource("CurveTexture_ijc5d")
 color_ramp = SubResource("GradientTexture1D_gbr8w")
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
+process_mode = 3
 amount = 24
 process_material = SubResource("ParticleProcessMaterial_vggbx")
+visibility_rect = Rect2(-2000, -2000, 4000, 4000)
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 z_index = -1

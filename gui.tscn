@@ -126,10 +126,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -190,7 +190,6 @@ libraries = {
 }
 
 [node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemStatsOverview", "ItemPreviews", "newItemImage", "switchItemButton")]
-visible = false
 layout_mode = 3
 anchor_left = 0.11
 anchor_top = 0.11
@@ -314,17 +313,17 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Item Stats Overview" type="Control" parent="ChestMenu"]
-visible = false
 anchors_preset = 0
 offset_right = 268.0
 offset_bottom = 328.0
 scale = Vector2(1.19595, 1.19595)
+mouse_filter = 1
 
 [node name="ColorRect" type="ColorRect" parent="ChestMenu/Item Stats Overview"]
 layout_mode = 0
 offset_right = 268.0
 offset_bottom = 328.0
-mouse_filter = 1
+mouse_filter = 2
 color = Color(0.215686, 0.215686, 0.215686, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ChestMenu/Item Stats Overview/ColorRect"]
@@ -335,12 +334,11 @@ anchor_top = 0.027439
 anchor_right = 0.970149
 anchor_bottom = 0.158537
 offset_bottom = 212.0
-mouse_filter = 1
+mouse_filter = 2
 text = "This weapon sucks
 Damage: 0
 Reload Speed: 100s
 "
-metadata/_edit_use_anchors_ = true
 
 [node name="Switch to item button" type="Button" parent="ChestMenu/Item Stats Overview/ColorRect"]
 layout_mode = 1
@@ -353,4 +351,3 @@ offset_right = 8.0
 offset_bottom = 8.0
 mouse_filter = 1
 text = "Switch"
-metadata/_edit_use_anchors_ = true

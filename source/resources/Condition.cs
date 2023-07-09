@@ -15,18 +15,12 @@ public partial class Condition : Resource {
     }
 
     public void wakeup() {
-        GD.Print("wa");
         achieved = GetBoolFromData(); 
     }
 
     private bool GetBoolFromData() {
-        GD.Print("boo");
-
         using FileAccess saveGame = FileAccess.Open("user://savegame.save", FileAccess.ModeFlags.Write);
         string data = saveGame.GetLine();
-        GD.Print("what");
-        GD.Print(data);
-
 
         if (data == "true") return true;
         else return false;

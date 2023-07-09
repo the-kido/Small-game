@@ -16,7 +16,7 @@ public partial class GUI : CanvasLayer {
 
     #region HUD
     [Export]
-    private HUD HUD;
+    public HUD HUD {get; private set;}
     // Make easier access to important member fields of HUD above for encapsulation purposes
     public ToggleAttackButton AttackButton => HUD.AttackButton;
     public DialogueBar DialogueBar => HUD.dialogueBar;

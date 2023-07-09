@@ -144,7 +144,7 @@ position = Vector2(926, 806)
 position = Vector2(438, 473)
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
-position = Vector2(384, 712)
+position = Vector2(907, 656)
 
 [node name="Wave 2" type="Node" parent="Waves"]
 script = ExtResource("12_vytqf")
@@ -159,7 +159,7 @@ position = Vector2(533, 202)
 position = Vector2(503, 681)
 
 [node name="Interactable" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("range")]
-position = Vector2(519, 574)
+position = Vector2(133, 435)
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_uy1k1")
 frame_progress = 0.366557

@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c5vl8xb18snvk"]
+[gd_scene load_steps=11 format=3 uid="uid://c5vl8xb18snvk"]
 
 [ext_resource type="Script" path="res://source/weapons/bullets/BadBullet.cs" id="1_yelol"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
+[ext_resource type="PackedScene" uid="uid://d2age2i033f5c" path="res://assets/effects/fire.tscn" id="4_5xq3n"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3aaus"]
 radius = 7.0
@@ -73,3 +74,6 @@ one_shot = true
 speed_scale = 1.61
 explosiveness = 0.99
 randomness = 0.1
+
+[node name="GPUParticles2D2" parent="." instance=ExtResource("4_5xq3n")]
+position = Vector2(-1, 0)

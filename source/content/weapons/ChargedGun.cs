@@ -21,12 +21,8 @@ public sealed partial class ChargedGun : Gun {
 
     protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
 
-
-    
 	public override void Attack() {
         SpawnBulletInstance();
-        
-        
         Camera.currentCamera.StartShake(strength * 100, 300, 1);
     }
 

@@ -10,19 +10,19 @@ public partial class BadBullet : Bullet {
     
     GpuParticles2D particle;
     public override void _Ready() {
-        particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
-        OnCollided += () => ParticleFactory.RemoveParticle(particle);
+        // particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
+        // OnCollided += () => ParticleFactory.RemoveParticle(particle);
 
         Random random = new();
-        wiggleDistance = (random.Next( (int) wiggleStrength * 2)) - wiggleStrength;
+        wiggleDistance = random.Next((int) wiggleStrength * 2) - wiggleStrength;
     }
 
     public override void _Process(double delta) {  
         base._Process(delta);
-        wigglewiggle(delta);
+        Wigglewiggle(delta);
     }
 
-    private void wigglewiggle(double delta) {
+    private void Wigglewiggle(double delta) {
         wiggleDistance += delta * 10;
         float magnitude = wiggleStrength * ((float) Mathf.Sin(wiggleDistance)); 
 
