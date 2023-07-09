@@ -1,6 +1,6 @@
 using System;
+using System.Linq;
 using Godot;
-
 
 public partial class ChestMenu : Control, IMenu {
     public event Action Disable;
@@ -10,15 +10,24 @@ public partial class ChestMenu : Control, IMenu {
     [Export]
     private Control itemStatsOverview;
     [Export]
-    Control ItemPreviews;
+    private Control ItemPreviews;
     [Export]
-    TextureRect newItemImage;
+    private TextureRect newItemImage;
+    [Export]
+    private Button switchItemButton;
 
-    [Export]
-    Button switchItemButton;
+    public Action<Weapon> OnWeaponReplaced;
     
-    ColorRect PreviewPanel(int index) => ItemPreviews.GetChild<ColorRect>(index);
-    TextureRect PreviewImage(int index) => ItemPreviews.GetChild(index).GetChild<TextureRect>(0);
+    private int? selectedIndex = null;
+    private int? previewedIndex = null;
+    private bool hoveringWithinStatsOverview = false;
+    private bool freezeStatOverview = false;
+    
+    private Player viewer;
+    private Weapon currentWeaponToSwitchTo = null;
+    
+    private ColorRect PreviewPanel(int index) => ItemPreviews.GetChild<ColorRect>(index);
+    private TextureRect PreviewImage(int index) => ItemPreviews.GetChild(index).GetChild<TextureRect>(0);
  
     public override void _Ready() {
         switchItemButton.Pressed += () => SetItem(currentWeaponToSwitchTo);
@@ -26,8 +35,7 @@ public partial class ChestMenu : Control, IMenu {
         // Make it so that hovering over the items in the GUI will show the statistics
         var children = ItemPreviews.GetChildren();
         
-        foreach (ColorRect child in ItemPreviews.GetChildren()) {
-            
+        foreach (ColorRect child in ItemPreviews.GetChildren().Cast<ColorRect>()) {
             child.MouseEntered += () => previewedIndex = int.Parse(child.Name) - 1;
             child.MouseExited += () => previewedIndex = null;
         }
@@ -37,11 +45,6 @@ public partial class ChestMenu : Control, IMenu {
     }
 
 
-    bool hoveringWithinStatsOverview = false;
-
-    int? selectedIndex = null;
-    int? previewedIndex = null;
-    // When ready, i want to attach the "mouse entered 
     public override void _Process(double delta) {
 
         if (freezeStatOverview) {
@@ -63,14 +66,13 @@ public partial class ChestMenu : Control, IMenu {
     }
 
 
-    Player player;
     public void Enable(Player player) {
         // reset values
         hoveringWithinStatsOverview = false;
         selectedIndex = null;
         previewedIndex = null;
 
-        this.player = player;
+        viewer = player;
         Visible = true;
 
         player.InputController.LeftClicked += FreezeStatOverview;
@@ -81,7 +83,6 @@ public partial class ChestMenu : Control, IMenu {
             }
         }
     }
-    bool freezeStatOverview = false;
     private void FreezeStatOverview() {
         if (previewedIndex != null) {
             selectedIndex = previewedIndex;
@@ -89,31 +90,26 @@ public partial class ChestMenu : Control, IMenu {
         }
     }
 
-    public Action<Weapon> OnWeaponReplaced;
-
     private void SetItem(Weapon newWeapon) {
 
-        OnWeaponReplaced?.Invoke(player.GetWeapon(selectedIndex ?? -1));
+        OnWeaponReplaced?.Invoke(viewer.GetWeapon(selectedIndex ?? -1));
 
-        player.SetWeapon(newWeapon, selectedIndex ?? -1);
+        viewer.SetWeapon(newWeapon, selectedIndex ?? -1);
         
         Disable?.Invoke();
     }
 
-    Weapon currentWeaponToSwitchTo = null;
     public void SetItems(Weapon newWeapon) {
         currentWeaponToSwitchTo = newWeapon;
 
         newItemImage.Texture = newWeapon.Sprite.Texture;
         
         for (int i = 0; i < 3; i++) {
-            if (player.GetWeapon(i) is null) continue;
-            PreviewImage(i).Texture = player.GetWeapon(i).Sprite.Texture;
+            if (viewer.GetWeapon(i) is null) continue;
+            PreviewImage(i).Texture = viewer.GetWeapon(i).Sprite.Texture;
         } 
     }
 
-    public void Switch() {
-        Visible = false;
-    }
+    public void Switch() => Visible = false;
 }
 
