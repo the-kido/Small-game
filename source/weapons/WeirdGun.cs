@@ -9,8 +9,15 @@ public partial class WeirdGun : Gun {
 
     protected override DamageInstance damage => new(Player) {damage = 1};
  
-    public override void Attack() {
-        SpawnBulletInstance();
+    public override void Attack() => SpawnBulletInstance();
+
+    public override void _Process(double delta) => reloadTimer += delta;
+    
+    protected override void OnWeaponUsing(double delta) {
+        if (reloadTimer >= ReloadSpeed) {
+			reloadTimer = 0;
+            Attack();
+        }
     }
 
     protected override BulletInstance BulletInstance() {

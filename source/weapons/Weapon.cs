@@ -7,17 +7,18 @@ public interface IChestItem {
 }
 
 public abstract partial class Weapon : Node2D {
-
+	
 	[Export]
 	public Sprite2D Sprite {get; private set;}
+	[Export]
+	public bool UsesReloadVisuals {get; private set;}
 
 	// Only get from the static PackedSceneResource.
 	public abstract PackedScene PackedScene {get;}
 
 	// Passes the added weapon
-	public event Action<Weapon> WeaponAdded;
+	public event Action<Weapon, Weapon> WeaponSwitched;
 	// Passes the removed weapon
- 	public event Action<Weapon> WeaponRemoved;
 
 	public abstract Type WeaponType {get; protected set;} 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
@@ -54,23 +55,24 @@ public abstract partial class Weapon : Node2D {
 		Attack();
 	}
 
-	public void ChangeWeapon(Weapon weapon) {	
+	public void ChangeWeapon(Weapon newWeapon) {	
 		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
 
 		inputController.UpdateWeaponDirection -= UpdateWeapon;
 		inputController.UseWeapon -= OnWeaponUsing;
 		inputController.OnWeaponLetGo -= OnWeaponLetGo;
-
-		WeaponRemoved?.Invoke(this);
+		
 
 		// Remove all of the weapon's nodes held by the hand
 
-		foreach (Node child in Hand.GetChildren()) {
-			child.QueueFree();
-		}
+		foreach (Node child in Hand.GetChildren()) child.QueueFree();
+		
+		Weapon newWeaponInstance = newWeapon.PackedScene.Instantiate<Weapon>(); 
+
 		// Add the new weapon
-		Hand.AddChild(weapon.PackedScene.Instantiate());
-		WeaponAdded?.Invoke(weapon);
+		Hand.AddChild(newWeaponInstance);
+
+		WeaponSwitched?.Invoke(this, newWeaponInstance);
 
 		// just making sur ethis is also removed.
 		QueueFree();

@@ -1,6 +1,6 @@
 using System;
 using Godot;
-using System.Collections.Generic;
+
 
 public partial class ChestMenu : Control, IMenu {
     public event Action Disable;
@@ -26,8 +26,8 @@ public partial class ChestMenu : Control, IMenu {
         // Make it so that hovering over the items in the GUI will show the statistics
         var children = ItemPreviews.GetChildren();
         
-
         foreach (ColorRect child in ItemPreviews.GetChildren()) {
+            
             child.MouseEntered += () => previewedIndex = int.Parse(child.Name) - 1;
             child.MouseExited += () => previewedIndex = null;
         }
@@ -38,12 +38,20 @@ public partial class ChestMenu : Control, IMenu {
 
 
     bool hoveringWithinStatsOverview = false;
+
     int? selectedIndex = null;
     int? previewedIndex = null;
     // When ready, i want to attach the "mouse entered 
     public override void _Process(double delta) {
 
-        if (freezeStatOverview) return;
+        if (freezeStatOverview) {
+            itemStatsOverview.MouseFilter = MouseFilterEnum.Stop;
+            if (!hoveringWithinStatsOverview && previewedIndex is null) freezeStatOverview = false;
+            else return;
+        }
+        else{
+            itemStatsOverview.MouseFilter = MouseFilterEnum.Ignore;
+        }
         if (hoveringWithinStatsOverview) return;
 
         if (previewedIndex != null) {
@@ -57,6 +65,11 @@ public partial class ChestMenu : Control, IMenu {
 
     Player player;
     public void Enable(Player player) {
+        // reset values
+        hoveringWithinStatsOverview = false;
+        selectedIndex = null;
+        previewedIndex = null;
+
         this.player = player;
         Visible = true;
 
@@ -70,12 +83,9 @@ public partial class ChestMenu : Control, IMenu {
     }
     bool freezeStatOverview = false;
     private void FreezeStatOverview() {
-        
         if (previewedIndex != null) {
             selectedIndex = previewedIndex;
             freezeStatOverview = true;
-        }else {
-            freezeStatOverview = false;
         }
     }
 
@@ -86,11 +96,6 @@ public partial class ChestMenu : Control, IMenu {
         OnWeaponReplaced?.Invoke(player.GetWeapon(selectedIndex ?? -1));
 
         player.SetWeapon(newWeapon, selectedIndex ?? -1);
-        
-        // reset values
-        hoveringWithinStatsOverview = false;
-        selectedIndex = null;
-        previewedIndex = null;
         
         Disable?.Invoke();
     }
@@ -108,9 +113,7 @@ public partial class ChestMenu : Control, IMenu {
     }
 
     public void Switch() {
-
         Visible = false;
-
     }
 }
 
