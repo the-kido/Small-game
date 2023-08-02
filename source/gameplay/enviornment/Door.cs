@@ -21,8 +21,7 @@ public partial class Door : Area2D {
             // and the old door will check if there's a new door of the same name / number.
 
     public override void _Ready() {
-
-        condition.wakeup();
+        condition.LoadCondition();
         
         ErrorUtils.AvoidEmptyCollisionLayers(this);
         

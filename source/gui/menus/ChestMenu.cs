@@ -15,6 +15,9 @@ public partial class ChestMenu : Control, IMenu {
     private TextureRect newItemImage;
     [Export]
     private Button switchItemButton;
+    [Export]
+    private Button closeButton;
+
 
     public Action<Weapon> OnWeaponReplaced;
     
@@ -30,6 +33,7 @@ public partial class ChestMenu : Control, IMenu {
     private TextureRect PreviewImage(int index) => ItemPreviews.GetChild(index).GetChild<TextureRect>(0);
  
     public override void _Ready() {
+        closeButton.Pressed += () => Disable?.Invoke();
         switchItemButton.Pressed += () => SetItem(currentWeaponToSwitchTo);
 
         // Make it so that hovering over the items in the GUI will show the statistics

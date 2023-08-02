@@ -79,7 +79,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(2018, 447), Vector2(1684, 447)]
+"values": [Vector2(2019, 494), Vector2(1684, 447)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4dhoq"]
@@ -253,7 +253,12 @@ libraries = {
 }
 
 [node name="Interact" type="Button" parent="." node_paths=PackedStringArray("animationPlayer")]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
 offset_left = 2018.0
 offset_top = 447.0
 offset_right = 2087.0

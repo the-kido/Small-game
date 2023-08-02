@@ -14,9 +14,6 @@ public static class DungeonRunData {
         }
     }
 
-
-
-
     public static event Action FreezeWave;
     private static int _freezeOrbs = 0;
     public static int FreezeOrbs {

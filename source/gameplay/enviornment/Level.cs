@@ -25,9 +25,17 @@ public partial class Level : Node {
 
     public override void _Ready() {
         ChangeLevel();
+
+        isLevelCompleted = LoadLevelCompleted();
+        // okay this is really BAD but bear with me here
+        if (isLevelCompleted) {
+            LevelCompleted?.Invoke();
+            return;
+        }
+        SaveData();
+
         NextWave();
     }
-    
 
     private int waveAt = 0;
 
@@ -43,27 +51,38 @@ public partial class Level : Node {
 
         if (waveAt > waves.Count) {
             LevelCompleted?.Invoke();
+            isLevelCompleted = true;
             return;
         }
 
         CurrentWave.StartWave();
         CurrentWave.WaveFinished += NextWave;
-
     }
 
     private void ChangeLevel() {
         CurrentLevel = this;
-
         waveAt = -1;
-
         Ready?.Invoke(this);
     }
 
-    public Action LevelCompleted; 
-
+    public Action LevelCompleted;
     public static Level CurrentLevel {get; private set;} = new();
 
-    //public Dictionary<string, Door> doors2 = new();
+    bool isLevelCompleted = false;
+
+    private bool LoadLevelCompleted() {
+        using FileAccess saveGame = FileAccess.Open("user://savegame.save", FileAccess.ModeFlags.Read);
+        string data = saveGame.GetLine();
+
+        if (data == "true") return true;
+        else return false;
+    }
+    private void SaveData() {
+        using FileAccess saveGame = FileAccess.Open("user://savegame.save", FileAccess.ModeFlags.Write);
+        var jsonString = Json.Stringify(isLevelCompleted);
+        saveGame.StoreLine(jsonString);
+    }
+
 }
 
 public partial class Level : Node {

@@ -126,10 +126,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 1011.2
-offset_top = -394.0
-offset_right = 2484.2
-offset_bottom = 394.0
+offset_left = 2000.0
+offset_top = 173.0
+offset_right = 3473.0
+offset_bottom = 961.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -189,7 +189,8 @@ libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
 
-[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemStatsOverview", "ItemPreviews", "newItemImage", "switchItemButton")]
+[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemStatsOverview", "ItemPreviews", "newItemImage", "switchItemButton", "closeButton")]
+visible = false
 layout_mode = 3
 anchor_left = 0.11
 anchor_top = 0.11
@@ -206,6 +207,36 @@ itemStatsOverview = NodePath("Item Stats Overview")
 ItemPreviews = NodePath("Item Preview")
 newItemImage = NodePath("New Item Description/Image")
 switchItemButton = NodePath("Item Stats Overview/ColorRect/Switch to item button")
+closeButton = NodePath("Background/X")
+
+[node name="Background" type="ColorRect" parent="ChestMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.150301
+anchor_top = 0.00950119
+anchor_right = 0.849699
+anchor_bottom = 0.990499
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.247059, 0.247059, 0.247059, 0.427451)
+metadata/_edit_use_anchors_ = true
+
+[node name="X" type="Button" parent="ChestMenu/Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.960442
+anchor_top = -0.0496536
+anchor_right = 1.03976
+anchor_bottom = 0.0494642
+offset_right = -0.219002
+offset_bottom = 0.163998
+theme = ExtResource("2_lc21n")
+text = "X"
+metadata/_edit_use_anchors_ = true
 
 [node name="New Item Description" type="ColorRect" parent="ChestMenu"]
 layout_mode = 1
@@ -215,13 +246,12 @@ anchor_top = 0.39
 anchor_right = 0.764
 anchor_bottom = 1.038
 offset_left = 0.199127
-offset_top = -0.3797
+offset_top = -40.3797
 offset_right = 5.29224
-offset_bottom = 0.00231934
+offset_bottom = -39.9977
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12549, 0.12549, 0.12549, 1)
-metadata/_edit_use_anchors_ = true
 
 [node name="Image" type="TextureRect" parent="ChestMenu/New Item Description"]
 layout_mode = 0
@@ -252,9 +282,10 @@ anchor_left = 0.233133
 anchor_top = 0.064133
 anchor_right = 0.769539
 anchor_bottom = 0.280285
+offset_top = -40.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
 [node name="1" type="ColorRect" parent="ChestMenu/Item Preview"]
 layout_mode = 1
@@ -313,6 +344,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Item Stats Overview" type="Control" parent="ChestMenu"]
+visible = false
 anchors_preset = 0
 offset_right = 268.0
 offset_bottom = 328.0
