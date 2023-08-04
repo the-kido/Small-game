@@ -44,7 +44,7 @@ public partial class InputController : Node
 	#endregion
 
 	#region HELD WEAPON
-
+	public Action<Weapon[]> HeldWeaponChanged;
 	public void UpdateHeldWeapon(int slot) {
 		hand.GetChild<Weapon>(0).ChangeWeapon(attachedPlayer.GetWeapon(slot));
 	}

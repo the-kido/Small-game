@@ -2,9 +2,13 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
+
 public partial class Level : Node {
 
-	public new static event Action<Level> Ready;
+    public static Action LevelStarted {get; set;}
+    public static Level CurrentLevel {get; private set;} = new();
+    public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
+
 
     [ExportCategory("Doors")]
     [Export]
@@ -24,17 +28,15 @@ public partial class Level : Node {
     }
 
     public override void _Ready() {
+        LevelCompleted += GameData.Save;
+        
         ChangeLevel();
 
-        isLevelCompleted = LoadLevelCompleted();
         // okay this is really BAD but bear with me here
-        if (isLevelCompleted) {
+        if (!LoadLevelCompleted())
+            NextWave();
+        else
             LevelCompleted?.Invoke();
-            return;
-        }
-        SaveData();
-
-        NextWave();
     }
 
     private int waveAt = 0;
@@ -42,16 +44,16 @@ public partial class Level : Node {
     public static bool Temp() {
         return CurrentLevel.waves.Count < CurrentLevel.waveAt;
     }
-    public static EnemyWave CurrentWave => CurrentLevel.GetNode<EnemyWave>(CurrentLevel.waves[CurrentLevel.waveAt]);
+    public static EnemyWave CurrentWave => CurrentLevel.GetNode<EnemyWave>(CurrentLevel.waves[CurrentLevel.waveAt - 1]);
 
     private async void NextWave() {
         waveAt += 1;
 
         await Task.Delay(500);
-
+        GD.Print(waveAt, "Wave At");
         if (waveAt > waves.Count) {
+            LevelCompletions[Name] = true;
             LevelCompleted?.Invoke();
-            isLevelCompleted = true;
             return;
         }
 
@@ -61,28 +63,24 @@ public partial class Level : Node {
 
     private void ChangeLevel() {
         CurrentLevel = this;
-        waveAt = -1;
-        Ready?.Invoke(this);
+        waveAt = 0;
+        LevelStarted?.Invoke();
     }
 
     public Action LevelCompleted;
-    public static Level CurrentLevel {get; private set;} = new();
 
-    bool isLevelCompleted = false;
-
+    
     private bool LoadLevelCompleted() {
-        using FileAccess saveGame = FileAccess.Open("user://savegame.save", FileAccess.ModeFlags.Read);
-        string data = saveGame.GetLine();
+        GD.Print(GameData.GetData()["LevelCompletions"], "<Lvlcompletions");
+        LevelCompletions = (Godot.Collections.Dictionary<string,bool>) GameData.GetData()["LevelCompletions"];
 
-        if (data == "true") return true;
-        else return false;
+        GD.Print(LevelCompletions.Keys, LevelCompletions.Values, Name);   
+        
+        if (LevelCompletions.ContainsKey(Name))
+            return LevelCompletions[Name];
+        else
+            return false;
     }
-    private void SaveData() {
-        using FileAccess saveGame = FileAccess.Open("user://savegame.save", FileAccess.ModeFlags.Write);
-        var jsonString = Json.Stringify(isLevelCompleted);
-        saveGame.StoreLine(jsonString);
-    }
-
 }
 
 public partial class Level : Node {
@@ -123,7 +121,7 @@ public class FreezeOrbMechanic {
         
         Node.ProcessModeEnum processMode = freeze ? Node.ProcessModeEnum.Disabled : Node.ProcessModeEnum.Always;
         // Replace water effect with ice effect obv
-        Level.CurrentWave.EnemyChildren.ForEach(child => child.DamageableComponent.Damage(new(child) {statusEffect = new WetStatus()}  ));
+        Level.CurrentWave?.EnemyChildren.ForEach(child => child.DamageableComponent.Damage(new(child) {statusEffect = new WetStatus()}  ));
         // TODO: Replace this with making the shooting speed multiplier 0 and making its speed multiplier 0 too.
         // that way things like efffects will still apply to it.
         Level.CurrentWave.ProcessMode = processMode;

@@ -21,20 +21,20 @@ public partial class Door : Area2D {
             // and the old door will check if there's a new door of the same name / number.
 
     public override void _Ready() {
-        condition.LoadCondition();
-        
+        condition.Init();
+
         ErrorUtils.AvoidEmptyCollisionLayers(this);
         
         BodyEntered += OnEnterArea;
 
         // Set up how the door will be opened
         if (condition is null) {
-            Level.Ready += (level) => level.LevelCompleted += OpenDoor;
+            Level.LevelStarted += () => Level.CurrentLevel.LevelCompleted += OpenDoor;
         } else {
-            if (condition.achieved) {
+            if (condition.IsAchieved) {
                 OpenDoor();
             } else {
-                condition.OnConditionAchieved += OpenDoor;
+                condition.Achieved += OpenDoor;
             } 
         }
     }
@@ -53,13 +53,13 @@ public partial class Door : Area2D {
         temp = Name.ToString();
 
         SceneSwitcher.SceneSwitched -= OnSceneSwitched;
-        Level.Ready += OnLevelReady;
+        Level.LevelStarted += OnLevelReady;
     }
 
-    void OnLevelReady(Level newLevel) {    
-        Level.Ready -= OnLevelReady;
+    void OnLevelReady() {    
+        Level.LevelStarted -= OnLevelReady;
 
-        Door newDoor = newLevel.GetLinkedDoor(temp);
+        Door newDoor = Level.CurrentLevel.GetLinkedDoor(temp);
         Vector2 newPos = newDoor.GlobalPosition;
         newPos += newDoor.doorOpeningDirection * 100;
         

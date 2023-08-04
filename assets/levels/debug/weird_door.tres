@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_wooyw")
+Name = "Weird Door"
 metadata/_editor_prop_ptr_temp = NodePath("")
 metadata/_editor_prop_ptr_oth = NodePath("")

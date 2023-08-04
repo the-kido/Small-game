@@ -42,7 +42,7 @@ public partial class AgroEnemyMiniBoss : Enemy
         DialogueLine[] dialogue = DialogueLines.Lines["Kill Agro Boss"];
         // TODO: OK this is a problem.
         DamageableComponent.OnDeath += (_) => Player.Players[0].GUI.DialoguePlayer.Start(dialogue, new());
-        DamageableComponent.OnDeath += (_) => ResourceLoader.Load<Condition>("res://assets/levels/debug/weird_door.tres").OnConditionAchieved?.Invoke();
+        DamageableComponent.OnDeath += (_) => ResourceLoader.Load<Condition>("res://assets/levels/debug/weird_door.tres").Achieved?.Invoke();
         
     }
 }

@@ -259,10 +259,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 2018.0
-offset_top = 447.0
-offset_right = 2087.0
-offset_bottom = 478.0
+offset_left = 98.0
+offset_top = -93.0
+offset_right = 167.0
+offset_bottom = -62.0
 scale = Vector2(2.95382, 2.89017)
 text = "interact
 "
@@ -283,6 +283,52 @@ offset_bottom = 74.0
 text = "Coins: 1
 "
 script = ExtResource("7_yaa1g")
+
+[node name="Held Weapons" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -160.0
+offset_right = 500.0
+offset_bottom = -8.0
+
+[node name="ColorRect" type="ColorRect" parent="Held Weapons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.05
+anchor_right = 0.295
+anchor_bottom = 1.0
+offset_top = 0.0499992
+offset_right = 0.0149918
+offset_bottom = 0.534988
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="Held Weapons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.38352
+anchor_top = 0.067
+anchor_right = 0.67852
+anchor_bottom = 1.0
+offset_left = -0.0970306
+offset_top = -1.973
+offset_right = -0.0820313
+offset_bottom = 0.534988
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect3" type="ColorRect" parent="Held Weapons"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.774041
+anchor_top = 0.067
+anchor_right = 1.07204
+anchor_bottom = 1.0
+offset_left = -0.0830383
+offset_top = -1.973
+offset_right = -0.0290527
+offset_bottom = 0.534988
+metadata/_edit_use_anchors_ = true
 
 [node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
 visible = false
