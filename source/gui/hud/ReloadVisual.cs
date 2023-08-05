@@ -11,10 +11,6 @@ public partial class ReloadVisual : ProgressBar {
 
     private void UnsubToEvents(Weapon oldWeapon) {
         oldWeapon.WeaponSwitched -= OnWeaponSwitched;
-
-        InputController inputController = hand.GetNode<InputController>("../Input Controller");
-        inputController.UseWeapon -= UpdateBar;
-        inputController.OnWeaponLetGo -= ResetBar;
     }
 
     public void OnWeaponSwitched(Weapon oldWeapon, Weapon newWeapon) {
@@ -31,10 +27,6 @@ public partial class ReloadVisual : ProgressBar {
         }
 
         Visible = true;
-
-        InputController inputController = hand.GetNode<InputController>("../Input Controller");
-        inputController.UseWeapon += UpdateBar;
-        inputController.OnWeaponLetGo += ResetBar;
     }
 
     private void UpdateBar(double delta) {
@@ -51,6 +43,13 @@ public partial class ReloadVisual : ProgressBar {
         Value = value;
     }
 
-    public override void _Ready() => SetUp(weapon);
+    public void Init() {
+        InputController inputController = hand.GetNode<InputController>("../Input Controller");
+        inputController.UseWeapon += UpdateBar;
+        inputController.OnWeaponLetGo += ResetBar;
+
+        SetUp(weapon);
+    }
+    public override void _Ready() => Init();
 
 }

@@ -5,7 +5,6 @@ using System.Diagnostics.Contracts;
 
 public partial class Chest : Interactable {
 
-
     [Export]
     string chestLootTable;
 
@@ -15,6 +14,7 @@ public partial class Chest : Interactable {
         base._Ready();
         float chance = 0;
         float random = new Random().NextSingle();
+
         foreach (ChestItemDrop item in ChestLootTable.ALL_TABLES[chestLootTable]) {
 
             chance += item.Chance;
@@ -22,7 +22,6 @@ public partial class Chest : Interactable {
             if (chance >= random)
                 containedWeapon = item.ChestItem.Instantiate<Weapon>();
         }
-
     }
 
     private void A(Weapon oldWeapon, Player player) {

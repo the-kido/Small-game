@@ -71,10 +71,7 @@ public partial class Level : Node {
 
     
     private bool LoadLevelCompleted() {
-        GD.Print(GameData.GetData()["LevelCompletions"], "<Lvlcompletions");
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) GameData.GetData()["LevelCompletions"];
-
-        GD.Print(LevelCompletions.Keys, LevelCompletions.Values, Name);   
         
         if (LevelCompletions.ContainsKey(Name))
             return LevelCompletions[Name];

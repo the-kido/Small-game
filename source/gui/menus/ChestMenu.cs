@@ -96,9 +96,9 @@ public partial class ChestMenu : Control, IMenu {
 
     private void SetItem(Weapon newWeapon) {
 
-        OnWeaponReplaced?.Invoke(viewer.GetWeapon(selectedIndex ?? -1));
+        OnWeaponReplaced?.Invoke(viewer.WeaponManager.GetWeapon(selectedIndex ?? -1));
 
-        viewer.SetWeapon(newWeapon, selectedIndex ?? -1);
+        viewer.WeaponManager.SetWeapon(newWeapon, selectedIndex ?? -1);
         
         Disable?.Invoke();
     }
@@ -109,8 +109,8 @@ public partial class ChestMenu : Control, IMenu {
         newItemImage.Texture = newWeapon.Sprite.Texture;
         
         for (int i = 0; i < 3; i++) {
-            if (viewer.GetWeapon(i) is null) continue;
-            PreviewImage(i).Texture = viewer.GetWeapon(i).Sprite.Texture;
+            if (viewer.WeaponManager.GetWeapon(i) is null) continue;
+            PreviewImage(i).Texture = viewer.WeaponManager.GetWeapon(i).Sprite.Texture;
         } 
     }
 

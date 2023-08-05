@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=21 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="6_lqvlh"]
 [ext_resource type="Script" path="res://source/gui/hud/InteractButton.cs" id="7_mrwpn"]
 [ext_resource type="Script" path="res://source/gui/hud/CoinsLabel.cs" id="7_yaa1g"]
+[ext_resource type="Script" path="res://source/gui/hud/HeldItems.cs" id="9_3t3pf"]
 [ext_resource type="Script" path="res://source/gui/hud/HUDCover.cs" id="9_a1bgu"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
@@ -109,7 +110,7 @@ _data = {
 "enable": SubResource("Animation_efsd5")
 }
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton", "HUDCover")]
+[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton", "heldItems", "HUDCover")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,6 +125,7 @@ dialogueBar = NodePath("Dialogue Bar")
 healthLable = NodePath("Health label background/Label")
 coinsLabel = NodePath("Coins")
 interactButton = NodePath("Interact")
+heldItems = NodePath("Held Weapons")
 HUDCover = NodePath("HUD Cover")
 
 [node name="Health label background" type="ColorRect" parent="."]
@@ -259,10 +261,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 98.0
-offset_top = -93.0
-offset_right = 167.0
-offset_bottom = -62.0
+offset_left = 2018.0
+offset_top = 447.0
+offset_right = 2087.0
+offset_bottom = 478.0
 scale = Vector2(2.95382, 2.89017)
 text = "interact
 "
@@ -286,25 +288,37 @@ script = ExtResource("7_yaa1g")
 
 [node name="Held Weapons" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
-offset_top = -160.0
-offset_right = 500.0
+offset_top = -119.0
+offset_right = 367.0
 offset_bottom = -8.0
+grow_vertical = 0
+script = ExtResource("9_3t3pf")
 
-[node name="ColorRect" type="ColorRect" parent="Held Weapons"]
+[node name="1" type="Button" parent="Held Weapons"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.05
+anchor_top = 0.059009
 anchor_right = 0.295
-anchor_bottom = 1.0
-offset_top = 0.0499992
+anchor_bottom = 1.00901
+offset_top = 0.0499754
 offset_right = 0.0149918
-offset_bottom = 0.534988
+offset_bottom = 0.534966
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect2" type="ColorRect" parent="Held Weapons"]
+[node name="TextureRect" type="TextureRect" parent="Held Weapons/1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.00111
+anchor_bottom = 1.00102
+offset_right = -0.0377579
+offset_bottom = -0.0434265
+metadata/_edit_use_anchors_ = true
+
+[node name="2" type="Button" parent="Held Weapons"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.38352
@@ -312,12 +326,22 @@ anchor_top = 0.067
 anchor_right = 0.67852
 anchor_bottom = 1.0
 offset_left = -0.0970306
-offset_top = -1.973
+offset_top = -1.97301
 offset_right = -0.0820313
-offset_bottom = 0.534988
+offset_bottom = 0.534981
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect3" type="ColorRect" parent="Held Weapons"]
+[node name="TextureRect2" type="TextureRect" parent="Held Weapons/2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.00111
+anchor_bottom = 1.00102
+offset_left = 0.413345
+offset_top = -0.463989
+offset_right = 0.37558
+offset_bottom = -0.507416
+
+[node name="3" type="Button" parent="Held Weapons"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.774041
@@ -329,6 +353,16 @@ offset_top = -1.973
 offset_right = -0.0290527
 offset_bottom = 0.534988
 metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect3" type="TextureRect" parent="Held Weapons/3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.00111
+anchor_bottom = 1.00102
+offset_left = 0.202332
+offset_top = 0.536011
+offset_right = 0.164558
+offset_bottom = 0.492584
 
 [node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
 visible = false

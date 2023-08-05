@@ -14,6 +14,8 @@ public partial class HUD : Control {
     public CoinsLabel coinsLabel;   
     [Export]
     public InteractButton interactButton;
+    [Export]
+    public HeldItems heldItems;
 
     [Export]
     public HUDCover HUDCover;

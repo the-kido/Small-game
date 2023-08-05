@@ -55,7 +55,8 @@ public abstract partial class Weapon : Node2D {
 		Attack();
 	}
 
-	public void ChangeWeapon(Weapon newWeapon) {	
+	public Weapon ChangeWeapon(Weapon newWeapon) {	
+		 
 		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
 
 		inputController.UpdateWeaponDirection -= UpdateWeapon;
@@ -69,6 +70,8 @@ public abstract partial class Weapon : Node2D {
 		
 		Weapon newWeaponInstance = newWeapon.PackedScene.Instantiate<Weapon>(); 
 
+		GD.Print(newWeaponInstance, "Instance");
+
 		// Add the new weapon
 		Hand.AddChild(newWeaponInstance);
 
@@ -76,6 +79,8 @@ public abstract partial class Weapon : Node2D {
 
 		// just making sur ethis is also removed.
 		QueueFree();
+
+		return newWeaponInstance;
 	}
 
 	//This type thing is relavent to the input controller.
