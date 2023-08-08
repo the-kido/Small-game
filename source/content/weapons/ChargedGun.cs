@@ -13,13 +13,20 @@ public sealed partial class ChargedGun : Gun {
     public override PackedScene PackedScene {get => PackedSceneResource;}
 
 
-	protected override DamageInstance damage => new(Player) {
+	protected override DamageInstance Damage => new(Player) {
         statusEffect = new FireEffect(), 
         damage = (int) (MAX_DAMAGE * strength)
     };
 
+    public override string Description => 
+    $@"{"Charged Gun".Colored(Colors.LEGENDARY_RARITY)}
+As you hold, this weapon charges. Releasing the weapon early deals less damage, but at full charge it is painful.
 
-    protected override BulletInstance BulletInstance() => new(BulletFrom.Player, damage, BulletSpeed.VeryFast);
+Damage: {MAX_DAMAGE}
+Reload Speed: {ReloadSpeed}
+    ";
+
+    protected override BulletInstance BulletInstance() => new(BulletFrom.Player, Damage, BulletSpeed.VeryFast);
 
 	public override void Attack() {
         SpawnBulletInstance();

@@ -21,6 +21,8 @@ public abstract partial class Weapon : Node2D {
 	public abstract void UpdateWeapon(Vector2 attackDirection);
 	public virtual void OnWeaponLetGo() {}
 	public abstract void Attack();
+
+	public abstract string Description {get;}
 	public virtual void Init() {}
 
 	[Export]
@@ -28,7 +30,7 @@ public abstract partial class Weapon : Node2D {
 	protected double reloadTimer = 0;
 
 	protected WeaponManager Hand => GetParent<WeaponManager>();
-	protected Player Player => Hand.GetParent<Player>();
+	protected Player Player => Hand?.GetParent<Player>();
 
     public override void _Ready() {
 		Init();

@@ -8,7 +8,8 @@ public abstract partial class Gun : Weapon {
     [Export]
     protected Node2D nuzzle;
 
-    protected abstract DamageInstance damage {get;}
+
+    protected abstract DamageInstance Damage {get;}
     protected abstract BulletInstance BulletInstance();
     
     protected void SpawnBulletInstance() => 

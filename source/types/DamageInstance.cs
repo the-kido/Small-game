@@ -10,6 +10,6 @@ public record DamageInstance {
 
 	public float damageDealtMultiplier = 1;
 	public DamageInstance(Actor actor) {
-		this.damageDealtMultiplier = actor.DamageDealingMultplier;
+		damageDealtMultiplier = actor.DamageDealingMultplier;
 	}
 }

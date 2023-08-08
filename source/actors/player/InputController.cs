@@ -3,14 +3,29 @@ using System;
 using System.Collections.Generic;
 using KidoUtils;
 
-using System.Threading.Tasks;
-using System.Reflection.Metadata;
+
+public class HeldItemInputController {
+	readonly WeaponManager hand;
+	public HeldItemInputController(WeaponManager hand) {
+		this.hand = hand;
+	}
+
+	public void Update() {
+		if (Input.IsActionJustPressed("select_slot_1"))
+			hand.SwitchHeldWeapon(0);
+
+		if (Input.IsActionJustPressed("select_slot_2"))
+			hand.SwitchHeldWeapon(1);
+		
+		if (Input.IsActionJustPressed("select_slot_3"))
+			hand.SwitchHeldWeapon(2);
+	}
+}
 
 public class WeaponController {
 	
 	readonly WeaponManager hand;
 
-	#region ATTACK INPUTS
 	public event Action<double> UseWeapon;
 	public event Action<Vector2> UpdateWeaponDirection;
 	public event Action OnWeaponLetGo;
@@ -46,6 +61,7 @@ public class WeaponController {
 
 		return inputMap;
 	}
+
     public IPlayerAttackable FindInteractableWithinCursor() {
 		List<Node2D> list = Utils.GetPreloadedScene<GlobalCursor>(hand, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
 
@@ -103,7 +119,7 @@ public class WeaponController {
 		return ControlMethod.ManualAim;
 	}
 	
-    public void UpdateWeapon(double delta) {
+    public void Update(double delta) {
 
 		if (hand.HeldWeapon is null) return;
 		
@@ -122,52 +138,50 @@ public class WeaponController {
 		
 		useMethod = GetUseMethod(targettedAttackable);
 
-		if (useMethod is ControlMethod.SelectedAutoaim) {
-			//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
-			if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
-				UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
-				UseWeapon?.Invoke(delta);
-				return;
-			}
-			
-			//If the interactable is still in tact and is still visible, autoshoot it.
-			if (IsInteractableVisible(targettedAttackable)) {
-				UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
-				UseWeapon?.Invoke(delta);
-			}
-		}
-		
-		if (useMethod is ControlMethod.Autoaim) {
-            Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
-            
-			if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
-				UseWeapon?.Invoke(delta); 
-			}
-
-            if (see is not null) {
-				UpdateWeaponDirection?.Invoke(see.GlobalPosition);
-				//This is literally the only solution i can  think of..
-				if (hand.HeldWeapon.WeaponType is not Weapon.Type.HoldToCharge)
+		switch (useMethod) {
+			case ControlMethod.SelectedAutoaim:
+				//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
+				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
+					UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 					UseWeapon?.Invoke(delta);
-            }
-        }
-		
-		if (useMethod is ControlMethod.ManualAim) {
+					break;
+				}
+				
+				//If the interactable is still in tact and is still visible, autoshoot it.
+				if (IsInteractableVisible(targettedAttackable)) {
+					UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
+					UseWeapon?.Invoke(delta);
+				}
+				break;
 
-			if (isHoveringOverGui) return;
-			//If the player is aiming themselves, shoot where they're pointing.
+			case ControlMethod.Autoaim:
+				Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
+				
+				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
+					UseWeapon?.Invoke(delta); 
+				}
 
-			if (inputMap.Contains(InputType.LeftClickHold))
-				UseWeapon?.Invoke(delta);
-			
-			//Default the weapon to point to the cursor.
-			UpdateWeaponDirection?.Invoke(hand.GetGlobalMousePosition());
+				if (see is not null) {
+					UpdateWeaponDirection?.Invoke(see.GlobalPosition);
+					//This is literally the only solution i can  think of..
+					if (hand.HeldWeapon.WeaponType is not Weapon.Type.HoldToCharge)
+						UseWeapon?.Invoke(delta);
+				}
+				break;
+
+			case ControlMethod.ManualAim:
+				if (isHoveringOverGui) break;
+				//If the player is aiming themselves, shoot where they're pointing.
+
+				if (inputMap.Contains(InputType.LeftClickHold))
+					UseWeapon?.Invoke(delta);
+				
+				//Default the weapon to point to the cursor.
+				UpdateWeaponDirection?.Invoke(hand.GetGlobalMousePosition());
+				break;
 		}
 	}
-
-	#endregion 
 }
-
 
 public class DialogueController {
 	readonly InputController inputController;
@@ -196,7 +210,7 @@ public class DialogueController {
 		GUI.DialoguePlayer.DialogueEnded += () => inputController.FilterNonUiInput = false; 
 	}
 	
-	public void ContinueDialogue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.OnClicked?.Invoke();}	
+	public void Continue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.OnClicked?.Invoke();}	
 }
 
 public class InteractablesButtonController {
@@ -227,7 +241,7 @@ public partial class InputController : Node {
 		}
 	}
 
-	public event Action<bool> OnFilterModeChanged;
+    public event Action<bool> OnFilterModeChanged;
 	
 	private GUI GUI => attachedPlayer.GUI;
 	
@@ -245,17 +259,22 @@ public partial class InputController : Node {
 	[Export]
 	public MovementController MovementController {get; private set;}
 	public DialogueController DialogueController {get; private set;}
+	private HeldItemInputController HeldItemInputController;
+
 	// TODO: What a bad name
 	public InteractablesButtonController InteractablesButtonController {get; private set;}
 
 	public void Init(Player player) {
 		attachedPlayer = player;
 		
+		// Init everything
 		WeaponController = new(hand, player);
 		DialogueController = new(this, GUI);
 		InteractablesButtonController = new(GUI);
 		MovementController.Init(player, this);
+		HeldItemInputController = new(hand);
 
+		// Also this
 		attachedPlayer.DamageableComponent.OnDeath += (_) => FilterNonUiInput = true;
 	}
 	public override void _Process(double delta) {
@@ -268,13 +287,14 @@ public partial class InputController : Node {
 	}
 
 	private void UpdateUIInput(double _) {
-		DialogueController.ContinueDialogue();
+		DialogueController.Continue();
 		InvokeLeftClickedWhenClickedSpecificallyForGUIPurposesOnly();
+		HeldItemInputController.Update();
 	}
 
 	private void UpdateNonUIInput(double delta) {
-		MovementController.ControlPlayerMovement();
-		WeaponController.UpdateWeapon(delta);
+		MovementController.UpdateMovement();
+		WeaponController.Update(delta);
 	}
 
 }

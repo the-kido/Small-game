@@ -8,11 +8,17 @@ public partial class ChestMenu : Control, IMenu {
     [Export]
     private AnimationPlayer animationPlayer;
     [Export]
-    private Control itemStatsOverview;
+    private Control itemOverview;
+    [Export] 
+    private RichTextLabel itemDecription;
+    
     [Export]
-    private Control ItemPreviews;
+    private RichTextLabel newItemDescription;
     [Export]
     private TextureRect newItemImage;
+    
+    [Export]
+    private Control itemPreviews;
     [Export]
     private Button switchItemButton;
     [Export]
@@ -29,43 +35,48 @@ public partial class ChestMenu : Control, IMenu {
     private Player viewer;
     private Weapon currentWeaponToSwitchTo = null;
     
-    private ColorRect PreviewPanel(int index) => ItemPreviews.GetChild<ColorRect>(index);
-    private TextureRect PreviewImage(int index) => ItemPreviews.GetChild(index).GetChild<TextureRect>(0);
+    private ColorRect PreviewPanel(int index) => itemPreviews.GetChild<ColorRect>(index);
+    private TextureRect PreviewImage(int index) => itemPreviews.GetChild(index).GetChild<TextureRect>(0);
  
     public override void _Ready() {
         closeButton.Pressed += () => Disable?.Invoke();
         switchItemButton.Pressed += () => SetItem(currentWeaponToSwitchTo);
 
         // Make it so that hovering over the items in the GUI will show the statistics
-        var children = ItemPreviews.GetChildren();
+        var children = itemPreviews.GetChildren();
         
-        foreach (ColorRect child in ItemPreviews.GetChildren().Cast<ColorRect>()) {
+        foreach (ColorRect child in itemPreviews.GetChildren().Cast<ColorRect>()) {
             child.MouseEntered += () => previewedIndex = int.Parse(child.Name) - 1;
             child.MouseExited += () => previewedIndex = null;
         }
         
-        itemStatsOverview.MouseEntered += () => hoveringWithinStatsOverview = true;
-        itemStatsOverview.MouseExited += () => hoveringWithinStatsOverview = false;
+        itemOverview.MouseEntered += () => hoveringWithinStatsOverview = true;
+        itemOverview.MouseExited += () => hoveringWithinStatsOverview = false;
     }
 
 
     public override void _Process(double delta) {
 
         if (freezeStatOverview) {
-            itemStatsOverview.MouseFilter = MouseFilterEnum.Stop;
+            itemOverview.MouseFilter = MouseFilterEnum.Stop;
             if (!hoveringWithinStatsOverview && previewedIndex is null) freezeStatOverview = false;
             else return;
         }
         else{
-            itemStatsOverview.MouseFilter = MouseFilterEnum.Ignore;
+            itemOverview.MouseFilter = MouseFilterEnum.Ignore;
         }
         if (hoveringWithinStatsOverview) return;
 
         if (previewedIndex != null) {
-            itemStatsOverview.Visible = true;
-            itemStatsOverview.GlobalPosition = GetGlobalMousePosition();
+            
+            if (viewer.WeaponManager.GetWeapon(previewedIndex ?? 0) is not null) {
+                itemOverview.Visible = true;
+                itemDecription.Text = viewer.WeaponManager.GetWeapon(previewedIndex ?? 0).Description;
+            }
+            
+            itemOverview.GlobalPosition = GetGlobalMousePosition();
         } else {
-            itemStatsOverview.Visible = false;
+            itemOverview.Visible = false;
         }
     }
 
@@ -107,6 +118,7 @@ public partial class ChestMenu : Control, IMenu {
         currentWeaponToSwitchTo = newWeapon;
 
         newItemImage.Texture = newWeapon.Sprite.Texture;
+        newItemDescription.Text = newWeapon.Description;
         
         for (int i = 0; i < 3; i++) {
             if (viewer.WeaponManager.GetWeapon(i) is null) continue;

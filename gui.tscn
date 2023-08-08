@@ -126,10 +126,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -189,7 +189,7 @@ libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
 
-[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemStatsOverview", "ItemPreviews", "newItemImage", "switchItemButton", "closeButton")]
+[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemOverview", "itemDecription", "newItemDescription", "newItemImage", "itemPreviews", "switchItemButton", "closeButton")]
 visible = false
 layout_mode = 3
 anchor_left = 0.11
@@ -203,9 +203,11 @@ offset_bottom = -0.200073
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_iybjn")
-itemStatsOverview = NodePath("Item Stats Overview")
-ItemPreviews = NodePath("Item Preview")
+itemOverview = NodePath("Item Stats Overview")
+itemDecription = NodePath("Item Stats Overview/ColorRect/RichTextLabel")
+newItemDescription = NodePath("New Item Description/Text Description")
 newItemImage = NodePath("New Item Description/Image")
+itemPreviews = NodePath("Item Preview")
 switchItemButton = NodePath("Item Stats Overview/ColorRect/Switch to item button")
 closeButton = NodePath("Background/X")
 
@@ -271,7 +273,9 @@ anchor_bottom = 0.989843
 offset_right = -155.2
 offset_bottom = -182.452
 scale = Vector2(1.5, 1.5)
+bbcode_enabled = true
 text = "Description
+
 For those who care ennough
 "
 metadata/_edit_use_anchors_ = true
@@ -367,6 +371,7 @@ anchor_right = 0.970149
 anchor_bottom = 0.158537
 offset_bottom = 212.0
 mouse_filter = 2
+bbcode_enabled = true
 text = "This weapon sucks
 Damage: 0
 Reload Speed: 100s

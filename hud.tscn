@@ -261,10 +261,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 2018.0
-offset_top = 447.0
-offset_right = 2087.0
-offset_bottom = 478.0
+offset_left = 98.0
+offset_top = -93.0
+offset_right = 167.0
+offset_bottom = -62.0
 scale = Vector2(2.95382, 2.89017)
 text = "interact
 "
@@ -318,6 +318,14 @@ offset_right = -0.0377579
 offset_bottom = -0.0434265
 metadata/_edit_use_anchors_ = true
 
+[node name="Label" type="Label" parent="Held Weapons/1"]
+layout_mode = 0
+offset_right = 10.0
+offset_bottom = 26.0
+text = "1
+"
+horizontal_alignment = 1
+
 [node name="2" type="Button" parent="Held Weapons"]
 layout_mode = 1
 anchors_preset = -1
@@ -341,6 +349,13 @@ offset_top = -0.463989
 offset_right = 0.37558
 offset_bottom = -0.507416
 
+[node name="Label" type="Label" parent="Held Weapons/2"]
+layout_mode = 0
+offset_right = 10.0
+offset_bottom = 26.0
+text = "2
+"
+
 [node name="3" type="Button" parent="Held Weapons"]
 layout_mode = 1
 anchors_preset = -1
@@ -363,6 +378,12 @@ offset_left = 0.202332
 offset_top = 0.536011
 offset_right = 0.164558
 offset_bottom = 0.492584
+
+[node name="Label" type="Label" parent="Held Weapons/3"]
+layout_mode = 0
+offset_right = 10.0
+offset_bottom = 26.0
+text = "3"
 
 [node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
 visible = false

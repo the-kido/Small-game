@@ -23,8 +23,6 @@ public partial class HeldItems : Control {
     }
 
     void SetWeapon(int index) {
-        if (player.WeaponManager.GetWeapon(index) is null) return;
-
         player.WeaponManager.SwitchHeldWeapon(index);
     }
         

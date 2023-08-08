@@ -40,7 +40,7 @@ public partial class MovementController : Node{
 	}
 
 
-	public void ControlPlayerMovement() {
+	public void UpdateMovement() {
 		Vector2 normalizedInput = GetMovementInput();
 
 		player.Velocity = normalizedInput * MOVE_SPEED * 100;

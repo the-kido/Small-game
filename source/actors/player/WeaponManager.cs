@@ -29,40 +29,31 @@ public partial class WeaponManager : Node2D{
     
     // Hide the one being used RN and switch to another one
     public void SwitchHeldWeapon(int slot) {
-        Weapons[SelectedSlot].Enable(false);
+        if (Weapons[slot] is null) return;
+        
         Weapons[slot].Enable(true);
         WeaponSwitched?.Invoke(Weapons[slot]);
-        
-        SelectedSlot = slot;
-        
         HeldWeaponChanged?.Invoke(Weapons[slot], slot);
+        
+        if (slot == SelectedSlot) return;
+
+        Weapons[SelectedSlot].Enable(false);
+        SelectedSlot = slot;
 	}
+
+    private void RemoveWeapon(int slot) {
+        Weapons[slot]?.Enable(false);
+        Weapons[slot]?.QueueFree();
+        Weapons[slot] = null;
+    }
 
     public void AddWeapon(Weapon newWeapon, int slot) {
-
-        // TEchnically it's similar to the above function
-        // But it's hard to make it use the abv function...
-        // For reasons.
-
-        // TODO
-        // See if I can clean this mess up
-
-        Weapon oldWeapon = Weapons[slot];
-        oldWeapon?.Enable(false);
-
-        Weapon newWeaponInstance = newWeapon.PackedScene.Instantiate<Weapon>(); 
-
-        SelectedSlot = slot;
-
+        RemoveWeapon(slot);
 		// Add the new weapon
-        Weapons[slot] = newWeaponInstance;
-		AddChild(newWeaponInstance);
-        newWeaponInstance.Enable(true);
+        Weapons[slot] = newWeapon;
+		AddChild(newWeapon);
 
-        HeldWeaponChanged?.Invoke(newWeaponInstance, slot);
-      
-        oldWeapon.Enable(false);
-
-        oldWeapon?.QueueFree();
-	}
+        // Just for funzies also switch to the new weapon
+        SwitchHeldWeapon(slot);
+    }
 }
