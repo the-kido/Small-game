@@ -98,7 +98,7 @@ public partial class ChestMenu : Control, IMenu {
 
         OnWeaponReplaced?.Invoke(viewer.WeaponManager.GetWeapon(selectedIndex ?? -1));
 
-        viewer.WeaponManager.SetWeapon(newWeapon, selectedIndex ?? -1);
+        viewer.WeaponManager.AddWeapon(newWeapon, selectedIndex ?? -1);
         
         Disable?.Invoke();
     }

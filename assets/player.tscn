@@ -659,17 +659,16 @@ DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
 
-[node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("player", "inputController", "playerAnimationTree")]
+[node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("playerAnimationTree")]
 script = ExtResource("1_30x0s")
-player = NodePath("..")
-inputController = NodePath("../Input Controller")
 playerAnimationTree = NodePath("../AnimationTree")
 
-[node name="Input Controller" type="Node" parent="." node_paths=PackedStringArray("attachedPlayer", "hand")]
+[node name="Input Controller" type="Node" parent="." node_paths=PackedStringArray("attachedPlayer", "hand", "MovementController")]
 process_mode = 3
 script = ExtResource("2_7escu")
 attachedPlayer = NodePath("..")
 hand = NodePath("../Hand")
+MovementController = NodePath("../Movement Controller")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]
 scale = Vector2(7, 7)
@@ -683,14 +682,12 @@ libraries = {
 "player": SubResource("AnimationLibrary_ulu1t")
 }
 
-[node name="Hand" type="Node2D" parent="."]
+[node name="Hand" type="Node2D" parent="." node_paths=PackedStringArray("reloadVisual")]
 position = Vector2(0, 20)
 script = ExtResource("2_v0jdn")
+reloadVisual = NodePath("../On Player HUD/Reload Visual")
 
 [node name="Base Weapon" parent="Hand" instance=ExtResource("9_6fn6c")]
-
-[node name="Storage" type="Node2D" parent="Hand"]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)
@@ -737,7 +734,7 @@ stream = ExtResource("11_laf6i")
 layout_mode = 3
 anchors_preset = 0
 
-[node name="Reload Visual" type="ProgressBar" parent="On Player HUD" node_paths=PackedStringArray("hand")]
+[node name="Reload Visual" type="ProgressBar" parent="On Player HUD"]
 z_index = 3
 layout_mode = 0
 offset_left = -46.7391
@@ -746,7 +743,6 @@ offset_right = 51.2609
 offset_bottom = -44.7391
 max_value = 1.0
 script = ExtResource("12_f1bp5")
-hand = NodePath("../../Hand")
 
 [connection signal="body_entered" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaEntered"]
 [connection signal="body_exited" from="Nearby Interactable Area" to="." method="OnNearbyEnemyAreaExited"]

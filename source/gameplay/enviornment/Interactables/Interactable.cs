@@ -18,9 +18,9 @@ public abstract partial class Interactable : AnimatedSprite2D {
     }
     private void AttachEvent(Player player, bool attach) {
         if (attach)
-            player.InputController.Interacted += () => OnInteracted(player);
+            player.InputController.InteractablesButtonController.Interacted += () => OnInteracted(player);
         else
-            player.InputController.Interacted -= () => OnInteracted(player);
+            player.InputController.InteractablesButtonController.Interacted -= () => OnInteracted(player);
     }
 
     // NOTE: This will 100% break when there are several players

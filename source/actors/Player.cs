@@ -11,7 +11,7 @@ public sealed partial class Player : Actor
     public List<Actor> NearbyEnemies {get; private set;} = new();
 
     [Export]
-    public InputController InputController;
+    public InputController InputController {get; private set;}
     [Export]
     public WeaponManager WeaponManager;
 
@@ -48,6 +48,8 @@ public sealed partial class Player : Actor
         CollisionLayer = 0;
         CollisionMask = 0;
         DamageableComponent.QueueFree();
+
+        ProcessMode = ProcessModeEnum.Disabled;
 
         GUI.OpenReviveMenu();
     }

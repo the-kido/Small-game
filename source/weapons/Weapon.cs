@@ -16,10 +16,7 @@ public abstract partial class Weapon : Node2D {
 	// Only get from the static PackedSceneResource.
 	public abstract PackedScene PackedScene {get;}
 
-	// Passes the added weapon
-	public event Action<Weapon, Weapon> WeaponSwitched;
 	// Passes the removed weapon
-
 	public abstract Type WeaponType {get; protected set;} 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
 	public virtual void OnWeaponLetGo() {}
@@ -30,18 +27,37 @@ public abstract partial class Weapon : Node2D {
 	public float ReloadSpeed {get; private set;} = 1;
 	protected double reloadTimer = 0;
 
-	protected Node2D Hand => GetParent<Node2D>();
+	protected WeaponManager Hand => GetParent<WeaponManager>();
 	protected Player Player => Hand.GetParent<Player>();
 
     public override void _Ready() {
 		Init();
-		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
-		//if (inputController is null) return;
-
-		inputController.UpdateWeaponDirection += UpdateWeapon;
-		inputController.UseWeapon += OnWeaponUsing;
-		inputController.OnWeaponLetGo += OnWeaponLetGo;
 	}
+
+	public void Enable(bool enable) {
+        Visible = enable;
+        
+		if (enable)
+			AttachEvents();
+        else
+            DetachEvents();
+	}
+
+	private void AttachEvents() {
+		WeaponController weaponController = Hand.GetNode<InputController>("../Input Controller").WeaponController;
+
+		weaponController.UpdateWeaponDirection += UpdateWeapon;
+		weaponController.UseWeapon += OnWeaponUsing;
+		weaponController.OnWeaponLetGo += OnWeaponLetGo;
+	}
+	private void DetachEvents() {
+		WeaponController weaponController = Hand.GetNode<InputController>("../Input Controller").WeaponController;
+
+		weaponController.UpdateWeaponDirection -= UpdateWeapon;
+		weaponController.UseWeapon -= OnWeaponUsing;
+		weaponController.OnWeaponLetGo -= OnWeaponLetGo;
+	}
+
 
 	//While the player is "using" (holding click for) the weapon.
 	//Can be overridden if need be
@@ -53,34 +69,6 @@ public abstract partial class Weapon : Node2D {
 		
 		reloadTimer = 0;
 		Attack();
-	}
-
-	public Weapon ChangeWeapon(Weapon newWeapon) {	
-		 
-		InputController inputController = Hand.GetNode<InputController>("../Input Controller");
-
-		inputController.UpdateWeaponDirection -= UpdateWeapon;
-		inputController.UseWeapon -= OnWeaponUsing;
-		inputController.OnWeaponLetGo -= OnWeaponLetGo;
-		
-
-		// Remove all of the weapon's nodes held by the hand
-
-		foreach (Node child in Hand.GetChildren()) child.QueueFree();
-		
-		Weapon newWeaponInstance = newWeapon.PackedScene.Instantiate<Weapon>(); 
-
-		GD.Print(newWeaponInstance, "Instance");
-
-		// Add the new weapon
-		Hand.AddChild(newWeaponInstance);
-
-		WeaponSwitched?.Invoke(this, newWeaponInstance);
-
-		// just making sur ethis is also removed.
-		QueueFree();
-
-		return newWeaponInstance;
 	}
 
 	//This type thing is relavent to the input controller.

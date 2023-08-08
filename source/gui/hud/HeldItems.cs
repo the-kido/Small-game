@@ -9,31 +9,26 @@ public partial class HeldItems : Control {
 
         player.WeaponManager.HeldWeaponChanged += UpdateWeaponDisplays; 
 
-        UpdateWeaponDisplays(player.WeaponManager.Weapons[0], 0);
+        UpdateWeaponDisplays(player.WeaponManager.GetWeapon(0), 0);
         ButtonSetup();
     } 
 
     private void ButtonSetup() {
         foreach (Button button in GetChildren()) {
+            // Check if there is even a weapon in that slot
+            
             int buttonName = int.Parse(button.Name);
             button.Pressed += () => SetWeapon(buttonName - 1);
         }
     }
 
     void SetWeapon(int index) {
-        GD.Print(player.WeaponManager.Weapons[index]);
-        player.WeaponManager.SwitchWeapon(index);
+        if (player.WeaponManager.GetWeapon(index) is null) return;
+
+        player.WeaponManager.SwitchHeldWeapon(index);
     }
         
-    private void UpdateWeaponDisplays(Weapon weapon, int index) {
+    private void UpdateWeaponDisplays(Weapon weapon, int index) =>
         GetChild<Button>(index).GetChild<TextureRect>(0).Texture = weapon.Sprite.Texture;
-
-        // for (int i = 0; i < player.WeaponManager.Weapons.Length; i++) {
-        //     Weapon weapon = player.WeaponManager.Weapons[i];
-            
-        //     if (weapon is null) continue;
-
-        //     GetChild<Button>(i).GetChild<TextureRect>(0).Texture = weapon.Sprite.Texture;
-        // }
-    }
+    
 }
