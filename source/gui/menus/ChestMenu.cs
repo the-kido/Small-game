@@ -2,8 +2,30 @@ using System;
 using System.Linq;
 using Godot;
 
+// I want there to be 1 universal "chest menu" class
+// Whatever happens to certain buttons should be customizable 
+// Also, different enum type will decide if there are 3 slots (weapons) or 1 slot (shield)
+
+
+
+// plz change name
+internal class WeaponChestView {
+
+    public WeaponChestView() {
+
+    }
+
+}
+
+internal class ShieldChestView {
+
+}
+
 public partial class ChestMenu : Control, IMenu {
     public event Action Disable;
+    public ChestMenu() {
+        Disable += () => OnSelectionMade.GetInvocationList().ToList().ForEach(func => OnSelectionMade -= func as Action<int>);
+    }
 
     [Export]
     private AnimationPlayer animationPlayer;
@@ -23,9 +45,11 @@ public partial class ChestMenu : Control, IMenu {
     private Button switchItemButton;
     [Export]
     private Button closeButton;
-
-
-    public Action<Weapon> OnWeaponReplaced;
+    
+    /// <summary>
+    /// The int passed by this event is the index that was selected by the player
+    /// </summary>
+    public event Action<int> OnSelectionMade;
     
     private int? selectedIndex = null;
     private int? previewedIndex = null;
@@ -33,14 +57,13 @@ public partial class ChestMenu : Control, IMenu {
     private bool freezeStatOverview = false;
     
     private Player viewer;
-    private Weapon currentWeaponToSwitchTo = null;
     
     private ColorRect PreviewPanel(int index) => itemPreviews.GetChild<ColorRect>(index);
     private TextureRect PreviewImage(int index) => itemPreviews.GetChild(index).GetChild<TextureRect>(0);
  
     public override void _Ready() {
         closeButton.Pressed += () => Disable?.Invoke();
-        switchItemButton.Pressed += () => SetItem(currentWeaponToSwitchTo);
+        switchItemButton.Pressed += SelectionMade;
 
         // Make it so that hovering over the items in the GUI will show the statistics
         var children = itemPreviews.GetChildren();
@@ -54,6 +77,10 @@ public partial class ChestMenu : Control, IMenu {
         itemOverview.MouseExited += () => hoveringWithinStatsOverview = false;
     }
 
+    private void SelectionMade() {
+        OnSelectionMade?.Invoke(selectedIndex ?? -1);
+        Disable?.Invoke();
+    }
 
     public override void _Process(double delta) {
 
@@ -68,20 +95,35 @@ public partial class ChestMenu : Control, IMenu {
         if (hoveringWithinStatsOverview) return;
 
         if (previewedIndex != null) {
-            
-            if (viewer.WeaponManager.GetWeapon(previewedIndex ?? 0) is not null) {
-                itemOverview.Visible = true;
-                itemDecription.Text = viewer.WeaponManager.GetWeapon(previewedIndex ?? 0).Description;
-            }
-            
+            UpdateItemPreview();
             itemOverview.GlobalPosition = GetGlobalMousePosition();
-        } else {
+        }
+        else {
             itemOverview.Visible = false;
+        }
+    }
+
+    private void UpdateItemPreview() {
+        switch (inspectedItem.Type) {
+            case ChestItemType.WEAPON:
+                if (viewer.WeaponManager.GetWeapon(previewedIndex ?? 0) is not null) {
+                    itemOverview.Visible = true;
+                    itemDecription.Text = viewer.WeaponManager.GetWeapon(previewedIndex ?? 0).Description;
+                }
+                
+                break;
+            case ChestItemType.SHIELD:
+                if (viewer.ShieldManager.HeldShield is not null) {
+                    itemOverview.Visible = true;
+                    itemDecription.Text = viewer.ShieldManager.HeldShield.Description;
+                }
+                break;
         }
     }
 
 
     public void Enable(Player player) {
+
         // reset values
         hoveringWithinStatsOverview = false;
         selectedIndex = null;
@@ -91,6 +133,10 @@ public partial class ChestMenu : Control, IMenu {
         Visible = true;
 
         player.InputController.LeftClicked += FreezeStatOverview;
+
+        // Hide all of the preview images such that a selected few will change later
+        for (int i = 0; i < 3; i++)
+            PreviewPanel(i).Visible = false;
 
         if (Disable is not null) {
             foreach (Delegate func in Disable.GetInvocationList()) {
@@ -104,28 +150,28 @@ public partial class ChestMenu : Control, IMenu {
             freezeStatOverview = true;
         }
     }
+    
+    IChestItem inspectedItem;
+    public void SetItems(IChestItem newItem) {
+        inspectedItem = newItem;
 
-    private void SetItem(Weapon newWeapon) {
+        newItemImage.Texture = newItem.Icon;
+        newItemDescription.Text = newItem.Description;
 
-        OnWeaponReplaced?.Invoke(viewer.WeaponManager.GetWeapon(selectedIndex ?? -1));
-
-        viewer.WeaponManager.AddWeapon(newWeapon, selectedIndex ?? -1);
-        
-        Disable?.Invoke();
+        switch (newItem.Type) {
+            case ChestItemType.WEAPON:
+                for (int i = 0; i < 3; i++) {
+                    PreviewPanel(i).Visible = true;
+                    if (viewer.WeaponManager.GetWeapon(i) is null) continue;
+                    PreviewImage(i).Texture = ((IChestItem)viewer.WeaponManager.GetWeapon(i)).Icon;
+                }
+                break;
+            case ChestItemType.SHIELD:
+                PreviewPanel(1).Visible = true;
+                PreviewImage(1).Texture = ((IChestItem)viewer.ShieldManager?.HeldShield).Icon;
+                break;
+        }
     }
-
-    public void SetItems(Weapon newWeapon) {
-        currentWeaponToSwitchTo = newWeapon;
-
-        newItemImage.Texture = newWeapon.Sprite.Texture;
-        newItemDescription.Text = newWeapon.Description;
-        
-        for (int i = 0; i < 3; i++) {
-            if (viewer.WeaponManager.GetWeapon(i) is null) continue;
-            PreviewImage(i).Texture = viewer.WeaponManager.GetWeapon(i).Sprite.Texture;
-        } 
-    }
-
     public void Switch() => Visible = false;
 }
 

@@ -14,6 +14,8 @@ public sealed partial class Player : Actor
     public InputController InputController {get; private set;}
     [Export]
     public WeaponManager WeaponManager;
+    [Export]
+    public ShieldManager ShieldManager;
 
     // This shouldn't be abused; multiplayer support may (?) happen in the future
     public static List<Player> Players {get; private set;}
@@ -30,6 +32,7 @@ public sealed partial class Player : Actor
 
         InputController.Init(this);
         WeaponManager.Init(this);
+        ShieldManager.Init(this);
         GUI.Init(this);
 
         DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;

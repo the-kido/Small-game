@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_uqtse"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="3_v7rhi"]
 
-[node name="WeirdGun" type="Node2D" node_paths=PackedStringArray("nuzzle", "Sprite")]
+[node name="WeirdGun" type="Node2D" node_paths=PackedStringArray("nuzzle", "sprite")]
 script = ExtResource("1_pl0pq")
 bulletAsset = ExtResource("2_uqtse")
 nuzzle = NodePath("Nuzzle")
-Sprite = NodePath("Sprite2D")
+sprite = NodePath("Sprite2D")
 ReloadSpeed = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

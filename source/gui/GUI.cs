@@ -10,6 +10,7 @@ public partial class GUI : CanvasLayer {
         this.player = player;
         HealthLable.Init(player);
         HeldItems.Init(player);
+        ShieldInfo.Init(player);
     }
 
     [Export]
@@ -27,6 +28,8 @@ public partial class GUI : CanvasLayer {
     public CoinsLabel CoinsLable => HUD.coinsLabel;
     public InteractButton InteractButton => HUD.interactButton;
     public HeldItems HeldItems => HUD.heldItems;
+    public ShieldInfo ShieldInfo => HUD.shieldInfo;
+
 
 
     private void CoverHUD(bool cover) => HUD.Cover(cover);
@@ -45,7 +48,7 @@ public partial class GUI : CanvasLayer {
     #region Menu open methods
     public void OpenReviveMenu() => SetCurrentMenu(reviveMenu);
 
-    public void OpenChestMenu(Weapon newWeapon) {
+    public void OpenChestMenu(IChestItem newWeapon) {
         SetCurrentMenu(chestMenu);
         chestMenu.SetItems(newWeapon);
     }

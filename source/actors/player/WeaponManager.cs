@@ -13,7 +13,7 @@ public partial class WeaponManager : Node2D{
     [Export]
     private ReloadVisual reloadVisual;
     private Player player;
-    private readonly Weapon[] Weapons = new Weapon[3];
+    public readonly Weapon[] Weapons = new Weapon[3];
 
     public Weapon GetWeapon(int index) => Weapons[index];
     public Weapon HeldWeapon => Weapons[SelectedSlot];
@@ -48,6 +48,7 @@ public partial class WeaponManager : Node2D{
     }
 
     public void AddWeapon(Weapon newWeapon, int slot) {
+        newWeapon.Name = $"{newWeapon.Name}: {slot}";
         RemoveWeapon(slot);
 		// Add the new weapon
         Weapons[slot] = newWeapon;

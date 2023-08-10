@@ -16,6 +16,8 @@ public partial class HUD : Control {
     public InteractButton interactButton;
     [Export]
     public HeldItems heldItems;
+    [Export]
+    public ShieldInfo shieldInfo;
 
     [Export]
     public HUDCover HUDCover;

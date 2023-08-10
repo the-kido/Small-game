@@ -62,7 +62,7 @@ metadata/_edit_horizontal_guides_ = [464.0]
 position = Vector2(568, 428)
 GUI = NodePath("../HUD")
 
-[node name="AnimationTree" parent="Player" index="5"]
+[node name="AnimationTree" parent="Player" index="6"]
 parameters/playback = SubResource("AnimationNodeStateMachinePlayback_d565g")
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("3_3il18")]

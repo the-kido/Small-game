@@ -10,7 +10,6 @@ public abstract partial class Interactable : AnimatedSprite2D {
 
     protected abstract void OnInteracted(Player player);
 
-
     private void SetIndicatorVisibility(Player player, bool isVisible) {
         player.GUI.InteractButton.Enable(isVisible);
         playerWithinArea = isVisible;
@@ -18,9 +17,9 @@ public abstract partial class Interactable : AnimatedSprite2D {
     }
     private void AttachEvent(Player player, bool attach) {
         if (attach)
-            player.InputController.InteractablesButtonController.Interacted += () => OnInteracted(player);
+            player.InputController.InteractablesButtonController.Interacted += OnInteracted;
         else
-            player.InputController.InteractablesButtonController.Interacted -= () => OnInteracted(player);
+            player.InputController.InteractablesButtonController.Interacted -= OnInteracted;
     }
 
     // NOTE: This will 100% break when there are several players

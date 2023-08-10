@@ -145,7 +145,7 @@ position = Vector2(926, 806)
 position = Vector2(438, 473)
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
-position = Vector2(907, 656)
+position = Vector2(717, 493)
 
 [node name="Wave 2" type="Node" parent="Waves"]
 script = ExtResource("12_vytqf")
@@ -170,7 +170,7 @@ scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_uy1k1")
 frame_progress = 0.366557
 script = ExtResource("17_e6l5u")
-chestLootTable = "Generic Chest Items"
+chestLootTable = "Generic Shield"
 range = NodePath("Area2D")
 
 [node name="Area2D" type="Area2D" parent="Interactable"]

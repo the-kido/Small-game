@@ -78,6 +78,10 @@ reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
+offset_left = 4.0
+offset_top = -10.0
+offset_right = 4.0
+offset_bottom = -10.0
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
 layout_mode = 3
@@ -204,11 +208,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_iybjn")
 itemOverview = NodePath("Item Stats Overview")
-itemDecription = NodePath("Item Stats Overview/ColorRect/RichTextLabel")
+itemDecription = NodePath("Item Stats Overview/RichTextLabel")
 newItemDescription = NodePath("New Item Description/Text Description")
 newItemImage = NodePath("New Item Description/Image")
 itemPreviews = NodePath("Item Preview")
-switchItemButton = NodePath("Item Stats Overview/ColorRect/Switch to item button")
+switchItemButton = NodePath("Item Stats Overview/Switch to item button")
 closeButton = NodePath("Background/X")
 
 [node name="Background" type="ColorRect" parent="ChestMenu"]
@@ -318,7 +322,7 @@ offset_left = 312.0
 offset_right = 312.31
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12549, 0.12549, 0.12549, 1)
+color = Color(0.219608, 0.219608, 0.219608, 1)
 
 [node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/2"]
 layout_mode = 1
@@ -347,44 +351,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Item Stats Overview" type="Control" parent="ChestMenu"]
+[node name="Item Stats Overview" type="VBoxContainer" parent="ChestMenu"]
 visible = false
-anchors_preset = 0
-offset_right = 268.0
-offset_bottom = 328.0
-scale = Vector2(1.19595, 1.19595)
-mouse_filter = 1
-
-[node name="ColorRect" type="ColorRect" parent="ChestMenu/Item Stats Overview"]
-layout_mode = 0
-offset_right = 268.0
-offset_bottom = 328.0
-mouse_filter = 2
-color = Color(0.215686, 0.215686, 0.215686, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ChestMenu/Item Stats Overview/ColorRect"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0298507
-anchor_top = 0.027439
-anchor_right = 0.970149
-anchor_bottom = 0.158537
-offset_bottom = 212.0
+anchor_right = 0.209
+offset_bottom = 127.0
+scale = Vector2(1.19595, 1.19595)
+metadata/_edit_use_anchors_ = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ChestMenu/Item Stats Overview"]
+z_index = 3
+layout_mode = 2
 mouse_filter = 2
 bbcode_enabled = true
 text = "This weapon sucks
 Damage: 0
 Reload Speed: 100s
-"
 
-[node name="Switch to item button" type="Button" parent="ChestMenu/Item Stats Overview/ColorRect"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.0298507
-anchor_top = 0.832317
-anchor_right = 0.940298
-anchor_bottom = 0.951219
-offset_right = 8.0
-offset_bottom = 8.0
+"
+fit_content = true
+
+[node name="ColorRect" type="ColorRect" parent="ChestMenu/Item Stats Overview/RichTextLabel"]
+z_index = -1
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 0.999667
+offset_bottom = 0.09198
+mouse_filter = 2
+color = Color(0.215686, 0.215686, 0.215686, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Switch to item button" type="Button" parent="ChestMenu/Item Stats Overview"]
+layout_mode = 2
 mouse_filter = 1
 text = "Switch"

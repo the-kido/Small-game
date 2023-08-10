@@ -55,6 +55,10 @@ public static class ChestLootTable {
             new(WeirdGun.PackedSceneResource, 1f)
             }
         },
-        
+
+        {"Generic Shield", new() {
+            new(BadShield.PackedSceneResource, 1f)
+            }
+        }
     };
 }   

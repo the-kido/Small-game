@@ -1,28 +1,36 @@
 using System;
 using Godot;
 
-
-public interface IChestItem {
-	public static PackedScene Temp {get; set;} 
+public enum ChestItemType {
+	WEAPON,
+	SHIELD
 }
 
-public abstract partial class Weapon : Node2D {
-	
+public interface IChestItem {
+	public abstract string Description {get;}
+	public abstract Texture2D Icon {get;}
+
+	public abstract ChestItemType Type {get;} 
+
+}
+
+public abstract partial class Weapon : Node2D, IChestItem {
+    public Texture2D Icon {get => sprite.Texture;}
+    public abstract string Description {get;}
+	ChestItemType IChestItem.Type {get => ChestItemType.WEAPON; }
 	[Export]
-	public Sprite2D Sprite {get; private set;}
+	private Sprite2D sprite;
+	
 	[Export]
 	public bool UsesReloadVisuals {get; private set;}
 
 	// Only get from the static PackedSceneResource.
 	public abstract PackedScene PackedScene {get;}
-
-	// Passes the removed weapon
 	public abstract Type WeaponType {get; protected set;} 
 	public abstract void UpdateWeapon(Vector2 attackDirection);
-	public virtual void OnWeaponLetGo() {}
 	public abstract void Attack();
-
-	public abstract string Description {get;}
+	// These don't have to be implemented so keep them virtual
+	public virtual void OnWeaponLetGo() {}
 	public virtual void Init() {}
 
 	[Export]

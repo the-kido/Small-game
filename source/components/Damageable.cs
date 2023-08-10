@@ -11,15 +11,17 @@ public partial class Damageable : Area2D {
 	private double ImmunityFrames {get; set;}
 	
 	private int MaxHealth {get; init;}
+	
+	public bool BlocksDamage {get; set;} = false;
 	public bool IsImmune {get; private set;} = false;
 
 	private float _damageTakenMultiplier = 1f;
 	public float DamageTakenMulitplier {
 		get => _damageTakenMultiplier;
 		set {
-			if (value < 0) {
+			if (value < 0)
 				throw new ArgumentOutOfRangeException(nameof(value), "Range must be above 0");
-			}
+		
 			_damageTakenMultiplier = value;
 		}
 	}
@@ -31,6 +33,8 @@ public partial class Damageable : Area2D {
     }
 
 	public event Action<DamageInstance> OnDamaged;
+	public event Action<DamageInstance> DamagedBlocked;
+
 	public Action<DamageInstance> OnDeath;
 
 	public override void _Ready() => ErrorUtils.AvoidEmptyCollisionLayers(this);
@@ -63,15 +67,15 @@ public partial class Damageable : Area2D {
 
 		return instance;
 	}
-	private int GetTotalDamage(DamageInstance damageInstance) {
-		return (int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageDealtMultiplier);
-	}
+	private int GetTotalDamage(DamageInstance damageInstance) =>
+		(int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageDealtMultiplier);
+	
 	private bool CanTakeDamage(DamageInstance damageInstance) {
 		// Or not, maybe just allow a dead entity to take damage. Who am I to judge.
 		if (!IsAlive) return false;
 
 		//If the actor is immune and the damage instance cannot override immunity frames, continue.
-		if (IsImmune && damageInstance.overridesImmunityFrames == false) return false;
+		if (IsImmune && !damageInstance.overridesImmunityFrames) return false;
 
 		// it passes the test. pog champ
 		return true;
@@ -79,8 +83,14 @@ public partial class Damageable : Area2D {
 
 	public void Damage(DamageInstance damageInstance) {
 		if (!CanTakeDamage(damageInstance)) return;
-		
+
 		int totalDamage = GetTotalDamage(damageInstance);
+
+		// This is for shielding. Make sure to deal with damage that goes thru  shields tho
+		if (BlocksDamage) {
+			DamagedBlocked?.Invoke(damageInstance);
+			return;
+		}
 
 		Health -= totalDamage;
 		OnDamaged?.Invoke(damageInstance);

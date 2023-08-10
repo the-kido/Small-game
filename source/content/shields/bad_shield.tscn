@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://da4n4e0l3c612"]
+
+[ext_resource type="Script" path="res://source/content/shields/BadShield.cs" id="1_vcvcx"]
+[ext_resource type="Texture2D" uid="uid://l0yngo1lhnsi" path="res://source/shields/bad_shield.png" id="2_4lnlv"]
+
+[node name="bad_shield" type="Node2D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_vcvcx")
+sprite = NodePath("BadShield")
+maxHealth = 10
+healSpeed = 1.0
+
+[node name="BadShield" type="Sprite2D" parent="."]
+texture = ExtResource("2_4lnlv")

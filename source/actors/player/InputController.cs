@@ -3,6 +3,35 @@ using System;
 using System.Collections.Generic;
 using KidoUtils;
 
+public class ShieldInput {
+	readonly Player player;
+
+	public ShieldInput(Player player) {
+		this.player = player;
+	}
+	public event Action<bool> PlayerShieldsDamage;
+	bool cache; 
+	public void Update() {
+		if (cache != IsBlockingDamage()) {
+			cache = IsBlockingDamage();
+			player.DamageableComponent.BlocksDamage = IsBlockingDamage();
+			PlayerShieldsDamage?.Invoke(cache);
+		}
+	}
+
+	private bool IsBlockingDamage() {
+		if (player.ShieldManager.HeldShield is null) 
+			return false;
+
+		if (!player.ShieldManager.HeldShield.Alive)
+			return false;
+		
+		if (Input.IsActionPressed("utility_used"))
+			return true;
+		
+		return false;
+	}
+}
 
 public class HeldItemInputController {
 	readonly WeaponManager hand;
@@ -215,14 +244,16 @@ public class DialogueController {
 
 public class InteractablesButtonController {
 
-	public InteractablesButtonController(GUI GUI) {
+	readonly Player player;
+	public InteractablesButtonController(Player player, GUI GUI) {
+		this.player = player;
 		GUI.InteractButton.Pressed += InvokeInteracted;
 	}
 
-	public event Action Interacted;
+	public event Action<Player> Interacted;
 	private void InvokeInteracted() {
 		// this is a seperate method incase I wanna add some more logic to this sometime
-		Interacted?.Invoke();
+		Interacted?.Invoke(player);
 	}
 }
 
@@ -259,7 +290,8 @@ public partial class InputController : Node {
 	[Export]
 	public MovementController MovementController {get; private set;}
 	public DialogueController DialogueController {get; private set;}
-	private HeldItemInputController HeldItemInputController;
+	private HeldItemInputController heldItemInputController;
+	public ShieldInput ShieldInput {get; private set;}
 
 	// TODO: What a bad name
 	public InteractablesButtonController InteractablesButtonController {get; private set;}
@@ -270,9 +302,10 @@ public partial class InputController : Node {
 		// Init everything
 		WeaponController = new(hand, player);
 		DialogueController = new(this, GUI);
-		InteractablesButtonController = new(GUI);
+		InteractablesButtonController = new(player, GUI);
 		MovementController.Init(player, this);
-		HeldItemInputController = new(hand);
+		heldItemInputController = new(hand);
+		ShieldInput = new(player);
 
 		// Also this
 		attachedPlayer.DamageableComponent.OnDeath += (_) => FilterNonUiInput = true;
@@ -289,12 +322,12 @@ public partial class InputController : Node {
 	private void UpdateUIInput(double _) {
 		DialogueController.Continue();
 		InvokeLeftClickedWhenClickedSpecificallyForGUIPurposesOnly();
-		HeldItemInputController.Update();
+		heldItemInputController.Update();
 	}
 
 	private void UpdateNonUIInput(double delta) {
 		MovementController.UpdateMovement();
 		WeaponController.Update(delta);
+		ShieldInput.Update();
 	}
-
 }

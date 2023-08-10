@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=62 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/sprites/player/player_north.png" id="4_4lvjw"]
 [ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="5_3ebte"]
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
+[ext_resource type="Script" path="res://source/actors/player/ShieldManager.cs" id="8_kpbfh"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="8_spu4k"]
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="9_6fn6c"]
 [ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="10_rp2rn"]
@@ -645,7 +646,7 @@ size = Vector2(55, 69)
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
 radius = 591.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InputController", "WeaponManager", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
@@ -654,6 +655,7 @@ motion_mode = 1
 script = ExtResource("1_gr76c")
 InputController = NodePath("Input Controller")
 WeaponManager = NodePath("Hand")
+ShieldManager = NodePath("Shield")
 Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("PlayerSprites")
@@ -681,6 +683,10 @@ libraries = {
 "": SubResource("AnimationLibrary_j0dn8"),
 "player": SubResource("AnimationLibrary_ulu1t")
 }
+
+[node name="Shield" type="Node2D" parent="."]
+position = Vector2(0, 20)
+script = ExtResource("8_kpbfh")
 
 [node name="Hand" type="Node2D" parent="." node_paths=PackedStringArray("reloadVisual")]
 position = Vector2(0, 20)

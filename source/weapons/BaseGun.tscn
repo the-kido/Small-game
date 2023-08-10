@@ -80,11 +80,11 @@ blend_point_3/node = SubResource("AnimationNodeAnimation_r43ko")
 blend_point_3/pos = Vector2(-0.1, -1)
 blend_mode = 1
 
-[node name="Base Gun" type="Node2D" node_paths=PackedStringArray("nuzzle", "Sprite")]
+[node name="Base Gun" type="Node2D" node_paths=PackedStringArray("nuzzle", "sprite")]
 script = ExtResource("1_d7w4p")
 bulletAsset = ExtResource("2_6x1e6")
 nuzzle = NodePath("Nuzzle")
-Sprite = NodePath("Sprite")
+sprite = NodePath("Sprite")
 UsesReloadVisuals = true
 ReloadSpeed = 2.0
 

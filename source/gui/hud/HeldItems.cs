@@ -27,6 +27,5 @@ public partial class HeldItems : Control {
     }
         
     private void UpdateWeaponDisplays(Weapon weapon, int index) =>
-        GetChild<Button>(index).GetChild<TextureRect>(0).Texture = weapon.Sprite.Texture;
-    
+        GetChild<Button>(index).GetChild<TextureRect>(0).Texture = weapon.Icon;
 }
