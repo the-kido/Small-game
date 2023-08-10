@@ -22,7 +22,7 @@ struct Timer {
             if (loop) timeElapsed = 0;
         } 
     }
-
+    
     public void Pause(double timePaused) => timerPause = new(timePaused);
 
 }

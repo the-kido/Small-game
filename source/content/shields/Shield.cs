@@ -41,8 +41,10 @@ public abstract partial class Shield : Node2D, IChestItem {
 
     public virtual void Use(DamageInstance damageInstance) {
         Health = (int) MathF.Max(Health - damageInstance.damage, 0);
+        timer.Pause(2);
+
         if (!Alive) timer.Pause(5);
-        
+
         Updated?.Invoke();
     }
 }

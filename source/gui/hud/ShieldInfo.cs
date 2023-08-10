@@ -7,8 +7,12 @@ public partial class ShieldInfo : Control{
     private Label healthLabel;
 
     [Export]
+    private Color shieldDisabledModulation;
+
+    [Export]
     private NinePatchRect usingShildIndicator;
 
+    Shield heldShield => player.ShieldManager.HeldShield;
 
     Player player;
     public void Init(Player player) {
@@ -22,17 +26,26 @@ public partial class ShieldInfo : Control{
 
     private void EnableShieledUsageIndicator(bool @bool) => usingShildIndicator.Visible = @bool;
     private void UpdateNewShield(Shield newShield) {
+        Visible = true;
         icon.Texture = newShield.Icon;
         healthLabel.Text = newShield.Health.ToString();
         
-        newShield.Updated += UpdateHealth;
-    }
-    
-    private void RemoveOldShield(Shield oldShield) {
-        oldShield.Updated -= UpdateHealth;
+        newShield.Updated += UpdateShield;
     }
 
-    private void UpdateHealth() {
-        healthLabel.Text = player.ShieldManager.HeldShield.Health.ToString();
+    private void RemoveOldShield(Shield oldShield) {
+        oldShield.Updated -= UpdateShield;
+    }
+
+    private Color white = new(1, 1, 1);
+    private void UpdateShield() {
+        healthLabel.Text = heldShield.Health.ToString();
+        
+        if (!heldShield.Alive) {
+            Modulate = shieldDisabledModulation; 
+        }
+        else {
+            Modulate = new Color(1, 1, 1);
+        }
     }
 }
