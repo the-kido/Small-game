@@ -1,13 +1,13 @@
 using System;
 
 // w.i.p
-struct Timer {
+public struct Timer {
     public bool loop = true;
     public event Action TimeOver = null;
     public Timer(double time) => this.time = time;
+    public double TimeElapsed {get; private set;} = 0;
     
     double time;
-    double timeElapsed = 0;
     TimerPause timerPause = new();
 
     public void Update(double delta) {
@@ -16,10 +16,10 @@ struct Timer {
             return;
         }
 
-        timeElapsed += delta;
-        if (timeElapsed > time) {
+        TimeElapsed += delta;
+        if (TimeElapsed > time) {
             TimeOver?.Invoke();
-            if (loop) timeElapsed = 0;
+            if (loop) TimeElapsed = 0;
         } 
     }
     
