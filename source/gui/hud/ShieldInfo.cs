@@ -14,17 +14,25 @@ public partial class ShieldInfo : Control{
     public void Init(Player player) {
         this.player = player;
         player.InputController.ShieldInput.PlayerShieldsDamage += EnableShieledUsageIndicator;
-        player.ShieldManager.ShieldChanged += UpdateShield;
+        player.ShieldManager.ShieldAdded += UpdateNewShield;
+        player.ShieldManager.ShieldRemoved += RemoveOldShield;
         // Well i'd perfer to get it directly from the shield itself
-        player.DamageableComponent.DamagedBlocked += UpdateHealth;
+        
     }
 
     private void EnableShieledUsageIndicator(bool @bool) => usingShildIndicator.Visible = @bool;
-    private void UpdateShield(Shield shield) {
-        icon.Texture = shield.Icon;
-        healthLabel.Text = shield.Health.ToString();
+    private void UpdateNewShield(Shield newShield) {
+        icon.Texture = newShield.Icon;
+        healthLabel.Text = newShield.Health.ToString();
+        
+        newShield.Updated += UpdateHealth;
     }
-    private void UpdateHealth(DamageInstance damageInstance) {
+    
+    private void RemoveOldShield(Shield oldShield) {
+        oldShield.Updated -= UpdateHealth;
+    }
+
+    private void UpdateHealth() {
         healthLabel.Text = player.ShieldManager.HeldShield.Health.ToString();
     }
 }

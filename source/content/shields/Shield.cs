@@ -1,8 +1,12 @@
 using Godot;
+using System;
 
 public abstract partial class Shield : Node2D, IChestItem {
     public Texture2D Icon {get => sprite.Texture;}
     public abstract string Description {get;}
+    
+    // TOOD: This name is prolly too vague
+    public event Action Updated;
 
     public ChestItemType Type => ChestItemType.SHIELD;
 
@@ -17,12 +21,28 @@ public abstract partial class Shield : Node2D, IChestItem {
     [Export]
     float healSpeed;
 
+    public void Heal(int healthAdded) {
+        Health = (int) MathF.Min(Health + healthAdded, maxHealth);
+        Updated?.Invoke();
+    } 
+
     public void Init() {
-        GD.Print("does this ever get called");
-        Health = maxHealth; 
+        Health = maxHealth;
+    }
+
+    public Shield() {
+        timer.TimeOver += () => Heal(1);
+    }
+
+    Timer timer = new(1);
+    public virtual void Update(double delta) {
+        timer.Update(delta);
     }
 
     public virtual void Use(DamageInstance damageInstance) {
-        Health -= damageInstance.damage;
+        Health = (int) MathF.Max(Health - damageInstance.damage, 0);
+        if (!Alive) timer.Pause(5);
+        
+        Updated?.Invoke();
     }
 }
