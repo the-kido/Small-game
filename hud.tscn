@@ -290,6 +290,7 @@ offset_left = -104.0
 offset_top = 51.0
 offset_right = -64.0
 offset_bottom = 74.0
+grow_horizontal = 0
 text = "Coins: 1
 "
 script = ExtResource("7_yaa1g")

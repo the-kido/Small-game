@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=61 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -638,8 +638,6 @@ states/Walk/position = Vector2(525, 133)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_l3dk6"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_dj5c0"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_dxsw0")]
 graph_offset = Vector2(-88, 62)
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_xjiuu"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2fdih"]
 size = Vector2(55, 69)
 
@@ -705,7 +703,6 @@ debug_color = Color(0, 0.6, 0.701961, 0.172549)
 tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
 anim_player = NodePath("../PlayerSprites/AnimationPlayer")
 active = true
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_xjiuu")
 parameters/conditions/idle = false
 parameters/conditions/walk = false
 parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)

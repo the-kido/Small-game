@@ -116,8 +116,9 @@ script = ExtResource("12_vytqf")
 [node name="Weird enemy4" parent="Waves/Wave 1" instance=ExtResource("4_0ta41")]
 position = Vector2(926, 806)
 
-[node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
+[node name="Base Enemy" parent="Waves/Wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
+animationPlayer = NodePath("")
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(717, 493)

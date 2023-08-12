@@ -69,10 +69,9 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu")]
 layer = 10
 script = ExtResource("1_7vbvm")
-TargetIndicator = NodePath("")
 HUD = NodePath("HUD")
 reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
