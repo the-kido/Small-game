@@ -5,16 +5,15 @@ public abstract partial class Interactable : AnimatedSprite2D {
 
     [Export]
     protected Area2D range;
+    [Export]
+    protected Sprite2D subject;
     
-    bool playerWithinArea;
-
     protected abstract void OnInteracted(Player player);
 
-    private void SetIndicatorVisibility(Player player, bool isVisible) {
-        player.GUI.InteractButton.Enable(isVisible);
-        playerWithinArea = isVisible;
-        Visible = isVisible;
+    protected void SetIndicatorVisibility(Player player, bool isVisible) {
+        player.GUI.InteractButton.Enable(isVisible);        
     }
+
     private void AttachEvent(Player player, bool attach) {
         if (attach)
             player.InputController.InteractablesButtonController.Interacted += OnInteracted;

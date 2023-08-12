@@ -60,14 +60,14 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:pivot_offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(2018, 447)]
+"values": [Vector2(-200, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_y57l1"]
@@ -76,14 +76,14 @@ length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
+tracks/0/path = NodePath(".:pivot_offset")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(2019, 494), Vector2(1684, 447)]
+"values": [Vector2(-200, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4dhoq"]
@@ -209,28 +209,24 @@ grow_vertical = 2
 color = Color(0.223529, 0.223529, 0.223529, 1)
 
 [node name="Text Background" type="ColorRect" parent="Dialogue Bar/Background"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.238
+layout_mode = 2
 anchor_right = 1.0
-anchor_bottom = 0.961
-offset_left = -0.212006
-offset_top = 54.0
-offset_right = -57.0
-offset_bottom = -43.041
+anchor_bottom = 1.0
+offset_left = 317.0
+offset_top = 53.0
+offset_right = -32.9999
+offset_bottom = -43.0031
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.180392, 0.180392, 0.180392, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Dialogue Bar/Background/Text Background"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
+layout_mode = 2
+anchor_right = 1.001
+anchor_bottom = 1.038
 offset_top = 17.0
-offset_right = -24.0
-offset_bottom = -17.0
+offset_right = -1.42407
+offset_bottom = -8.03001
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
@@ -240,20 +236,20 @@ visible_characters = 27
 visible_ratio = 0.9
 
 [node name="TextureRect" type="Control" parent="Dialogue Bar/Background"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
+layout_mode = 2
+anchors_preset = 0
+offset_top = 141.0
+offset_bottom = 141.0
 grow_vertical = 2
-scale = Vector2(1.76, 1.76)
 
 [node name="TextureRect" type="TextureRect" parent="Dialogue Bar/Background/TextureRect"]
-layout_mode = 1
-offset_left = 34.0909
-offset_top = -67.3295
-offset_right = 162.091
-offset_bottom = 60.6705
+layout_mode = 2
+offset_left = 83.0
+offset_top = -95.9999
+offset_right = 299.0
+offset_bottom = 104.0
 texture = ExtResource("6_lqvlh")
+stretch_mode = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Dialogue Bar"]
 libraries = {
@@ -262,16 +258,19 @@ libraries = {
 
 [node name="Interact" type="Button" parent="." node_paths=PackedStringArray("animationPlayer")]
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 2018.0
-offset_top = 447.0
-offset_right = 2087.0
-offset_bottom = 478.0
-scale = Vector2(2.95382, 2.89017)
+offset_left = -284.0
+offset_top = -45.0
+offset_right = -215.0
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(3, 3)
+pivot_offset = Vector2(-200, 0)
 text = "interact
 "
 script = ExtResource("7_mrwpn")
@@ -283,10 +282,13 @@ libraries = {
 }
 
 [node name="Coins" type="Label" parent="."]
-layout_mode = 0
-offset_left = 1816.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
 offset_top = 51.0
-offset_right = 1856.0
+offset_right = -64.0
 offset_bottom = 74.0
 text = "Coins: 1
 "

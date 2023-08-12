@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 
 // This should just make it easier to customize the dialogue
-public record DialogueInfo (bool PausePlayerInput = true);
+public record DialogueInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
 
 public partial class DialogueBar : Control {
     [Export]
@@ -54,6 +54,8 @@ public class DialoguePlayer {
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
+        if (currentDialogue[lineAt].portrait.CurrentSprite is null) return;
+
         currentDialogue[lineAt].portrait.PlayAnimation(delta);
         bar.PortraitRect.Texture = currentDialogue[lineAt].portrait.CurrentSprite;
     }
@@ -97,12 +99,10 @@ public class DialoguePlayer {
         bar.Label.VisibleCharacters = 0;
     }
 
-    
 
     public void Start(DialogueLine[] dialogue, DialogueInfo info) {
-        
+        bar.PortraitRect.Visible = info.ShowPortraitImage;
         DialogueStarted?.Invoke(info);
-
         
         currentDialogue = dialogue;
         bar.Enable();

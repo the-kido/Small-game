@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dlywmwh4smgpf"]
+[gd_scene load_steps=24 format=3 uid="uid://dlywmwh4smgpf"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -16,8 +16,8 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_vytqf"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 [ext_resource type="Texture2D" uid="uid://dccipusu44sqd" path="res://assets/sprites/enviornment/interactables/chest.png" id="16_nqqvy"]
-[ext_resource type="Texture2D" uid="uid://b8k4i1dvi8hib" path="res://assets/sprites/gui/interactable_arrow.png" id="16_xfrix"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/Chest.cs" id="17_e6l5u"]
+[ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="17_m7cv1"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/DialogueInteractable.cs" id="18_ik052"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
 size = Vector2(83, 143)
@@ -50,31 +50,6 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_47q34"]
-atlas = ExtResource("16_xfrix")
-region = Rect2(0, 0, 8, 8)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o64qs"]
-atlas = ExtResource("16_xfrix")
-region = Rect2(8, 0, 8, 8)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_uy1k1"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_47q34")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o64qs")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_acxxr"]
-radius = 26.0192
 
 [node name="Level 2" type="Node"]
 script = ExtResource("1_68dsa")
@@ -164,17 +139,7 @@ position = Vector2(366, 604)
 scale = Vector2(4, 4)
 texture = ExtResource("16_nqqvy")
 
-[node name="Interactable" type="AnimatedSprite2D" parent="." node_paths=PackedStringArray("range")]
-position = Vector2(366, 546)
-scale = Vector2(4, 4)
-sprite_frames = SubResource("SpriteFrames_uy1k1")
-frame_progress = 0.366557
-script = ExtResource("17_e6l5u")
-chestLootTable = "Generic Shield"
-range = NodePath("Area2D")
-
-[node name="Area2D" type="Area2D" parent="Interactable"]
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable/Area2D"]
-shape = SubResource("CircleShape2D_acxxr")
+[node name="Interactable" parent="." instance=ExtResource("17_m7cv1")]
+script = ExtResource("18_ik052")
+dialogueName = "Interact with Boulder"
+showPortraitImage = false

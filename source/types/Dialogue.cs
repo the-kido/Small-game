@@ -7,18 +7,21 @@ using System.Collections.Generic;
 public static class DialogueLines {
 
 
-    public static readonly Dictionary<string, DialogueLine[]> Lines = new()
-    {
-
+    public static readonly Dictionary<string, DialogueLine[]> Lines = new() {
         // Agro boss
-        {"Kill Agro Boss", new DialogueLine[] {
-            new("AGRO ENEMY DEATH-1", Portraits.boss["Happy"]),
-            new("AGRO ENEMY DEATH-2", Portraits.boss["Sad"]),
-        }
-
+        {
+            "Kill Agro Boss", new DialogueLine[] {
+                new("AGRO ENEMY DEATH-1", Portraits.boss["Happy"]),
+                new("AGRO ENEMY DEATH-2", Portraits.boss["Sad"]),
+            }
+        },
+        {
+            "Interact with Boulder", new DialogueLine[] {
+                new("BOULDER-1", Portraits.None),
+                new("BOULDER-2", Portraits.None),
+            }
         },
     };
-
 }
 
 public struct DialogueLine {
@@ -40,7 +43,7 @@ public struct Portrait {
 
     double progress = 0;
 
-    readonly public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
+    readonly public Texture2D CurrentSprite => sprites?.GetFrameTexture(animationName, CurrentFrame);
 
     readonly int CurrentFrame => (int) Mathf.Floor( (float) progress);
     readonly bool IsAnimated => sprites.GetFrameCount(animationName) > 1;
