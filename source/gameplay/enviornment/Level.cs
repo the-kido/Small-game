@@ -29,13 +29,11 @@ public partial class Level : Node {
         
         Change();
 
-        if (!LoadLevelCompleted())
+        if (!LoadCompletion())
             CompleteAllEvents(0);
         else
             Complete();
     }
-
-
     // I ♥ recursion
     private void CompleteAllEvents(int index) {
         if (index == levelEvents.Count) {
@@ -50,12 +48,13 @@ public partial class Level : Node {
         CurrentLevel = this;
         LevelStarted?.Invoke();
     }
+    
     private void Complete() {
         LevelCompletions[Name] = true;
         LevelCompleted?.Invoke();
     }
-
-    private bool LoadLevelCompleted() {
+    
+    private bool LoadCompletion() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) GameData.GetData()["LevelCompletions"];
         
         if (LevelCompletions.ContainsKey(Name))
