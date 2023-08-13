@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://dlywmwh4smgpf"]
+[gd_scene load_steps=25 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
+[ext_resource type="Script" path="res://source/gameplay/level-events/EnemyWaveEvent.cs" id="2_vb13g"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
 [ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="3_f3mkb"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
@@ -13,7 +14,7 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="9_g8jdp"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="9_x5ao3"]
 [ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="10_0o2b1"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_vytqf"]
+[ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="13_472v1"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 [ext_resource type="Texture2D" uid="uid://dccipusu44sqd" path="res://assets/sprites/enviornment/interactables/chest.png" id="16_nqqvy"]
 [ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="17_m7cv1"]
@@ -52,9 +53,18 @@ animations = [{
 }]
 
 [node name="Level 2" type="Node"]
+
+[node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_68dsa")
-doors = [NodePath("Gameplay/Door 1")]
-waves = [NodePath("Waves/Wave 1")]
+doors = [NodePath("../Gameplay/Door 1")]
+
+[node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
+script = ExtResource("2_vb13g")
+wave = NodePath("../../Waves/Wave 1")
+
+[node name="2 (also a wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
+script = ExtResource("2_vb13g")
+wave = NodePath("../../Waves/Wave 2")
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
@@ -111,20 +121,19 @@ environment = ExtResource("13_w1ius")
 [node name="Waves" type="Node" parent="."]
 
 [node name="Wave 1" type="Node" parent="Waves"]
-script = ExtResource("12_vytqf")
+script = ExtResource("13_472v1")
 
 [node name="Weird enemy4" parent="Waves/Wave 1" instance=ExtResource("4_0ta41")]
 position = Vector2(926, 806)
 
-[node name="Base Enemy" parent="Waves/Wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("7_5xse6")]
+[node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
-animationPlayer = NodePath("")
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(717, 493)
 
 [node name="Wave 2" type="Node" parent="Waves"]
-script = ExtResource("12_vytqf")
+script = ExtResource("13_472v1")
 
 [node name="Weird enemy" parent="Waves/Wave 2" instance=ExtResource("4_0ta41")]
 position = Vector2(833, 396)

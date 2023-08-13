@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://b3iinhal2j4a1" path="res://assets/sprites/enviornment/doors/door.png" id="11_pi73g"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="12_48p24"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/EnemyWave.cs" id="12_78176"]
+[ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="12_78176"]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 

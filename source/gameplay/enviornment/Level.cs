@@ -1,75 +1,60 @@
 using Godot;
 using System;
-using System.Threading.Tasks;
-
+using System.Linq;
+using System.Collections.Generic;
 
 public partial class Level : Node {
 
-    public static Action LevelStarted {get; set;}
+    public static event Action LevelStarted;
     public static Level CurrentLevel {get; private set;} = new();
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
-
-
-    [ExportCategory("Doors")]
+    
     [Export]
     public Godot.Collections.Array<NodePath> doors = new();
+    public event Action LevelCompleted;
 
-    [ExportCategory("Waves")]
-    [Export]
-    private Godot.Collections.Array<NodePath> waves = new();
+    private List<LevelEvent> levelEvents;
 
     public Door GetLinkedDoor(string name) {
         foreach (NodePath doorPath in doors) {
             Door door = GetNode<Door>(doorPath);
-
             if (door.Name == name) return door;
         }
         return null;
     }
 
     public override void _Ready() {
+        levelEvents = GetChildren().Cast<LevelEvent>().ToList();
         LevelCompleted += GameData.Save;
         
-        ChangeLevel();
+        Change();
 
-        // okay this is really BAD but bear with me here
         if (!LoadLevelCompleted())
-            NextWave();
+            CompleteAllEvents(0);
         else
-            LevelCompleted?.Invoke();
+            Complete();
     }
 
-    private int waveAt = 0;
 
-    public static bool Temp() {
-        return CurrentLevel.waves.Count < CurrentLevel.waveAt;
-    }
-    public static EnemyWave CurrentWave => CurrentLevel.GetNode<EnemyWave>(CurrentLevel.waves[CurrentLevel.waveAt - 1]);
-
-    private async void NextWave() {
-        waveAt += 1;
-
-        await Task.Delay(500);
-        GD.Print(waveAt, "Wave At");
-        if (waveAt > waves.Count) {
-            LevelCompletions[Name] = true;
-            LevelCompleted?.Invoke();
+    // I ♥ recursion
+    private void CompleteAllEvents(int index) {
+        if (index == levelEvents.Count) {
+            Complete();
             return;
         }
-
-        CurrentWave.StartWave();
-        CurrentWave.WaveFinished += NextWave;
+        levelEvents[index].Start();
+        levelEvents[index].Finished += () => CompleteAllEvents(index + 1);
     }
 
-    private void ChangeLevel() {
+    private void Change() {
         CurrentLevel = this;
-        waveAt = 0;
         LevelStarted?.Invoke();
     }
+    private void Complete() {
+        LevelCompletions[Name] = true;
+        LevelCompleted?.Invoke();
+    }
 
-    public Action LevelCompleted;
-
-    
     private bool LoadLevelCompleted() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) GameData.GetData()["LevelCompletions"];
         
@@ -114,6 +99,7 @@ public class FreezeOrbMechanic {
     private static void Freeze(bool freeze) {
         isFrozen = freeze;
 
+        /* 
         if (Level.Temp()) return;
         
         Node.ProcessModeEnum processMode = freeze ? Node.ProcessModeEnum.Disabled : Node.ProcessModeEnum.Always;
@@ -122,5 +108,6 @@ public class FreezeOrbMechanic {
         // TODO: Replace this with making the shooting speed multiplier 0 and making its speed multiplier 0 too.
         // that way things like efffects will still apply to it.
         Level.CurrentWave.ProcessMode = processMode;
+        */
     }
 }

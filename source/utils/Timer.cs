@@ -1,16 +1,27 @@
 using System;
+using Godot;
 
 // w.i.p
 public struct Timer {
+
+    public static Timer NONE = new() { 
+        timerPause = new() {paused = true} 
+    };
+
     public bool loop = true;
+    public bool invokable = true;
+
     public event Action TimeOver = null;
     public Timer(double time) => this.time = time;
+    
     public double TimeElapsed {get; private set;} = 0;
     
-    double time;
+    readonly double time;
     TimerPause timerPause = new();
 
     public void Update(double delta) {
+        if (invokable == false) return;
+
         if (timerPause.paused) {
             timerPause.Update(delta);
             return;
@@ -18,8 +29,14 @@ public struct Timer {
 
         TimeElapsed += delta;
         if (TimeElapsed > time) {
+            // You can't invoke it again after it's already been invoked
             TimeOver?.Invoke();
-            if (loop) TimeElapsed = 0;
+            invokable = false;
+            // Unless we are looping, in which case we can.
+            if (loop) {
+                TimeElapsed = 0;
+                invokable = true;
+            }
         } 
     }
     
@@ -29,11 +46,12 @@ public struct Timer {
 
 struct TimerPause {
     double pauseTime;
-    public bool paused = true;
+    public bool paused = false;
     double pauseTimeElapsed = 0;
     
     public TimerPause(double pauseTime) { 
         this.pauseTime = pauseTime;
+        paused = true;
     }
 
     public void Update(double delta) {
