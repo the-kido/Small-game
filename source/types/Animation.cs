@@ -14,9 +14,9 @@ public class AnimationController {
     //I literally don't know how to solve this issue so this is what you're getting.
     bool animationPlayerFreed = false;
 
-    AnimationPlayer animationPlayer;
+    readonly AnimationPlayer animationPlayer;
     public AnimationController(AnimationPlayer animationTree) {
-        this.animationPlayer = animationTree;
+        animationPlayer = animationTree;
         animationPlayer.TreeExited += () => animationPlayerFreed = true;
 
         animationTree.AnimationFinished += OnAnimationComplete;

@@ -19,11 +19,12 @@ _data = {
 "new_animation": SubResource("Animation_7oqui")
 }
 
-[node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("Effect", "DamageableComponent", "CollisionShape")]
+[node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape")]
 z_index = 1
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_fluuk")
+animationPlayer = NodePath("AnimationPlayer")
 Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 CollisionShape = NodePath("CollisionShape2D")
