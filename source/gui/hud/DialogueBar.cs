@@ -13,18 +13,18 @@ public partial class DialogueBar : Control {
     [Export]
     public TextureRect PortraitRect;
     [Export]
-    public AnimationPlayer animationPlayer;
+    private AnimationPlayer animationPlayer;
+    public DialoguePlayer DialoguePlayer {get; private set;}
     
-    public void Enable() {
-        animationPlayer.Play("Open");
-        Visible = true;
+    public void Show(bool @bool) {
+        if (@bool)
+            animationPlayer.Play("Open");
+        else
+            animationPlayer.Play("Close");
     }
     
-    public void Disable() {
-        animationPlayer.Play("Close");
-    }
-
     public override void _Process(double delta) => DialoguePlayer.Update(delta);
+    
     public override void _Ready() {
         DialoguePlayer = new(this);
         
@@ -33,7 +33,6 @@ public partial class DialogueBar : Control {
             if (name == "Close") Visible = false;
         };
     }
-    public DialoguePlayer DialoguePlayer {get; private set;}
 }
 
 public class DialoguePlayer {
@@ -93,8 +92,11 @@ public class DialoguePlayer {
         }
     }
     private void UpdateToNextLine() {
+        // If asked, do not show the bar
+        bar.Show(currentDialogue[lineAt].showBar);
+        
         bar.Label.Text = bar.Label.Tr(currentDialogue[lineAt].text);
-
+        
         lineProgress = 0;
         bar.Label.VisibleCharacters = 0;
     }
@@ -105,7 +107,7 @@ public class DialoguePlayer {
         DialogueStarted?.Invoke(info);
         
         currentDialogue = dialogue;
-        bar.Enable();
+        bar.Show(true);
         
         // Initialize to the next line, otherwise as soon as the bar opens it will have old stuff on it
         UpdateToNextLine();
@@ -118,7 +120,7 @@ public class DialoguePlayer {
         lineAt = 0;
         bar.Label.VisibleCharacters = 0;
 
-        bar.Disable();
+        bar.Show(false);
         currentDialogue = Array.Empty<DialogueLine>();
     }
 

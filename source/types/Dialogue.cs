@@ -25,15 +25,15 @@ public static class DialogueLines {
 }
 
 public struct DialogueLine {
-    public static readonly DialogueLine Empty = new("", Portraits.None);
+    public static readonly DialogueLine Hidden = new("", Portraits.None) {showBar = false};
+
     public string text;
     public float charactersPerSecond = 10;
-    public Portrait portrait; 
+    public bool showBar = true;
+    public Portrait portrait;
     public DialogueLine(string text, Portrait portrait) {
-        
         this.text = text;
         this.portrait = portrait;
-        
     }
 }
 

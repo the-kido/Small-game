@@ -13,7 +13,7 @@ public partial class Level : Node {
     public Godot.Collections.Array<NodePath> doors = new();
     public event Action LevelCompleted;
 
-    private List<LevelEvent> levelEvents;
+    private List<LevelCriteria> levelEvents;
 
     public Door GetLinkedDoor(string name) {
         foreach (NodePath doorPath in doors) {
@@ -24,7 +24,7 @@ public partial class Level : Node {
     }
 
     public override void _Ready() {
-        levelEvents = GetChildren().Cast<LevelEvent>().ToList();
+        levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
         LevelCompleted += GameData.Save;
         
         Change();

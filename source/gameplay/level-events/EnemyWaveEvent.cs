@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-public partial class EnemyWaveEvent : LevelEvent {
+public partial class EnemyWaveEvent : LevelCriteria {
 
     [Export]
     private EnemyWave wave;
