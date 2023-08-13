@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d4l2e7gbmexuq"
-path="res://.godot/imported/happy.png-69439063e7637da039c191f362f84bbe.ctex"
+path="res://.godot/imported/happy.png-850be0083adc691e722c4d4afbf250e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/portraits/first_boss/happy.png"
-dest_files=["res://.godot/imported/happy.png-69439063e7637da039c191f362f84bbe.ctex"]
+source_file="res://assets/content/portraits/first_boss/sprite-sheet/happy.png"
+dest_files=["res://.godot/imported/happy.png-850be0083adc691e722c4d4afbf250e3.ctex"]
 
 [params]
 

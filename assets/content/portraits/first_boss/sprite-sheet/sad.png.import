@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://buv67mn8vlmfs"
-path="res://.godot/imported/sad.png-0acee9a3e20a853fe073a82812e1a77a.ctex"
+path="res://.godot/imported/sad.png-e387844cf7207ca9db78620e4e94f0de.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/portraits/first_boss/sad.png"
-dest_files=["res://.godot/imported/sad.png-0acee9a3e20a853fe073a82812e1a77a.ctex"]
+source_file="res://assets/content/portraits/first_boss/sprite-sheet/sad.png"
+dest_files=["res://.godot/imported/sad.png-e387844cf7207ca9db78620e4e94f0de.ctex"]
 
 [params]
 
