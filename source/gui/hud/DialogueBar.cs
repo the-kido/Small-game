@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 
 // This should just make it easier to customize the dialogue
-public record DialogueInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
+public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
 
 public partial class DialogueBar : Control {
     [Export]
@@ -18,7 +18,12 @@ public partial class DialogueBar : Control {
     private AnimationPlayer animationPlayer;
     public ConversationController ConversationController {get; private set;}
     
+    bool showing = false;
     public void Show(bool @bool) {
+        // Don't re-play the animation
+        if (showing == @bool) return;
+        else showing = @bool;
+
         if (@bool)
             animationPlayer.Play("Open");
         else
@@ -111,7 +116,7 @@ internal interface ConversationPlayer {
 public class ConversationController {
     // Publicly referable fields / events
     public Action Clicked;
-    public event Action<DialogueInfo> Started;
+    public event Action<ConversationInfo> Started;
     public event Action Ended;
  
     // Fields
@@ -148,7 +153,7 @@ public class ConversationController {
         }
     }
     
-    public void Start(ConversationItem[] dialogue, DialogueInfo info) {
+    public void Start(ConversationItem[] dialogue, ConversationInfo info) {
         if (dialogue.Length == 0)
             throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
         itemAt = -1;

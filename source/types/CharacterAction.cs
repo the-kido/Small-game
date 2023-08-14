@@ -5,16 +5,16 @@ using Godot;
 // - Playing an animation once
 // - Playing an animation several times
 
-
 public partial class CharacterAction : ConversationItem {
     [Export]
     // this is temporary. this class should have an "animation player" instance within it i think?
-    CharacterBody2D character;
+    Character character;
     [Export]
     StringName animationName;
     
     [ExportGroup("Optional")]
     [Export]
     Vector2 moveToPosition = new();
+    [Export]
     float timeToStopLoopingAnimation;
 }

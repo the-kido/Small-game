@@ -13,7 +13,7 @@ public partial class DialogueInteractable : Interactable {
     
     bool ignoreSpam;
 
-    DialogueInfo dialogueInfo => new(true, showPortraitImage);
+    ConversationInfo dialogueInfo => new(true, showPortraitImage);
 
     protected override void OnInteracted(Player player) {
         if (ignoreSpam) return;

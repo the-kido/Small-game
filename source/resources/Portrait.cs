@@ -12,10 +12,12 @@ public partial class Portrait : Resource  {
     [Export]
     public float fps = 10;
     
-    public Texture2D CurrentSprite => sprites?.GetFrameTexture(animationName, CurrentFrame);
+
+    public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
+    int spriteCount => sprites.GetFrameCount(animationName);
     int CurrentFrame => (int) Mathf.Floor( (float) progress);
-    bool IsAnimated => sprites.GetFrameCount(animationName) > 1;
-    bool IsFinished => CurrentFrame == sprites.GetFrameCount(animationName);
+    bool IsAnimated => spriteCount > 1;
+    bool IsFinished => CurrentFrame == spriteCount;
 
     double progress = 0;
 
@@ -27,7 +29,7 @@ public partial class Portrait : Resource  {
         
         if (IsFinished) {
             if (loopAnimation) progress = 0;
-            else return;
+            else progress = spriteCount - 1;
         }
     }
 }

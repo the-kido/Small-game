@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cokuv20iypbm"]
+
+[ext_resource type="Script" path="res://source/types/Character.cs" id="1_yhpmp"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8vijk"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"standing",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_77hh0"]
+size = Vector2(82, 142)
+
+[sub_resource type="Animation" id="Animation_rqq2j"]
+resource_name = "standing"
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wo3p0"]
+_data = {
+"standing": SubResource("Animation_rqq2j")
+}
+
+[node name="Character" type="CharacterBody2D"]
+script = ExtResource("1_yhpmp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8vijk")
+animation = &"standing"
+
+[node name="Area2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_77hh0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wo3p0")
+}
