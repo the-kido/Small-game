@@ -40,8 +40,9 @@ public partial class Level : Node {
             Complete();
             return;
         }
-        levelEvents[index].Start();
         levelEvents[index].Finished += () => CompleteAllEvents(index + 1);
+        
+        levelEvents[index].CallDeferred("Start");
     }
 
     private void Change() {

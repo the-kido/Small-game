@@ -7,3 +7,5 @@
 script = ExtResource("1_p5yjv")
 sprites = ExtResource("2_7ayex")
 animationName = "happy"
+loopAnimation = true
+fps = 3.0

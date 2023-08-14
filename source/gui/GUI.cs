@@ -23,7 +23,7 @@ public partial class GUI : CanvasLayer {
     // Make easier access to important member fields of HUD above for encapsulation purposes
     public ToggleAttackButton AttackButton => HUD.AttackButton;
     public DialogueBar DialogueBar => HUD.dialogueBar;
-    public DialoguePlayer DialoguePlayer => HUD.dialogueBar.DialoguePlayer;
+    public ConversationController DialoguePlayer => HUD.dialogueBar.ConversationController;
     public HealthLabelTemp HealthLable => HUD.healthLable;
     public CoinsLabel CoinsLable => HUD.coinsLabel;
     public InteractButton InteractButton => HUD.interactButton;

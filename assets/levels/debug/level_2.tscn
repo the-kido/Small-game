@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=28 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -7,7 +7,9 @@
 [ext_resource type="Script" path="res://source/gameplay/level-events/DialogueEvent.cs" id="3_8uxyj"]
 [ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="3_f3mkb"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
+[ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/content/portraits/first_boss/happy.tres" id="4_2js0t"]
 [ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="4_inxih"]
+[ext_resource type="Script" path="res://source/types/DialogueLine.cs" id="4_w35q5"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="5_vkma2"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
 [ext_resource type="Resource" uid="uid://ckp47yb06udk5" path="res://assets/levels/debug/weird_door.tres" id="8_cecs4"]
@@ -59,13 +61,17 @@ animations = [{
 script = ExtResource("1_68dsa")
 doors = [NodePath("../Gameplay/Door 1")]
 
+[node name="1 part 2 (break)" type="Node" parent="Level Info"]
+script = ExtResource("3_8uxyj")
+
+[node name="Node" type="Node" parent="Level Info/1 part 2 (break)"]
+script = ExtResource("4_w35q5")
+text = "AGRO ENEMY DEATH-1"
+portrait = ExtResource("4_2js0t")
+
 [node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_vb13g")
 wave = NodePath("../../Waves/Wave 1")
-
-[node name="1 part 2 (break)" type="Node" parent="Level Info"]
-script = ExtResource("3_8uxyj")
-dialogue = "Interact with Boulder"
 
 [node name="2 (also a wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_vb13g")
@@ -154,7 +160,11 @@ position = Vector2(366, 604)
 scale = Vector2(4, 4)
 texture = ExtResource("16_nqqvy")
 
-[node name="Interactable" parent="." instance=ExtResource("17_m7cv1")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("dialogueLines") instance=ExtResource("17_m7cv1")]
+frame_progress = 0.876009
 script = ExtResource("18_ik052")
 dialogueName = "Interact with Boulder"
 showPortraitImage = false
+dialogueLines = []
+
+[node name="Node" type="Node" parent="Interactable"]

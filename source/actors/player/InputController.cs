@@ -235,11 +235,11 @@ public class DialogueController {
 	// It'll cause bugs I swear
 
 	private void DialogueControlInit() {
-		GUI.DialoguePlayer.DialogueStarted += (info) => inputController.FilterNonUiInput = info.PausePlayerInput;
-		GUI.DialoguePlayer.DialogueEnded += () => inputController.FilterNonUiInput = false; 
+		GUI.DialoguePlayer.Started += (info) => inputController.FilterNonUiInput = info.PausePlayerInput;
+		GUI.DialoguePlayer.Ended += () => inputController.FilterNonUiInput = false; 
 	}
 	
-	public void Continue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.OnClicked?.Invoke();}	
+	public void Continue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.Clicked?.Invoke();}	
 }
 
 public class InteractablesButtonController {

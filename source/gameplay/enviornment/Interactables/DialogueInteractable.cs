@@ -1,4 +1,5 @@
 using Godot;
+using System.Linq;
 
 public partial class DialogueInteractable : Interactable {
 
@@ -6,6 +7,9 @@ public partial class DialogueInteractable : Interactable {
     private string dialogueName;
     [Export]
     bool showPortraitImage;
+    
+    [Export]
+    Godot.Collections.Array<ConversationItem> dialogueLines;
     
     bool ignoreSpam;
 
@@ -17,14 +21,14 @@ public partial class DialogueInteractable : Interactable {
 
         SetIndicatorVisibility(player, false);
         
-        player.GUI.DialoguePlayer.Start(DialogueLines.Lines[dialogueName], dialogueInfo);
+        player.GUI.DialoguePlayer.Start(dialogueLines.ToArray(), dialogueInfo);
 
-        player.GUI.DialoguePlayer.DialogueEnded += () => IgnoreSpam(player); 
+        player.GUI.DialoguePlayer.Ended += () => IgnoreSpam(player); 
 	}
 
     private void IgnoreSpam(Player player) {
         ignoreSpam = false;
         SetIndicatorVisibility(player, true);
-        player.GUI.DialoguePlayer.DialogueEnded -= () => IgnoreSpam(player);
+        player.GUI.DialoguePlayer.Ended -= () => IgnoreSpam(player);
     }
 }
