@@ -8,13 +8,13 @@ using Godot;
 public partial class CharacterAction : ConversationItem {
     [Export]
     // this is temporary. this class should have an "animation player" instance within it i think?
-    Character character;
+    public Character character;
     [Export]
-    StringName animationName;
+    public StringName animationName;
     
     [ExportGroup("Optional")]
     [Export]
-    Vector2 moveToPosition = new();
+    public Vector2 moveToPosition = new();
     [Export]
-    float timeToStopLoopingAnimation;
+    public float timeToStopLoopingAnimation;
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=31 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -24,6 +24,7 @@
 [ext_resource type="Texture2D" uid="uid://dccipusu44sqd" path="res://assets/sprites/enviornment/interactables/chest.png" id="16_nqqvy"]
 [ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="17_m7cv1"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/DialogueInteractable.cs" id="18_ik052"]
+[ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="25_o38qo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
 size = Vector2(83, 143)
@@ -71,12 +72,14 @@ script = ExtResource("4_w35q5")
 text = "AGRO ENEMY DEATH-1"
 portrait = ExtResource("4_2js0t")
 
-[node name="Node3" type="Node" parent="Level Info/1 part 2 (break)"]
+[node name="Node3" type="Node" parent="Level Info/1 part 2 (break)" node_paths=PackedStringArray("character")]
 script = ExtResource("5_jyeji")
+character = NodePath("../../../Character")
+animationName = &"dancing"
 
 [node name="Node2" type="Node" parent="Level Info/1 part 2 (break)"]
 script = ExtResource("4_w35q5")
-text = "AGRO ENEMY DEATH-1"
+text = "AGRO ENEMY DEATH-2"
 portrait = ExtResource("5_o0u5x")
 
 [node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
@@ -115,11 +118,10 @@ TargetIndicator = NodePath("../TargetEnemyCursor")
 
 [node name="Gameplay" type="Node2D" parent="."]
 
-[node name="Door 1" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("levelSwitcher", "doorSprite")]
+[node name="Door 1" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("doorSprite")]
 position = Vector2(1012, 502)
 collision_mask = 2
 script = ExtResource("9_g8jdp")
-levelSwitcher = NodePath("Level Switcher")
 doorOpeningDirection = Vector2i(-1, 0)
 doorSprite = NodePath("AnimatedSprite2D")
 condition = ExtResource("8_cecs4")
@@ -150,7 +152,6 @@ position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
-MoveSpeed = 0
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(717, 493)
@@ -180,3 +181,6 @@ showPortraitImage = false
 dialogueLines = []
 
 [node name="Node" type="Node" parent="Interactable"]
+
+[node name="Character" parent="." instance=ExtResource("25_o38qo")]
+position = Vector2(380, 356)

@@ -41,7 +41,6 @@ public partial class Level : Node {
             return;
         }
         levelEvents[index].Finished += () => CompleteAllEvents(index + 1);
-        
         levelEvents[index].CallDeferred("Start");
     }
 

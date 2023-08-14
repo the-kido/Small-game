@@ -4,7 +4,7 @@ using Godot;
 // w.i.p
 public struct Timer {
 
-    public static Timer NONE = new() { 
+    public static readonly Timer NONE = new() { 
         timerPause = new() {paused = true} 
     };
 
@@ -12,6 +12,7 @@ public struct Timer {
     public bool invokable = true;
 
     public event Action TimeOver = null;
+    
     public Timer(double time) => this.time = time;
     
     public double TimeElapsed {get; private set;} = 0;

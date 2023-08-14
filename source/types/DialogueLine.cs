@@ -15,5 +15,4 @@ public partial class DialogueLine : ConversationItem {
     public float charactersPerSecond = 10;
     [Export]
     public bool showBar = true;
-
 }
