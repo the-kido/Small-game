@@ -20,7 +20,6 @@ public partial class DialogueBar : Control {
         if (showing == @bool) return;
         else showing = @bool;
 
-        GD.Print(@bool);
         if (@bool) {
             animationPlayer.Play("Open");
             Visible = true;
@@ -41,129 +40,10 @@ public partial class DialogueBar : Control {
     }
 }
 
-internal class DialoguePlayer : ConversationPlayer {
-    private readonly ConversationController conversationController;
-    private readonly DialogueBar bar;
-    
-    public DialoguePlayer(ConversationController conversationController, DialogueBar bar) {
-        this.conversationController = conversationController;
-        this.bar = bar;
-    }
+// TODO: Add a way to call an animation that doesn't close the 
+// bar but still loops or plays an animation and QUICKLY
+// Such that it is basically "part of" the next line being spokened
 
-    double lineProgress;
-
-    // Helpful expression-bodied members used throughout the class
-    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length;
-    char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
-
-    public void UpdatePortraitImage(double delta) {
-        if (nextLine.portrait.CurrentSprite is null) return;
-
-        nextLine.portrait.PlayAnimation(delta);
-        bar.PortraitRect.Texture = nextLine.portrait.CurrentSprite;
-    }
-
-    public void Update(double delta) {
-
-        // Update portrait even if the text has stopped typing
-        UpdatePortraitImage(delta);
-
-        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
-        
-        // Skip spaces.
-        if (CurrentCharacter == ' ') lineProgress += 1;
-        lineProgress += delta * nextLine.charactersPerSecond;
-        
-        bar.Label.VisibleCharacters = (int) lineProgress;
-    }
-
-    DialogueLine nextLine;
-    public void Start(DialogueLine nextLine) {
-        this.nextLine = nextLine;
-        
-        // If asked, do not show the bar
-        bar.Show(nextLine.showBar);
-
-        bar.Label.Text = bar.Label.Tr(nextLine.text);
-        
-        lineProgress = 0;
-        bar.Label.VisibleCharacters = 0;
-    }
-
-    // Called when click
-    public void Skip() {
-        if (!IsPhraseFinished) {
-            bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
-        } else {
-            conversationController.ContinueConversation();
-        }
-    }
-}
-
-internal class CharacterActionPlayer : ConversationPlayer {
-    // these are the 3 ways that this thing can be doned
-    #region #1
-    private void MoveTo(double delta) {
-        bool finished = action.character.MoveTo(delta, action.moveToPosition);
-        if (finished) conversationController.ContinueConversation();
-    }
-    #endregion #1
-
-    #region #2
-    private void PlayAnimationOnce() {
-        if (action.character.AnimationPlayer.IsPlaying()) return;
-        
-        action.character.AnimationPlayer.Play(action.animationName);
-        action.character.AnimationPlayer.AnimationFinished += AnimationFinished;
-    }
-    private void AnimationFinished(StringName stringName) {
-        action.character.AnimationPlayer.AnimationFinished -= AnimationFinished;
-        conversationController.ContinueConversation();
-    }
-    #endregion #2
-
-    #region #3
-    Timer timerToStopLoopingAnimation;
-    #endregion #3
-
-    public void Update(double delta) {
-
-        if (action.moveToPosition != Vector2.Zero) {
-            MoveTo(delta);
-            return;
-        }
-
-        if (action.timeToStopLoopingAnimation is not 0) {
-            timerToStopLoopingAnimation.Update(delta);
-            return;
-        }
-
-        // If the other criteria above pass, the only option left is to play the animation once.
-        PlayAnimationOnce();
-    }
-
-    private readonly ConversationController conversationController;
-    private readonly DialogueBar bar;
-
-    public CharacterActionPlayer(ConversationController conversationController, DialogueBar bar) {
-        this.conversationController = conversationController;
-        this.bar = bar;
-    }
-
-    CharacterAction action;
-    public void Start(CharacterAction action) {
-        this.action = action;
-        bar.Show(false);
-
-        timerToStopLoopingAnimation = new(action.timeToStopLoopingAnimation);
-        timerToStopLoopingAnimation.TimeOver += () => GD.Print("fin");
-        timerToStopLoopingAnimation.TimeOver += conversationController.ContinueConversation;
-    }
-}
-
-internal interface ConversationPlayer {
-    void Update(double delta);
-}
 
 public class ConversationController {
     // Publicly referable fields / events
@@ -227,12 +107,17 @@ public class ConversationController {
             return;
         }
 
-        GD.Print("continiiing a t", itemAt);
         if (currentItem is DialogueLine line)
             dialoguePlayer.Start(line);
         
         if (currentItem is CharacterAction action)
             characterActionPlayer.Start(action);
+
+        // Play the animation, then quickly continue to the next thingy
+        if (currentItem is CharacterAnimation characterAnimation) {
+            characterAnimationPlayer.Start(characterAnimation);
+            ContinueConversation();
+        }
     }
 
     private void Close() {
@@ -246,6 +131,7 @@ public class ConversationController {
 
     readonly DialoguePlayer dialoguePlayer;
     readonly CharacterActionPlayer characterActionPlayer;
+    readonly CharacterAnimationPlayer characterAnimationPlayer;
 
     public ConversationController(DialogueBar bar) {
         this.bar = bar;
@@ -253,5 +139,6 @@ public class ConversationController {
 
         dialoguePlayer = new(this, bar);
         characterActionPlayer = new(this, bar);
+        characterAnimationPlayer = new();
     }
 }

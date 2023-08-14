@@ -115,7 +115,6 @@ AnimationPlayer = NodePath("AnimationPlayer")
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_8vijk")
 animation = &"vibrating"
-frame = 1
 
 [node name="Area2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2.5)

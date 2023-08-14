@@ -10,7 +10,7 @@
 [ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/content/portraits/first_boss/happy.tres" id="4_2js0t"]
 [ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="4_inxih"]
 [ext_resource type="Script" path="res://source/types/DialogueLine.cs" id="4_w35q5"]
-[ext_resource type="Script" path="res://source/types/CharacterAction.cs" id="5_jyeji"]
+[ext_resource type="Script" path="res://source/types/CharacterAnimation.cs" id="5_7871l"]
 [ext_resource type="Resource" uid="uid://dm05iyuyywyo2" path="res://assets/content/portraits/first_boss/sad.tres" id="5_o0u5x"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="5_vkma2"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
@@ -73,9 +73,9 @@ text = "AGRO ENEMY DEATH-1"
 portrait = ExtResource("4_2js0t")
 
 [node name="Node3" type="Node" parent="Level Info/1 part 2 (break)" node_paths=PackedStringArray("character")]
-script = ExtResource("5_jyeji")
+script = ExtResource("5_7871l")
 character = NodePath("../../../Character")
-animationName = &"dancing"
+animationName = &"vibrate"
 
 [node name="Node2" type="Node" parent="Level Info/1 part 2 (break)"]
 script = ExtResource("4_w35q5")
@@ -93,7 +93,6 @@ wave = NodePath("../../Waves/Wave 2")
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
 GUI = NodePath("../GUI/GUI")
-MoveSpeed = 0
 
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
