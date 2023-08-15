@@ -1,17 +1,24 @@
 using Godot;
 using System;
 using LootTables;
-using System.Diagnostics.Contracts;
+using System.Security.AccessControl;
 
-public partial class Chest : Interactable {
+public partial class Chest : Sprite2D {
 
     [Export]
     string chestLootTable;
 
+    [Export]
+    Interactable interactable;
+
+    [Export]
+    Sprite2D itemShowcase;
+
     IChestItem containedWeapon;
 
     public override void _Ready() {
-        base._Ready();
+        interactable.Interacted += OnInteracted;
+
         float chance = 0;
         float random = new Random().NextSingle();
 
@@ -34,7 +41,7 @@ public partial class Chest : Interactable {
             containedWeapon = oldWeapon?.PackedScene.Instantiate<IChestItem>();
 
             if (containedWeapon is null) {
-                QueueFree();
+                Disable(containedWeaponInstance.Icon);
             }
             return;
         }
@@ -44,7 +51,25 @@ public partial class Chest : Interactable {
         }
     }
 
-    protected override void OnInteracted(Player player) {
+    Timer timer = Timer.NONE;
+    private void Disable(Texture2D sprite) {
+        interactable.QueueFree();
+        Modulate = new(0.8f, 0.8f, 0.9f);
+        
+        itemShowcase.Texture = sprite;
+        
+        timer = new(5);
+        timer.TimeOver += FullyDisable;
+    }
+    // fantastic
+    private void FullyDisable() {
+        itemShowcase.QueueFree();
+        timer = Timer.NONE;
+    }
+
+    public override void _Process(double delta) => timer.Update(delta);
+
+    private void OnInteracted(Player player) {
         
         switch (containedWeapon.Type) {
             case ChestItemType.WEAPON:
@@ -52,7 +77,7 @@ public partial class Chest : Interactable {
                     Weapon weapon = player.WeaponManager.Weapons[i];
                     if (weapon is null) {
                         player.WeaponManager.AddWeapon((Weapon) containedWeapon, i);
-                        QueueFree();
+                        Disable(containedWeapon.Icon);
                         return;
                     }
                 }
@@ -60,13 +85,12 @@ public partial class Chest : Interactable {
             case ChestItemType.SHIELD:
                 if (player.ShieldManager.HeldShield is null) {
                     player.ShieldManager.ChangeShield((Shield) containedWeapon);
-                    QueueFree();
+                    Disable(containedWeapon.Icon);
                     return;
                 }
                 break;
         }
 
-        // figure out how i'm gonna randomize this.
         player.GUI.chestMenu.OnSelectionMade += (oldWeaponIndex) => SwitchItems(oldWeaponIndex, player);
 
         player.GUI.OpenChestMenu(containedWeapon);

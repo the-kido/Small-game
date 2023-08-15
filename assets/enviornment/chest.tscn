@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwbjqawig7pct"]
+
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/Chest.cs" id="1_8vto3"]
+[ext_resource type="Texture2D" uid="uid://dccipusu44sqd" path="res://assets/sprites/enviornment/interactables/chest.png" id="1_ui077"]
+[ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="2_ol4j4"]
+
+[node name="Chest" type="Sprite2D" node_paths=PackedStringArray("interactable", "itemShowcase")]
+scale = Vector2(4, 4)
+texture = ExtResource("1_ui077")
+script = ExtResource("1_8vto3")
+interactable = NodePath("Interactable")
+itemShowcase = NodePath("New Item Showcase")
+
+[node name="Interactable" parent="." instance=ExtResource("2_ol4j4")]
+position = Vector2(0, -13.5)
+scale = Vector2(1, 1)
+
+[node name="New Item Showcase" type="Sprite2D" parent="."]
+position = Vector2(0, -5.5)
+scale = Vector2(1.5, 1.5)

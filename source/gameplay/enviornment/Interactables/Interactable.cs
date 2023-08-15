@@ -1,24 +1,24 @@
+using System;
 using Godot;
 using KidoUtils;
 
-public abstract partial class Interactable : AnimatedSprite2D {
+public partial class Interactable : AnimatedSprite2D {
 
     [Export]
     protected Area2D range;
-    [Export]
-    protected Sprite2D subject;
     
-    protected abstract void OnInteracted(Player player);
+    public event Action<Player> Interacted;
 
-    protected void SetIndicatorVisibility(Player player, bool isVisible) {
-        player.GUI.InteractButton.Enable(isVisible);        
+    public void SetIndicatorVisibility(Player player, bool isVisible) {
+        player.GUI.InteractButton.Enable(isVisible);
+        Visible = isVisible;
     }
 
     private void AttachEvent(Player player, bool attach) {
         if (attach)
-            player.InputController.InteractablesButtonController.Interacted += OnInteracted;
+            player.InputController.InteractablesButtonController.Interacted += Interacted;
         else
-            player.InputController.InteractablesButtonController.Interacted -= OnInteracted;
+            player.InputController.InteractablesButtonController.Interacted -= Interacted;
     }
 
     // NOTE: This will 100% break when there are several players

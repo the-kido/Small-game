@@ -1,7 +1,9 @@
 using Godot;
 using System.Linq;
 
-public partial class DialogueInteractable : Interactable {
+public partial class DialogueInteractable : Node2D {
+    [Export]
+    Interactable interactable;
 
     [Export]
     private string dialogueName;
@@ -15,11 +17,15 @@ public partial class DialogueInteractable : Interactable {
 
     ConversationInfo dialogueInfo => new(true, showPortraitImage);
 
-    protected override void OnInteracted(Player player) {
+    public override void _Ready() {
+        interactable.Interacted += OnInteracted;
+    }
+
+    private void OnInteracted(Player player) {
         if (ignoreSpam) return;
         ignoreSpam = true;
 
-        SetIndicatorVisibility(player, false);
+        interactable.SetIndicatorVisibility(player, false);
         
         player.GUI.DialoguePlayer.Start(dialogueLines.ToArray(), dialogueInfo);
 
@@ -28,7 +34,7 @@ public partial class DialogueInteractable : Interactable {
 
     private void IgnoreSpam(Player player) {
         ignoreSpam = false;
-        SetIndicatorVisibility(player, true);
+        interactable.SetIndicatorVisibility(player, true);
         player.GUI.DialoguePlayer.Ended -= () => IgnoreSpam(player);
     }
 }
