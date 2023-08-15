@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=62 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_gr76c"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://source/actors/player/ShieldManager.cs" id="8_kpbfh"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="8_spu4k"]
 [ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="9_6fn6c"]
+[ext_resource type="PackedScene" uid="uid://i7atdvqwtdf4" path="res://source/weapons/push.tscn" id="10_1ufrw"]
 [ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="11_laf6i"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
@@ -691,7 +692,10 @@ position = Vector2(0, 20)
 script = ExtResource("2_v0jdn")
 reloadVisual = NodePath("../On Player HUD/Reload Visual")
 
+[node name="Push" parent="Hand" instance=ExtResource("10_1ufrw")]
+
 [node name="Base Weapon" parent="Hand" instance=ExtResource("9_6fn6c")]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)

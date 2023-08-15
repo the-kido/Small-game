@@ -8,10 +8,8 @@ public sealed partial class ChargedGun : Gun {
     // Overriding relavent properties / methods
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
     
-
 	public static readonly PackedScene PackedSceneResource = ResourceLoader.Load<PackedScene>("res://source/weapons/BaseGun.tscn");
     public override PackedScene PackedScene {get => PackedSceneResource;}
-
 
 	protected override DamageInstance Damage => new(Player) {
         statusEffect = new FireEffect(), 

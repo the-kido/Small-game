@@ -2,8 +2,7 @@ using Godot;
 using System;
 
 // "hand"
-public partial class WeaponManager : Node2D{
-
+public partial class WeaponManager : Node2D {
     public int SelectedSlot {get; private set;} = 0;
     // This is for the visuals
     public Action<Weapon, int> HeldWeaponChanged;

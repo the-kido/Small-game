@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://i7atdvqwtdf4"]
+
+[ext_resource type="Script" path="res://source/weapons/Push.cs" id="1_clipd"]
+[ext_resource type="Texture2D" uid="uid://dmgqunuv56tv" path="res://assets/sprites/enemies/weird_enemy.png" id="2_6j1rx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g1x5u"]
+radius = 97.0206
+
+[node name="Push" type="Node2D" node_paths=PackedStringArray("reachArea", "sprite")]
+script = ExtResource("1_clipd")
+reachArea = NodePath("Area2D")
+sprite = NodePath("Sprite2D")
+UsesReloadVisuals = true
+ReloadSpeed = 2.0
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(37, 0)
+shape = SubResource("CircleShape2D_g1x5u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.57079
+scale = Vector2(6.75, 6.75)
+texture = ExtResource("2_6j1rx")

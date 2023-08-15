@@ -9,9 +9,7 @@ public enum ChestItemType {
 public interface IChestItem {
 	public abstract string Description {get;}
 	public abstract Texture2D Icon {get;}
-
 	public abstract ChestItemType Type {get;} 
-
 }
 
 public abstract partial class Weapon : Node2D, IChestItem {
@@ -40,9 +38,7 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	protected WeaponManager Hand => GetParent<WeaponManager>();
 	protected Player Player => Hand?.GetParent<Player>();
 
-    public override void _Ready() {
-		Init();
-	}
+    public override void _Ready() => Init();
 
 	public void Enable(bool enable) {
         Visible = enable;
