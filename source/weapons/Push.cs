@@ -50,7 +50,10 @@ Pushes things, but deals no damage
         if (y < 10) y = 0;
 
 
-        foreach (CharacterBody2D entity in entities) {
+        foreach (Actor entity in entities) {
+            // This is in case the entity dies to the void. We don't wanna play with the velocity anymore if that's the case.
+            if (!entity.DamageableComponent.IsAlive) return;
+
             entity.Velocity = DegreeAsVector() * y;
         }
         

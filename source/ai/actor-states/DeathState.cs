@@ -1,16 +1,13 @@
-using KidoUtils;
 using Godot;
 using System.Threading.Tasks;
 
-public sealed class DeathState : AIState
-{
+public sealed class DeathState : AIState {
     DamageInstance damageInstance;
     public DeathState(DamageInstance damageInstance) {
         this.damageInstance = damageInstance; 
     }
     
     public async override void Init() {
-
         //Temporary implementation jsut to make sure that this works the way I think it would yknow.
         //in reality, i shoulda put all of this in update and used Delta but idk what I was thinking before.
         int deathSpeed = 1;
@@ -19,20 +16,18 @@ public sealed class DeathState : AIState
         actor.Velocity = start;
 
         Color color = new Color(1,1,1,1);
+        
         for (float i = 10; i < 100; i+= deathSpeed) {
-            color.A = 1 - i/100;
+            color.A = 1 - i / 100;
             actor.Modulate = color;
 
             float math = Mathf.Log(i/100) + 1;
-            actor.Velocity = start.Lerp(Vector2.Zero, Mathf.Log(i/100) + 1);
+            actor.Velocity = start.Lerp(Vector2.Zero, math);
+
             await Task.Delay(10);
         }
         actor.QueueFree();
     }
 
-    public override void Update(double delta) {
-
-
-
-    }
+    public override void Update(double delta) {}
 }

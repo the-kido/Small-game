@@ -659,6 +659,7 @@ Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
+MoveSpeed = null
 
 [node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("playerAnimationTree")]
 script = ExtResource("1_30x0s")
