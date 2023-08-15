@@ -1,9 +1,9 @@
 using System;
 using Godot;
 
-
 // This should just make it easier to customize the dialogue
 public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
+public abstract partial class ConversationItem : Node {}
 
 public partial class DialogueBar : Control {
     [Export]
@@ -44,7 +44,6 @@ public partial class DialogueBar : Control {
 // bar but still loops or plays an animation and QUICKLY
 // Such that it is basically "part of" the next line being spokened
 
-
 public class ConversationController {
     // Publicly referable fields / events
     public Action Clicked;
@@ -69,7 +68,6 @@ public class ConversationController {
             characterActionPlayer.Update(delta);
     }
 
-
     // rename to "continueDIalouge"
     public void OnClicked() {
         // Make sure that the player cannot click on the dialogue bar as it's going down.
@@ -84,7 +82,6 @@ public class ConversationController {
             return;
         }
     }
-    
     public void Start(ConversationItem[] dialogue, ConversationInfo info) {
         if (dialogue.Length == 0)
             throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
@@ -97,7 +94,6 @@ public class ConversationController {
         
         ContinueConversation();       
     }
-
     public void ContinueConversation() {
         // Initialize to the next line, otherwise as soon as the bar opens it will have old stuff on it
         itemAt += 1;

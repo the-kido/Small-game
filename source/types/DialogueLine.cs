@@ -1,10 +1,6 @@
 using Godot;
 
-public abstract partial class ConversationItem : Node {}
-
 public partial class DialogueLine : ConversationItem {
-    // public static readonly DialogueLine Hidden = new("", Portrait.None) {showBar = false};
-
     [Export]
     public string text;
     [Export]
@@ -13,10 +9,7 @@ public partial class DialogueLine : ConversationItem {
     [ExportGroup("Optional")]
     [Export]
     public float charactersPerSecond = 10;
-    [Export]
-    public bool showBar = true;
 }
-
 
 public class DialoguePlayer {
     private readonly ConversationController conversationController;
@@ -39,7 +32,6 @@ public class DialoguePlayer {
     }
 
     public void Update(double delta) {
-
         // Update portrait even if the text has stopped typing
         UpdatePortraitImage(delta);
 
@@ -56,8 +48,7 @@ public class DialoguePlayer {
     public void Start(DialogueLine nextLine) {
         this.nextLine = nextLine;
         
-        // If asked, do not show the bar
-        bar.Show(nextLine.showBar);
+        bar.Show(true);
 
         bar.Label.Text = bar.Label.Tr(nextLine.text);
         
@@ -67,10 +58,9 @@ public class DialoguePlayer {
 
     // Called when click
     public void Skip() {
-        if (!IsPhraseFinished) {
+        if (!IsPhraseFinished)
             bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
-        } else {
+        else
             conversationController.ContinueConversation();
-        }
     }
 }

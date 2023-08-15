@@ -10,11 +10,6 @@ public partial class EnemyWaveEvent : LevelCriteria {
 
     public override void Start() {
         wave.CallDeferred("StartWave");
-        wave.WaveFinished += test;
-    }
-
-    private void test() {
-        
-        Finished?.Invoke();
+        wave.WaveFinished += () => Finished?.Invoke();
     }
 }
