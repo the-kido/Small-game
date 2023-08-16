@@ -59,15 +59,12 @@ public partial class Level : Node, ISaveable{
     
     private void Complete() {
         LevelCompletions[SaveName] = true;
-        
-        GD.Print(LevelCompletions, " lvl competions");
 
         LevelCompleted?.Invoke();
     }
     
     private bool LoadCompletion() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
-        GD.Print(LevelCompletions, " lvl competions");
         return LevelCompletions.ContainsKey(SaveName) ? LevelCompletions[SaveName] : false;
     }
 }

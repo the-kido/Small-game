@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Xml.Schema;
 using Godot;
 
 public static class DungeonRunData {
@@ -54,20 +55,22 @@ public static class DungeonRunData {
     }
     public class EnemiesKilled : ISaveable {
         public EnemiesKilled() {
-            _count = (int) (this as ISaveable).LoadData();
+            count = (int) (this as ISaveable).LoadData();
         }
 
         static EnemiesKilled() {
             EnemiesKilled instance = new();
         }
 
-        public SaveData saveData => new("EnemiesKilled", _count);
-
+        public SaveData saveData => new("EnemiesKilled", count);
+        public static event Action<Enemy> EnemyKilled;
         
-        public static int _count = 0;
-        public static int Count {
-            get => _count;
-            set => _count = value;
+        private static int count = 0;
+
+        public void AddDeath(Enemy enemy) {
+            EnemyKilled?.Invoke(enemy);
+            count += 1;
         }
     }    
+
 }

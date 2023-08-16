@@ -12,7 +12,6 @@ public partial class FallingArea : Area2D {
             actor.DamageableComponent.Damage(new(actor) {damage = 1000, forceDirection = Vector2.Down});
             // TODO:
             // The death state takes away from the changes to velocity. We can't have that!
-            GD.Print("wamawofa");
         }
     }
 }

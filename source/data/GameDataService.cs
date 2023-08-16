@@ -1,21 +1,25 @@
 using Godot;
 using Godot.Collections;
 using System.Linq;
+using System;
 
 
 public record SaveData (string Key, Variant Value);
 
 public interface ISaveable {
-    public SaveData saveData {get;}
+    SaveData saveData {get;}
     
     Variant LoadData() {
         GameDataService.GetData().TryGetValue(saveData.Key, out Variant value);
         return value;
-    } 
+    }
+    
     void InitSaveable() {
-        if (GameDataService.dynamicallySavedItems.Contains(this)) return;
+        // Make sure there's no duplicates
+        if (GameDataService.dynamicallySavedItems.Any(item => item.saveData.Key == saveData.Key)) return;
+        
         GameDataService.dynamicallySavedItems.Add(this);
-    } 
+    }
 }
 
 /*
@@ -29,17 +33,13 @@ public static class GameDataService {
     // Pull from the previous data, then add the new data that needs to be added.
     private static Dictionary<string, Variant> GetCompiledSaveData() {
         Dictionary<string, Variant> newData = SavedItemsAsDictionary;
-        GD.Print("1, initial new data", newData);
-        var oldData = GetData();
-        GD.Print("2, initial old data", oldData);
 
-        foreach (var oldItem in oldData) {
+        foreach (var oldItem in GetData()) {
             // We don't want to overwrite the new data with old data.
             if (newData.ContainsKey(oldItem.Key)) continue;
             newData.Add(oldItem.Key, oldItem.Value);
         }
         
-        GD.Print("3, finished data", newData);
         return newData;
     }
 

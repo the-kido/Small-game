@@ -10,7 +10,7 @@ public partial class Damageable : Area2D {
 	[Export(PropertyHint.None, "In seconds: how long it takes for this entity to be hit again")]
 	private double ImmunityFrames {get; set;}
 	
-	private int MaxHealth {get; init;}
+	public int MaxHealth {get; init;}
 	
 	public bool BlocksDamage {get; set;} = false;
 	public bool IsImmune {get; private set;} = false;

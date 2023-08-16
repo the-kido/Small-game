@@ -124,12 +124,10 @@ script = ExtResource("12_78176")
 
 [node name="Hillbilly" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(548, 597)
-MoveSpeed = null
 
 [node name="Base Enemy2" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
-MoveSpeed = null
 
 [node name="Weird enemy" parent="Waves/wave" instance=ExtResource("4_rymms")]
 position = Vector2(714, 597)

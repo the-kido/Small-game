@@ -1,27 +1,25 @@
 using Godot;
+using Godot.Collections;
 using System;
-using System.Collections.Generic;
-
+using System.ComponentModel;
 
 public partial class Condition : Resource, ISaveable {
     
-    // This just depicts which entry into the save file this condition is
-    [Export]
+    [Export, Description("Required to differentiate condition entries in the save file")]
     private string Name;
     public Action Achieved;
     public bool IsAchieved {get; private set;} = false;
     
-    
-    public static Godot.Collections.Dictionary<string, bool> All {get; private set;} = new();
-
+    // Required for saving the conditions
+    public static Dictionary<string, bool> All {get; private set;} = new();
     public SaveData saveData => new("Conditions", All);
-
+    private static void Load() => All = (Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
+    private bool GetAchieved() => All.ContainsKey(Name) ? All[Name] : false;
     static Condition() => Level.LevelStarted += Load;
-    private static void Load() => All = (Godot.Collections.Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
 
     public Condition() {
         Level.LevelStarted += (this as ISaveable).InitSaveable;
-        All = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
+        All = (Dictionary<string, bool>) (this as ISaveable).LoadData();
         
         Achieved += () => {
             IsAchieved = true;
@@ -34,13 +32,6 @@ public partial class Condition : Resource, ISaveable {
             throw new ArgumentNullException("Name for condition must be set!");
         
         IsAchieved = GetAchieved(); 
-    }
-
-    private bool GetAchieved() {
-        if (All.ContainsKey(Name))
-            return All[Name];
-        else
-            return false;
     }
 }
 

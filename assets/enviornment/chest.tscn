@@ -8,7 +8,6 @@
 scale = Vector2(4, 4)
 texture = ExtResource("1_ui077")
 script = ExtResource("1_8vto3")
-chestLootTable = null
 interactable = NodePath("Interactable")
 itemShowcase = NodePath("New Item Showcase")
 
