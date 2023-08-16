@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=23 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
@@ -15,6 +15,7 @@
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="12_48p24"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="12_78176"]
+[ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="16_dddk7"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7dfhi"]
 
@@ -123,12 +124,18 @@ script = ExtResource("12_78176")
 
 [node name="Hillbilly" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(548, 597)
+MoveSpeed = null
 
 [node name="Base Enemy2" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
+MoveSpeed = null
 
 [node name="Weird enemy" parent="Waves/wave" instance=ExtResource("4_rymms")]
 position = Vector2(714, 597)
+
+[node name="Chest" parent="." instance=ExtResource("16_dddk7")]
+position = Vector2(338, 656)
+chestLootTable = "Generic Chest Items"
 
 [editable path="Player"]
