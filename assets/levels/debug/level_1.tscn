@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
 [ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="2_2pl6b"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_nwpfc"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
@@ -14,8 +15,6 @@
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="12_48p24"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="12_78176"]
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_d565g"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_7dfhi"]
 
@@ -52,18 +51,24 @@ animations = [{
 }]
 
 [node name="Level 1" type="Node"]
-script = ExtResource("1_xwy0o")
-doors = [NodePath("Door 1")]
-waves = [NodePath("Waves/wave")]
 metadata/_edit_vertical_guides_ = [823.0]
 metadata/_edit_horizontal_guides_ = [464.0]
+
+[node name="Level Info" type="Node" parent="."]
+script = ExtResource("1_xwy0o")
+doors = [NodePath("../Door 1")]
+
+[node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
+script = ExtResource("2_nwpfc")
+wave = NodePath("../../Waves/wave")
+
+[node name="Node2" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
+script = ExtResource("2_nwpfc")
+wave = NodePath("../../Waves/wave")
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
 position = Vector2(568, 428)
 GUI = NodePath("../HUD")
-
-[node name="AnimationTree" parent="Player" index="6"]
-parameters/playback = SubResource("AnimationNodeStateMachinePlayback_d565g")
 
 [node name="Camera" parent="." node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("3_3il18")]
 position = Vector2(749, 447)

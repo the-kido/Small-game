@@ -52,7 +52,7 @@ public partial class Door : Area2D {
     void OnSceneSwitched() {
         temp = Name.ToString();
 
-        SceneSwitcher.SceneSwitched -= OnSceneSwitched;
+        SceneSwitcher.SceneSwitched -= Temp;
         Level.LevelStarted += OnLevelReady;
     }
 
@@ -72,10 +72,13 @@ public partial class Door : Area2D {
         if (body is Player) {
             levelSwitcher.SwitchLevel();
             
-            SceneSwitcher.SceneSwitched += OnSceneSwitched;
+            SceneSwitcher.SceneSwitched += Temp;
         }
     }
     
+    private void Temp() {
+        CallDeferred("OnSceneSwitched");
+    }
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {
         if (doorSprite.Frame + 1 == doorSprite.SpriteFrames.GetFrameCount("default")) doorSprite.Pause();

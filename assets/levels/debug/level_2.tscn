@@ -30,7 +30,7 @@
 size = Vector2(54, 66)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ck6td"]
-size = Vector2(32, 48)
+size = Vector2(24, 42)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tj11t"]
 size = Vector2(83, 143)
@@ -90,7 +90,6 @@ script = ExtResource("2_r8avo")
 script = ExtResource("4_w35q5")
 text = "AGRO ENEMY DEATH-1"
 portrait = ExtResource("4_2js0t")
-charactersPerSecond = null
 
 [node name="Node3" type="Node" parent="Level Info/1 part 2 (break)" node_paths=PackedStringArray("character")]
 script = ExtResource("5_7871l")
@@ -101,7 +100,6 @@ animationName = &"vibrate"
 script = ExtResource("4_w35q5")
 text = "AGRO ENEMY DEATH-2"
 portrait = ExtResource("5_o0u5x")
-charactersPerSecond = null
 
 [node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("7_nm5at")
@@ -114,7 +112,6 @@ wave = NodePath("../../Waves/Wave 2")
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)
 GUI = NodePath("../GUI/GUI")
-MoveSpeed = null
 
 [node name="i hate this" type="Area2D" parent="."]
 position = Vector2(528, 384)
@@ -149,10 +146,11 @@ TargetIndicator = NodePath("../TargetEnemyCursor")
 
 [node name="Gameplay" type="Node2D" parent="."]
 
-[node name="Door 1" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("doorSprite")]
+[node name="Door 1" type="Area2D" parent="Gameplay" node_paths=PackedStringArray("levelSwitcher", "doorSprite")]
 position = Vector2(1012, 502)
 collision_mask = 2
 script = ExtResource("9_g8jdp")
+levelSwitcher = NodePath("Level Switcher")
 doorOpeningDirection = Vector2i(-1, 0)
 doorSprite = NodePath("AnimatedSprite2D")
 condition = ExtResource("8_cecs4")
@@ -183,15 +181,12 @@ position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
-MoveSpeed = null
 
 [node name="Base Enemy2" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(458, 426)
-MoveSpeed = null
 
 [node name="Base Enemy3" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(490, 502)
-MoveSpeed = null
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(907, 670)

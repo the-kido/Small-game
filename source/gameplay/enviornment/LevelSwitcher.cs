@@ -2,10 +2,10 @@ using Godot;
 using KidoUtils;
 
 public partial class LevelSwitcher : Node {
-    [Export]
+    [Export(PropertyHint.File, "*.tscn,")]
     string nextLevel;
     public void SwitchLevel() {
-        SceneSwitcher sceneSwitcher = KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher); 
+        SceneSwitcher sceneSwitcher = Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher); 
         sceneSwitcher.ChangeSceneWithPath(nextLevel);
     }
 }
