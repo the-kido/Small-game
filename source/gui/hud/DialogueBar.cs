@@ -71,7 +71,7 @@ public class ConversationController {
     // rename to "continueDIalouge"
     public void OnClicked() {
         // Make sure that the player cannot click on the dialogue bar as it's going down.
-        // if (currentDialogue.Length == 0) return;
+        if (currentDialogue.Length == 0) return;
        
         if (currentItem is DialogueLine) {
             dialoguePlayer.Skip();
