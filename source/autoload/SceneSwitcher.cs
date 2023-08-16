@@ -8,8 +8,8 @@ public partial class SceneSwitcher : Node {
 	private CanvasLayer canvasLayer;
 	private AnimationPlayer animationPlayer;
 	public override void _Ready(){
-		canvasLayer = (CanvasLayer) GetNode("CanvasLayer");
-		animationPlayer = (AnimationPlayer) GetNode("AnimationPlayer");
+		canvasLayer = GetNode("CanvasLayer") as CanvasLayer;
+		animationPlayer = GetNode("AnimationPlayer") as AnimationPlayer;
 	}
 
 	private async void ChangeScene(Action changeSceneTo) {
@@ -29,11 +29,10 @@ public partial class SceneSwitcher : Node {
 		canvasLayer.Layer = -128;
 	}
 
-	public void ChangeSceneWithPath(string resourcePath) {
+	public void ChangeSceneWithPath(string resourcePath) =>
 		ChangeScene(() => GetTree().ChangeSceneToFile(resourcePath));
-	}
 
-	public void ChangeSceneWithPackedMap(PackedScene scene) {
+	public void ChangeSceneWithPackedMap(PackedScene scene) =>
 		ChangeScene(() => GetTree().ChangeSceneToPacked(scene));
-	}
+
 }
