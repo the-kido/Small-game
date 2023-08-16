@@ -3,12 +3,16 @@ using System.Runtime.CompilerServices;
 using Godot;
 
 public static class DungeonRunData {
-
     public class Coins : ISaveable {
         public Coins() {
             (this as ISaveable).InitSaveable();
             _count = (int) (this as ISaveable).LoadData();
         }
+        
+        static Coins() {
+            Coins instance = new();
+        }
+
         public SaveData saveData => new("Coins", _count);
 
         public static event Action<int> ValueChanged;
@@ -26,6 +30,9 @@ public static class DungeonRunData {
     public class FreezeOrbs : ISaveable {
         public FreezeOrbs() {
             _count = (int) (this as ISaveable).LoadData();
+        }
+        static FreezeOrbs() {
+            FreezeOrbs instance = new();
         }
 
         public SaveData saveData => new("FreezeOrbs", _count);
@@ -49,6 +56,11 @@ public static class DungeonRunData {
         public EnemiesKilled() {
             _count = (int) (this as ISaveable).LoadData();
         }
+
+        static EnemiesKilled() {
+            EnemiesKilled instance = new();
+        }
+
         public SaveData saveData => new("EnemiesKilled", _count);
 
         
@@ -57,10 +69,5 @@ public static class DungeonRunData {
             get => _count;
             set => _count = value;
         }
-    }
-
-    static Coins CoinCount {get; set;} = new();
-    static FreezeOrbs FreezeOrbCount {get; set;} = new();
-    static EnemiesKilled EnemyKillCount {get; set;} = new();
-    
+    }    
 }
