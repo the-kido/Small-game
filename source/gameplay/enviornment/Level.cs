@@ -9,9 +9,7 @@ public partial class Level : Node, ISaveable{
     public static Level CurrentLevel {get; private set;} = new();
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
 
-    public string SaveKey => "LevelCompletions";
-    public Variant SaveValue => LevelCompletions;
-
+    public SaveData saveData => new("LevelCompletions", LevelCompletions);
 
     [Export]
     public Godot.Collections.Array<NodePath> doors = new();
@@ -61,11 +59,15 @@ public partial class Level : Node, ISaveable{
     
     private void Complete() {
         LevelCompletions[SaveName] = true;
+        
+        GD.Print(LevelCompletions, " lvl competions");
+
         LevelCompleted?.Invoke();
     }
     
     private bool LoadCompletion() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
+        GD.Print(LevelCompletions, " lvl competions");
         return LevelCompletions.ContainsKey(SaveName) ? LevelCompletions[SaveName] : false;
     }
 }
@@ -77,7 +79,7 @@ public class FreezeOrbMechanic {
 
     static bool isFrozen = false;
     public FreezeOrbMechanic() {
-        DungeonRunData.FreezeWave += () => {
+        DungeonRunData.FreezeOrbs.FreezeWave += () => {
             Freeze(true);
             freezeTimer = 0;
         }; 

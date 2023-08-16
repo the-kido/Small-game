@@ -1,37 +1,66 @@
 using System;
+using System.Runtime.CompilerServices;
+using Godot;
 
 public static class DungeonRunData {
 
-    public static event Action<int> CoinValueChanged;
-    private static int _coins = 0;
-    public static int Coins {
-        get => _coins;
-        set {
-            CoinValueChanged?.Invoke(value);
-            _coins = value;
+    public class Coins : ISaveable {
+        public Coins() {
+            (this as ISaveable).InitSaveable();
+            _count = (int) (this as ISaveable).LoadData();
         }
-    }
+        public SaveData saveData => new("Coins", _count);
 
-    public static event Action FreezeWave;
-    private static int _freezeOrbs = 0;
-    public static int FreezeOrbs {
-        get => _freezeOrbs;
-        set {
-            if (value >= 3) {
-                FreezeWave?.Invoke();
-                _freezeOrbs = 0;
-            } else {
-                _freezeOrbs = value;
+        public static event Action<int> ValueChanged;
+        
+        private static int _count = 0;
+
+        public static int Count {
+            get => _count;
+            set {
+                ValueChanged?.Invoke(value);
+                _count = value;
             }
         }
     }
+    public class FreezeOrbs : ISaveable {
+        public FreezeOrbs() {
+            _count = (int) (this as ISaveable).LoadData();
+        }
 
-    public static int _enemiesKilled;
-    public static int EnemiesKilled {
-        get => _enemiesKilled;
-        set => _enemiesKilled = value;
+        public SaveData saveData => new("FreezeOrbs", _count);
+        
+        public static event Action FreezeWave;
+        private static int _count = 0;
+        public static int Count {
+            get => _count;
+            set {
+                if (value >= 3) {
+                    FreezeWave?.Invoke();
+                    _count = 0;
+                } else {
+                    _count = value;
+                }
+            }
+        }
+
     }
-    
+    public class EnemiesKilled : ISaveable {
+        public EnemiesKilled() {
+            _count = (int) (this as ISaveable).LoadData();
+        }
+        public SaveData saveData => new("EnemiesKilled", _count);
 
+        
+        public static int _count = 0;
+        public static int Count {
+            get => _count;
+            set => _count = value;
+        }
+    }
+
+    static Coins CoinCount {get; set;} = new();
+    static FreezeOrbs FreezeOrbCount {get; set;} = new();
+    static EnemiesKilled EnemyKillCount {get; set;} = new();
     
 }

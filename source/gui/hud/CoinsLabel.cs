@@ -3,11 +3,11 @@ using Godot;
 public partial class CoinsLabel : Label {
 
 	public override void _Ready() {
-        Text = CustomText(DungeonRunData.Coins);
-        DungeonRunData.CoinValueChanged += UpdateCoinValue;
+        Text = CustomText(DungeonRunData.Coins.Count);
+        DungeonRunData.Coins.ValueChanged += UpdateCoinValue;
     }
     
-	public override void _ExitTree() => DungeonRunData.CoinValueChanged -= UpdateCoinValue;
+	public override void _ExitTree() => DungeonRunData.Coins.ValueChanged -= UpdateCoinValue;
  
     private string CustomText(int value) => $"Coins: {value}";
 

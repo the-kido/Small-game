@@ -14,10 +14,15 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
 
         stateMachine = new(this);
         
-        DamageableComponent.OnDeath += DeathAnimation;
-        DamageableComponent.OnDeath += DropLootTable;
+        DamageableComponent.OnDeath += OnDeath;
 
         Init(new(animationPlayer), stateMachine);
+    }
+
+    private void OnDeath(DamageInstance damageInstance) {
+        DeathAnimation(damageInstance);
+        DropLootTable();
+        DungeonRunData.EnemiesKilled.Count += 1;
     }
 
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
@@ -29,7 +34,7 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
         stateMachine.UpdateState(delta);
     }
 
-    public void DropLootTable(DamageInstance _) => DeathDrops.ForEach(loot => loot.Init(this));
+    public void DropLootTable() => DeathDrops.ForEach(loot => loot.Init(this));
 
     public void DeathAnimation(DamageInstance damageInstance) {
 

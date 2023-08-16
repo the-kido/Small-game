@@ -1,20 +1,20 @@
-using System.Transactions;
 using Godot;
 using Godot.Collections;
+using System.Linq;
+
+
+public record SaveData (string Key, Variant Value);
 
 public interface ISaveable {
-    string SaveKey {get;}
-    Variant SaveValue {get;}
+    public SaveData saveData {get;}
+    
     Variant LoadData() {
-        GD.Print(SaveKey, " is what i'm tryan retrieve");
-        GameDataService.GetData().TryGetValue(SaveKey, out Variant value);
-        GD.Print(value, " is what I retrieved");
+        GameDataService.GetData().TryGetValue(saveData.Key, out Variant value);
         return value;
     } 
     void InitSaveable() {
-        if (GameDataService.dynamicallySavedItems.ContainsKey(SaveKey)) return;
-
-        GameDataService.dynamicallySavedItems.Add(SaveKey, SaveValue);
+        if (GameDataService.dynamicallySavedItems.Contains(this)) return;
+        GameDataService.dynamicallySavedItems.Add(this);
     } 
 }
 
@@ -23,32 +23,37 @@ There is data that is dynamically saved (dynamicallySavedItems) and data drawn
 from a previous save file. 
 */
 public static class GameDataService {
-    public static Dictionary<string, Variant> dynamicallySavedItems = new();
+    public static System.Collections.Generic.List<ISaveable> dynamicallySavedItems = new();
+    static Dictionary<string, Variant> SavedItemsAsDictionary => new(dynamicallySavedItems.ToDictionary(x => x.saveData.Key, x => x.saveData.Value));
 
     // Pull from the previous data, then add the new data that needs to be added.
     private static Dictionary<string, Variant> GetCompiledSaveData() {
-        Dictionary<string, Variant> newData = new(dynamicallySavedItems);
+        Dictionary<string, Variant> newData = SavedItemsAsDictionary;
+        GD.Print("1, initial new data", newData);
+        var oldData = GetData();
+        GD.Print("2, initial old data", oldData);
 
-        foreach (var oldItem in GetData()) {
+        foreach (var oldItem in oldData) {
             // We don't want to overwrite the new data with old data.
             if (newData.ContainsKey(oldItem.Key)) continue;
             newData.Add(oldItem.Key, oldItem.Value);
         }
         
+        GD.Print("3, finished data", newData);
         return newData;
     }
 
     private static bool fileExists => FileAccess.FileExists("user://savegame.json");
 
     public static void Save() {
-        using FileAccess saveGame = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Write);
-
         // Serialize the data. If there is no current file, then just draw from whatever was saved so far in dynamicallySavedItems.
-        Dictionary<string, Variant> data = fileExists ? GetCompiledSaveData() : dynamicallySavedItems;
+        Dictionary<string, Variant> data = fileExists ? GetCompiledSaveData() : SavedItemsAsDictionary;
+
+        using FileAccess saveFile = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Write);
 
         // Throw that into the save file
         var stringifiedData = Json.Stringify(data);
-        saveGame.StoreLine(stringifiedData);
+        saveFile.StoreLine(stringifiedData);
     }    
 
     public static Dictionary<string, Variant> GetData() {
@@ -57,13 +62,14 @@ public static class GameDataService {
             return GetData();
         }
 
-        string data = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Read).GetLine();
+        using FileAccess saveFile = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Read);
+        string data = saveFile.GetLine();
+        
         Json json = new();
 
         if (json.Parse(data) != Error.Ok) 
             GD.PushError($"JSON Parse Error: {json.GetErrorMessage()} in {data} at line {json.GetErrorLine()}");
 
-        GD.Print((Dictionary) json.Data, " is what happens when I cast it");
         return new((Dictionary) json.Data);
     }
 }

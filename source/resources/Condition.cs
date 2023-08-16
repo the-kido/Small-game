@@ -14,8 +14,7 @@ public partial class Condition : Resource, ISaveable {
     
     public static Godot.Collections.Dictionary<string, bool> All {get; private set;} = new();
 
-    public string SaveKey => "Conditions";
-    public Variant SaveValue => All;
+    public SaveData saveData => new("Conditions", All);
 
     static Condition() => Level.LevelStarted += Load;
     private static void Load() => All = (Godot.Collections.Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
