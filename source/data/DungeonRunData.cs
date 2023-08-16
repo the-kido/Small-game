@@ -25,5 +25,13 @@ public static class DungeonRunData {
             }
         }
     }
+
+    public static int _enemiesKilled;
+    public static int EnemiesKilled {
+        get => _enemiesKilled;
+        set => _enemiesKilled = value;
+    }
+    
+
     
 }

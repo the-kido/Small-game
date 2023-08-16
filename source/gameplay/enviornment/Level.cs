@@ -3,12 +3,16 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public partial class Level : Node {
+public partial class Level : Node, ISaveable{
 
     public static event Action LevelStarted;
     public static Level CurrentLevel {get; private set;} = new();
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
-    
+
+    public string SaveKey => "LevelCompletions";
+    public Variant SaveValue => LevelCompletions;
+
+
     [Export]
     public Godot.Collections.Array<NodePath> doors = new();
     public event Action LevelCompleted;
@@ -24,8 +28,11 @@ public partial class Level : Node {
     }
 
     public override void _Ready() {
+        (this as ISaveable).InitSaveable();
+        
         levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
-        LevelCompleted += GameData.Save;
+        
+        LevelCompleted += GameDataService.Save;
         
         Change();
 
@@ -49,26 +56,17 @@ public partial class Level : Node {
         LevelStarted?.Invoke();
     }
     
+    // The parent is the root of the level, so that's the name we want to save.
+    string SaveName => GetParent().Name;
+    
     private void Complete() {
-        LevelCompletions[Name] = true;
+        LevelCompletions[SaveName] = true;
         LevelCompleted?.Invoke();
     }
     
     private bool LoadCompletion() {
-        LevelCompletions = (Godot.Collections.Dictionary<string,bool>) GameData.GetData()["LevelCompletions"];
-        
-        if (LevelCompletions.ContainsKey(Name))
-            return LevelCompletions[Name];
-        else
-            return false;
-    }
-}
-
-public partial class Level : Node {
-
-    readonly FreezeOrbMechanic freezeOrbMechanic = new();
-    public override void _Process(double delta) {
-        freezeOrbMechanic.Process(delta);
+        LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
+        return LevelCompletions.ContainsKey(SaveName) ? LevelCompletions[SaveName] : false;
     }
 }
 
