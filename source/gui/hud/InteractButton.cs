@@ -9,7 +9,7 @@ public partial class InteractButton : Button {
         Disabled = !enable;
 
         if (enable) {
-            Visible = enable;
+            Visible = true;
             animationPlayer.Play("show");
         }
         else {
@@ -20,7 +20,9 @@ public partial class InteractButton : Button {
     }
 
     private void Hide(StringName _) {
-        Visible = false;
         animationPlayer.AnimationFinished -= Hide;
+        if (!Disabled) return;
+        
+        Visible = false;
     }
 }

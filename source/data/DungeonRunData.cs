@@ -67,7 +67,7 @@ public static class DungeonRunData {
         
         private static int count = 0;
 
-        public void AddDeath(Enemy enemy) {
+        public static void AddDeath(Enemy enemy) {
             EnemyKilled?.Invoke(enemy);
             count += 1;
         }

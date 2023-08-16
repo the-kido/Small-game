@@ -22,7 +22,7 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     private void OnDeath(DamageInstance damageInstance) {
         DeathAnimation(damageInstance);
         DropLootTable();
-        DungeonRunData.EnemiesKilled.Count += 1;
+        DungeonRunData.EnemiesKilled.AddDeath(this);
     }
 
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
