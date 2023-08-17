@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.Characters;
+
 public partial class Character : CharacterBody2D {
     [Export]
     public AnimationPlayer AnimationPlayer {get; private set;}

@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using Godot;
 using LootTables;
+using Game.Actors;
+using Game.Actors.AI;
+using Game.Animation;
+
+namespace Game.SealedContent;
 
 public sealed partial class WeirdEnemy : Enemy {
     [Export] 

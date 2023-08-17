@@ -1,5 +1,9 @@
 using Godot;
 using System.Threading.Tasks;
+using Game.Players;
+using Game.Damage;
+
+namespace Game.UI;
 
 public partial class HealthLabelTemp : Label {
     

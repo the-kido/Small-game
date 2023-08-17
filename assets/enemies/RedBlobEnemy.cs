@@ -1,10 +1,12 @@
-using Godot;
 using LootTables;
-using System;
 using System.Collections.Generic;
+using Game.Actors;
+using Game.Animation;
+using Game.Actors.AI;
 
-public sealed partial class RedBlobEnemy : Enemy
-{
+namespace Game.SealedContent;
+
+public sealed partial class RedBlobEnemy : Enemy {
 	protected override List<ItemDrop> DeathDrops {get; init;} = EnemyLootTable.NONE;
 
 	protected sealed override void Init(AnimationController animationController, AIStateMachine aIStateMachine) {

@@ -2,6 +2,10 @@ using Godot;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Game.Actors;
+using Game.Damage;
+
+namespace Game.LevelContent;
 
 public partial class EnemyWave : Node {
     // this will have children of type ENEMY. It defaults to 

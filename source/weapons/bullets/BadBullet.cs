@@ -1,8 +1,10 @@
 using Godot;
 using System;
-using System.Threading.Tasks;
+using Game.Bullets;
 
-public partial class BadBullet : Bullet {
+namespace Game.SealedContent;
+
+public sealed partial class BadBullet : Bullet {
     
     [Export]
     private float wiggleStrength;

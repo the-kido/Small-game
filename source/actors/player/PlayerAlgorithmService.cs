@@ -1,4 +1,7 @@
-using System;
+using Game.Actors;
+using Game.Data;
+
+namespace Game.Players;
 
 // Idk if this will be useful but if I add more algorithms it might be needed for organization
 public class PlayerAlgorithmService {

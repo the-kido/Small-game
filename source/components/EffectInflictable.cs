@@ -1,7 +1,9 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Game.Actors;
+using Game.Damage;
+using Game.UI;
 
 namespace Game.ActorStatuses;
 

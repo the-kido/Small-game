@@ -1,5 +1,8 @@
 using Godot;
+using Game.Players.Inputs;
+using Game.Players.Mechanics;
 
+namespace Game.UI;
 
 public partial class ReloadVisual : ProgressBar {
     WeaponManager hand;

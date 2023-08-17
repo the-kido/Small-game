@@ -1,6 +1,9 @@
 using System;
 using Godot;
 using KidoUtils;
+using Game.Players;
+
+namespace Game.LevelContent;
 
 public partial class Interactable : AnimatedSprite2D {
 

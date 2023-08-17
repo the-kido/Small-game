@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace Game.Autoload;
+
 public partial class SceneSwitcher : Node {
 
 	public static event Action SceneSwitched;

@@ -1,4 +1,7 @@
 using Godot;
+using Game.Characters;
+
+namespace Game.UI;
 
 public partial class DialogueLine : ConversationItem {
     [Export]

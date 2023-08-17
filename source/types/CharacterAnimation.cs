@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.Characters;
+
 public partial class CharacterAnimation : ConversationItem {
     [Export]
     public Character character;

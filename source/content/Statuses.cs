@@ -1,5 +1,9 @@
 using System;
 using Godot;
+using Game.Actors;
+using Game.Autoload;
+using Game.Damage;
+using Game.Graphics;
 
 namespace Game.ActorStatuses;
 

@@ -1,6 +1,9 @@
 using Godot;
-using System;
 using System.Threading.Tasks;
+using Game.Data;
+using Game.Players;
+
+namespace Game.LevelContent.Pickupables;
 
 public partial class Coin : Pickupable {
 

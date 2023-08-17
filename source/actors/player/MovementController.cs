@@ -1,5 +1,7 @@
 using Godot;
-using System;
+using Game.Players.Inputs;
+
+namespace Game.Players;
 
 public partial class MovementController : Node{
 	public const float MOVE_SPEED = 3.0f;

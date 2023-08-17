@@ -2,6 +2,10 @@ using Godot;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Game.Data;
+using Game.LevelContent.Criteria;
+
+namespace Game.LevelContent;
 
 public partial class Level : Node, ISaveable{
 

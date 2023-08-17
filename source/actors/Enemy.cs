@@ -2,7 +2,13 @@ using Godot;
 using System.Collections.Generic;
 using KidoUtils;
 using LootTables;
-using System;
+using Game.Actors.AI;
+using Game.Damage;
+using Game.Data;
+using Game.Animation;
+using Game.Players;
+
+namespace Game.Actors;
 
 public abstract partial class Enemy : Actor, IPlayerAttackable {
     

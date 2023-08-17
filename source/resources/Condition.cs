@@ -2,6 +2,8 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.ComponentModel;
+using Game.Data;
+using Game.LevelContent;
 
 public partial class Condition : Resource, ISaveable {
     

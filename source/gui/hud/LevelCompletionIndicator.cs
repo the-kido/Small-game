@@ -1,4 +1,7 @@
 using Godot;
+using Game.LevelContent;
+
+namespace Game.UI;
 
 public partial class LevelCompletionIndicator : Control{
     [Export]

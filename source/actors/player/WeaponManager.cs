@@ -1,8 +1,10 @@
 using Godot;
 using System;
+using Game.UI;
 
-// "hand"
-public partial class WeaponManager : Node2D {
+namespace Game.Players.Mechanics;
+
+public partial class WeaponManager : Node2D { // Also called "hand"
     public int SelectedSlot {get; private set;} = 0;
     // This is for the visuals
     public Action<Weapon, int> HeldWeaponChanged;

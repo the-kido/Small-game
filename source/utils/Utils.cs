@@ -1,5 +1,4 @@
 using Godot;
-using System.Threading.Tasks;
 
 namespace KidoUtils;
 
@@ -27,7 +26,7 @@ public class Utils {
                 return node.GetNode<T>("/root/PickupablesManager");
         }
 
-        return default(T);
+        return default;
     }
 }
 
@@ -38,5 +37,4 @@ public enum PreloadedScene {
     GlobalCursor,
     DamageTextManager,
     PickupablesManager,
-
 }

@@ -1,4 +1,7 @@
 using Godot;
+using Game.Players.Mechanics;
+
+namespace Game.SealedContent;
 
 public sealed partial class BadShield : Shield {
     public override string Description => "It really sucks dude";

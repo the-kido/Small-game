@@ -1,6 +1,6 @@
 using Godot;
-using System;
 
-public partial class PickupablesManager : Node
-{
+namespace Game.Autoload;
+
+public partial class PickupablesManager : Node {
 }

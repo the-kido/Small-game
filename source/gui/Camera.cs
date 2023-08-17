@@ -1,10 +1,10 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Game.Players;
 
-public partial class Camera : Camera2D
-{
+namespace Game.UI;
+
+public partial class Camera : Camera2D {
 	[Export]
 	private Player player;
 	[Export]

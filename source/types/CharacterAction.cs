@@ -1,9 +1,16 @@
 using Godot;
+using Game.UI;
 
 // An action can mean:
 // - Moving to a point
 // - Playing an animation once
 // - Playing an animation several times
+
+namespace Game.Characters;
+
+// This should just make it easier to customize the dialogue
+public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
+public abstract partial class ConversationItem : Node {}
 
 public partial class CharacterAction : ConversationItem {
     [Export]

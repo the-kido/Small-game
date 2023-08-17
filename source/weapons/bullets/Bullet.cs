@@ -2,6 +2,10 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using KidoUtils;
+using Game.Autoload;
+using Game.Damage;
+
+namespace Game.Bullets;
 
 public abstract partial class Bullet : Node2D { 
 

@@ -1,6 +1,9 @@
 using Godot;
 using KidoUtils;
+using Game.Damage;
+using Game.Autoload;
 
+namespace Game.Bullets;
 
 public abstract partial class Gun : Weapon {
     [Export]

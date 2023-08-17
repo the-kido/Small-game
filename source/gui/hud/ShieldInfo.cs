@@ -1,4 +1,8 @@
 using Godot;
+using Game.Players;
+using Game.Players.Mechanics;
+
+namespace Game.UI;
 
 public partial class ShieldInfo : Control{
     [Export]

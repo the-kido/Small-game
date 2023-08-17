@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using Game.Players;
+
+namespace Game.LevelContent.Pickupables;
 
 public abstract partial class Pickupable : Node2D {
 

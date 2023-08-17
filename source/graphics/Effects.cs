@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.Graphics;
+
 public static class Effects {
 
     private static PackedScene Load(string path) => ResourceLoader.Load<PackedScene>(path);

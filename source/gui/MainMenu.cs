@@ -1,13 +1,16 @@
 using Godot;
 using KidoUtils;
-public partial class MainMenu : Control
-{
+using Game.Autoload;
+
+namespace Game.UI;
+
+public partial class MainMenu : Control{
 
 	[Export]
 	private Resource level = new Resource();
 
 	private void OnButtonDown() {
-		KidoUtils.Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher)	
+		Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher)	
 			.ChangeSceneWithPackedMap((PackedScene) level);
 	}
 }

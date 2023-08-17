@@ -3,9 +3,15 @@ using LootTables;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game.Actors;
+using Game.Actors.AI;
+using Game.Players;
+using Game.Animation;
+using Game.Damage;
 
-public partial class AgroEnemyMiniBoss : Enemy
-{
+namespace Game.SealedContent;
+
+public sealed partial class AgroEnemyMiniBoss : Enemy {
     [Export]
     private Pathfinder pathfinder;
 

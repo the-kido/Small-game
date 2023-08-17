@@ -1,5 +1,7 @@
-using System;
 using Godot;
+using Game.Players;
+using Game.Players.Mechanics;
+using Game.Players.Inputs;
 
 public enum ChestItemType {
 	WEAPON,

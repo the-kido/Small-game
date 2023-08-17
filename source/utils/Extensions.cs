@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public static class bloop {
+public static class Extensions {
 
 	public static Vector2 PointAverage(this Rect2 rect) {
 

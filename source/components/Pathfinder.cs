@@ -1,7 +1,8 @@
 using Godot;
 
-public partial class Pathfinder : Node2D
-{
+namespace Game.Actors.AI;
+
+public partial class Pathfinder : Node2D {
     [Export]
     private NavigationAgent2D agent;
 

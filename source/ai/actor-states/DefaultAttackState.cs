@@ -2,6 +2,12 @@ using Godot;
 using KidoUtils;
 using System;
 using Game.ActorStatuses;
+using Game.Players;
+using Game.Damage;
+using Game.Bullets;
+using Game.Autoload;
+
+namespace Game.Actors.AI;
 
 public sealed class DefaultAttackState : AIState {
 

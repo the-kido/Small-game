@@ -1,5 +1,7 @@
 using Godot;
-using System;
+using Game.Players;
+
+namespace Game.UI;
 
 public partial class SelectedTargetIndicator : Sprite2D {
 	

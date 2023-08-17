@@ -1,7 +1,10 @@
 // This is special to the door found at spawn
 using KidoUtils;
 using Godot;
-using System.Runtime.ExceptionServices;
+using Game.Players;
+using Game.Autoload;
+
+namespace Game.LevelContent;
 
 public partial class SpawnDoor : Area2D {
     [Export(PropertyHint.File, "*.tscn,")]

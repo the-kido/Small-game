@@ -1,6 +1,7 @@
 using System;
-using System.Security.AccessControl;
 using Godot;
+
+namespace Game.LevelContent.Criteria;
 
 public partial class EnterAreaEvent : LevelCriteria {
     [Export]

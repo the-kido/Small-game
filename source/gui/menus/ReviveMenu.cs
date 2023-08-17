@@ -1,10 +1,11 @@
 using System;
 using Godot;
-
+using Game.Players;
 /*This should include:
 The enabling disableding
 A way to set the menu to NULL in the playerHud 
 */
+namespace Game.UI;
 
 public partial class ReviveMenu : Control, IMenu{
 

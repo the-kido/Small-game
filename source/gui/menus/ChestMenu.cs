@@ -1,25 +1,13 @@
 using System;
 using System.Linq;
 using Godot;
+using Game.Players;
 
 // I want there to be 1 universal "chest menu" class
 // Whatever happens to certain buttons should be customizable 
 // Also, different enum type will decide if there are 3 slots (weapons) or 1 slot (shield)
 
-
-
-// plz change name
-internal class WeaponChestView {
-
-    public WeaponChestView() {
-
-    }
-
-}
-
-internal class ShieldChestView {
-
-}
+namespace Game.UI;
 
 public partial class ChestMenu : Control, IMenu {
     public event Action Disable;

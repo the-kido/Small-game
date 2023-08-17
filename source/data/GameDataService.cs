@@ -1,8 +1,8 @@
 using Godot;
 using Godot.Collections;
 using System.Linq;
-using System;
 
+namespace Game.Data;
 
 public record SaveData (string Key, Variant Value);
 

@@ -1,4 +1,9 @@
 using Godot;
+using Game.Actors;
+using Game.Damage;
+
+namespace Game.LevelContent;
+
 public partial class FallingArea : Area2D {
 
     public override void _Ready() => 

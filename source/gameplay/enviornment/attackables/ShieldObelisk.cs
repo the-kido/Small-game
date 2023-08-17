@@ -1,5 +1,10 @@
 using Godot;
 using Game.ActorStatuses;
+using Game.LevelContent;
+using Game.Actors;
+using Game.LevelContent.Criteria;
+using Game.Damage;
+using Game.Players;
 
 namespace Game.SealedContent;
 

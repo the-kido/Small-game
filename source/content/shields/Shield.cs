@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using Game.Damage;
+
+namespace Game.Players.Mechanics;
 
 public abstract partial class Shield : Node2D, IChestItem {
     public Texture2D Icon {get => sprite.Texture;}

@@ -1,6 +1,6 @@
 using Godot;
+
 namespace KidoUtils;
-using System;
 
 public static class ErrorUtils {
     public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) {

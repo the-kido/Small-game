@@ -1,5 +1,9 @@
 using Godot;
 using KidoUtils;
+using Game.Players;
+using Game.Autoload;
+
+namespace Game.LevelContent;
 
 public partial class Door : Area2D {
     

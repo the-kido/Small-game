@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System;
 
+namespace Game.Actors.AI;
+
 public class AIStateMachine {
     public AIStateMachine(Actor actor) {
         this.actor = actor;

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
+namespace Game.Actors.AI;
 
 public sealed class PatrolState : AIState {
 

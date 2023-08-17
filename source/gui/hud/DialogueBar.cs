@@ -1,9 +1,8 @@
 using System;
 using Godot;
+using Game.Characters;
 
-// This should just make it easier to customize the dialogue
-public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
-public abstract partial class ConversationItem : Node {}
+namespace Game.UI;
 
 public partial class DialogueBar : Control {
     [Export]
@@ -103,7 +102,7 @@ public class ConversationController {
             return;
         }
 
-        if (currentItem is DialogueLine line)
+        if (currentItem is DialogueLine line) 
             dialoguePlayer.Start(line);
         
         if (currentItem is CharacterAction action)

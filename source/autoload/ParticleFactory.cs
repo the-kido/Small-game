@@ -1,11 +1,12 @@
 using Godot;
 using KidoUtils;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public partial class ParticleFactory : Node
-{
+namespace Game.Autoload;
+
+
+public partial class ParticleFactory : Node {
 	// Called when the node enters the scene tree for the first time.
 	private static Node factoryNode;
 	public override void _Ready() {

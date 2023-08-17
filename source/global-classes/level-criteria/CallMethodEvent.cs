@@ -1,6 +1,8 @@
 using System;
 using Godot;
 
+namespace Game.LevelContent.Criteria;
+
 public partial class CallMethodEvent : LevelCriteria {
     public override event Action Finished;
     [Export]

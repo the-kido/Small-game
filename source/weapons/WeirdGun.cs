@@ -1,5 +1,6 @@
 using Godot;
-using System;
+using Game.Damage;
+using Game.Bullets;
 
 public partial class WeirdGun : Gun {
     public override Type WeaponType {get; protected set;} = Type.InstantShot;
@@ -16,7 +17,6 @@ Damage: {1}
 Reload Speed: {ReloadSpeed}
     ";
 
-
     public override void Attack() => SpawnBulletInstance();
 
     public override void _Process(double delta) => reloadTimer += delta;
@@ -28,7 +28,6 @@ Reload Speed: {ReloadSpeed}
         }
     }
 
-    protected override BulletInstance BulletInstance() {
-        return new(KidoUtils.BulletFrom.Player, Damage, BulletSpeed.Fast);
-    }
+    protected override BulletInstance BulletInstance() =>
+        new(KidoUtils.BulletFrom.Player, Damage, BulletSpeed.Fast);
 }

@@ -1,7 +1,7 @@
 using System;
-using System.Runtime.CompilerServices;
-using System.Xml.Schema;
-using Godot;
+using Game.Actors;
+
+namespace Game.Data;
 
 public static class DungeonRunData {
     public class Coins : ISaveable {

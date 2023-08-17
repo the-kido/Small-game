@@ -1,7 +1,7 @@
 using Godot;
-using System.Collections.Generic;
-using System;
-using System.Threading.Tasks;
+using Game.Players;
+
+namespace Game.UI;
 
 public partial class GUI : CanvasLayer {
 
@@ -30,10 +30,7 @@ public partial class GUI : CanvasLayer {
     public HeldItems HeldItems => HUD.heldItems;
     public ShieldInfo ShieldInfo => HUD.shieldInfo;
 
-
-
     private void CoverHUD(bool cover) => HUD.Cover(cover);
-
 
     #endregion
     

@@ -1,7 +1,10 @@
 using Godot;
 using System;
 using LootTables;
-using System.Security.AccessControl;
+using Game.Players;
+using Game.Players.Mechanics;
+
+namespace Game.LevelContent;
 
 public partial class Chest : Sprite2D {
 

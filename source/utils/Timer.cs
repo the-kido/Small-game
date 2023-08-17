@@ -1,7 +1,5 @@
 using System;
-using Godot;
 
-// w.i.p
 public struct Timer {
 
     public static readonly Timer NONE = new() { 

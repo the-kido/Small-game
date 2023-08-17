@@ -1,5 +1,8 @@
 using Godot;
 using System.Threading.Tasks;
+using Game.Graphics;
+
+namespace Game.Autoload;
 
 public partial class DamageTextManager : Node {
     public static DamageTextManager instance;

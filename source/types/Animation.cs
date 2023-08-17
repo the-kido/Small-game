@@ -1,5 +1,8 @@
 using Godot;
 using System;
+
+namespace Game.Animation;
+
 public class AnimationController {
      
     public void AddAnimation(AnimationInfo animation, ref Action setEvent) {

@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.UI;
+
 /// <summary>
 /// Handles the GUIs seen DURING the gameplay. Things like health and quests are shown here.
 /// </summary>

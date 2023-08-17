@@ -1,5 +1,9 @@
 using Godot;
 using System.Linq;
+using Game.Players;
+using Game.Characters;
+
+namespace Game.LevelContent;
 
 public partial class DialogueInteractable : Node2D {
     [Export]

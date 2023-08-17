@@ -2,6 +2,11 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using KidoUtils;
+using Game.Players.Mechanics;
+using Game.Actors;
+using Game.UI;
+
+namespace Game.Players.Inputs;
 
 public class ShieldInput {
 	readonly Player player;
@@ -184,7 +189,7 @@ public class WeaponController {
 				break;
 
 			case ControlMethod.Autoaim:
-				Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
+                Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
 				
 				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
 					UseWeapon?.Invoke(delta); 

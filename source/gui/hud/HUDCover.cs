@@ -1,5 +1,6 @@
-// bad name get a better name pzl
 using Godot;
+
+namespace Game.UI;
 
 public partial class HUDCover : ColorRect {
     [Export]

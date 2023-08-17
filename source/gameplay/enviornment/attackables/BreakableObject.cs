@@ -1,4 +1,7 @@
 using Godot;
+using Game.Damage;
+
+namespace Game.LevelContent;
 
 public abstract partial class BreakableObject : StaticBody2D {
     [Export]

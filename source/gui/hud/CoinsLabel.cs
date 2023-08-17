@@ -1,4 +1,7 @@
 using Godot;
+using Game.Data;
+
+namespace Game.UI;
 
 public partial class CoinsLabel : Label {
 

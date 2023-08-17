@@ -1,6 +1,13 @@
 using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game.Players.Mechanics;
+using Game.Actors;
+using Game.Players.Inputs;
+using Game.UI;
+using Game.Damage;
+
+namespace Game.Players;
 
 public sealed partial class Player : Actor {
     // Public fields

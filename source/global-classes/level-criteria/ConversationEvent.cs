@@ -1,6 +1,10 @@
-using Godot;
 using System;
 using System.Linq;
+using Game.Players;
+using Game.Characters;
+using Game.UI;
+
+namespace Game.LevelContent.Criteria;
 
 public partial class ConversationEvent : LevelCriteria {
     public override event Action Finished;

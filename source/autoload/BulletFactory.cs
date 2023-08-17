@@ -1,4 +1,7 @@
 using Godot;
+using Game.Bullets;
+
+namespace Game.Autoload;
 
 public partial class BulletFactory : Node {
     public Bullet SpawnBullet(PackedScene bulletPrototype) {

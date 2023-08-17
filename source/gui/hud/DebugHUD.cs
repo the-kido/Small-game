@@ -1,8 +1,8 @@
 using Godot;
-using System;
 
-public partial class DebugHUD : Control
-{
+namespace Game.UI;
+
+public partial class DebugHUD : Control {
     [Export]
     public HSlider anySlider;
     [Export]

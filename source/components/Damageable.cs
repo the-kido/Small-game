@@ -2,7 +2,10 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using KidoUtils;
+using Game.Autoload;
+using Game.Graphics;
 
+namespace Game.Damage;
 
 public partial class Damageable : Area2D {
 	[Export]

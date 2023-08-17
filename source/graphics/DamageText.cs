@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+namespace Game.Graphics;
+
 public partial class DamageText : Node2D {
     [Export]
     Label label;

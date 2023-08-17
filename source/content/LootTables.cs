@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using Godot;
 using KidoUtils;
 using System;
+using Game.SealedContent;
+using Game.Autoload;
+using Game.LevelContent.Pickupables;
 
 namespace LootTables;
 

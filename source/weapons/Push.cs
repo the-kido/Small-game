@@ -1,6 +1,9 @@
 using System;
 using Godot;
 using System.Collections.Generic;
+using Game.Actors;
+
+namespace Game.SealedContent;
 
 public sealed partial class Push : Weapon {
     public override string Description => @$"

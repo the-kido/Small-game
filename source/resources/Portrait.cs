@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.UI;
+
 public partial class Portrait : Resource  {
     [Export]
     SpriteFrames sprites;

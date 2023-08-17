@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Game.UI;
+
 public partial class InteractButton : Button {
     [Export]
     AnimationPlayer animationPlayer;

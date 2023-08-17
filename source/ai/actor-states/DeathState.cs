@@ -1,5 +1,8 @@
 using Godot;
 using System.Threading.Tasks;
+using Game.Damage;
+
+namespace Game.Actors.AI;
 
 public sealed class FallDeathState : AIState {
     public override async void Init() {

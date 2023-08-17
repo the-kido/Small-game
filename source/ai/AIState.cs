@@ -1,3 +1,5 @@
+namespace Game.Actors.AI;
+
 public abstract class AIState {
     public AIState stateToGoTo;
     public AIStateMachine stateMachine;

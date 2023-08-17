@@ -2,6 +2,10 @@ using Godot;
 using System.Threading.Tasks;
 using KidoUtils;
 using Game.ActorStatuses;
+using Game.Players;
+using Game.Damage;
+
+namespace Game.Actors;
 
 public abstract partial class Actor : CharacterBody2D {
 	

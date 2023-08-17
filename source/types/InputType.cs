@@ -1,3 +1,4 @@
+namespace Game.Players.Inputs;
 
 public enum InputType {
 	RightClickJustPressed,
