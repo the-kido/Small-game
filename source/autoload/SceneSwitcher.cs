@@ -16,18 +16,26 @@ public partial class SceneSwitcher : Node {
 		
 		canvasLayer.Layer = 127;
 		
-		animationPlayer.Play("panel_fade");
-		await ToSignal(animationPlayer, "animation_finished");
+		await ShowPanel(true);
 
 		changeSceneTo.Invoke();
-		await ToSignal(GetTree().CreateTimer(0), "timeout");
+
+		await ToSignal(GetTree().CreateTimer(0), "timeout"); // Wait a frame to let the scene load
 
 		SceneSwitched?.Invoke();
 		
-		animationPlayer.PlayBackwards("panel_fade");
-		await ToSignal(animationPlayer, "animation_finished");
+		await ShowPanel(false);
 
 		canvasLayer.Layer = -128;
+	}
+
+	SignalAwaiter ShowPanel(bool @bool) {
+		if (@bool) 
+			animationPlayer.Play("panel_fade");
+		else
+			animationPlayer.PlayBackwards("panel_fade");
+
+		return ToSignal(animationPlayer, "animation_finished");
 	}
 
 	public void ChangeSceneWithPath(string resourcePath) =>
@@ -35,5 +43,4 @@ public partial class SceneSwitcher : Node {
 
 	public void ChangeSceneWithPackedMap(PackedScene scene) =>
 		ChangeScene(() => GetTree().ChangeSceneToPacked(scene));
-
 }
