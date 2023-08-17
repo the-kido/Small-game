@@ -26,20 +26,23 @@ public partial class Door : Area2D {
 
     public override void _Ready() {
         opened = false;
-        condition.Init();
 
         ErrorUtils.AvoidEmptyCollisionLayers(this);
         
         BodyEntered += OnEnterArea;
 
         // Set up how the door will be opened
-        if (condition is null)
-            Level.LevelStarted += OpenDoorOnLevelComplete;
-        else
+        if (condition is null) {
+            if (Level.LevelCompletions[Level.CurrentLevel.SaveName]) OpenDoor(); 
+            else Level.CurrentLevel.LevelCompleted += OpenDoorOnLevelComplete;
+        }
+        else {
+            condition.Init();
             if (condition.IsAchieved)
                 OpenDoor();
             else
                 condition.Achieved += OpenDoorOnConditionAchieved;
+        }
     }
 
     bool opened;

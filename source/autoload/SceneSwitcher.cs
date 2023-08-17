@@ -29,8 +29,8 @@ public partial class SceneSwitcher : Node {
 		canvasLayer.Layer = -128;
 	}
 
-	SignalAwaiter ShowPanel(bool @bool) {
-		if (@bool) 
+	SignalAwaiter ShowPanel(bool enable) {
+		if (enable) 
 			animationPlayer.Play("panel_fade");
 		else
 			animationPlayer.PlayBackwards("panel_fade");

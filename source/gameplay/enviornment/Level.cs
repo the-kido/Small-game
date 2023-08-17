@@ -10,6 +10,8 @@ public partial class Level : Node, ISaveable{
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
 
     public SaveData saveData => new("LevelCompletions", LevelCompletions);
+    // The parent is the root of the level, so that's the name we want to save.
+    public string SaveName => GetParent().Name;
 
     [Export]
     public Godot.Collections.Array<NodePath> doors = new();
@@ -39,6 +41,7 @@ public partial class Level : Node, ISaveable{
         else
             Complete();
     }
+    
     // I ♥ recursion
     private void CompleteAllEvents(int index) {
         if (index == levelEvents.Count) {
@@ -52,17 +55,11 @@ public partial class Level : Node, ISaveable{
     private void Change() {
         CurrentLevel = this;
         LevelStarted?.Invoke();
-    }
-    
-    // The parent is the root of the level, so that's the name we want to save.
-    string SaveName => GetParent().Name;
-    
+    }    
     private void Complete() {
         LevelCompletions[SaveName] = true;
-
         LevelCompleted?.Invoke();
     }
-    
     private bool LoadCompletion() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
         return LevelCompletions.ContainsKey(SaveName) ? LevelCompletions[SaveName] : false;
