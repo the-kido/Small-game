@@ -41,7 +41,7 @@ public partial class Level : Node, ISaveable{
         else
             Complete();
     }
-    
+
     // I ♥ recursion
     private void CompleteAllEvents(int index) {
         if (index == levelEvents.Count) {
@@ -57,6 +57,7 @@ public partial class Level : Node, ISaveable{
         LevelStarted?.Invoke();
     }    
     private void Complete() {
+        GD.Print("completed!"); 
         LevelCompletions[SaveName] = true;
         LevelCompleted?.Invoke();
     }

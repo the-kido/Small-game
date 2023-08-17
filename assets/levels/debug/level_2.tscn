@@ -71,9 +71,9 @@ TargetIndicator = NodePath("../TargetEnemyCursor")
 
 [node name="Door 1" parent="Gameplay" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("9_y0vey")]
 position = Vector2(1014, 453)
-levelSwitcher = NodePath("../Level Switcher")
+levelSwitcher = NodePath("Level Switcher")
 
-[node name="Level Switcher" type="Node" parent="Gameplay"]
+[node name="Level Switcher" type="Node" parent="Gameplay/Door 1"]
 script = ExtResource("9_x5ao3")
 nextLevel = "res://assets/levels/debug/level_1.tscn"
 

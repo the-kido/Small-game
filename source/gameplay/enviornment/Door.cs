@@ -16,9 +16,6 @@ public partial class Door : Area2D {
             // A static dictionary. When the player goes thru door, the list will reset, the new doors will add to it _Ready()
             // and the old door will check if there's a new door of the same name / number.
 
-    private void OpenDoorOnLevelComplete() =>
-        Level.CurrentLevel.LevelCompleted += OpenDoor;
-    
     private void OpenDoorOnConditionAchieved() {
         condition.Achieved -= OpenDoorOnConditionAchieved;
         OpenDoor();
@@ -34,7 +31,7 @@ public partial class Door : Area2D {
         // Set up how the door will be opened
         if (condition is null) {
             if (Level.LevelCompletions[Level.CurrentLevel.SaveName]) OpenDoor(); 
-            else Level.CurrentLevel.LevelCompleted += OpenDoorOnLevelComplete;
+            else Level.CurrentLevel.LevelCompleted += OpenDoor;
         }
         else {
             condition.Init();

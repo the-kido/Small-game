@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=28 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://source/gui/hud/ShieldInfo.cs" id="11_fq1e7"]
 [ext_resource type="Texture2D" uid="uid://l0yngo1lhnsi" path="res://source/shields/bad_shield.png" id="12_ymmpf"]
 [ext_resource type="Texture2D" uid="uid://4ex2ihoiytul" path="res://source/shields/indicator.png" id="13_rima0"]
+[ext_resource type="Script" path="res://source/gui/hud/LevelCompletionIndicator.cs" id="14_yw1tb"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -111,6 +112,43 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vjk6c"]
 _data = {
 "enable": SubResource("Animation_efsd5")
+}
+
+[sub_resource type="Animation" id="Animation_ki2dc"]
+resource_name = "Open"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:pivot_offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 100), Vector2(0, -50), Vector2(0, -50), Vector2(0, 100)]
+}
+
+[sub_resource type="Animation" id="Animation_jw21v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:pivot_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 100)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_14p66"]
+_data = {
+"Open": SubResource("Animation_ki2dc"),
+"RESET": SubResource("Animation_jw21v")
 }
 
 [node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "HUDCover")]
@@ -478,3 +516,48 @@ animationPlayer = NodePath("AnimationPlayer")
 libraries = {
 "": SubResource("AnimationLibrary_vjk6c")
 }
+
+[node name="Level Completed Indicator" type="Control" parent="." node_paths=PackedStringArray("animationPlayer")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+scale = Vector2(3, 3)
+pivot_offset = Vector2(0, 100)
+script = ExtResource("14_yw1tb")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Level Completed Indicator"]
+libraries = {
+"": SubResource("AnimationLibrary_14p66")
+}
+
+[node name="Label" type="Label" parent="Level Completed Indicator"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.821
+anchor_right = 0.821
+anchor_bottom = 0.65
+offset_left = -58.84
+offset_right = 60.16
+offset_bottom = 5.2
+text = "Level Complete"
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="Level Completed Indicator/Label"]
+z_index = -1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0320513
+anchor_top = -0.269231
+anchor_right = 1.03203
+anchor_bottom = 1.00023
+offset_left = -0.185897
+offset_top = 3.0
+offset_right = -0.811058
+offset_bottom = 2.994
+grow_horizontal = 2
+color = Color(0.219608, 0.219608, 0.219608, 1)

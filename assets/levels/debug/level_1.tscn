@@ -23,7 +23,7 @@ metadata/_edit_horizontal_guides_ = [464.0]
 
 [node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_xwy0o")
-doors = [NodePath("")]
+doors = [NodePath("../Door 1")]
 
 [node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_nwpfc")
@@ -83,10 +83,5 @@ position = Vector2(714, 597)
 [node name="Chest" parent="." instance=ExtResource("16_dddk7")]
 position = Vector2(338, 656)
 chestLootTable = "Generic Chest Items"
-
-[node name="Door 0" parent="." instance=ExtResource("17_dhp43")]
-position = Vector2(90, 244)
-scale = Vector2(-1, 1)
-doorOpeningDirection = Vector2i(1, 0)
 
 [editable path="Player"]
