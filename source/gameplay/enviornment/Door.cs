@@ -2,25 +2,30 @@ using Godot;
 using KidoUtils;
 
 public partial class Door : Area2D {
-    // if there's some sort of condition for the door to open, we of course do not want to open it.
-
+    
     [Export]
-    LevelSwitcher levelSwitcher;
-
+    private LevelSwitcher levelSwitcher;
     [Export]
-    Vector2I doorOpeningDirection;
-
+    private Vector2I doorOpeningDirection;
     [Export]
-    AnimatedSprite2D doorSprite;
-
+    private AnimatedSprite2D doorSprite;
     [Export]
-    Condition condition;
+    private Condition condition;
 
             // TODO: In the future, get rid of the export field in "Level" and instead subsribe every door on "_Ready()" to 
             // A static dictionary. When the player goes thru door, the list will reset, the new doors will add to it _Ready()
             // and the old door will check if there's a new door of the same name / number.
 
+    private void OpenDoorOnLevelComplete() =>
+        Level.CurrentLevel.LevelCompleted += OpenDoor;
+    
+    private void OpenDoorOnConditionAchieved() {
+        condition.Achieved -= OpenDoorOnConditionAchieved;
+        OpenDoor();
+    }
+
     public override void _Ready() {
+        opened = false;
         condition.Init();
 
         ErrorUtils.AvoidEmptyCollisionLayers(this);
@@ -28,57 +33,44 @@ public partial class Door : Area2D {
         BodyEntered += OnEnterArea;
 
         // Set up how the door will be opened
-        if (condition is null) {
-            Level.LevelStarted += () => Level.CurrentLevel.LevelCompleted += OpenDoor;
-        } else {
-            if (condition.IsAchieved) {
+        if (condition is null)
+            Level.LevelStarted += OpenDoorOnLevelComplete;
+        else
+            if (condition.IsAchieved)
                 OpenDoor();
-            } else {
-                condition.Achieved += OpenDoor;
-            } 
-        }
+            else
+                condition.Achieved += OpenDoorOnConditionAchieved;
     }
 
-    bool opened = false;
+    bool opened;
     public void OpenDoor() {
-        // don't open twice. 
         if (opened) return;
 
         opened = true;
         doorSprite.Play("default");
     }
-
-    string temp;
-    void OnSceneSwitched() {
-        temp = Name.ToString();
-
-        SceneSwitcher.SceneSwitched -= Temp;
-        Level.LevelStarted += OnLevelReady;
-    }
-
-    void OnLevelReady() {    
-        Level.LevelStarted -= OnLevelReady;
-
-        Door newDoor = Level.CurrentLevel.GetLinkedDoor(temp);
-        Vector2 newPos = newDoor.GlobalPosition;
-        newPos += newDoor.doorOpeningDirection * 100;
-        
-        Player.Players[0].GlobalPosition = newPos;
-    }
-
+    
+    string tempName;
     private void OnEnterArea(Node2D body) {
         if (!opened) return;
 
         if (body is Player) {
             levelSwitcher.SwitchLevel();
-            
-            SceneSwitcher.SceneSwitched += Temp;
+            tempName = Name.ToString(); // Create a copy of the name because otherwise i'll access a disposed object in "UpdateNewDoor"
+            SceneSwitcher.SceneSwitched += UpdateNewDoor;
         }
     }
-    
-    private void Temp() {
-        CallDeferred("OnSceneSwitched");
+
+    private void SetPlayerAtDoor() {
+        Vector2 newPos = GlobalPosition + doorOpeningDirection * 100;
+        Player.Players[0].GlobalPosition = newPos;
     }
+
+    private void UpdateNewDoor() {
+        SceneSwitcher.SceneSwitched -= UpdateNewDoor;
+        Level.CurrentLevel.GetLinkedDoor(tempName).SetPlayerAtDoor();
+    }        
+
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {
         if (doorSprite.Frame + 1 == doorSprite.SpriteFrames.GetFrameCount("default")) doorSprite.Pause();

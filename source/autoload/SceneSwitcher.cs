@@ -15,15 +15,16 @@ public partial class SceneSwitcher : Node {
 	private async void ChangeScene(Action changeSceneTo) {
 		
 		canvasLayer.Layer = 127;
-		animationPlayer.Play("panel_fade");
 		
+		animationPlayer.Play("panel_fade");
 		await ToSignal(animationPlayer, "animation_finished");
 
 		changeSceneTo.Invoke();
+		await ToSignal(GetTree().CreateTimer(0), "timeout");
+
 		SceneSwitched?.Invoke();
-
+		
 		animationPlayer.PlayBackwards("panel_fade");
-
 		await ToSignal(animationPlayer, "animation_finished");
 
 		canvasLayer.Layer = -128;
