@@ -1,4 +1,5 @@
 using System;
+using Godot;
 using System.Linq;
 using Game.Players;
 using Game.Characters;
@@ -6,6 +7,7 @@ using Game.UI;
 
 namespace Game.LevelContent.Criteria;
 
+[GlobalClass]
 public partial class ConversationEvent : LevelCriteria {
     public override event Action Finished;
     

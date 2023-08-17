@@ -40,15 +40,6 @@ public sealed partial class AgroEnemyMiniBoss : Enemy {
         animationController.AddAnimation(new("fatigue begin", 1), ref rushState.OnFallsTired);
         animationController.AddAnimation(new("Wake up", 2) {resetPreviousAnimation = false}, ref rushState.OnWakesUp);
     }
-
-    public override void _Ready() {
-        base._Ready();
-
-        // DialogueLine[] dialogue = new DialogueLine[] {new("HELLO?", Portraits.boss["Happy"]), new(".... :( ", Portraits.boss["Sad"])};
-
-        DamageableComponent.OnDeath += (_) => ResourceLoader.Load<Condition>("res://assets/levels/debug/weird_door.tres").Achieved?.Invoke();
-        
-    }
 }
 
 public sealed class AgroEnemyRushState : AIState {

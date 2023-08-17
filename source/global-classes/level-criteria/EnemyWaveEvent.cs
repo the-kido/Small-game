@@ -3,6 +3,7 @@ using Godot;
 
 namespace Game.LevelContent.Criteria;
 
+[GlobalClass]
 public partial class EnemyWaveEvent : LevelCriteria {
 
     [Export]

@@ -2,9 +2,11 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.ComponentModel;
-using Game.Data;
 using Game.LevelContent;
 
+namespace Game.Data;
+
+[GlobalClass]
 public partial class Condition : Resource, ISaveable {
     
     [Export, Description("Required to differentiate condition entries in the save file")]

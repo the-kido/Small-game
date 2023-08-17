@@ -3,6 +3,7 @@ using Godot;
 
 namespace Game.LevelContent.Criteria;
 
+[GlobalClass]
 public partial class EnterAreaEvent : LevelCriteria {
     [Export]
     private Area2D area;

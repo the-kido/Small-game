@@ -2,7 +2,8 @@ using Godot;
 
 namespace Game.UI;
 
-public partial class Portrait : Resource  {
+[GlobalClass]
+public partial class Portrait : Resource {
     [Export]
     SpriteFrames sprites;
     [Export]
@@ -14,7 +15,6 @@ public partial class Portrait : Resource  {
     [Export]
     public float fps = 10;
     
-
     public Texture2D CurrentSprite => sprites.GetFrameTexture(animationName, CurrentFrame);
     int spriteCount => sprites.GetFrameCount(animationName);
     int CurrentFrame => (int) Mathf.Floor( (float) progress);

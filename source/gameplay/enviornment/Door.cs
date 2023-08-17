@@ -2,6 +2,7 @@ using Godot;
 using KidoUtils;
 using Game.Players;
 using Game.Autoload;
+using Game.Data;
 
 namespace Game.LevelContent;
 
