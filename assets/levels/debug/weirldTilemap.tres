@@ -139,6 +139,7 @@ texture = ExtResource("1_kn8hh")
 6:3/0/physics_layer_1/angular_velocity = 0.0
 6:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_6cbkv")
 5:3/0 = 0
+5:3/0/z_index = -1
 5:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:3/0/physics_layer_0/angular_velocity = 0.0
 5:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)

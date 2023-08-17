@@ -38,23 +38,25 @@ Pushes things, but deals no damage
     }
     
     Node2D[] entities;
-    float strength = 300;
+    const float STRENGTH = 400;
+    const float TIME = 0.5f; 
     double x = 0;
 
+    Vector2 previous;
     private void UpdateEntityVelocities(double delta) {
         if (entities is null) return;
-        if (x > 2) return;
         x += delta;
+        if (x > TIME) return;
 
-        float y = strength * MathF.Pow(MathF.E, -2 * (float) x); 
-        if (y < 10) y = 0;
-
+        //float y = strength * MathF.Pow(MathF.E, -2 * (float) x); 
+        float y = Math.Max(100 * MathF.Log((float) -x + TIME) + STRENGTH, 0); 
 
         foreach (Actor entity in entities) {
             // This is in case the entity dies to the void. We don't wanna play with the velocity anymore if that's the case.
             if (!entity.DamageableComponent.IsAlive) return;
-
-            entity.Velocity = DegreeAsVector() * y;
+            
+            entity.Velocity += (DegreeAsVector() * y) - previous;
+            previous = (DegreeAsVector() * y);
         }
         
     }

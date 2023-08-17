@@ -1,6 +1,19 @@
 using Godot;
 using System.Threading.Tasks;
 
+public sealed class FallDeathState : AIState {
+    public override async void Init() {
+        await Task.Delay(200);
+        actor.ZIndex = -3;
+    }
+
+    public override void Update(double delta) {
+        actor.Velocity += Vector2.Down * 500 * (float) delta; 
+        actor.Scale -= Vector2.One * (float) delta / 1.3f;
+        actor.Rotate(6 * (float) delta);
+    }
+}
+
 public sealed class DeathState : AIState {
     DamageInstance damageInstance;
     public DeathState(DamageInstance damageInstance) {

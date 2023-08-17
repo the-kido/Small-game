@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using KidoUtils;
 using LootTables;
+using System;
 
 public abstract partial class Enemy : Actor, IPlayerAttackable {
     
@@ -37,10 +38,15 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     public void DropLootTable() => DeathDrops.ForEach(loot => loot.Init(this));
 
     public void DeathAnimation(DamageInstance damageInstance) {
-
-        DeathState noState = new(damageInstance);
-        stateMachine.AddState(noState, null);
-        stateMachine.ChangeState(noState);
+        AIState stateAtDeath;
+        
+        if (damageInstance.type is DamageInstance.Type.Void)
+            stateAtDeath = new FallDeathState();
+        else
+            stateAtDeath = new DeathState(damageInstance);
+        
+        stateMachine.AddState(stateAtDeath, null);
+        stateMachine.ChangeState(stateAtDeath);
         
         foreach (string name in animationPlayer.GetAnimationList()) {
             if (name is not "death") continue;
