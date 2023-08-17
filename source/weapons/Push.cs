@@ -34,6 +34,7 @@ Pushes things, but deals no damage
     }
     public override void Attack() {
         entities = GetEntitiesToPush();
+        direction = DegreeAsVector();
         x = 0;
     }
     
@@ -43,6 +44,7 @@ Pushes things, but deals no damage
     double x = 0;
 
     Vector2 previous;
+    Vector2 direction;
     private void UpdateEntityVelocities(double delta) {
         if (entities is null) return;
         x += delta;
@@ -55,10 +57,9 @@ Pushes things, but deals no damage
             // This is in case the entity dies to the void. We don't wanna play with the velocity anymore if that's the case.
             if (!entity.DamageableComponent.IsAlive) return;
             
-            entity.Velocity += (DegreeAsVector() * y) - previous;
-            previous = (DegreeAsVector() * y);
+            entity.Velocity += (direction * y) - previous;
+            previous = direction * y;
         }
-        
     }
 
     public override void _Process(double delta) {

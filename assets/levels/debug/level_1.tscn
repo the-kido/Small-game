@@ -63,10 +63,6 @@ doors = [NodePath("../Door 1")]
 script = ExtResource("2_nwpfc")
 wave = NodePath("../../Waves/wave")
 
-[node name="Node2" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
-script = ExtResource("2_nwpfc")
-wave = NodePath("../../Waves/wave")
-
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
 position = Vector2(568, 428)
 GUI = NodePath("../HUD")
