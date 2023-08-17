@@ -8,10 +8,11 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g21xc"]
 
-[node name="Shield Obelisk" type="StaticBody2D"]
+[node name="Shield Obelisk" type="StaticBody2D" node_paths=PackedStringArray("Damageable")]
 scale = Vector2(3.67352, 3.67352)
 collision_mask = 10
 script = ExtResource("1_scp0i")
+Damageable = NodePath("Area2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_6iry4")
