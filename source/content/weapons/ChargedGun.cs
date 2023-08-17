@@ -1,6 +1,7 @@
 using KidoUtils;
 using System;
 using Godot;
+using Game.ActorStatuses;
 
 public sealed partial class ChargedGun : Gun {
     const int MAX_DAMAGE = 10;

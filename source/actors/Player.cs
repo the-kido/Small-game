@@ -1,10 +1,8 @@
 using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
 
-public sealed partial class Player : Actor
-{
+public sealed partial class Player : Actor {
     // Public fields
     [Export]
     public GUI GUI {get; private set;}

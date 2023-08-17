@@ -228,7 +228,7 @@ shape = SubResource("RectangleShape2D_2o215")
 debug_color = Color(0.952941, 0, 0.564706, 0.337255)
 
 [node name="Damageable" parent="." instance=ExtResource("2_m5e2g")]
-scale = Vector2(1.18205, 1.20366)
+scale = Vector2(2.364, 2.408)
 collision_layer = 4
 collision_mask = 8
 Health = 10

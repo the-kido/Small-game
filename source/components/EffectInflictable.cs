@@ -1,13 +1,16 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
+namespace Game.ActorStatuses;
 
 public partial class EffectInflictable : Node {
-
-
-    public List<IActorStatus> StatusEffects {get; private set;} = new();
-    void ClearAllEffects(DamageInstance _) {
-        for (int i = 0; i < StatusEffects.Count; i++) RemoveEffect(StatusEffects[i]);
+    private readonly List<IActorStatus> statusEffects = new();
+    public void ClearAllEffects() {
+        // InvalidOperationException is thrown if this is a foreach... idk why...
+        for (int i = 0; i < statusEffects.Count; i++)
+            RemoveEffect(statusEffects[i]);
     }
 
     private Actor actor;
@@ -21,8 +24,7 @@ public partial class EffectInflictable : Node {
 
         actor.DamageableComponent.OnDamaged += (damageInstance) => Add(damageInstance.statusEffect);
         actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
-
-        actor.DamageableComponent.OnDeath += ClearAllEffects;
+        actor.DamageableComponent.OnDeath += (_) => ClearAllEffects();
 
         // Debug
         DamageInstance waterDamage = new(actor) {
@@ -33,7 +35,7 @@ public partial class EffectInflictable : Node {
         // Debug
     }
     private void UpdateEffectHealth(DamageInstance damageInstance) {
-        foreach (IActorStatus effect in StatusEffects) {
+        foreach (IActorStatus effect in statusEffects) {
             effect.OnDamaged(damageInstance);
         }
     }
@@ -44,7 +46,7 @@ public partial class EffectInflictable : Node {
 
         //TODO: Temporary solution: If the name is the same, don't add it again.
 
-        foreach (IActorStatus effect in StatusEffects) {
+        foreach (IActorStatus effect in statusEffects) {
             if (statusEffect.ToString() == effect.ToString()) return false;
 
             //Idk why this does the thing it does but this is null sometimes?
@@ -71,7 +73,7 @@ public partial class EffectInflictable : Node {
 
 
         ParseSynergies();
-        StatusEffects.Add(effectInstance);
+        statusEffects.Add(effectInstance);
         effectInstance.Init(actor);
         effectInstance.Reset();
     }
@@ -79,7 +81,7 @@ public partial class EffectInflictable : Node {
     //Called from the actor this is attached to.
     public override void _Process(double delta) {
         
-        foreach (IActorStatus effect in StatusEffects.ToArray()) {
+        foreach (IActorStatus effect in statusEffects.ToArray()) {
             effect.UpdateTimer(delta);
             effect.Update(actor, delta);
 
@@ -96,7 +98,7 @@ public partial class EffectInflictable : Node {
     }
     private void RemoveEffect(IActorStatus statusEffect) {
         statusEffect.Disable(actor);
-        StatusEffects.Remove(statusEffect);
+        statusEffects.Remove(statusEffect);
     }
 }
 

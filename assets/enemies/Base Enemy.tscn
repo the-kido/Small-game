@@ -21,6 +21,7 @@ _data = {
 
 [node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape")]
 z_index = 1
+scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 9
 motion_mode = 1
@@ -33,6 +34,7 @@ DamageableComponent = NodePath("Damageable")
 CollisionShape = NodePath("CollisionShape2D")
 
 [node name="Damageable" parent="." instance=ExtResource("2_sb4ia")]
+scale = Vector2(0.5, 0.5)
 collision_layer = 4
 collision_mask = 8
 Health = 15
@@ -43,13 +45,12 @@ shape = SubResource("RectangleShape2D_qx2ha")
 debug_color = Color(0, 0.6, 0.701961, 0.0313726)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(2, 2)
 shape = SubResource("RectangleShape2D_1dm21")
 debug_color = Color(0.976471, 0, 0.419608, 0.117647)
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = 1
-scale = Vector2(5, 5)
+scale = Vector2(2.5, 2.5)
 texture = ExtResource("3_fn2kq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

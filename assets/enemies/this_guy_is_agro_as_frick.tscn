@@ -322,7 +322,7 @@ size = Vector2(15, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2kor"]
 size = Vector2(18.8, 16.8)
 
-[node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "rushCollisionArea", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "animationPlayer", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 z_index = 1
 scale = Vector2(5, 5)
 disable_mode = 2
@@ -333,7 +333,6 @@ slide_on_ceiling = false
 floor_block_on_wall = false
 script = ExtResource("1_3njyc")
 pathfinder = NodePath("Pathfinder")
-rushCollisionArea = NodePath("RushCollisionArea")
 animationPlayer = NodePath("AgroGuy/AnimationPlayer")
 Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")

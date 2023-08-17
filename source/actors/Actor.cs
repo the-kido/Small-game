@@ -1,13 +1,14 @@
 using Godot;
 using System.Threading.Tasks;
 using KidoUtils;
+using Game.ActorStatuses;
 
 public abstract partial class Actor : CharacterBody2D {
 	
 	[Export]
 	public EffectInflictable Effect {get; private set;}
 	[Export]
-	public Damageable DamageableComponent {get; private set;}
+	public Damageable DamageableComponent {get; protected set;}
     [Export]
     public AnimatedSprite2D flippedSprite {get; private set;}
     [Export]

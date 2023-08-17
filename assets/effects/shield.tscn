@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxwypbwdhbgrw"]
+
+[ext_resource type="Texture2D" uid="uid://bcnnvskod335x" path="res://assets/effects/shield.png" id="1_hse6u"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mwicj"]
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 10)
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+
+[node name="Shield" type="GPUParticles2D"]
+process_material = SubResource("ParticleProcessMaterial_mwicj")
+texture = ExtResource("1_hse6u")

@@ -1,7 +1,3 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bmpkt4nom60pp"]
-
-[ext_resource type="Script" path="res://source/resources/Condition.cs" id="1_rawcr"]
+[gd_resource type="Resource" format=3 uid="uid://bmpkt4nom60pp"]
 
 [resource]
-script = ExtResource("1_rawcr")
-Name = "Spawn Door"

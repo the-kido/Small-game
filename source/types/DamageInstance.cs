@@ -1,4 +1,5 @@
 using Godot;
+using Game.ActorStatuses;
 
 public record DamageInstance {
 	public enum Type {

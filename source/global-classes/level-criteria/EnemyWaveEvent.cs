@@ -4,7 +4,7 @@ using Godot;
 public partial class EnemyWaveEvent : LevelCriteria {
 
     [Export]
-    private EnemyWave wave;
+    public EnemyWave wave;
 
     public override event Action Finished;
 

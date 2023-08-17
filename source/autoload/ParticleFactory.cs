@@ -9,7 +9,7 @@ public partial class ParticleFactory : Node
 	// Called when the node enters the scene tree for the first time.
 	private static Node factoryNode;
 	public override void _Ready() {
-		factoryNode = KidoUtils.Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
+		factoryNode = Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
 	}
 
 	public static GpuParticles2D AddParticle(Node2D node, PackedScene particle) {

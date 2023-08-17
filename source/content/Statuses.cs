@@ -1,4 +1,7 @@
+using System;
 using Godot;
+
+namespace Game.ActorStatuses;
 
 public sealed class FireEffect : IActorStatus {
     public override float duration {get; protected set;} = 10;
@@ -73,6 +76,25 @@ public sealed class WetStatus : IPermanentStatus {
     public override void Disable(Actor actor) {
         actor.MoveSpeed *= 10;
         ParticleFactory.RemoveParticle(water);
+    }
+}
+
+public sealed class ShieldedStatus : IPermanentStatus {
+    public override ConvertsTo[] opposites {get; init;} = Array.Empty<ConvertsTo>();
+    public override string[] incompatibles {get; init;} = Array.Empty<string>();
+
+    public override void Disable(Actor actor) {
+        ParticleFactory.RemoveParticle(particle);
+        actor.DamageableComponent.DamageTakenMulitplier = oldMultiplier;
+    }
+
+    GpuParticles2D particle;
+    float oldMultiplier;
+    public override void Init(Actor actor) {
+        oldMultiplier = actor.DamageableComponent.DamageTakenMulitplier;
+        actor.DamageableComponent.DamageTakenMulitplier = 0;
+
+        particle = ParticleFactory.AddParticle(actor, Effects.Shield);
     }
 }
 

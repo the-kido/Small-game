@@ -18,6 +18,7 @@ public partial class Level : Node, ISaveable{
     public event Action LevelCompleted;
 
     private List<LevelCriteria> levelEvents;
+    public static LevelCriteria CurrentEvent {get; private set;}
 
     public Door GetLinkedDoor(string name) {
         foreach (NodePath doorPath in doors) {
@@ -48,6 +49,7 @@ public partial class Level : Node, ISaveable{
             Complete();
             return;
         }
+        CurrentEvent = levelEvents[index];
         levelEvents[index].Finished += () => CompleteAllEvents(index + 1);
         levelEvents[index].CallDeferred("Start");
     }
@@ -57,7 +59,7 @@ public partial class Level : Node, ISaveable{
         LevelStarted?.Invoke();
     }    
     private void Complete() {
-        GD.Print("completed!"); 
+        CurrentEvent = null;
         LevelCompletions[SaveName] = true;
         LevelCompleted?.Invoke();
     }
