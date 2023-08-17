@@ -3,6 +3,7 @@ using Game.Characters;
 
 namespace Game.UI;
 
+[GlobalClass]
 public partial class DialogueLine : ConversationItem {
     [Export]
     public string text;

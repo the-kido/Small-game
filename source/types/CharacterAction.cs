@@ -12,6 +12,7 @@ namespace Game.Characters;
 public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitImage = true);
 public abstract partial class ConversationItem : Node {}
 
+[GlobalClass]
 public partial class CharacterAction : ConversationItem {
     [Export]
     // this is temporary. this class should have an "animation player" instance within it i think?

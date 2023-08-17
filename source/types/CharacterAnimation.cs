@@ -2,6 +2,7 @@ using Godot;
 
 namespace Game.Characters;
 
+[GlobalClass]
 public partial class CharacterAnimation : ConversationItem {
     [Export]
     public Character character;

@@ -7,6 +7,7 @@ using Game.Damage;
 
 namespace Game.LevelContent;
 
+[GlobalClass]
 public partial class EnemyWave : Node {
     // this will have children of type ENEMY. It defaults to 
     // no process but when the wave starts there "is" a process 
