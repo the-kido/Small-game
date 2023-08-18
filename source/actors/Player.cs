@@ -29,6 +29,12 @@ public sealed partial class Player : Actor {
     [Export]
     private AudioStreamPlayer2D epicSoundEffectPlayer;
 
+    public PlayerClass PlayerClass {get; private set;}
+    public void SetPlayerClass(PlayerClass playerClass) {
+        PlayerClass = playerClass;
+        playerClass.Init(this);
+    }
+
     public override void _Ready() {
         base._Ready();
         
@@ -65,7 +71,6 @@ public sealed partial class Player : Actor {
     }
     private void SetProcessMode(bool enable) =>
         ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
-
     public void DamageFramePause(DamageInstance damageInstance) {
         if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
     }

@@ -263,10 +263,8 @@ public class InteractablesButtonController {
 }
 
 public partial class InputController : Node {
-	[Export]
 	private Player attachedPlayer;
-	[Export]
-	private WeaponManager hand;
+	private WeaponManager hand => attachedPlayer.WeaponManager;
 
 	bool filterNonUiInput = false;
 	public bool FilterNonUiInput {
