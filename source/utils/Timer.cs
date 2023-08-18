@@ -1,5 +1,7 @@
 using System;
 
+namespace KidoUtils;
+
 public struct Timer {
 
     public static readonly Timer NONE = new() { 

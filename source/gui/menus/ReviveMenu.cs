@@ -1,6 +1,8 @@
 using System;
 using Godot;
 using Game.Players;
+using Game.Autoload;
+using KidoUtils;
 /*This should include:
 The enabling disableding
 A way to set the menu to NULL in the playerHud 
@@ -16,7 +18,12 @@ public partial class ReviveMenu : Control, IMenu{
 
     public event Action Disable;
     public override void _Ready() {
-        close.Pressed += () => Disable?.Invoke();
+        close.Pressed += OnDisable; 
+    }
+    private void OnDisable() {
+        close.Pressed -= OnDisable; 
+        Disable?.Invoke();
+        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath("res://assets/levels/debug/spawn.tscn");
     }
 
     public void Enable(Player _) {

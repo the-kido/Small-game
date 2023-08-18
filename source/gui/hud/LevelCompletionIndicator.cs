@@ -10,7 +10,6 @@ public partial class LevelCompletionIndicator : Control{
     public override void _Ready() {
         if (Level.LevelCompletions[Level.CurrentLevel.SaveName]) Enable(); 
         else Level.CurrentLevel.LevelCompleted += Enable;
-        GD.Print(Level.CurrentLevel.SaveName);
     }
 
     private void Enable(){

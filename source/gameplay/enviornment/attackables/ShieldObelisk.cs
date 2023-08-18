@@ -12,7 +12,7 @@ public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {
     public Vector2 GetPosition() => GlobalPosition;
     public bool IsInteractable() => Damageable.IsAlive;
 
-    Timer timer = new(5) {loop = true};
+    KidoUtils.Timer timer = new(5) {loop = true};
     public override void _Ready() {
         base._Ready();
         timer.TimeOver += AddEffectToEveryone;

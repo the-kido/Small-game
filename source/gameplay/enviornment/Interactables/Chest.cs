@@ -54,7 +54,7 @@ public partial class Chest : Sprite2D {
         }
     }
 
-    Timer timer = Timer.NONE;
+    KidoUtils.Timer timer = KidoUtils.Timer.NONE;
     private void Disable(Texture2D sprite) {
         interactable.QueueFree();
         Modulate = new(0.8f, 0.8f, 0.9f);
@@ -67,7 +67,7 @@ public partial class Chest : Sprite2D {
     // fantastic
     private void FullyDisable() {
         itemShowcase.QueueFree();
-        timer = Timer.NONE;
+        timer = KidoUtils.Timer.NONE;
     }
 
     public override void _Process(double delta) => timer.Update(delta);

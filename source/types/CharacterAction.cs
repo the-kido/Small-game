@@ -84,6 +84,6 @@ public class CharacterActionPlayer {
     #endregion #2
 
     #region #3
-    Timer timerToStopLoopingAnimation;
+    KidoUtils.Timer timerToStopLoopingAnimation;
     #endregion #3
 }

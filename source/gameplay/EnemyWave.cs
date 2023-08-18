@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Game.Actors;
 using Game.Damage;
+using KidoUtils;
 
 namespace Game.LevelContent;
 
@@ -16,7 +17,7 @@ public partial class EnemyWave : Node {
 
     public event Action WaveFinished;
 
-    private Timer showEnemyTimer = Timer.NONE;
+    private KidoUtils.Timer showEnemyTimer = KidoUtils.Timer.NONE;
     // NOTE: In the EnemyWaveEvent class, it is called via CallDefered
     // This is because not all of the children get ready before the "wave" node does. 
     public void StartWave() {

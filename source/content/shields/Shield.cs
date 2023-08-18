@@ -37,7 +37,7 @@ public abstract partial class Shield : Node2D, IChestItem {
         timer.TimeOver += () => Heal(1);
     }
 
-    Timer timer = new(1);
+    KidoUtils.Timer timer = new(1);
     public virtual void Update(double delta) {
         timer.Update(delta);
     }

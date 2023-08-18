@@ -43,6 +43,8 @@ public sealed partial class Player : Actor {
         DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
+        
+        CallDeferred("SetProcessMode", true);
     }   
     
     public void OnDeath(DamageInstance damageInstance) {
@@ -57,10 +59,12 @@ public sealed partial class Player : Actor {
         CollisionMask = 0;
         DamageableComponent.QueueFree();
 
-        ProcessMode = ProcessModeEnum.Disabled;
+        CallDeferred("SetProcessMode", false);
 
         GUI.OpenReviveMenu();
     }
+    private void SetProcessMode(bool enable) =>
+        ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 
     public void DamageFramePause(DamageInstance damageInstance) {
         if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);

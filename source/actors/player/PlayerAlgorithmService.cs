@@ -16,7 +16,7 @@ public class AggressionMetric {
     public double Agression {get; set;}
     readonly Player player;
     
-    Timer timer;
+    KidoUtils.Timer timer;
     public AggressionMetric(Player player) {
         this.player = player;
         DungeonRunData.EnemiesKilled.EnemyKilled += OnPlayerKilledEnemy;
