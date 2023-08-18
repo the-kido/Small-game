@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=21 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
 [ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="3_f3mkb"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="3_j2rso"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
 [ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="4_inxih"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="5_vkma2"]
@@ -32,6 +33,9 @@ doors = [NodePath("../Gameplay/Door 1")]
 [node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("7_nm5at")
 wave = NodePath("../../Waves/Wave 1")
+
+[node name="ConversationEvent" type="Node" parent="Level Info"]
+script = ExtResource("3_j2rso")
 
 [node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
 position = Vector2(41, 467)

@@ -13,7 +13,7 @@ public record ConversationInfo (bool PausePlayerInput = true, bool ShowPortraitI
 public abstract partial class ConversationItem : Node {}
 
 [GlobalClass]
-public partial class CharacterAction : ConversationItem {
+public sealed partial class CharacterActionConversationItem : ConversationItem {
     [Export]
     // this is temporary. this class should have an "animation player" instance within it i think?
     public Character character;
@@ -32,13 +32,13 @@ public class CharacterActionPlayer {
     private readonly ConversationController conversationController;
     private readonly DialogueBar bar;
 
-    private CharacterAction action;
+    private CharacterActionConversationItem action;
     public CharacterActionPlayer(ConversationController conversationController, DialogueBar bar) {
         this.conversationController = conversationController;
         this.bar = bar;
     }
 
-    public void Start(CharacterAction action) {
+    public void Start(CharacterActionConversationItem action) {
         this.action = action;
         bar.Show(false);
 

@@ -4,7 +4,7 @@ using Game.Characters;
 namespace Game.UI;
 
 [GlobalClass]
-public partial class DialogueLine : ConversationItem {
+public sealed partial class DialogueLineConversationItem : ConversationItem {
     [Export]
     public string text;
     [Export]
@@ -25,7 +25,7 @@ public class DialoguePlayer {
     }
 
     double lineProgress;
-    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length;
+    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length; 
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
@@ -48,8 +48,8 @@ public class DialoguePlayer {
         bar.Label.VisibleCharacters = (int) lineProgress;
     }
 
-    DialogueLine nextLine;
-    public void Start(DialogueLine nextLine) {
+    DialogueLineConversationItem nextLine;
+    public void Start(DialogueLineConversationItem nextLine) {
         this.nextLine = nextLine;
         
         bar.Show(true);

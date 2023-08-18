@@ -61,9 +61,9 @@ public class ConversationController {
     public void Update(double delta) {
         if (currentDialogue.Length is 0) return;
 
-        if (currentItem is DialogueLine)
+        if (currentItem is DialogueLineConversationItem)
             dialoguePlayer.Update(delta);
-        else if (currentItem is CharacterAction)
+        else if (currentItem is CharacterActionConversationItem)
             characterActionPlayer.Update(delta);
     }
 
@@ -72,11 +72,11 @@ public class ConversationController {
         // Make sure that the player cannot click on the dialogue bar as it's going down.
         if (currentDialogue.Length == 0) return;
        
-        if (currentItem is DialogueLine) {
+        if (currentItem is DialogueLineConversationItem) {
             dialoguePlayer.Skip();
             return;
         }
-        if (currentItem is CharacterAction) {
+        if (currentItem is CharacterActionConversationItem) {
             // do nothing... we will force the player to watch it to completion
             return;
         }
@@ -102,14 +102,14 @@ public class ConversationController {
             return;
         }
 
-        if (currentItem is DialogueLine line) 
+        if (currentItem is DialogueLineConversationItem line) 
             dialoguePlayer.Start(line);
         
-        if (currentItem is CharacterAction action)
+        if (currentItem is CharacterActionConversationItem action)
             characterActionPlayer.Start(action);
 
         // Play the animation, then quickly continue to the next thingy
-        if (currentItem is CharacterAnimation characterAnimation) {
+        if (currentItem is CharacterAnimationConversationItem characterAnimation) {
             characterAnimationPlayer.Start(characterAnimation);
             ContinueConversation();
         }
@@ -121,7 +121,7 @@ public class ConversationController {
         bar.Label.VisibleCharacters = 0;
 
         bar.Show(false);
-        currentDialogue = Array.Empty<DialogueLine>();
+        currentDialogue = Array.Empty<DialogueLineConversationItem>();
     }
 
     readonly DialoguePlayer dialoguePlayer;

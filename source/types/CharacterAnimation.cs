@@ -3,7 +3,7 @@ using Godot;
 namespace Game.Characters;
 
 [GlobalClass]
-public partial class CharacterAnimation : ConversationItem {
+public sealed partial class CharacterAnimationConversationItem : ConversationItem {
     [Export]
     public Character character;
     [Export]
@@ -11,7 +11,7 @@ public partial class CharacterAnimation : ConversationItem {
 }
 
 public class CharacterAnimationPlayer {
-    public void Start(CharacterAnimation characterAnimation) {
+    public void Start(CharacterAnimationConversationItem characterAnimation) {
         characterAnimation.character.AnimationPlayer.Play(characterAnimation.animationName);
     }
 }
