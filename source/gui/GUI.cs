@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using Game.Players;
 
@@ -39,7 +40,14 @@ public partial class GUI : CanvasLayer {
     private ReviveMenu reviveMenu;
     [Export]
     public ChestMenu chestMenu;
-
+    // Menus accessible at spawn
+    [Export]
+    public PlayerClassMenu playerClassMenu;
+    
+    public enum SpawnMenu {
+        PlayerClassMenu = 0,
+    }
+    
     #endregion
 
     #region Menu open methods
@@ -49,20 +57,27 @@ public partial class GUI : CanvasLayer {
         SetCurrentMenu(chestMenu);
         chestMenu.SetItems(newWeapon);
     }
+    public void OpenSpawnMenu(SpawnMenu spawnMenu) {
+        IMenu selectedMenu = spawnMenu switch {
+            SpawnMenu.PlayerClassMenu => playerClassMenu,
+            _ => throw new NotImplementedException(),
+        };
+        SetCurrentMenu(selectedMenu);
+    }
 
     #endregion
     public IMenu CurrentMenu {get; private set;}
     
     private void CloseCurrentMenu() {
         CoverHUD(false);
-        CurrentMenu?.Switch();
+        CurrentMenu?.Close();
         CurrentMenu = null;
     }
 
     private void SetCurrentMenu(IMenu newMenu) {
         CoverHUD(true);
 
-        CurrentMenu?.Switch();
+        CurrentMenu?.Close();
 
         CurrentMenu = newMenu;
         

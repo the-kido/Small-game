@@ -8,6 +8,8 @@ public partial class LevelCompletionIndicator : Control{
     AnimationPlayer animationPlayer;
 
     public override void _Ready() {
+        if (Level.CurrentEvent is null) return;
+
         if (Level.LevelCompletions[Level.CurrentLevel.SaveName]) Enable(); 
         else Level.CurrentLevel.LevelCompleted += Enable;
     }

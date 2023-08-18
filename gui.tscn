@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dvp5o73q03vs5"]
+[gd_scene load_steps=12 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="PackedScene" uid="uid://crdkmn1ouh8k2" path="res://hud.tscn" id="2_ckuxr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://source/gui/menus/ReviveMenu.cs" id="5_kdcv6"]
 [ext_resource type="Script" path="res://source/gui/menus/ChestMenu.cs" id="6_iybjn"]
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="7_8aqmd"]
+[ext_resource type="Script" path="res://source/gui/menus/PlayerClassMenu.cs" id="8_d8fj3"]
 [ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
@@ -69,12 +70,13 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu", "playerClassMenu")]
 layer = 10
 script = ExtResource("1_7vbvm")
 HUD = NodePath("HUD")
 reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
+playerClassMenu = NodePath("PlayerClassMenu")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
 offset_left = 4.0
@@ -129,10 +131,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -385,3 +387,34 @@ metadata/_edit_use_anchors_ = true
 layout_mode = 2
 mouse_filter = 1
 text = "Switch"
+
+[node name="PlayerClassMenu" type="ColorRect" parent="." node_paths=PackedStringArray("close")]
+visible = false
+anchors_preset = -1
+anchor_left = 0.00833333
+anchor_top = 0.0185185
+anchor_right = 0.991667
+anchor_bottom = 0.981481
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.117647, 0.117647, 0.117647, 1)
+script = ExtResource("8_d8fj3")
+close = NodePath("Close")
+metadata/_edit_use_anchors_ = true
+
+[node name="Close" type="Button" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -172.0
+offset_top = 27.0
+offset_right = -27.0
+offset_bottom = 107.0
+grow_horizontal = 0
+theme = ExtResource("2_lc21n")
+text = "X"

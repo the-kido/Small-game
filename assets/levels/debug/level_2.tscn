@@ -102,7 +102,6 @@ environment = ExtResource("13_w1ius")
 
 [node name="Chest" parent="Enviornment" instance=ExtResource("24_vfgcu")]
 position = Vector2(361, 626)
-chestLootTable = "Generic Chest Items"
 
 [node name="TileMap" type="TileMap" parent="Enviornment"]
 z_index = -1

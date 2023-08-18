@@ -5,6 +5,7 @@ namespace Game.UI;
 
 public interface IMenu {
     public abstract void Enable(Player player);
-    public abstract void Switch();
+    public abstract void Close();
+
     public event Action Disable;
 }

@@ -37,7 +37,6 @@ public record ItemDrop(PackedScene Drop, int Amount = 1, float Chance = 1, bool 
     }
 }
 
-
 public static class EnemyLootTable {
 
     public static readonly List<ItemDrop> NONE = new();
@@ -47,21 +46,24 @@ public static class EnemyLootTable {
     };
 }
 
-
 public record ChestItemDrop(PackedScene ChestItem, float Chance);
 
 
-public static class ChestLootTable {
-
-    public static readonly Dictionary<string, List<ChestItemDrop>> ALL_TABLES = new() {
-        {"Generic Chest Items", new() { 
+public static class ChestLootTables {
+ 
+    public static readonly Dictionary<ChestTables, List<ChestItemDrop>> All = new() {
+        {ChestTables.ChargedGun, new() {
             new(ChargedGun.PackedSceneResource, 1f)
             }
         },
-
-        {"Generic Shield", new() {
-            new(BadShield.PackedSceneResource, 1f)
+        {ChestTables.BadShield, new() {
+            new(BadShield.PackedSceneResource, 1f),
             }
         }
     };
 }   
+
+public enum ChestTables : uint {
+    ChargedGun = 0,
+    BadShield = 1,
+}

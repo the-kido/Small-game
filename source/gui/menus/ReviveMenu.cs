@@ -38,7 +38,7 @@ public partial class ReviveMenu : Control, IMenu{
         }
     }
 
-    public void Switch() {
+    public void Close() {
         animationPlayer.Play("Open", -1, -1);
     }
 }

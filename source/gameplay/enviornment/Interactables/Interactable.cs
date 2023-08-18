@@ -5,10 +5,10 @@ using Game.Players;
 
 namespace Game.LevelContent;
 
-public partial class Interactable : AnimatedSprite2D {
+public sealed partial class Interactable : AnimatedSprite2D {
 
     [Export]
-    protected Area2D range;
+    private Area2D range;
     
     public event Action<Player> Interacted;
 

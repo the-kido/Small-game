@@ -9,7 +9,7 @@ namespace Game.LevelContent;
 public partial class Chest : Sprite2D {
 
     [Export]
-    string chestLootTable;
+    ChestTables chestLootTable;
 
     [Export]
     Interactable interactable;
@@ -25,7 +25,7 @@ public partial class Chest : Sprite2D {
         float chance = 0;
         float random = new Random().NextSingle();
 
-        foreach (ChestItemDrop item in ChestLootTable.ALL_TABLES[chestLootTable]) {
+        foreach (ChestItemDrop item in ChestLootTables.All[chestLootTable]) {
 
             chance += item.Chance;
             
