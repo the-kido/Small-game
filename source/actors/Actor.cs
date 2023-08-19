@@ -17,11 +17,16 @@ public abstract partial class Actor : CharacterBody2D {
     public AnimatedSprite2D flippedSprite {get; private set;}
     [Export]
     public CollisionShape2D CollisionShape {get; private set;}
-	[Export]
-
+	
+    
+    [Export]
     // Stats
-	public int MoveSpeed {get; set;}
+    protected int moveSpeed;
+    private float moveSpeedMultiplier = 1f;
+	public int EffectiveSpeed {get; protected set;} 
+
     public float DamageDealingMultplier {get; set;} = 1;
+
 
 	public override void _Process(double delta) => MoveAndSlide();
 
@@ -33,6 +38,8 @@ public abstract partial class Actor : CharacterBody2D {
         
         Effect.Init(this);
 	}
+
+    public abstract void ApplyStats(ActorStats stats);
 
 	#region Methods
 

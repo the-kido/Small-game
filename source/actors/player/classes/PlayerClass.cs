@@ -7,8 +7,9 @@ using System.Collections.Generic;
 
 namespace Game.Actors;
 
-public struct Stats {
-    public Stats() {}
+// These apply for enemies, players, etc, but will be utilized however fit.
+public struct ActorStats {
+    public ActorStats() {}
 
     public float 
     maxHealthMultipler = 1,
@@ -18,18 +19,20 @@ public struct Stats {
 
     damageDealthMultiplier = 1,
     reloadSpeedMultiplier = 1;
-
 }
 
 
 public struct ActorStatsManager {
-    public ActorStatsManager(Stats d) {
+    public ActorStatsManager(ActorStats d) {
         defaultStats = d;
     }
     // thees never change
-    Stats defaultStats;
+    ActorStats defaultStats;
 
-    private List<Stats> statChanges = new();
+    private List<ActorStats> statChanges = new();
+
+    // used to call "update stats or whatevr it's called"
+    public event Action<ActorStats> statsChanged;
 }
 
 public partial class PlayerClass : Resource {

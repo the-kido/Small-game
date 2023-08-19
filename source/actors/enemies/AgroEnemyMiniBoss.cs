@@ -83,7 +83,7 @@ public sealed class AgroEnemyRushState : AIState {
     private void Rush() {
         //The 3 acts as a buffer just so that the monster doesnt start to slow down immediately.
         double mathxd = (SLOW_DOWN_LENGTH - (time - SLOW_DOWN_BEGIN_TIME)) / SLOW_DOWN_LENGTH;
-        double multiplier = Math.Min(mathxd, 1) * actor.MoveSpeed/10;
+        double multiplier = Math.Min(mathxd, 1) * actor.EffectiveSpeed/10;
 
         Vector2 velocity = (rushDirection) * (float) multiplier; 
         

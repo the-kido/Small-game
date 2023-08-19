@@ -124,7 +124,7 @@ public sealed class DefaultAttackState : AIState {
 
         if (distanceToPlayer < moveAwayFromPlayerDistance) {
             float randFloat = new Random().NextSingle() - 0.5f * 100;
-            actor.Velocity =  lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.MoveSpeed*1.5f; 
+            actor.Velocity =  lastRememberedPlayer.GlobalPosition.DirectionTo(actor.GlobalPosition + Vector2.One*randFloat) * actor.EffectiveSpeed*1.5f; 
         }
     }
     

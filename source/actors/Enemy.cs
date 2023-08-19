@@ -26,6 +26,11 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
         Init(new(animationPlayer), stateMachine);
     }
 
+    ActorStatsManager actorStatsManager;
+    public override void ApplyStats(ActorStats newStats) {
+        EffectiveSpeed = (int) (newStats.speedMultiplier * moveSpeed);
+    }
+
     private void OnDeath(DamageInstance damageInstance) {
         DeathAnimation(damageInstance);
         DropLootTable();

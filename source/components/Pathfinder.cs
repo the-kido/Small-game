@@ -13,7 +13,7 @@ public partial class Pathfinder : Node2D {
         }
         
         Vector2 direction = GlobalPosition.DirectionTo(GetNextPathPosition());
-        actor.Velocity = direction * actor.MoveSpeed;
+        actor.Velocity = direction * actor.EffectiveSpeed;
     }
 
     public void SetTargetPosition(Vector2 position) => agent.TargetPosition = position;

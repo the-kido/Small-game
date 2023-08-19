@@ -4,7 +4,6 @@ using Game.Actors;
 using Game.Autoload;
 using Game.Damage;
 using Game.Graphics;
-using Game.Players.Mechanics;
 
 namespace Game.ActorStatuses;
 
@@ -75,12 +74,12 @@ public sealed class WetStatus : IPermanentStatus {
     GpuParticles2D water;
     public override void Init(Actor actor) {
         water = ParticleFactory.AddParticle(actor, Effects.Wet);
-        Stats stats = new() {speedMultiplier = 0.1f}; // 10 times slower. 
-        actor.MoveSpeed /= 10;
+        ActorStats stats = new() {speedMultiplier = 0.1f}; // 10 times slower. 
+        actor.EffectiveSpeed /= 10;
     }
 
     public override void Disable(Actor actor) {
-        actor.MoveSpeed *= 10;
+        actor.EffectiveSpeed *= 10;
         ParticleFactory.RemoveParticle(water);
     }
 }
