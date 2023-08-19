@@ -21,7 +21,12 @@ public partial class ShieldInfo : Control{
     Player player;
     public void Init(Player player) {
         this.player = player;
+        if (player.InputController.ShieldInput is null) return;
+
         player.InputController.ShieldInput.PlayerShieldsDamage += EnableShieledUsageIndicator;
+        
+        if (player.ShieldManager is null) return;
+
         player.ShieldManager.ShieldAdded += UpdateNewShield;
         player.ShieldManager.ShieldRemoved += RemoveOldShield;
         // Well i'd perfer to get it directly from the shield itself

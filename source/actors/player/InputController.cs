@@ -59,6 +59,7 @@ public class HeldItemInputController {
 public class WeaponController {
 	
 	readonly WeaponManager hand;
+	readonly HeldItemInputController heldItemInputController;
 
 	public event Action<double> UseWeapon;
 	public event Action<Vector2> UpdateWeaponDirection;
@@ -74,6 +75,7 @@ public class WeaponController {
 		this.hand = hand;
 		this.player = player;
 
+		heldItemInputController = new(hand);
 		GUI.AttackButton.Pressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
     }
 
@@ -154,6 +156,7 @@ public class WeaponController {
 	}
 	
     public void Update(double delta) {
+		heldItemInputController.Update();
 
 		if (hand.HeldWeapon is null) return;
 		
@@ -288,32 +291,29 @@ public partial class InputController : Node {
 		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
 	}
 	#endregion
-	
-	public WeaponController WeaponController {get; private set;}
+
+	// Exposed components
+	public WeaponController WeaponController {get; set;}
+	public ShieldInput ShieldInput {get; set;}
+
 	[Export]
 	public MovementController MovementController {get; private set;}
 	public DialogueController DialogueController {get; private set;}
-	private HeldItemInputController heldItemInputController;
-	public ShieldInput ShieldInput {get; private set;}
-
-	// TODO: What a bad name
-	public InteractablesButtonController InteractablesButtonController {get; private set;}
+	public InteractablesButtonController InteractablesButtonController {get; private set;} // TODO: Rename
 
 	public void Init(Player player) {
 		attachedPlayer = player;
 		
-		// Init everything
-		WeaponController = new(hand, player);
+		// Init everything required
 		DialogueController = new(this, GUI);
 		InteractablesButtonController = new(player, GUI);
 		MovementController.Init(player, this);
-		heldItemInputController = new(hand);
-		ShieldInput = new(player);
 
 		// Also this
 		attachedPlayer.DamageableComponent.OnDeath += (_) => FilterNonUiInput = true;
 	}
 	public override void _Process(double delta) {
+		if (attachedPlayer is null) return; // Enforce that this node is initialized
 		// Allow player to interact with UI even if input is filtered.
 		UpdateUIInput(delta);
 
@@ -325,12 +325,12 @@ public partial class InputController : Node {
 	private void UpdateUIInput(double _) {
 		DialogueController.Continue();
 		InvokeLeftClickedWhenClickedSpecificallyForGUIPurposesOnly();
-		heldItemInputController.Update();
 	}
 
 	private void UpdateNonUIInput(double delta) {
 		MovementController.UpdateMovement();
-		WeaponController.Update(delta);
-		ShieldInput.Update();
+		
+		WeaponController?.Update(delta);
+		ShieldInput?.Update();
 	}
 }

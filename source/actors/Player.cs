@@ -9,19 +9,23 @@ using Game.Damage;
 
 namespace Game.Players;
 
-public sealed partial class Player : Actor {
+public abstract partial class Player : Actor {
     // Public fields
+    [ExportCategory("Global properties")]
     [Export]
     public GUI GUI {get; private set;}
     public List<Actor> NearbyEnemies {get; private set;} = new();
 
+    [ExportCategory("Required")]
     [Export]
     public InputController InputController {get; private set;}
+
     [Export]
     public WeaponManager WeaponManager;
     [Export]
     public ShieldManager ShieldManager;
 
+    [ExportCategory("Optional")]
     // This shouldn't be abused; multiplayer support may (?) happen in the future
     public static List<Player> Players {get; private set;}
 
@@ -37,13 +41,14 @@ public sealed partial class Player : Actor {
 
     public override void _Ready() {
         base._Ready();
-        
-        //Default some values
         Players = new() { this };
-
+        
         InputController.Init(this);
+        
+        // Init required components
         WeaponManager.Init(this);
         ShieldManager.Init(this);
+
         GUI.Init(this);
 
         DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;

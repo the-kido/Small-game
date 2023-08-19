@@ -11,7 +11,7 @@ public partial class FallingArea : Area2D {
     
     private void OnBodyEntered(Node2D body) {
         if (body is Enemy actor)
-            actor.DamageableComponent.Damage(new(actor, DamageInstance.Type.Void) {damage = 1000});
+            actor.DamageableComponent.Kill(new(actor, DamageInstance.Type.Void));
     }
 }
 

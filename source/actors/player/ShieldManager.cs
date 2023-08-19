@@ -16,6 +16,7 @@ public partial class ShieldManager : Node2D {
     Player player;
     public void Init(Player player) {
         this.player = player;
+        player.InputController.ShieldInput = new(player);
     }
 
     public override void _Process(double delta) => HeldShield?.Update(delta);

@@ -102,5 +102,10 @@ public partial class Damageable : Area2D {
 
 		if (Health <= 0) OnDeath?.Invoke(damageInstance);
 	}
+
+	public void Kill(DamageInstance damageInstance) {
+		OnDamaged?.Invoke(damageInstance);
+		OnDeath?.Invoke(damageInstance);
+	}
 }
 

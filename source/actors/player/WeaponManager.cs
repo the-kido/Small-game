@@ -13,14 +13,13 @@ public partial class WeaponManager : Node2D { // Also called "hand"
     
     [Export]
     private ReloadVisual reloadVisual;
-    private Player player;
     public readonly Weapon[] Weapons = new Weapon[3];
 
     public Weapon GetWeapon(int index) => Weapons[index];
     public Weapon HeldWeapon => Weapons[SelectedSlot];
 
     public void Init(Player player) {
-        this.player = player;
+        player.InputController.WeaponController = new(this, player);
         
         Weapons[0] = GetChild<Weapon>(0);
         HeldWeapon.Enable(true);
