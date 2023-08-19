@@ -113,7 +113,7 @@ public partial class Camera : Camera2D {
 		Vector2 pos = importantObjects[0].Position;
 		Vector2 size = importantObjects[0].Position;
 
-		foreach(Node2D body in importantObjects) {
+		foreach (Node2D body in importantObjects) {
 			pos.X = Mathf.Min(body.Position.X, pos.X);
 			pos.Y = Mathf.Max(body.Position.Y, pos.Y);
 			

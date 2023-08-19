@@ -29,11 +29,7 @@ public partial class Damageable : Area2D {
 		}
 	}
 
-	public bool IsAlive {
-        get {
-            return Health <= 0 ? false : true;
-        }
-    }
+	public bool IsAlive => Health > 0;
 
 	public event Action<DamageInstance> OnDamaged;
 	public event Action<DamageInstance> DamagedBlocked;

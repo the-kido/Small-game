@@ -100,7 +100,7 @@ public class WeaponController {
     public IPlayerAttackable FindInteractableWithinCursor() {
 		List<Node2D> list = Utils.GetPreloadedScene<GlobalCursor>(hand, PreloadedScene.GlobalCursor).ObjectsInCursorRange;
 
-        foreach(Node2D node2d in list) {
+        foreach (Node2D node2d in list) {
             if (node2d is IPlayerAttackable attackable) {
                 return attackable;
             }
