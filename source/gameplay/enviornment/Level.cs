@@ -12,6 +12,7 @@ public partial class Level : Node, ISaveable{
     public static event Action LevelStarted;
     public static Level CurrentLevel {get; private set;} = new();
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
+    public static LevelCriteria CurrentEvent {get; private set;}
 
     public SaveData saveData => new("LevelCompletions", LevelCompletions);
     // The parent is the root of the level, so that's the name we want to save.
@@ -22,7 +23,6 @@ public partial class Level : Node, ISaveable{
     public event Action LevelCompleted;
 
     private List<LevelCriteria> levelEvents;
-    public static LevelCriteria CurrentEvent {get; private set;}
 
     public Door GetLinkedDoor(string name) {
         foreach (NodePath doorPath in doors) {
