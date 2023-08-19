@@ -10,34 +10,25 @@ using Game.Damage;
 namespace Game.Players;
 
 public abstract partial class Player : Actor {
-    // Public fields
     [ExportCategory("Global properties")]
     [Export]
     public GUI GUI {get; private set;}
-    public List<Actor> NearbyEnemies {get; private set;} = new();
 
     [ExportCategory("Required")]
     [Export]
+    public PlayerInteractableRadar InteractableRadar {get; private set;}
+    [Export]
     public InputController InputController {get; private set;}
-
     [Export]
     public WeaponManager WeaponManager;
     [Export]
     public ShieldManager ShieldManager;
 
     [ExportCategory("Optional")]
-    // This shouldn't be abused; multiplayer support may (?) happen in the future
-    public static List<Player> Players {get; private set;}
-
-    // IDK If this is even staying
     [Export]
     private AudioStreamPlayer2D epicSoundEffectPlayer;
 
-    public PlayerClass PlayerClass {get; private set;}
-    public void SetPlayerClass(PlayerClass playerClass) {
-        PlayerClass = playerClass;
-        playerClass.Init(this);
-    }
+    public static List<Player> Players {get; private set;}
 
     public override void _Ready() {
         base._Ready();
@@ -51,13 +42,9 @@ public abstract partial class Player : Actor {
 
         GUI.Init(this);
 
-        DamageableComponent.OnDamaged += GUI.HealthLable.UpdateHealth;
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
-        
-        CallDeferred("SetProcessMode", true);
     }   
-    
     public void OnDeath(DamageInstance damageInstance) {
         
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
@@ -68,14 +55,14 @@ public abstract partial class Player : Actor {
         //Make player immune to everything and anything all of the time
         CollisionLayer = 0;
         CollisionMask = 0;
-        DamageableComponent.QueueFree();
 
         CallDeferred("SetProcessMode", false);
-
-        GUI.OpenReviveMenu();
     }
+    
+    #region death stuff
     private void SetProcessMode(bool enable) =>
         ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+    
     public void DamageFramePause(DamageInstance damageInstance) {
         if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
     }
@@ -85,12 +72,5 @@ public abstract partial class Player : Actor {
         await Task.Delay(milliseconds);
         GetTree().Paused = false;
     }
-
-    #region signals
-    private void OnNearbyEnemyAreaEntered(Node2D body) =>
-        NearbyEnemies.Add((Actor) body);
-    private void OnNearbyEnemyAreaExited(Node2D body) =>
-        NearbyEnemies.Remove((Actor) body);
-
     #endregion
 }

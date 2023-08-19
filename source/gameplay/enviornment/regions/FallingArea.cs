@@ -10,7 +10,7 @@ public partial class FallingArea : Area2D {
         BodyEntered += OnBodyEntered;
     
     private void OnBodyEntered(Node2D body) {
-        if (body is Enemy actor)
+        if (body is Actor actor)
             actor.DamageableComponent.Kill(new(actor, DamageInstance.Type.Void));
     }
 }

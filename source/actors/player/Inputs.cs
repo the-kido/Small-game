@@ -82,9 +82,8 @@ public class WeaponController {
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
 
-		if (isAutoAttackButtonToggled) {
+		if (isAutoAttackButtonToggled)
 			inputMap.Add(InputType.AutoAttackButtonToggled);
-		}
 
 		if (Input.IsActionJustPressed("utility_used"))
 			inputMap.Add(InputType.RightClickJustPressed);
@@ -114,16 +113,13 @@ public class WeaponController {
         var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Environment);
         var result = spaceState.IntersectRay(ray);
         //if nothing hit the ray, they we good.
-        if (result.Count <= 0) {
-            return true;
-        }
-        return false;
+        return result.Count <= 0;
     }
  
 	readonly uint faceObjectMask = (uint) Layers.Environment + (uint) Layers.Enemies;
     private Actor FindObjectToFace(List<Actor> _) {
         //Check if the player is clicking/pressing on the screen. 
-        foreach (Actor enemy in Player.Players[0].NearbyEnemies) {
+        foreach (Actor enemy in Player.Players[0].InteractableRadar.NearbyEnemies) {
 
             PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
             var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, enemy.GlobalPosition, faceObjectMask);
@@ -136,6 +132,7 @@ public class WeaponController {
     }
 
 	enum ControlMethod { Autoaim, SelectedAutoaim, ManualAim }
+
 	private ControlMethod useMethod; 
 
 	private ControlMethod GetUseMethod(IPlayerAttackable targettedInteractable) {
@@ -143,12 +140,10 @@ public class WeaponController {
 
 		// If something happened to the interactable, default to default aim method.
 		if (useMethod is ControlMethod.SelectedAutoaim && targettedInteractable is null) return ControlMethod.ManualAim;
-		
 
 		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) return ControlMethod.Autoaim;
 
 		// This is put last for most priority. If the player explicitly wants to target a unit, it should 
-		
 		if (targettedInteractable is not null && targettedInteractable.IsInteractable()) return ControlMethod.SelectedAutoaim;
 		
 		// Default to manual aim
@@ -192,7 +187,7 @@ public class WeaponController {
 				break;
 
 			case ControlMethod.Autoaim:
-                Actor see = FindObjectToFace(Player.Players[0].NearbyEnemies);
+                Actor see = FindObjectToFace(Player.Players[0].InteractableRadar.NearbyEnemies);
 				
 				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
 					UseWeapon?.Invoke(delta); 
@@ -236,12 +231,6 @@ public class DialogueController {
 		var mouse_position = GUI.DialogueBar.GetGlobalMousePosition();
 		return rect.HasPoint(mouse_position);
 	}
-
-	// TODO:
-	// I don't like how the inputController has the
-	// "FilterNonUIinput" field toggled from this class
-	// It'll cause bugs I swear
-
 	private void DialogueControlInit() {
 		GUI.DialoguePlayer.Started += (info) => inputController.UIInputFilter.SetFilterMode(info.PausePlayerInput);
 		GUI.DialoguePlayer.Ended += () => inputController.UIInputFilter.SetFilterMode(false);

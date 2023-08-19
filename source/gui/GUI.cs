@@ -12,6 +12,9 @@ public partial class GUI : CanvasLayer {
         HealthLable.Init(player);
         HeldItems.Init(player);
         ShieldInfo.Init(player);
+
+        player.DamageableComponent.OnDeath += (_) => OpenReviveMenu();
+
     }
 
     [Export]

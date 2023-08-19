@@ -22,6 +22,9 @@ public partial class HealthLabelTemp : Label {
     public void Init(Player player) {
         this.player = player;
         healthLable.Text = healthLableText;
+
+        player.DamageableComponent.OnDamaged += UpdateHealth;
+
     } 
 
     volatile int percentRed = 0;    

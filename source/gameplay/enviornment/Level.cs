@@ -102,7 +102,7 @@ public class FreezeOrbMechanic {
         /* 
         if (Level.Temp()) return;
         
-        Node.ProcessModeEnum processMode = freeze ? Node.ProcessModeEnum.Disabled : Node.ProcessModeEnum.Always;
+        Node.ProcessModeEnum processMode = freeze ? Node.ProcessModeEnum.Disabled : Node.ProcessModeEnum.Inherit;
         // Replace water effect with ice effect obv
         Level.CurrentWave?.EnemyChildren.ForEach(child => child.DamageableComponent.Damage(new(child) {statusEffect = new WetStatus()}  ));
         // TODO: Replace this with making the shooting speed multiplier 0 and making its speed multiplier 0 too.

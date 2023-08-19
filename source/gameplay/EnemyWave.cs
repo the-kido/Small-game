@@ -58,7 +58,7 @@ public partial class EnemyWave : Node {
     private static void SetChildVisibility(Enemy child, bool isEnabled) {
         child.Visible = isEnabled;
         child.CollisionShape.Disabled = !isEnabled;
-        child.ProcessMode = isEnabled ? ProcessModeEnum.Always : ProcessModeEnum.Disabled;
+        child.ProcessMode = isEnabled ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
     }
 
     public List<Enemy> EnemyChildren => GetChildren().Cast<Enemy>().ToList();
