@@ -1,43 +1,45 @@
 using Godot;
 using Game.Data;
 using Game.LevelContent;
-using System.Reflection.Metadata.Ecma335;
+using System.Collections.Generic;
 
 namespace Game.Players;
 // This will be preloaded
 public partial class PlayerManager : Node2D, ISaveable {
     public SaveData saveData => new("PlayerClass", currentPlayerClassScript.ResourcePath);
     public override void _Ready() {
-        GD.Print("Door: ", queuedDoor);
         if (queuedDoor is not null) {
-            GD.Print("Opening");
             Level.CurrentLevel.GetLinkedDoor(queuedDoor).SetPlayerAtDoor();
             queuedDoor = null;
             return;
         } 
 
         PlacePlayer(Position);
-        // Instance base player scene
-        // Add class 
-        // Update scripts and sprites (within the player class)        
-    }
-    public override void _ExitTree() {
-        instancedPlayer = null;
     }
 
-    public static Player instancedPlayer = null;
-    public static Script currentPlayerClassScript = PlayerClasses.NormalPlayerScript;
+    static Script currentPlayerClassScript = PlayerClasses.WeirdPlayerScript;
 
-    static PackedScene player = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
+    static readonly PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
     
     public static void PlacePlayer(Vector2 position) {
-        instancedPlayer = player.Instantiate<Player>();
+        Player instancedPlayer = playerScene.Instantiate<Player>();
         
-        Level.CurrentLevel.AddChild(instancedPlayer);
-        
+        Dictionary<string, Variant> serializedData = instancedPlayer.SerializedPlayerExports;
+
         instancedPlayer.GlobalPosition = position;
         
+        Level.CurrentLevel.AddChild(instancedPlayer);
+
+        instancedPlayer.ScriptChanged += () => InitNewPlayerScript(serializedData); 
         instancedPlayer.SetScript(currentPlayerClassScript);
+    }
+    private static void InitNewPlayerScript(Dictionary<string, Variant> serializedData) {
+        foreach (Node child in Level.CurrentLevel.GetChildren()) {
+            if (child is Player player) {
+                player.SetDataFromSerializedExports(serializedData);
+                player.Init();
+            }
+        }
     }
     
     // Used by the PlayerClassMenu
@@ -49,11 +51,11 @@ public partial class PlayerManager : Node2D, ISaveable {
     static string queuedDoor = null;
     // This is carried out in "ready"
     public static void QueueSpawn(string nextDoor) {
-        GD.Print("Queuing");
         queuedDoor = nextDoor.ToString();
     }
 }
 
 public static class PlayerClasses {
     public static readonly Script NormalPlayerScript = ResourceLoader.Load<Script>("res://source/actors/player/classes/Normal.cs");
+    public static readonly Script WeirdPlayerScript = ResourceLoader.Load<Script>("res://source/actors/player/classes/Weird.cs");
 }

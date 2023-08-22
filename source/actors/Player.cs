@@ -6,18 +6,15 @@ using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
 using Game.Damage;
-using System;
-using System.Diagnostics;
-using Game.LevelContent;
+using Game.ActorStatuses;
 
 namespace Game.Players;
 
 public partial class Player : Actor {
-    [ExportCategory("Global properties")]
-    [Export]
-    public GUI GUI {get; private set;}
 
     [ExportCategory("Required")]
+    [Export]
+    public GUI GUI {get; private set;}
     [Export]
     public PlayerInteractableRadar InteractableRadar {get; private set;}
     [Export]
@@ -33,19 +30,48 @@ public partial class Player : Actor {
 
     public static List<Player> Players {get; private set;}
 
-    protected override void UpdateStats(ActorStats newStats) {
-        // WeaponManager.reloadSpeed = newStats.reloadSpeed;
-        MoveSpeed = newStats.speed;
-        DamageableComponent.damageTaken = newStats.damageTaken;
-        damageDealt = newStats.damageDealt;
-        DamageableComponent.maxHealth = newStats.maxHealth;
-        DamageableComponent.regenSpeed = newStats.regenSpeed;
-        
-        WeaponManager.reloadSpeed = newStats.reloadSpeed;
+    public Dictionary<string, Variant> SerializedPlayerExports => new() {
+            {"GUI", GUI},
+            {"InteractableRadar", InteractableRadar},
+            {"InputController", InputController},
+            {"WeaponManager", WeaponManager},
+            {"ShieldManager", ShieldManager},
+            {"epicSoundEffectPlayer", epicSoundEffectPlayer},
+            {"Effect", Effect},
+            {"DamageableComponent", DamageableComponent},
+            {"flippedSprite", flippedSprite},
+            {"CollisionShape", CollisionShape},
+            {"MoveSpeed", moveSpeed},
+        };
+
+    public void SetDataFromSerializedExports(Dictionary<string, Variant> serializedInfo) {
+        GUI = (GUI) serializedInfo["GUI"];
+        InteractableRadar = (PlayerInteractableRadar) serializedInfo["InteractableRadar"];
+        InputController = (InputController) serializedInfo["InputController"];
+        WeaponManager = (WeaponManager) serializedInfo["WeaponManager"];
+        ShieldManager = (ShieldManager) serializedInfo["ShieldManager"];
+        epicSoundEffectPlayer = (AudioStreamPlayer2D) serializedInfo["epicSoundEffectPlayer"];
+        Effect = (EffectInflictable) serializedInfo["Effect"];
+        DamageableComponent = (Damageable) serializedInfo["DamageableComponent"];
+        flippedSprite = (AnimatedSprite2D) serializedInfo["flippedSprite"];
+        CollisionShape = (CollisionShape2D) serializedInfo["CollisionShape"];
+        moveSpeed = (int) serializedInfo["MoveSpeed"];
     }
 
-    public override void _Ready() {
+    protected override void UpdateStats(ActorStats newStats) {
+        base.UpdateStats(newStats);
+        // Additional things for player
+        WeaponManager.reloadSpeed = newStats.reloadSpeed;
+    }
+    
+    public virtual void ClassInit() {}
+    
+    public sealed override void _Ready() => base._Ready();
+    
+    public void Init() {
         base._Ready();
+        ClassInit();
+        
         Players = new() { this };
         Camera.currentCamera.Init(this);
         
@@ -59,9 +85,9 @@ public partial class Player : Actor {
 
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
-    }   
+    }
+    
     public void OnDeath(DamageInstance damageInstance) {
-        
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
         
         PlayImpactFrames(1000);

@@ -10,13 +10,13 @@ namespace Game.Actors;
 public abstract partial class Actor : CharacterBody2D {
 	
 	[Export]
-	public EffectInflictable Effect {get; private set;}
+	public EffectInflictable Effect {get; protected set;}
 	[Export]
 	public Damageable DamageableComponent {get; protected set;}
     [Export]
-    public AnimatedSprite2D flippedSprite {get; private set;}
+    public AnimatedSprite2D flippedSprite {get; protected set;}
     [Export]
-    public CollisionShape2D CollisionShape {get; private set;}
+    public CollisionShape2D CollisionShape {get; protected set;}
 	
     public ActorStatsManager actorStatsManager;
     
@@ -38,7 +38,14 @@ public abstract partial class Actor : CharacterBody2D {
         Effect.Init(this);
 	}
     
-    protected abstract void UpdateStats(ActorStats newStats);
+    protected virtual void UpdateStats(ActorStats newStats) {
+        MoveSpeed = newStats.speed;
+        DamageableComponent.damageTaken = newStats.damageTaken;
+        damageDealt = newStats.damageDealt;
+        DamageableComponent.maxHealth = newStats.maxHealth;
+        DamageableComponent.regenSpeed = newStats.regenSpeed;
+    }
+
 
 	#region Methods
 

@@ -1,6 +1,4 @@
 using Game.Actors;
-using Game.Data;
-using Godot;
 
 namespace Game.Players;
 
@@ -22,8 +20,7 @@ public sealed partial class Normal : Player {
         reloadSpeed = new(0.1f, 0),
     };
     
-    public override void _Ready() {
-        base._Ready();  
+    public override void ClassInit() {
         actorStatsManager.AddStats(classStats);
     }
 }

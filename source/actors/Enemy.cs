@@ -26,14 +26,6 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
         Init(new(animationPlayer), stateMachine);
     }
 
-    protected override void UpdateStats(ActorStats newStats) {
-        MoveSpeed = newStats.speed;
-        DamageableComponent.damageTaken = newStats.damageTaken;
-        damageDealt = newStats.damageDealt;
-        DamageableComponent.maxHealth = newStats.maxHealth;
-        DamageableComponent.regenSpeed = newStats.regenSpeed;
-    }
-
     private void OnDeath(DamageInstance damageInstance) {
         DeathAnimation(damageInstance);
         DropLootTable();
