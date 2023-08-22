@@ -62,19 +62,16 @@ public partial class Door : Area2D {
         if (body is Player) {
             levelSwitcher.SwitchLevel();
             tempName = Name.ToString(); // Create a copy of the name because otherwise i'll access a disposed object in "UpdateNewDoor"
-            SceneSwitcher.SceneSwitched += UpdateNewDoor;
+            PlayerManager.QueueSpawn(Name);
+
+            // SceneSwitcher.SceneSwitched += UpdateNewDoor;
         }
     }
 
-    private void SetPlayerAtDoor() {
+    public void SetPlayerAtDoor() {
         Vector2 newPos = GlobalPosition + doorOpeningDirection * 100;
-        Player.Players[0].GlobalPosition = newPos;
+        PlayerManager.PlacePlayer(newPos);
     }
-
-    private void UpdateNewDoor() {
-        SceneSwitcher.SceneSwitched -= UpdateNewDoor;
-        Level.CurrentLevel.GetLinkedDoor(tempName).SetPlayerAtDoor();
-    }        
 
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {

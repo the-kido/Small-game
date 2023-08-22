@@ -72,14 +72,19 @@ public sealed class WetStatus : IPermanentStatus {
     }
 
     GpuParticles2D water;
+    
+    ActorStats debuff = new() {
+        speed = new(0.1f, 0), // 10 times slower.
+        damageDealt = new(1f, -0.2f) 
+    }; 
+    
     public override void Init(Actor actor) {
         water = ParticleFactory.AddParticle(actor, Effects.Wet);
-        ActorStats stats = new() {speedMultiplier = 0.1f}; // 10 times slower. 
-        actor.EffectiveSpeed /= 10;
+        actor.actorStatsManager.AddStats(debuff);
     }
 
     public override void Disable(Actor actor) {
-        actor.EffectiveSpeed *= 10;
+        actor.actorStatsManager.RemoveStats(debuff);
         ParticleFactory.RemoveParticle(water);
     }
 }
@@ -88,17 +93,19 @@ public sealed class ShieldedStatus : IPermanentStatus {
     public override ConvertsTo[] opposites {get; init;} = Array.Empty<ConvertsTo>();
     public override string[] incompatibles {get; init;} = Array.Empty<string>();
 
+    ActorStats buff = new() {
+        damageTaken = new(0, -100),
+    };
+
     public override void Disable(Actor actor) {
         ParticleFactory.RemoveParticle(particle);
-        actor.DamageableComponent.DamageTakenMulitplier = oldMultiplier;
+        actor.actorStatsManager.AddStats(buff);
     }
 
     GpuParticles2D particle;
-    float oldMultiplier;
-    public override void Init(Actor actor) {
-        oldMultiplier = actor.DamageableComponent.DamageTakenMulitplier;
-        actor.DamageableComponent.DamageTakenMulitplier = 0;
 
+    public override void Init(Actor actor) {
+        actor.actorStatsManager.RemoveStats(buff);
         particle = ParticleFactory.AddParticle(actor, Effects.Shield);
     }
 }
@@ -132,12 +139,16 @@ public sealed class PlasmaEffect : IActorStatus {
     //use nameof to get the name of the class that it is incompatible with. 
     public override string[] incompatibles {get; init;}
 
+    ActorStats buff = new() {
+        damageTaken = new(0, 0.5f),
+    };
+
     public override void Init(Actor actor) { 
         //init the effect too. 
-        actor.DamageableComponent.DamageTakenMulitplier += 0.5f;
+        actor.actorStatsManager.AddStats(buff);
     }
     public override void Disable(Actor actor) {
-        actor.DamageableComponent.DamageTakenMulitplier -= 0.5f;
+        actor.actorStatsManager.RemoveStats(buff);
     }
     public override void Update(Actor actor, double delta) {}
 }

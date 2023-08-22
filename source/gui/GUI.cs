@@ -12,6 +12,7 @@ public partial class GUI : CanvasLayer {
         HealthLable.Init(player);
         HeldItems.Init(player);
         ShieldInfo.Init(player);
+        debugHUD.Init();
 
         player.DamageableComponent.OnDeath += (_) => OpenReviveMenu();
 
@@ -53,6 +54,10 @@ public partial class GUI : CanvasLayer {
     
     #endregion
 
+    #region Debug
+    [Export] DebugHUD debugHUD;
+    #endregion
+
     #region Menu open methods
     public void OpenReviveMenu() => SetCurrentMenu(reviveMenu);
 
@@ -86,9 +91,7 @@ public partial class GUI : CanvasLayer {
         
         CurrentMenu?.Enable(player);
         
-        CurrentMenu.Disable += () => {
-            CloseCurrentMenu();
-        };
+        CurrentMenu.Disable += CloseCurrentMenu;
     }
 }
 

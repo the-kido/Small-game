@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Game.UI;
+using Game.Actors;
 
 namespace Game.Players.Mechanics;
 
@@ -10,6 +11,7 @@ public partial class WeaponManager : Node2D { // Also called "hand"
     public Action<Weapon, int> HeldWeaponChanged;
     // This is for the reloadbar thing
     public event Action<Weapon> WeaponSwitched;
+    public ModifiedStat reloadSpeed = new();
     
     [Export]
     private ReloadVisual reloadVisual;

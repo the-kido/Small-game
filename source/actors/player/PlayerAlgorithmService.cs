@@ -27,7 +27,6 @@ public class AggressionMetric {
 
     int score;
     private void OnPlayerKilledEnemy(Enemy enemyKilled) {
-        score += enemyKilled.DamageableComponent.MaxHealth;
-
+        score += enemyKilled.DamageableComponent.BaseMaxHealth;
     }
 }

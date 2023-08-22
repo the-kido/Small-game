@@ -2,6 +2,8 @@ using Godot;
 using Game.Players;
 using Game.Players.Mechanics;
 using Game.Players.Inputs;
+using Game.Actors;
+using System.Reflection.Metadata;
 
 public enum ChestItemType {
 	WEAPON,
@@ -34,7 +36,9 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	public virtual void Init() {}
 
 	[Export]
-	public float ReloadSpeed {get; private set;} = 1;
+	public float BaseReloadSpeed {get; private set;} = 1;
+	public float EffectiveReloadSpeed => Hand.reloadSpeed.GetEffectiveValue(BaseReloadSpeed);
+
 	protected double reloadTimer = 0;
 
 	protected WeaponManager Hand => GetParent<WeaponManager>();
@@ -44,7 +48,7 @@ public abstract partial class Weapon : Node2D, IChestItem {
 
 	public void Enable(bool enable) {
         Visible = enable;
-        
+
 		if (enable)
 			AttachEvents();
         else
@@ -72,7 +76,7 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	protected virtual void OnWeaponUsing(double delta) {
 		reloadTimer += delta;
 
-		if (reloadTimer < ReloadSpeed)
+		if (reloadTimer < EffectiveReloadSpeed)
 			return;
 		
 		reloadTimer = 0;

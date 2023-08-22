@@ -18,15 +18,14 @@ public abstract partial class Actor : CharacterBody2D {
     [Export]
     public CollisionShape2D CollisionShape {get; private set;}
 	
+    public ActorStatsManager actorStatsManager;
     
     [Export]
-    // Stats
     protected int moveSpeed;
-    private float moveSpeedMultiplier = 1f;
-	public int EffectiveSpeed {get; protected set;} 
-
-    public float DamageDealingMultplier {get; set;} = 1;
-
+    protected ModifiedStat MoveSpeed = new(1, 0);
+    public float EffectiveSpeed => MoveSpeed.GetEffectiveValue(moveSpeed);
+    
+    public ModifiedStat damageDealt = new();
 
 	public override void _Process(double delta) => MoveAndSlide();
 
@@ -35,11 +34,11 @@ public abstract partial class Actor : CharacterBody2D {
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
         DamageableComponent.OnDamaged += DamageFlash;
-        
+        actorStatsManager = new(new(), UpdateStats);
         Effect.Init(this);
 	}
-
-    public abstract void ApplyStats(ActorStats stats);
+    
+    protected abstract void UpdateStats(ActorStats newStats);
 
 	#region Methods
 

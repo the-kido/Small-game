@@ -6,7 +6,8 @@ using Game.Damage;
 
 namespace Game.Players.Inputs;
 
-public struct UIInputFilter {
+public class UIInputFilter {
+
 	public UIInputFilter(Player player) =>
 		player.DamageableComponent.OnDeath += SetFilterModeOnDeath;
 
@@ -48,13 +49,12 @@ public partial class InputController : Node {
 
 	public void Init(Player player) {
 		attachedPlayer = player;
-		UIInputFilter = new();
+		UIInputFilter = new(player);
 		
 		// Init everything required
 		DialogueController = new(this, GUI);
 		InteractablesButtonController = new(player, GUI);
 		MovementController.Init(player, this);
-
 	}
 	public override void _Process(double delta) {
 		if (attachedPlayer is null) return; // Enforce that this node is initialized

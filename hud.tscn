@@ -93,27 +93,6 @@ _data = {
 "show": SubResource("Animation_y57l1")
 }
 
-[sub_resource type="Animation" id="Animation_efsd5"]
-resource_name = "enable"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(0.160784, 0.0784314, 0.0784314, 0), Color(0.160784, 0.0784314, 0.0784314, 0.34902)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_vjk6c"]
-_data = {
-"enable": SubResource("Animation_efsd5")
-}
-
 [sub_resource type="Animation" id="Animation_ki2dc"]
 resource_name = "Open"
 length = 2.0
@@ -149,6 +128,27 @@ tracks/0/keys = {
 _data = {
 "Open": SubResource("Animation_ki2dc"),
 "RESET": SubResource("Animation_jw21v")
+}
+
+[sub_resource type="Animation" id="Animation_efsd5"]
+resource_name = "enable"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.160784, 0.0784314, 0.0784314, 0), Color(0.160784, 0.0784314, 0.0784314, 0.34902)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vjk6c"]
+_data = {
+"enable": SubResource("Animation_efsd5")
 }
 
 [node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "HUDCover")]
@@ -496,34 +496,14 @@ patch_margin_right = 4
 patch_margin_bottom = 4
 metadata/_edit_use_anchors_ = true
 
-[node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-auto_translate = false
-localize_numeral_system = false
-mouse_filter = 1
-mouse_force_pass_scroll_events = false
-color = Color(0.160784, 0.0784314, 0.0784314, 0)
-script = ExtResource("9_a1bgu")
-animationPlayer = NodePath("AnimationPlayer")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD Cover"]
-libraries = {
-"": SubResource("AnimationLibrary_vjk6c")
-}
-
 [node name="Level Completed Indicator" type="Control" parent="." node_paths=PackedStringArray("animationPlayer")]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_top = 16.0
-offset_bottom = 16.0
+offset_top = -184.0
+offset_bottom = -184.0
 grow_horizontal = 2
 scale = Vector2(3, 3)
 pivot_offset = Vector2(0, 100)
@@ -561,3 +541,24 @@ offset_right = -0.811058
 offset_bottom = 2.994
 grow_horizontal = 2
 color = Color(0.219608, 0.219608, 0.219608, 1)
+
+[node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_translate = false
+localize_numeral_system = false
+mouse_filter = 1
+mouse_force_pass_scroll_events = false
+color = Color(0.160784, 0.0784314, 0.0784314, 0)
+script = ExtResource("9_a1bgu")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HUD Cover"]
+libraries = {
+"": SubResource("AnimationLibrary_vjk6c")
+}

@@ -4,7 +4,6 @@ using Game.Players.Inputs;
 namespace Game.Players;
 
 public partial class MovementController : Node{
-	public const float MOVE_SPEED = 3.0f;
 	public const int CORNER_CORRECTION_RANGE = 25;
 
 	[Export]
@@ -43,8 +42,7 @@ public partial class MovementController : Node{
 
 	public void UpdateMovement() {
 		Vector2 normalizedInput = GetMovementInput();
-
-		player.Velocity = normalizedInput * MOVE_SPEED * 100;
+		player.Velocity = normalizedInput * player.EffectiveSpeed * 100;
 
 		if (normalizedInput != Vector2.Zero) {
 			CornerCorrection(normalizedInput);

@@ -44,7 +44,7 @@ public partial class DamageText : Node2D {
             < 6 => new(0.9f, 0.5f, 0.1f),       // Decent
             < 9 => new(0.95f, 0.75f, 0.3f),     // Tres bien
             < 12 => new(0.87f, 0.61f, 0.97f),   // Tres beaucoup bien ?
-            _ => new()
+            _ => new(0.72f, 0.95f, 0.85f)
         };
         Modulate = color;
 

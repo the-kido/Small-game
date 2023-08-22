@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using KidoUtils;
 using Game.Autoload;
 using Game.Graphics;
+using Game.Actors;
+
 
 namespace Game.Damage;
 
@@ -13,21 +15,17 @@ public partial class Damageable : Area2D {
 	[Export(PropertyHint.None, "In seconds: how long it takes for this entity to be hit again")]
 	private double ImmunityFrames {get; set;}
 	
-	public int MaxHealth {get; init;}
-	
+	public ModifiedStat maxHealth = new();
+	public int EffectiveHealth => (int) maxHealth.GetEffectiveValue(BaseMaxHealth);
+	public int BaseMaxHealth {get; init;}
+
 	public bool BlocksDamage {get; set;} = false;
 	public bool IsImmune {get; private set;} = false;
 
-	private float _damageTakenMultiplier = 1f;
-	public float DamageTakenMulitplier {
-		get => _damageTakenMultiplier;
-		set {
-			if (value < 0)
-				throw new ArgumentOutOfRangeException(nameof(value), "Range must be above 0");
-		
-			_damageTakenMultiplier = value;
-		}
-	}
+	
+	public ModifiedStat damageTaken = new();
+
+    public ModifiedStat regenSpeed = new();
 
 	public bool IsAlive => Health > 0;
 
@@ -46,7 +44,7 @@ public partial class Damageable : Area2D {
 	}
 
 	private Damageable() {
-		MaxHealth = Health;
+		BaseMaxHealth = Health;
 
 		OnDamaged += WaitForImmunityFrames;
 
@@ -66,8 +64,12 @@ public partial class Damageable : Area2D {
 
 		return instance;
 	}
-	private int GetTotalDamage(DamageInstance damageInstance) =>
-		(int) MathF.Round(damageInstance.damage * _damageTakenMultiplier * damageInstance.damageDealtMultiplier);
+	private int GetTotalDamage(DamageInstance damageInstance) {
+		float effectiveDamageDealt = damageInstance.damageDealt.GetEffectiveValue(damageInstance.damage);
+		float effectiveDamageAbsorbed = damageTaken.GetEffectiveValue(1);
+
+		return (int) MathF.Round(effectiveDamageAbsorbed * effectiveDamageDealt);
+	}
 	
 	private bool CanTakeDamage(DamageInstance damageInstance) {
 		// Or not, maybe just allow a dead entity to take damage. Who am I to judge.

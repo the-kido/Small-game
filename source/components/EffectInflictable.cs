@@ -28,6 +28,7 @@ public partial class EffectInflictable : Node {
         actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
         actor.DamageableComponent.OnDeath += (_) => ClearAllEffects();
 
+        /*
         // Debug
         DamageInstance waterDamage = new(actor) {
             damage = 3,
@@ -35,6 +36,7 @@ public partial class EffectInflictable : Node {
         };
         DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
         // Debug
+        */
     }
     private void UpdateEffectHealth(DamageInstance damageInstance) {
         foreach (IActorStatus effect in statusEffects) {

@@ -21,7 +21,7 @@ public partial class ReloadVisual : ProgressBar {
 
     private void UpdateBar(double delta) {
         barProgress += delta;
-        ApplyProgress(barProgress / hand.HeldWeapon.ReloadSpeed);
+        ApplyProgress(barProgress / hand.HeldWeapon.EffectiveReloadSpeed);
     }
 
     private void ResetBar() {

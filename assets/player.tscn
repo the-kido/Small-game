@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=65 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/player/classes/Normal.cs" id="1_48c7e"]
@@ -16,6 +16,8 @@
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="11_laf6i"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
 [ext_resource type="Script" path="res://source/actors/player/PlayerInteractableRadar.cs" id="13_ksv65"]
+[ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="17_km45s"]
+[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="18_eykga"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
 atlas = ExtResource("3_24x38")
@@ -646,13 +648,14 @@ size = Vector2(55, 69)
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
 radius = 591.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("GUI", "InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_48c7e")
+GUI = NodePath("HUD")
 InteractableRadar = NodePath("Nearby Interactable Area")
 InputController = NodePath("Input Controller")
 WeaponManager = NodePath("Hand")
@@ -661,6 +664,7 @@ Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
+moveSpeed = 3
 
 [node name="Movement Controller" type="Node" parent="." node_paths=PackedStringArray("playerAnimationTree")]
 script = ExtResource("1_30x0s")
@@ -751,3 +755,9 @@ offset_right = 51.2609
 offset_bottom = -44.7391
 max_value = 1.0
 script = ExtResource("12_f1bp5")
+
+[node name="HUD" parent="." node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("17_km45s")]
+process_mode = 3
+TargetIndicator = NodePath("../TargetEnemyCursor")
+
+[node name="TargetEnemyCursor" parent="." instance=ExtResource("18_eykga")]

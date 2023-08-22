@@ -27,6 +27,10 @@ There is data that is dynamically saved (dynamicallySavedItems) and data drawn
 from a previous save file. 
 */
 public static class GameDataService {
+
+    public const string SAVE_FILE = "user://savegame.json";
+    public const string DEBUG_FILE = "user://copy.json";
+
     public static System.Collections.Generic.List<ISaveable> dynamicallySavedItems = new();
     static Dictionary<string, Variant> SavedItemsAsDictionary => new(dynamicallySavedItems.ToDictionary(x => x.saveData.Key, x => x.saveData.Value));
 
@@ -43,13 +47,13 @@ public static class GameDataService {
         return newData;
     }
 
-    private static bool fileExists => FileAccess.FileExists("user://savegame.json");
+    private static bool fileExists => FileAccess.FileExists(SAVE_FILE);
 
     public static void Save() {
         // Serialize the data. If there is no current file, then just draw from whatever was saved so far in dynamicallySavedItems.
         Dictionary<string, Variant> data = fileExists ? GetCompiledSaveData() : SavedItemsAsDictionary;
 
-        using FileAccess saveFile = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Write);
+        using FileAccess saveFile = FileAccess.Open(SAVE_FILE, FileAccess.ModeFlags.Write);
 
         // Throw that into the save file
         var stringifiedData = Json.Stringify(data);
@@ -61,8 +65,9 @@ public static class GameDataService {
             Save();
             return GetData();
         }
+        // if (!ENABLE) return null;
 
-        using FileAccess saveFile = FileAccess.Open("user://savegame.json", FileAccess.ModeFlags.Read);
+        using FileAccess saveFile = FileAccess.Open(DEBUG_FILE, FileAccess.ModeFlags.Read);
         string data = saveFile.GetLine();
         
         Json json = new();

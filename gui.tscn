@@ -70,13 +70,14 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu", "playerClassMenu")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu", "playerClassMenu", "debugHUD")]
 layer = 10
 script = ExtResource("1_7vbvm")
 HUD = NodePath("HUD")
 reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
 playerClassMenu = NodePath("PlayerClassMenu")
+debugHUD = NodePath("DEBUG")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
 offset_left = 4.0
@@ -131,10 +132,10 @@ anchor_left = 0.515
 anchor_top = 0.525
 anchor_right = 0.515
 anchor_bottom = 0.525
-offset_left = 2000.0
-offset_top = 173.0
-offset_right = 3473.0
-offset_bottom = 961.0
+offset_left = 1011.2
+offset_top = -394.0
+offset_right = 2484.2
+offset_bottom = 394.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.129412, 0.129412, 0.129412, 1)
@@ -190,6 +191,7 @@ text = "X"
 
 [node name="Death Animation Player" type="AnimationPlayer" parent="Revive"]
 root_node = NodePath("../..")
+reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }

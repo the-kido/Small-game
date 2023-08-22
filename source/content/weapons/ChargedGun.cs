@@ -27,7 +27,7 @@ public sealed partial class ChargedGun : Gun {
 As you hold, this weapon charges. Releasing the weapon early deals less damage, but at full charge it is painful.
 
 Damage: {MAX_DAMAGE}
-Reload Speed: {ReloadSpeed}
+Reload Speed: {BaseReloadSpeed}
     ";
 
     protected override BulletInstance BulletInstance() => new(BulletFrom.Player, Damage, BulletSpeed.VeryFast);
@@ -39,7 +39,7 @@ Reload Speed: {ReloadSpeed}
 
     float strength = 0;
     public override void OnWeaponLetGo() {
-        strength = (float) reloadTimer / ReloadSpeed;
+        strength = (float) reloadTimer / EffectiveReloadSpeed;
         reloadTimer = 0;
         
         //Dissallow spam
@@ -51,8 +51,8 @@ Reload Speed: {ReloadSpeed}
 		reloadTimer += delta;
 
         //Make sure the reloadTimer doesn't go past the reload speed for the strenght calculations.
-        reloadTimer = MathF.Min( (float) reloadTimer, ReloadSpeed);
+        reloadTimer = MathF.Min( (float) reloadTimer, EffectiveReloadSpeed);
 
-        DebugHUD.instance.anySlider.Value = reloadTimer / ReloadSpeed * 100;
+        DebugHUD.instance.anySlider.Value = reloadTimer / EffectiveReloadSpeed * 100;
     }
 } 

@@ -1,12 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=18 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
-[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="3_f3mkb"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
-[ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="4_inxih"]
-[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="5_vkma2"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="7_nm5at"]
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
@@ -15,6 +12,7 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/regions/FallingArea.cs" id="10_bqs4e"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="13_472v1"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="16_nns66"]
 [ext_resource type="PackedScene" uid="uid://caqqb3q7pfcr1" path="res://assets/enviornment/attackables/shield_obelisk.tscn" id="18_i70b7"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="24_vfgcu"]
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="25_o38qo"]
@@ -33,10 +31,6 @@ doors = [NodePath("../Gameplay/Door 1")]
 script = ExtResource("7_nm5at")
 wave = NodePath("../../Waves/Wave 1")
 
-[node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("3_f3mkb")]
-position = Vector2(41, 467)
-GUI = NodePath("../GUI/GUI")
-
 [node name="i hate this" type="Area2D" parent="."]
 position = Vector2(528, 384)
 scale = Vector2(3, 3)
@@ -49,15 +43,9 @@ shape = SubResource("RectangleShape2D_ck6td")
 
 [node name="GUI" type="Node" parent="."]
 
-[node name="Camera" parent="GUI" node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("2_xg7am")]
+[node name="Camera" parent="GUI" node_paths=PackedStringArray("tileMap") instance=ExtResource("2_xg7am")]
 position = Vector2(8, 473)
-player = NodePath("../../Player")
 tileMap = NodePath("../../Enviornment/TileMap")
-
-[node name="GUI" parent="GUI" node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("4_inxih")]
-TargetIndicator = NodePath("../TargetEnemyCursor")
-
-[node name="TargetEnemyCursor" parent="GUI" instance=ExtResource("5_vkma2")]
 
 [node name="Gameplay" type="Node" parent="."]
 
@@ -115,3 +103,6 @@ position = Vector2(380, 356)
 
 [node name="Temp" parent="Enviornment" instance=ExtResource("18_i70b7")]
 position = Vector2(473, 397)
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("16_nns66")

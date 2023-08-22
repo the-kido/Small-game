@@ -10,7 +10,7 @@ public sealed partial class Push : Weapon {
 {"Push".Colored(Colors.LEGENDARY_RARITY)}
 Pushes things, but deals no damage    
     ";
-    public override PackedScene PackedScene => throw new NotImplementedException();
+    public override PackedScene PackedScene => ResourceLoader.Load<PackedScene>("res://source/weapons/push.tscn");
     public override Type WeaponType { get; protected set;} = Type.HoldToCharge;
 
     [Export]
@@ -76,7 +76,7 @@ Pushes things, but deals no damage
 
     // TODO; This is exactly like the code in "weirdgun" so idk how to fricking fix that but whatver.
     protected override void OnWeaponUsing(double delta) {
-        if (reloadTimer >= ReloadSpeed) {
+        if (reloadTimer >= EffectiveReloadSpeed) {
 			reloadTimer = 0;
             Attack();
         }

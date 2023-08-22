@@ -7,6 +7,7 @@ using Game.LevelContent.Criteria;
 
 namespace Game.LevelContent;
 
+[GlobalClass]
 public partial class Level : Node, ISaveable{
 
     public static event Action LevelStarted;

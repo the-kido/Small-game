@@ -6,8 +6,6 @@ namespace Game.UI;
 
 public partial class Camera : Camera2D {
 	[Export]
-	private Player player;
-	[Export]
 	private TileMap tileMap;
 
 	public static Camera currentCamera;
@@ -20,7 +18,9 @@ public partial class Camera : Camera2D {
 	private const float SCALE_MAX = 1.9f, SCALE_MIN = 1.5f;
 	private float diagonalLength;
 
-	public override void _Ready() {
+	Player player;
+	public void Init(Player player) {
+		this.player = player;
 		
 		#region initialize the size of the camera for this level
 		Vector2I ts = tileMap.TileSet.TileSize;
@@ -40,11 +40,12 @@ public partial class Camera : Camera2D {
 		
 		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
 		diagonalLength /= (SCALE_MAX + SCALE_MIN) * 2;
-
+		
 		importantObjects.Add(player);
 	}
 
 	public override void _Process(double delta) {
+		if (player is null) return;
 
 		Rect2 importantObjectsRect = ImportantObjectsRect();
 

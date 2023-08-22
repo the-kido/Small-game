@@ -14,7 +14,7 @@ public partial class WeirdGun : Gun {
     $@"I don't even know man
     
 Damage: {1}
-Reload Speed: {ReloadSpeed}
+Reload Speed: {BaseReloadSpeed}
     ";
 
     public override void Attack() => SpawnBulletInstance();
@@ -22,7 +22,7 @@ Reload Speed: {ReloadSpeed}
     public override void _Process(double delta) => reloadTimer += delta;
     
     protected override void OnWeaponUsing(double delta) {
-        if (reloadTimer >= ReloadSpeed) {
+        if (reloadTimer >= EffectiveReloadSpeed) {
 			reloadTimer = 0;
             Attack();
         }

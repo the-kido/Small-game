@@ -1,17 +1,15 @@
-[gd_scene load_steps=16 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=14 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
-[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="2_2pl6b"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_nwpfc"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
-[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="6_yt11f"]
-[ext_resource type="PackedScene" uid="uid://dvp5o73q03vs5" path="res://gui.tscn" id="7_80iaj"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="12_48p24"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="12_78176"]
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="12_qjdua"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="16_dddk7"]
 [ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/door.tscn" id="17_dhp43"]
 
@@ -32,20 +30,10 @@ wave = NodePath("../../Waves/wave")
 
 [node name="Node" type="Node" parent="."]
 
-[node name="Camera" parent="Node" node_paths=PackedStringArray("player", "tileMap") instance=ExtResource("3_3il18")]
+[node name="Camera" parent="Node" node_paths=PackedStringArray("tileMap") instance=ExtResource("3_3il18")]
 position = Vector2(749, 447)
 zoom = Vector2(1.7, 1.7)
-player = NodePath("../../Player")
 tileMap = NodePath("../../Enivornment/TileMap")
-
-[node name="HUD" parent="Node" node_paths=PackedStringArray("TargetIndicator") instance=ExtResource("7_80iaj")]
-TargetIndicator = NodePath("../TargetEnemyCursor")
-
-[node name="TargetEnemyCursor" parent="Node" instance=ExtResource("6_yt11f")]
-
-[node name="Player" parent="." node_paths=PackedStringArray("GUI") instance=ExtResource("2_2pl6b")]
-position = Vector2(568, 428)
-GUI = NodePath("../Node/HUD")
 
 [node name="Waves" type="Node" parent="."]
 
@@ -92,4 +80,6 @@ shape = SubResource("RectangleShape2D_jnddw")
 
 [node name="Sprite2D" type="Sprite2D" parent="Enivornment/StaticBody2D"]
 
-[editable path="Player"]
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(436, 434)
+script = ExtResource("12_qjdua")

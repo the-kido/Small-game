@@ -6,10 +6,13 @@ using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
 using Game.Damage;
+using System;
+using System.Diagnostics;
+using Game.LevelContent;
 
 namespace Game.Players;
 
-public abstract partial class Player : Actor {
+public partial class Player : Actor {
     [ExportCategory("Global properties")]
     [Export]
     public GUI GUI {get; private set;}
@@ -30,9 +33,21 @@ public abstract partial class Player : Actor {
 
     public static List<Player> Players {get; private set;}
 
+    protected override void UpdateStats(ActorStats newStats) {
+        // WeaponManager.reloadSpeed = newStats.reloadSpeed;
+        MoveSpeed = newStats.speed;
+        DamageableComponent.damageTaken = newStats.damageTaken;
+        damageDealt = newStats.damageDealt;
+        DamageableComponent.maxHealth = newStats.maxHealth;
+        DamageableComponent.regenSpeed = newStats.regenSpeed;
+        
+        WeaponManager.reloadSpeed = newStats.reloadSpeed;
+    }
+
     public override void _Ready() {
         base._Ready();
         Players = new() { this };
+        Camera.currentCamera.Init(this);
         
         InputController.Init(this);
         

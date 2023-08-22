@@ -20,9 +20,9 @@ public record DamageInstance {
 	public bool suppressImpactFrames = false;
 	public IActorStatus statusEffect = null;
 
-	public float damageDealtMultiplier = 1;
+	public ModifiedStat damageDealt;
 	public DamageInstance(Actor actor, Type type = Type.Normal) {
-		damageDealtMultiplier = actor.DamageDealingMultplier;
+		damageDealt = actor.damageDealt;
 		this.type = type;
 	}
 }
