@@ -22,7 +22,7 @@ public record DamageInstance {
 
 	public ModifiedStat damageDealt;
 	public DamageInstance(Actor actor, Type type = Type.Normal) {
-		damageDealt = actor.damageDealt;
+		damageDealt = actor.DamageDealt;
 		this.type = type;
 	}
 }

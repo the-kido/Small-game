@@ -11,6 +11,8 @@ namespace Game.LevelContent;
 public partial class Level : Node, ISaveable{
 
     public static event Action LevelStarted;
+    public static event Action<LevelCriteria> CriterionStarted;
+
     public static Level CurrentLevel {get; private set;} = new();
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
     public static LevelCriteria CurrentEvent {get; private set;}
@@ -55,9 +57,17 @@ public partial class Level : Node, ISaveable{
             return;
         }
         CurrentEvent = levelEvents[index];
-        levelEvents[index].Finished += () => CompleteAllEvents(index + 1);
-        levelEvents[index].CallDeferred("Start");
+        
+        LevelCriteria currentCriterion = levelEvents[index];
+
+        currentCriterion.Finished += () => CompleteAllEvents(index + 1);
+        currentCriterion.CallDeferred("Start");
+        
+        // Because the above is a deferred call, I have to invoke CriterionStarted deferred too; we will have a race condition otherwise
+        CallDeferred("InvokeCriterionStarted", currentCriterion);
     }
+    private void InvokeCriterionStarted(LevelCriteria currentCriterion) =>
+        CriterionStarted?.Invoke(currentCriterion);
 
     private void Change() {
         CurrentLevel = this;

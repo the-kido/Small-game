@@ -12,28 +12,28 @@ public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {
     public Vector2 GetPosition() => GlobalPosition;
     public bool IsInteractable() => Damageable.IsAlive;
 
-    KidoUtils.Timer timer = new(5) {loop = true};
+    public ShieldObelisk() {
+        Level.CriterionStarted += AddEffectToEveryone;
+    }
+    
     public override void _Ready() {
         base._Ready();
-        timer.TimeOver += AddEffectToEveryone;
         Damageable.OnDeath += Uneffect;
     }
+
     private void Uneffect(DamageInstance damageInstance) {
-        timer = new();
         if (Level.CurrentEvent is EnemyWaveEvent enemyWaveEvent) {
-            foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren)
+            foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren) {
+                GD.Print("CLEANING");
                 enemy.Effect.ClearAllEffects();
+            }
         }
     }
 
-    // uhhh
-    private void AddEffectToEveryone() {
-        if (Level.CurrentEvent is EnemyWaveEvent enemyWaveEvent) {
-            foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren)
+    private void AddEffectToEveryone(LevelCriteria levelCriteria) {
+        if (levelCriteria is EnemyWaveEvent enemyWaveEvent) {
+            foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren) 
                 enemy.Effect.Add(new ShieldedStatus());
         }
-    }
-    public override void _Process(double delta) {
-        timer.Update(delta);
     }
 }

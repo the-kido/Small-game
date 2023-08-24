@@ -6,7 +6,7 @@ namespace Game.Actors.AI;
 
 public sealed class FallDeathState : AIState {
     public override async void Init() {
-        await Task.Delay(200);
+        await Task.Delay(200);  // This is fine
         actor.ZIndex = -3;
     }
 
@@ -18,32 +18,31 @@ public sealed class FallDeathState : AIState {
 }
 
 public sealed class DeathState : AIState {
-    DamageInstance damageInstance;
-    public DeathState(DamageInstance damageInstance) {
-        this.damageInstance = damageInstance; 
-    }
+
+    public DeathState(DamageInstance damageInstance) 
+        => destination = damageInstance.forceDirection * DISTANCE;
     
-    public async override void Init() {
-        //Temporary implementation jsut to make sure that this works the way I think it would yknow.
-        //in reality, i shoulda put all of this in update and used Delta but idk what I was thinking before.
-        int deathSpeed = 1;
-        
-        Vector2 start = damageInstance.forceDirection * 100;
-        actor.Velocity = start;
+    const int DISTANCE = 100;
+    KidoUtils.Timer timer = new(time: 0.01, cycles: 90); // This is the first time I've used this feature
+    Color color = new(1,1,1,1);
+    Vector2 destination;
+    
+    int i = 10;
 
-        Color color = new Color(1,1,1,1);
-        
-        for (float i = 10; i < 100; i+= deathSpeed) {
-            color.A = 1 - i / 100;
-            actor.Modulate = color;
-
-            float math = Mathf.Log(i/100) + 1;
-            actor.Velocity = start.Lerp(Vector2.Zero, math);
-
-            await Task.Delay(10);
-        }
-        actor.QueueFree();
+    public override void Init() {
+        timer.TimeOver += UpdateActorStuff;
+        timer.AllLoopsFinished += actor.QueueFree;
     }
+    public override void Update(double delta) 
+        => timer.Update(delta);
 
-    public override void Update(double delta) {}
+    private void UpdateActorStuff() {
+        color.A = 1f - i / 100f;
+        actor.Modulate = color;
+        
+        float math = Mathf.Log(i / 100f) + 1f;
+        actor.Velocity = destination.Lerp(Vector2.Zero, math);
+
+        i+=1;
+    }
 }

@@ -1,4 +1,5 @@
 using System;
+using Godot;
 
 namespace KidoUtils;
 
@@ -8,20 +9,30 @@ public struct Timer {
         timerPause = new() {paused = true} 
     };
 
-    public bool loop = true;
-    public bool invokable = true;
+    readonly double time;
+    
+    readonly bool loop = true;
+    bool invokable = true;
+    
+    readonly int? cycles = null;
+    int cyclesDone = 0;
 
     public event Action TimeOver = null;
+    public event Action AllLoopsFinished = null;
     
-    public Timer(double time) => this.time = time;
+    public Timer(double time, bool loop = true, int cycles = -1) {
+        this.time = time;
+        this.loop = loop;  
+        this.cycles = cycles;
+    }
     
     public double TimeElapsed {get; private set;} = 0;
-    
-    readonly double time;
+
     TimerPause timerPause = new();
 
     public void Update(double delta) {
-        if (invokable == false) return;
+        if (invokable == false) 
+            return;
 
         if (timerPause.paused) {
             timerPause.Update(delta);
@@ -35,6 +46,18 @@ public struct Timer {
             invokable = false;
             // Unless we are looping, in which case we can.
             if (loop) {
+                // Stuff required incase we want to loop the timer
+                if (cycles is not null) {
+                    if (cyclesDone < cycles)
+                        cyclesDone += 1;
+
+                    if (cyclesDone == cycles) {
+                        AllLoopsFinished?.Invoke();
+                        invokable = false;
+                        return;
+                    }
+                }
+                
                 TimeElapsed = 0;
                 invokable = true;
             }

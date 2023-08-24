@@ -220,7 +220,7 @@ Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
 flippedSprite = NodePath("WeirdEnemy")
 CollisionShape = NodePath("Damageable/CollisionShape2D")
-MoveSpeed = 100
+moveSpeed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-7.62939e-06, -1.90735e-06)

@@ -21,6 +21,6 @@ public sealed partial class Normal : Player {
     };
     
     public override void ClassInit() {
-        actorStatsManager.AddStats(classStats);
+        StatsManager.AddStats(classStats);
     }
 }

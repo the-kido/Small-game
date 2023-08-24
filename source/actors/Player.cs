@@ -66,7 +66,7 @@ public partial class Player : Actor {
     
     public virtual void ClassInit() {}
     
-    public sealed override void _Ready() => base._Ready();
+    public sealed override void _Ready() {}
     
     public void Init() {
         base._Ready();

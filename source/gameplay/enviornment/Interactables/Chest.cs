@@ -43,9 +43,9 @@ public partial class Chest : Sprite2D {
             player.WeaponManager.AddWeapon(containedWeaponInstance, oldWeaponIndex);
             containedWeapon = oldWeapon?.PackedScene.Instantiate<IChestItem>();
 
-            if (containedWeapon is null) {
+            if (containedWeapon is null)
                 Disable(containedWeaponInstance.Icon);
-            }
+            
             return;
         }
 
@@ -57,7 +57,7 @@ public partial class Chest : Sprite2D {
     KidoUtils.Timer timer = KidoUtils.Timer.NONE;
     private void Disable(Texture2D sprite) {
         interactable.QueueFree();
-        Modulate = new(0.8f, 0.8f, 0.9f);
+        SelfModulate = new(0.8f, 0.8f, 0.9f);
         
         itemShowcase.Texture = sprite;
         

@@ -9,18 +9,17 @@ public partial class ShieldInfo : Control{
     private TextureRect icon;
     [Export]
     private Label healthLabel;
-
     [Export]
     private Color shieldDisabledModulation;
-
     [Export]
     private NinePatchRect usingShildIndicator;
 
-    Shield heldShield => player.ShieldManager.HeldShield;
+    Shield HeldShield => player.ShieldManager.HeldShield;
 
     Player player;
     public void Init(Player player) {
         this.player = player;
+
         if (player.InputController.ShieldInput is null) return;
 
         player.InputController.ShieldInput.PlayerShieldsDamage += EnableShieledUsageIndicator;
@@ -29,11 +28,10 @@ public partial class ShieldInfo : Control{
 
         player.ShieldManager.ShieldAdded += UpdateNewShield;
         player.ShieldManager.ShieldRemoved += RemoveOldShield;
-        // Well i'd perfer to get it directly from the shield itself
-        
     }
 
     private void EnableShieledUsageIndicator(bool @bool) => usingShildIndicator.Visible = @bool;
+    
     private void UpdateNewShield(Shield newShield) {
         Visible = true;
         icon.Texture = newShield.Icon;
@@ -42,19 +40,12 @@ public partial class ShieldInfo : Control{
         newShield.Updated += UpdateShield;
     }
 
-    private void RemoveOldShield(Shield oldShield) {
+    private void RemoveOldShield(Shield oldShield) =>
         oldShield.Updated -= UpdateShield;
-    }
 
     private Color white = new(1, 1, 1);
     private void UpdateShield() {
-        healthLabel.Text = heldShield.Health.ToString();
-        
-        if (!heldShield.Alive) {
-            Modulate = shieldDisabledModulation; 
-        }
-        else {
-            Modulate = new Color(1, 1, 1);
-        }
+        healthLabel.Text = HeldShield.Health.ToString();
+        Modulate = HeldShield.Alive ? white : shieldDisabledModulation;
     }
 }

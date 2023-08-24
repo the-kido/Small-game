@@ -29,6 +29,7 @@ public class ModifiedStat {
 
     public float GetEffectiveValue(float baseValue) => baseValue * multiplier + baseValue * adder;
 }
+
 public struct ActorStats {
 
     public ActorStats() {}
@@ -40,48 +41,51 @@ public struct ActorStats {
     damageTaken = new(1, 0),
     damageDealt = new(1, 0),
     reloadSpeed = new(1, 0);
+
+    public readonly List<ModifiedStat> List => new() {
+        maxHealth,
+        speed,
+        regenSpeed,
+        damageTaken,
+        damageDealt,
+        reloadSpeed
+    };
 }
 
 public struct ActorStatsManager {
-    public ActorStatsManager(ActorStats d, Action<ActorStats> invokedMethod) {
-        defaultStats = d;
+
+
+    // used to call "update stats or whatevr it's called"
+    public event Action<ActorStats> StatsChanged;
+
+    // Keeps track of all stat changes 
+    private readonly List<ActorStats> statChanges = new();
+
+    public ActorStatsManager(Action<ActorStats> invokedMethod) {
         StatsChanged = invokedMethod;
     }
 
     public void AddStats(ActorStats stats) {
         statChanges.Add(stats);
-
-        newStats.maxHealth.Add(stats.maxHealth);
-        newStats.speed.Add(stats.speed);
-        newStats.regenSpeed.Add(stats.regenSpeed);
-        newStats.damageTaken.Add(stats.damageTaken);
-        newStats.damageDealt.Add(stats.damageDealt);
-        newStats.reloadSpeed.Add(stats.reloadSpeed);
-        
-        StatsChanged?.Invoke(newStats);
+        UpdateStatValues();
     }
 
     public void RemoveStats(ActorStats stats) {
         statChanges.Remove(stats);
-
-        newStats.maxHealth.Remove(stats.maxHealth);
-        newStats.speed.Remove(stats.speed);
-        newStats.regenSpeed.Remove(stats.regenSpeed);
-        newStats.damageTaken.Remove(stats.damageTaken);
-        newStats.damageDealt.Remove(stats.damageDealt);
-        newStats.reloadSpeed.Remove(stats.reloadSpeed);
-
-        StatsChanged?.Invoke(newStats);
+        UpdateStatValues();
     }
 
-    // thees never change
-    ActorStats defaultStats = new();
-    ActorStats newStats = new();
+    public void UpdateStatValues() {
+        ActorStats newStats = new();
 
-    private List<ActorStats> statChanges = new();
-
-    // used to call "update stats or whatevr it's called"
-    public event Action<ActorStats> StatsChanged;
+        foreach (var statChange in statChanges) {
+            for (int i = 0; i < statChange.List.Count; i++) {
+                ModifiedStat stat = statChange.List[i];
+                newStats.List[i].Add(stat);
+            }
+        }
+        StatsChanged?.Invoke(newStats);
+    }
 }
 
 public partial class PlayerClass : Resource {
@@ -95,8 +99,6 @@ public partial class PlayerClass : Resource {
     //stats
     [Export]
     int maxHealth;
-    // [Export]
-    // Stats stats;
 
     static readonly string[] RequiredAnimations = {"north", "east", "south", "west"};
     // Temporary i need this to screen this resource for errors

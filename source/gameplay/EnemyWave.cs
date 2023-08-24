@@ -22,7 +22,8 @@ public partial class EnemyWave : Node {
     // This is because not all of the children get ready before the "wave" node does. 
     public void StartWave() {
         List<Node2D> indicators = new();
-        showEnemyTimer = new(1) { loop = false};
+        
+        showEnemyTimer = new(1, false);
 
         // play cool animations, too.
         foreach (Enemy child in EnemyChildren) {

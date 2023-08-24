@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Game.Actors;
 using Game.Damage;
-using Game.UI;
 
 namespace Game.ActorStatuses;
 
@@ -15,12 +14,12 @@ public partial class EffectInflictable : Node {
             RemoveEffect(statusEffects[i]);
     }
 
-    private Actor actor;
     
     private void ParseSynergies() {
         //Ice + Fire = Water
     }
 
+    private Actor actor;
     public void Init(Actor actor) {
         this.actor = actor;
 
@@ -65,7 +64,7 @@ public partial class EffectInflictable : Node {
     }
     
     public void Add(IActorStatus effectInstance) {
-
+        
         // if there's an effect which is a conversion of an effect already here 
         // i.e there's water and we're tryna add fire
         // then we don't add the fire, but instead let the fire damage the water until
@@ -74,7 +73,6 @@ public partial class EffectInflictable : Node {
         if (effectInstance is null) return;
 
         if (!EffectIsAllowed(effectInstance)) return;
-
 
         ParseSynergies();
         statusEffects.Add(effectInstance);
@@ -108,7 +106,6 @@ public partial class EffectInflictable : Node {
 
 public abstract class IActorStatus {
 
-
     public abstract float duration {get; protected set;}
     public bool IsPermanent => duration < 0;
     public abstract void Update(Actor actor, double delta);
@@ -129,6 +126,7 @@ public abstract class IActorStatus {
     public void UpdateTimer(double delta) {
         effectTime += delta;
     }
+    
     public void OnDamaged(DamageInstance damage) {
         for (int i = 0; i < opposites.Length; i++) {
             if (damage.statusEffect is null) continue;

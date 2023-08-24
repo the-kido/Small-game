@@ -34,7 +34,6 @@ public partial class Camera : Camera2D {
 
 		Rect2 cameraRect = GetViewportRect();
 		Vector2 sides = cameraRect.Size - cameraRect.Position;
-		
 
 		//Set diagonal lenght equal to the diagonal size of the USUAL scene.
 		
@@ -55,7 +54,7 @@ public partial class Camera : Camera2D {
 
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
 
-		Position = Position.Lerp(finalPosition, (float) delta * 2) ;
+		Position = Position.Lerp(finalPosition, (float) delta * 2);
 
 		UpdateShake(delta);
 
@@ -69,7 +68,6 @@ public partial class Camera : Camera2D {
 		Vector2 diff = topRight - bottomLeft;
 
 		float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
-
 
 		//				the scale factor 				The default zoom.
 		float dif = ((SCALE_MAX + SCALE_MIN) / 2) / (diagonal / diagonalLength);
@@ -153,9 +151,9 @@ public partial class Camera : Camera2D {
 	///shakeSpeed: 0 - frozen. 300 - decently fast. 
 	///</summary>
 	public void StartShake(float shakeStrength, int shakeSpeed, double shakeTime) {
-		this.currentShakeStrength = shakeStrength;
-		this.maxShakeTime = shakeTime;
-		this.currentShakeTime = shakeTime;
+		currentShakeStrength = shakeStrength;
+		maxShakeTime = shakeTime;
+		currentShakeTime = shakeTime;
 		this.shakeSpeed = shakeSpeed;
 	}
 

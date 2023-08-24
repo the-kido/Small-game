@@ -80,11 +80,11 @@ public sealed class WetStatus : IPermanentStatus {
     
     public override void Init(Actor actor) {
         water = ParticleFactory.AddParticle(actor, Effects.Wet);
-        actor.actorStatsManager.AddStats(debuff);
+        actor.StatsManager.AddStats(debuff);
     }
 
     public override void Disable(Actor actor) {
-        actor.actorStatsManager.RemoveStats(debuff);
+        actor.StatsManager.RemoveStats(debuff);
         ParticleFactory.RemoveParticle(water);
     }
 }
@@ -94,18 +94,18 @@ public sealed class ShieldedStatus : IPermanentStatus {
     public override string[] incompatibles {get; init;} = Array.Empty<string>();
 
     ActorStats buff = new() {
-        damageTaken = new(0, -100),
+        damageTaken = new(0f, -100),
     };
 
     public override void Disable(Actor actor) {
         ParticleFactory.RemoveParticle(particle);
-        actor.actorStatsManager.AddStats(buff);
+        actor.StatsManager.RemoveStats(buff);
     }
 
     GpuParticles2D particle;
 
     public override void Init(Actor actor) {
-        actor.actorStatsManager.RemoveStats(buff);
+        actor.StatsManager.AddStats(buff);
         particle = ParticleFactory.AddParticle(actor, Effects.Shield);
     }
 }
@@ -145,10 +145,10 @@ public sealed class PlasmaEffect : IActorStatus {
 
     public override void Init(Actor actor) { 
         //init the effect too. 
-        actor.actorStatsManager.AddStats(buff);
+        actor.StatsManager.AddStats(buff);
     }
     public override void Disable(Actor actor) {
-        actor.actorStatsManager.RemoveStats(buff);
+        actor.StatsManager.RemoveStats(buff);
     }
     public override void Update(Actor actor, double delta) {}
 }

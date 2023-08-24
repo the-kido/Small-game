@@ -7,7 +7,7 @@ namespace Game.LevelContent.Pickupables;
 
 public partial class Coin : Pickupable {
 
-    public static new PackedScene PackedScene {get; private set;} = ResourceLoader.Load<PackedScene>("res://assets/content/coin.tscn"); 
+    public static PackedScene PackedScene {get; private set;} = ResourceLoader.Load<PackedScene>("res://assets/content/coin.tscn"); 
 
 	protected override void AbsorbPickupable(Player player) {
         // somehow add "money" via HUD

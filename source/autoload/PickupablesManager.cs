@@ -2,5 +2,5 @@ using Godot;
 
 namespace Game.Autoload;
 
-public partial class PickupablesManager : Node {
-}
+// It just makes autoloading more convinient to have this class for reference
+public partial class PickupablesManager : Node {}

@@ -106,3 +106,7 @@ position = Vector2(473, 397)
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("16_nns66")
+
+[node name="Chest" parent="." instance=ExtResource("24_vfgcu")]
+position = Vector2(687, 599)
+chestLootTable = 1

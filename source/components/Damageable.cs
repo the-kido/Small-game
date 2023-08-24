@@ -87,6 +87,8 @@ public partial class Damageable : Area2D {
 
 		int totalDamage = GetTotalDamage(damageInstance);
 
+		if (totalDamage < 0) return;
+
 		// This is for shielding. Make sure to deal with damage that goes thru  shields tho
 		if (BlocksDamage) {
 			DamagedBlocked?.Invoke(damageInstance);

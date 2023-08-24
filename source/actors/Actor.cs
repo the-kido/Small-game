@@ -8,7 +8,6 @@ using Game.Damage;
 namespace Game.Actors;
 
 public abstract partial class Actor : CharacterBody2D {
-	
 	[Export]
 	public EffectInflictable Effect {get; protected set;}
 	[Export]
@@ -18,14 +17,14 @@ public abstract partial class Actor : CharacterBody2D {
     [Export]
     public CollisionShape2D CollisionShape {get; protected set;}
 	
-    public ActorStatsManager actorStatsManager;
+    public ActorStatsManager StatsManager {get; private set;}
     
     [Export]
     protected int moveSpeed;
-    protected ModifiedStat MoveSpeed = new(1, 0);
+    protected ModifiedStat MoveSpeed {get; private set;} = new(1, 0);
     public float EffectiveSpeed => MoveSpeed.GetEffectiveValue(moveSpeed);
     
-    public ModifiedStat damageDealt = new();
+    public ModifiedStat DamageDealt {get; private set;} = new();
 
 	public override void _Process(double delta) => MoveAndSlide();
 
@@ -34,18 +33,17 @@ public abstract partial class Actor : CharacterBody2D {
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
         DamageableComponent.OnDamaged += DamageFlash;
-        actorStatsManager = new(new(), UpdateStats);
         Effect.Init(this);
+        StatsManager = new(UpdateStats);
 	}
-    
+
     protected virtual void UpdateStats(ActorStats newStats) {
         MoveSpeed = newStats.speed;
         DamageableComponent.damageTaken = newStats.damageTaken;
-        damageDealt = newStats.damageDealt;
+        DamageDealt = newStats.damageDealt;
         DamageableComponent.maxHealth = newStats.maxHealth;
         DamageableComponent.regenSpeed = newStats.regenSpeed;
     }
-
 
 	#region Methods
 
@@ -56,7 +54,8 @@ public abstract partial class Actor : CharacterBody2D {
 
     private async void DamageFlash(DamageInstance _) {
         
-        if (!DamageableComponent.IsAlive) return;
+        if (!DamageableComponent.IsAlive) 
+            return;
 
         if (percentRed != 0) {
             percentRed = 100;
