@@ -20,10 +20,11 @@ public partial class WeaponManager : Node2D { // Also called "hand"
     public Weapon GetWeapon(int index) => Weapons[index];
     public Weapon HeldWeapon => Weapons[SelectedSlot];
 
-    public void Init(Player player) {
+    public void Init(Player player, PlayerClassResource playerClassResource) {
         player.InputController.WeaponController = new(this, player);
         
-        Weapons[0] = GetChild<Weapon>(0);
+        AddWeapon(playerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
+
         HeldWeapon.Enable(true);
 
         reloadVisual.Init(this);

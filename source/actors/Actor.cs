@@ -13,7 +13,7 @@ public abstract partial class Actor : CharacterBody2D {
 	[Export]
 	public Damageable DamageableComponent {get; protected set;}
     [Export]
-    public AnimatedSprite2D flippedSprite {get; protected set;}
+    public AnimatedSprite2D sprite {get; protected set;}
     [Export]
     public CollisionShape2D CollisionShape {get; protected set;}
 	
@@ -84,7 +84,7 @@ public abstract partial class Actor : CharacterBody2D {
         return false;
     }
 
-    public void Flip(bool flip) => flippedSprite.FlipH = flip;
+    public void Flip(bool flip) => sprite.FlipH = flip;
 
     //Checks to see if this actor can see a player with a ___ pixel width to make sure things like
     //bullets will have enough room to be shot without colliding into a wall for instance. 

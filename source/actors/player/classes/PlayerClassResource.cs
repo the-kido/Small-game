@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Game.Players.Mechanics;
 using System.Collections.Generic;
+using Game.ActorStatuses;
 
 namespace Game.Actors;
 
@@ -54,7 +55,6 @@ public struct ActorStats {
 
 public struct ActorStatsManager {
 
-
     // used to call "update stats or whatevr it's called"
     public event Action<ActorStats> StatsChanged;
 
@@ -88,24 +88,26 @@ public struct ActorStatsManager {
     }
 }
 
-public partial class PlayerClass : Resource {
+[GlobalClass]
+public partial class PlayerClassResource : Resource {
     [Export]
-    AnimatedSprite2D playerSprites;
+    public SpriteFrames playerSprites {get; private set;}
     [Export]
-    Weapon defaultWeapon;
+    public PackedScene defaultWeapon {get; private set;}
     [Export]
-    Shield defaultShield;
+    public PackedScene defaultShield {get; private set;}
 
-    //stats
+    // Idk if there's a better solution to this...
     [Export]
-    int maxHealth;
+    public int maxHealthOverride {get; private set;}
 
     static readonly string[] RequiredAnimations = {"north", "east", "south", "west"};
     // Temporary i need this to screen this resource for errors
-    public void Init() {
-        foreach (string name in playerSprites.SpriteFrames.Animations) {
-            if (!RequiredAnimations.Contains(name))
-                throw new NullReferenceException($"The animations {name} is not found within the resource {ResourcePath}");
+
+    public void DoSafetyChecks() {
+        foreach (string animationName in RequiredAnimations) {
+            if (!playerSprites.HasAnimation(animationName))
+                throw new NullReferenceException($"The animations {animationName} is not found within the resource {ResourcePath}");
         }
     }
 }

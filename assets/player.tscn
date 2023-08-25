@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=63 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/player/classes/Normal.cs" id="1_48c7e"]
@@ -10,8 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
 [ext_resource type="Script" path="res://source/actors/player/ShieldManager.cs" id="8_kpbfh"]
 [ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="8_spu4k"]
-[ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="9_6fn6c"]
-[ext_resource type="PackedScene" uid="uid://i7atdvqwtdf4" path="res://source/weapons/push.tscn" id="10_1ufrw"]
 [ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="11_laf6i"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
@@ -648,7 +646,7 @@ size = Vector2(55, 69)
 [sub_resource type="CircleShape2D" id="CircleShape2D_so67i"]
 radius = 591.0
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("GUI", "InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "flippedSprite", "CollisionShape")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("GUI", "InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
@@ -662,7 +660,7 @@ WeaponManager = NodePath("Hand")
 ShieldManager = NodePath("Shield")
 Effect = NodePath("StatusEffectComponent")
 DamageableComponent = NodePath("Damageable")
-flippedSprite = NodePath("PlayerSprites")
+sprite = NodePath("PlayerSprites")
 CollisionShape = NodePath("CollisionShape2D")
 moveSpeed = 3
 
@@ -695,11 +693,6 @@ script = ExtResource("8_kpbfh")
 position = Vector2(0, 20)
 script = ExtResource("2_v0jdn")
 reloadVisual = NodePath("../On Player HUD/Reload Visual")
-
-[node name="Push" parent="Hand" instance=ExtResource("10_1ufrw")]
-
-[node name="Base Weapon" parent="Hand" instance=ExtResource("9_6fn6c")]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 6)

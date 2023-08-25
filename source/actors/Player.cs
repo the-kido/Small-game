@@ -39,7 +39,7 @@ public partial class Player : Actor {
             {"epicSoundEffectPlayer", epicSoundEffectPlayer},
             {"Effect", Effect},
             {"DamageableComponent", DamageableComponent},
-            {"flippedSprite", flippedSprite},
+            {"flippedSprite", sprite},
             {"CollisionShape", CollisionShape},
             {"MoveSpeed", moveSpeed},
         };
@@ -53,7 +53,7 @@ public partial class Player : Actor {
         epicSoundEffectPlayer = (AudioStreamPlayer2D) serializedInfo["epicSoundEffectPlayer"];
         Effect = (EffectInflictable) serializedInfo["Effect"];
         DamageableComponent = (Damageable) serializedInfo["DamageableComponent"];
-        flippedSprite = (AnimatedSprite2D) serializedInfo["flippedSprite"];
+        sprite = (AnimatedSprite2D) serializedInfo["flippedSprite"];
         CollisionShape = (CollisionShape2D) serializedInfo["CollisionShape"];
         moveSpeed = (int) serializedInfo["MoveSpeed"];
     }
@@ -68,17 +68,24 @@ public partial class Player : Actor {
     
     public sealed override void _Ready() {}
     
+    protected virtual PlayerClassResource PlayerClassResource => 
+        ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
+
     public void Init() {
         base._Ready();
         ClassInit();
         
         Players = new() { this };
+
+        PlayerClassResource.DoSafetyChecks(); // Do safety checks first because I can't do this any better.
+        UpdateSpritesFromResource(PlayerClassResource);
+        
         Camera.currentCamera.Init(this);
         
         InputController.Init(this);
         
         // Init required components
-        WeaponManager.Init(this);
+        WeaponManager.Init(this, PlayerClassResource);
         ShieldManager.Init(this);
 
         GUI.Init(this);
@@ -86,6 +93,9 @@ public partial class Player : Actor {
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
     }
+
+    private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>
+        sprite.SpriteFrames = playerClassResource.playerSprites;
     
     public void OnDeath(DamageInstance damageInstance) {
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;

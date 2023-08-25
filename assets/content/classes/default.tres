@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlayerClassResource" load_steps=4 format=3 uid="uid://dxfprqcolt2hs"]
+
+[ext_resource type="PackedScene" uid="uid://buuyxsrfjvmqd" path="res://source/weapons/BaseGun.tscn" id="1_wkki6"]
+[ext_resource type="SpriteFrames" uid="uid://br1lpqu1a5uuq" path="res://assets/content/classes/default anim.tres" id="2_rua02"]
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerClassResource.cs" id="3_uqmbn"]
+
+[resource]
+script = ExtResource("3_uqmbn")
+playerSprites = ExtResource("2_rua02")
+defaultWeapon = ExtResource("1_wkki6")
+maxHealthOverride = 0

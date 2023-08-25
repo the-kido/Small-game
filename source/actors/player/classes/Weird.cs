@@ -12,6 +12,9 @@ public sealed partial class Weird : Player {
         reloadSpeed = new(0.1f, 0),
         speed = new(2, 0),
     };
+
+    // protected override PlayerClassResource playerClassResource => 
+
     public override void ClassInit() {
         StatsManager.AddStats(classStats);
     }

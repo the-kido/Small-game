@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="PlayerClassResource" load_steps=4 format=3 uid="uid://w17t3u46du2j"]
+
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerClassResource.cs" id="1_cfhx7"]
+[ext_resource type="PackedScene" uid="uid://dxwypbwdhbgrw" path="res://assets/effects/shield.tscn" id="1_e2e2s"]
+[ext_resource type="PackedScene" uid="uid://bjaeqwecyx0k" path="res://source/weapons/WeirdGun.tscn" id="2_isa6p"]
+
+[resource]
+script = ExtResource("1_cfhx7")
+defaultWeapon = ExtResource("2_isa6p")
+defaultShield = ExtResource("1_e2e2s")
+maxHealthOverride = 0
