@@ -13,13 +13,16 @@ public partial class ParticleFactory : Node {
 		factoryNode = Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
 	}
 
-	public static GpuParticles2D AddParticle(Node2D node, PackedScene particle) {
-        GpuParticles2D instance = (GpuParticles2D) particle.Instantiate();
+	public static Node2D AddParticle(Node2D node, PackedScene particle) {
+        Node2D instance = (Node2D) particle.Instantiate();
         node.AddChild(instance);
         return instance;
     }
-	public async static void RemoveParticle(GpuParticles2D particleToRemove) {
-        particleToRemove.Emitting = false;
+	public async static void RemoveParticle(Node2D particleToRemove) {
+		if (particleToRemove is GpuParticles2D gpuParticles3D) {
+        	gpuParticles3D.Emitting = false;
+
+		}
         
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
         await Task.Delay(5000);
@@ -43,10 +46,10 @@ public partial class ParticleFactory : Node {
 		}
 	}
 
-	static Dictionary<GpuParticles2D, Node2D> updatedParticles = new();
-	public static GpuParticles2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D nodeToFollow) {
+	static Dictionary<Node2D, Node2D> updatedParticles = new();
+	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D nodeToFollow) {
 		
-		GpuParticles2D instance =  particle.Instantiate<GpuParticles2D>();
+		Node2D instance =  particle.Instantiate<Node2D>();
 		factoryNode.AddChild(instance);
 
 		updatedParticles.Add(instance, nodeToFollow);
@@ -55,13 +58,14 @@ public partial class ParticleFactory : Node {
 		return instance;
 	}
 
-	public static GpuParticles2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {
+	public static Node2D SpawnGlobalParticle(Node2D particle, Vector2 position, float rotation) {
 		
-		GpuParticles2D newParticles = (GpuParticles2D) particle.Duplicate();
+		Node2D newParticles = (Node2D) particle.Duplicate();
 		factoryNode.AddChild(newParticles);
 		newParticles.Position = position;
 		newParticles.Rotation = rotation;
-		newParticles.Emitting = true;
+		if (particle is GpuParticles2D gpuParticles2D)
+			gpuParticles2D.Emitting = true;
 		return newParticles;
 	}
 }

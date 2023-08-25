@@ -26,7 +26,7 @@ public sealed class FireEffect : IActorStatus {
 
     private DamageInstance damage;
     
-    GpuParticles2D fire;
+    Node2D fire;
     public override void Init(Actor actor) {
         
         damage = new(actor) {
@@ -71,7 +71,7 @@ public sealed class WetStatus : IPermanentStatus {
         };
     }
 
-    GpuParticles2D water;
+    Node2D water;
     
     ActorStats debuff = new() {
         speed = new(0.1f, 0), // 10 times slower.
@@ -102,7 +102,7 @@ public sealed class ShieldedStatus : IPermanentStatus {
         actor.StatsManager.RemoveStats(buff);
     }
 
-    GpuParticles2D particle;
+    Node2D particle;
 
     public override void Init(Actor actor) {
         actor.StatsManager.AddStats(buff);
@@ -123,7 +123,7 @@ public sealed class GasStatus : IPermanentStatus {
         ParticleFactory.RemoveParticle(gas);
     }
 
-    GpuParticles2D gas;
+    Node2D gas;
     //TODO: Just make this have a cute visual. Gas state should do nothing paticularly cool. 
     public override void Init(Actor actor) {    
         gas = ParticleFactory.AddParticle(actor, Effects.Gas);
