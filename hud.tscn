@@ -497,13 +497,10 @@ patch_margin_bottom = 4
 metadata/_edit_use_anchors_ = true
 
 [node name="Level Completed Indicator" type="Control" parent="." node_paths=PackedStringArray("animationPlayer")]
-visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_top = -184.0
-offset_bottom = -184.0
 grow_horizontal = 2
 scale = Vector2(3, 3)
 pivot_offset = Vector2(0, 100)

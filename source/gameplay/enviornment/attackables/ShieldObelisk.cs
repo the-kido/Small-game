@@ -24,7 +24,6 @@ public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {
     private void Uneffect(DamageInstance damageInstance) {
         if (Level.CurrentEvent is EnemyWaveEvent enemyWaveEvent) {
             foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren) {
-                GD.Print("CLEANING");
                 enemy.Effect.ClearAllEffects();
             }
         }

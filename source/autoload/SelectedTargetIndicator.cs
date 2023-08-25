@@ -12,7 +12,7 @@ public partial class SelectedTargetIndicator : Sprite2D {
 	}
 
 	public void Disable() {
-		this.target = null;
+		target = null;
 		Visible = false;
 	}
 
@@ -26,7 +26,7 @@ public partial class SelectedTargetIndicator : Sprite2D {
 
 		Vector2 offset = Vector2.One;
 		offset.Y *= -50;
-		Position = target.GetPosition() + offset;
+		GlobalPosition = target.GetPosition() + offset;
 	}
 	public override void _Process(double delta) {
 		UpdatePosition();

@@ -9,7 +9,7 @@ public partial class PlayerInteractableRadar : Area2D{
 
     public override void _Ready() {
         BodyEntered += OnNearbyEnemyAreaEntered;
-        BodyExited += OnNearbyEnemyAreaEntered;
+        BodyExited += OnNearbyEnemyAreaExited;
     }
     
     private void OnNearbyEnemyAreaEntered(Node2D body) =>
