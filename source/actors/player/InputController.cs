@@ -1,8 +1,8 @@
 using Godot;
 using System;
-using Game.Players.Mechanics;
 using Game.UI;
 using Game.Damage;
+using System.Collections.Generic;
 
 namespace Game.Players.Inputs;
 
@@ -10,23 +10,22 @@ public class UIInputFilter {
 
 	public UIInputFilter(Player player) =>
 		player.DamageableComponent.OnDeath += SetFilterModeOnDeath;
-
-	private void SetFilterModeOnDeath(DamageInstance _) => SetFilterMode(true);
+    public event Action<bool> OnFilterModeChanged = delegate{};
 	
+	bool _filterNonUiInput = false;	
+	public bool FilterNonUiInput => _filterNonUiInput;
+
 	public void SetFilterMode(bool @bool) {
 		OnFilterModeChanged?.Invoke(@bool);
 		_filterNonUiInput = @bool;
 	}
 
-	bool _filterNonUiInput = false;
-	public bool FilterNonUiInput => _filterNonUiInput;
+	private void SetFilterModeOnDeath(DamageInstance _) => SetFilterMode(true);
 
-    public event Action<bool> OnFilterModeChanged = delegate{};
 }
 
 public partial class InputController : Node {
 	private Player attachedPlayer;
-	private WeaponManager hand => attachedPlayer.WeaponManager;
 	
 	private GUI GUI => attachedPlayer.GUI;
 
@@ -56,6 +55,15 @@ public partial class InputController : Node {
 		InteractablesButtonController = new(player, GUI);
 		MovementController.Init(player, this);
 	}
+
+	public void AddInput(IInput input, bool blockedByUI) {
+		if (blockedByUI) NonUIInputs.Add(input);
+		else UIInputs.Add(input);
+	}
+
+	private readonly List<IInput> NonUIInputs = new();
+	private readonly List<IInput> UIInputs = new();
+
 	public override void _Process(double delta) {
 		if (attachedPlayer is null) return; // Enforce that this node is initialized
 		// Allow player to interact with UI even if input is filtered.
@@ -66,15 +74,18 @@ public partial class InputController : Node {
 		UpdateNonUIInput(delta);
 	}
 
-	private void UpdateUIInput(double _) {
+	private void UpdateUIInput(double delta) {
 		DialogueController.Continue();
 		InvokeGUILeftClick();
+
+		UIInputs.ForEach(input => input.Update(delta));
 	}
 
 	private void UpdateNonUIInput(double delta) {
 		MovementController.UpdateMovement();
-		
 		WeaponController?.Update(delta);
 		ShieldInput?.Update();
+
+		NonUIInputs.ForEach(input => input.Update(delta));
 	}
 }

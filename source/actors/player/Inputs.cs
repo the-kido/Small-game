@@ -8,6 +8,11 @@ using Game.UI;
 
 namespace Game.Players.Inputs;
 
+public interface IInput {
+	void Update(double delta);
+}
+
+#region Player required
 public class ShieldInput  {
 	readonly Player player;
 
@@ -253,3 +258,5 @@ public class InteractablesButtonController {
 		Interacted?.Invoke(player);
 	}
 }
+
+#endregion Player required
