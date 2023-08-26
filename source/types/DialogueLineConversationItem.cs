@@ -29,7 +29,8 @@ public class DialoguePlayer {
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
-        if (nextLine.portrait.CurrentSprite is null) return;
+        if (nextLine.portrait.CurrentSprite is null) 
+            return;
 
         nextLine.portrait.PlayAnimation(delta);
         bar.PortraitRect.Texture = nextLine.portrait.CurrentSprite;

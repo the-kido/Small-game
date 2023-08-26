@@ -92,7 +92,7 @@ select_slot_3={
 [internationalization]
 
 locale/translations=PackedStringArray("res://assets/content/translation/temo.en.translation", "res://assets/content/translation/temo.fr.translation")
-locale/test="fr"
+locale/test="en"
 locale/fallback="fr"
 
 [layer_names]

@@ -6,6 +6,7 @@
 
 [resource]
 script = ExtResource("3_uqmbn")
+Discription = "Does nothing"
 playerSprites = ExtResource("2_rua02")
 defaultWeapon = ExtResource("1_wkki6")
 maxHealthOverride = 0

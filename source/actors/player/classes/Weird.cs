@@ -16,7 +16,8 @@ public sealed partial class Weird : Player {
         speed = new(2, 0),
     };
 
-    // protected override PlayerClassResource playerClassResource => 
+    protected override PlayerClassResource PlayerClassResource => 
+        PlayerClasses.List[PlayerClasses.WeirdPlayerScript]; 
 
     public override void ClassInit() {
         StatsManager.AddStats(classStats);

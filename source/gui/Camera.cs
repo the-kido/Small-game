@@ -19,6 +19,7 @@ public partial class Camera : Camera2D {
 	private float diagonalLength;
 
 	Player player;
+
 	public void Init(Player player) {
 		this.player = player;
 		

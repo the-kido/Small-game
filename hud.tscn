@@ -354,7 +354,7 @@ anchor_bottom = 1.00901
 offset_top = 0.0499754
 offset_right = 0.0149918
 offset_bottom = 0.534966
-metadata/_edit_use_anchors_ = true
+grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="Held Weapons/1"]
 layout_mode = 1

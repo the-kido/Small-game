@@ -1,11 +1,14 @@
-[gd_resource type="Resource" script_class="PlayerClassResource" load_steps=4 format=3 uid="uid://w17t3u46du2j"]
+[gd_resource type="Resource" script_class="PlayerClassResource" load_steps=5 format=3 uid="uid://w17t3u46du2j"]
 
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerClassResource.cs" id="1_cfhx7"]
-[ext_resource type="PackedScene" uid="uid://dxwypbwdhbgrw" path="res://assets/effects/shield.tscn" id="1_e2e2s"]
+[ext_resource type="PackedScene" uid="uid://da4n4e0l3c612" path="res://source/content/shields/bad_shield.tscn" id="1_ogj7g"]
 [ext_resource type="PackedScene" uid="uid://bjaeqwecyx0k" path="res://source/weapons/WeirdGun.tscn" id="2_isa6p"]
+[ext_resource type="SpriteFrames" uid="uid://br1lpqu1a5uuq" path="res://assets/content/classes/default anim.tres" id="3_ppw5t"]
 
 [resource]
 script = ExtResource("1_cfhx7")
+Discription = "WEIRD CLASS STATS"
+playerSprites = ExtResource("3_ppw5t")
 defaultWeapon = ExtResource("2_isa6p")
-defaultShield = ExtResource("1_e2e2s")
+defaultShield = ExtResource("1_ogj7g")
 maxHealthOverride = 0

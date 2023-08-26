@@ -76,13 +76,24 @@ public class WeaponController {
 	IPlayerAttackable targettedAttackable = null;
 	readonly Player	player;
 	private GUI GUI => player.GUI;
+
+	readonly NodePath[] unclickableHUDElements = {"Auto Aim Button", "Dialogue Bar", "Interact", 
+	"Held Weapons/1", "Held Weapons/2", "Held Weapons/3", "Held Weapons"};
     public WeaponController(WeaponManager hand, Player player) {
 		this.hand = hand;
 		this.player = player;
 
 		heldItemInputController = new(hand);
 		GUI.AttackButton.Pressed += () => isAutoAttackButtonToggled = !isAutoAttackButtonToggled;
+
+		foreach (NodePath elementName in unclickableHUDElements) {
+			Control element = (Control) GUI.HUD.GetNode(elementName); 
+			
+			element.MouseEntered += () => hoveringOverGui = true;
+			element.MouseExited += () => hoveringOverGui = false;
+		}
     }
+	bool hoveringOverGui;
 
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
@@ -93,10 +104,10 @@ public class WeaponController {
 		if (Input.IsActionJustPressed("utility_used"))
 			inputMap.Add(InputType.RightClickJustPressed);
 		
-		if (Input.IsActionPressed("default_attack")) 
+		if (Input.IsActionPressed("default_attack") && !hoveringOverGui) 
 			inputMap.Add(InputType.LeftClickHold);
 
-		if (Input.IsActionJustReleased("default_attack"))
+		if (Input.IsActionJustReleased("default_attack") && !hoveringOverGui)
 			inputMap.Add(InputType.LeftClickJustReleased);
 
 		return inputMap;

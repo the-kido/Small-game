@@ -390,7 +390,7 @@ layout_mode = 2
 mouse_filter = 1
 text = "Switch"
 
-[node name="PlayerClassMenu" type="ColorRect" parent="." node_paths=PackedStringArray("close")]
+[node name="PlayerClassMenu" type="ColorRect" parent="." node_paths=PackedStringArray("close", "left", "right", "classInfo", "textureRect", "changeClass")]
 visible = false
 anchors_preset = -1
 anchor_left = 0.00833333
@@ -406,6 +406,11 @@ grow_vertical = 2
 color = Color(0.117647, 0.117647, 0.117647, 1)
 script = ExtResource("8_d8fj3")
 close = NodePath("Close")
+left = NodePath("Left Button")
+right = NodePath("Right Button")
+classInfo = NodePath("ColorRect/RichTextLabel")
+textureRect = NodePath("TextureRect")
+changeClass = NodePath("Change Class")
 metadata/_edit_use_anchors_ = true
 
 [node name="Close" type="Button" parent="PlayerClassMenu"]
@@ -420,3 +425,84 @@ offset_bottom = 107.0
 grow_horizontal = 0
 theme = ExtResource("2_lc21n")
 text = "X"
+
+[node name="ColorRect" type="ColorRect" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 503.0
+offset_bottom = 0.000488281
+grow_vertical = 2
+color = Color(0.109804, 0.0392157, 0.0392157, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PlayerClassMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 16.0
+offset_right = -28.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_lc21n")
+bbcode_enabled = true
+text = "WEIRD CLASS STATS"
+
+[node name="Left Button" type="Button" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -154.0
+offset_right = 154.0
+offset_bottom = -11.9995
+grow_vertical = 0
+text = "<"
+
+[node name="Right Button" type="Button" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -166.0
+offset_top = -166.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+text = ">"
+
+[node name="TextureRect" type="TextureRect" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -379.0
+offset_top = -475.0
+offset_right = 379.0
+offset_bottom = 475.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 2
+
+[node name="Change Class" type="Button" parent="PlayerClassMenu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -133.0
+offset_right = 95.9999
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Confirm Switch"

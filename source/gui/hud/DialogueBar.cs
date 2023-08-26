@@ -27,7 +27,8 @@ public partial class DialogueBar : Control {
             animationPlayer.Play("Close");
     }
     
-    public override void _Process(double delta) => ConversationController.Update(delta);
+    public override void _Process(double delta) => 
+        ConversationController.Update(delta);
     
     public override void _Ready() {
         ConversationController = new(this);

@@ -91,6 +91,8 @@ public struct ActorStatsManager {
 [GlobalClass]
 public partial class PlayerClassResource : Resource {
     [Export]
+    public string Discription {get; private set;}
+    [Export]
     public SpriteFrames playerSprites {get; private set;}
     [Export]
     public PackedScene defaultWeapon {get; private set;}

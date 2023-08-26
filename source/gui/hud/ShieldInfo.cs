@@ -20,14 +20,20 @@ public partial class ShieldInfo : Control{
     public void Init(Player player) {
         this.player = player;
 
-        if (player.InputController.ShieldInput is null) return;
+        if (player.InputController.ShieldInput is null) 
+            return;
 
         player.InputController.ShieldInput.PlayerShieldsDamage += EnableShieledUsageIndicator;
         
-        if (player.ShieldManager is null) return;
+        if (player.ShieldManager is null) 
+            return;
 
         player.ShieldManager.ShieldAdded += UpdateNewShield;
         player.ShieldManager.ShieldRemoved += RemoveOldShield;
+
+        // In case of race condition
+        if (player.ShieldManager.HeldShield is not null) 
+            UpdateNewShield(player.ShieldManager.HeldShield);
     }
 
     private void EnableShieledUsageIndicator(bool @bool) => usingShildIndicator.Visible = @bool;

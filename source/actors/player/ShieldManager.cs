@@ -1,3 +1,4 @@
+using Game.Actors;
 using Godot;
 using System;
 
@@ -14,9 +15,14 @@ public partial class ShieldManager : Node2D {
     public event Action<Shield> ShieldRemoved;
 
     Player player;
-    public void Init(Player player) {
+    public void Init(Player player, PlayerClassResource playerClassResource) {
         this.player = player;
         player.InputController.ShieldInput = new(player);
+        
+        if (playerClassResource.defaultShield is not null) {
+            Shield shield = playerClassResource.defaultShield.Instantiate<Shield>();
+            ChangeShield(shield);
+        }
     }
 
     public override void _Process(double delta) => HeldShield?.Update(delta);

@@ -69,7 +69,7 @@ public partial class Player : Actor {
     public sealed override void _Ready() {}
     
     protected virtual PlayerClassResource PlayerClassResource => 
-        ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
+        PlayerClasses.List[PlayerClasses.NormalPlayerScript];
 
     public void Init() {
         base._Ready();
@@ -86,7 +86,7 @@ public partial class Player : Actor {
         
         // Init required components
         WeaponManager.Init(this, PlayerClassResource);
-        ShieldManager.Init(this);
+        ShieldManager.Init(this, PlayerClassResource);
 
         GUI.Init(this);
 
