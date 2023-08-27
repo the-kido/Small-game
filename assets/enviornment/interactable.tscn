@@ -31,7 +31,8 @@ radius = 26.0192
 [node name="Interactable" type="AnimatedSprite2D" node_paths=PackedStringArray("range")]
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_uy1k1")
-frame_progress = 0.366557
+autoplay = "default"
+frame_progress = 0.0482834
 script = ExtResource("2_guvv6")
 range = NodePath("Area2D")
 

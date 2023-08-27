@@ -9,11 +9,20 @@ public partial class HeldItems : Control {
     public void Init(Player player) {
         this.player = player;
 
-        if (player.WeaponManager is null) return;
+        if (player.WeaponManager is null) 
+            return;
 
-        player.WeaponManager.HeldWeaponChanged += UpdateWeaponDisplays; 
+        player.WeaponManager.HeldWeaponChanged += UpdateWeaponDisplays;
+
+        for (int i = 0; i < player.WeaponManager.Weapons.Length; i++) {
+            Weapon weapon = player.WeaponManager.Weapons[i];
+            
+            if (weapon is null) 
+                continue;
+            
+            UpdateWeaponDisplays(weapon, i);
+        }
     
-        UpdateWeaponDisplays(player.WeaponManager.GetWeapon(0), 0);
         ButtonSetup();
     } 
 

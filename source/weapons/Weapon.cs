@@ -2,9 +2,6 @@ using Godot;
 using Game.Players;
 using Game.Players.Mechanics;
 using Game.Players.Inputs;
-using Game.Actors;
-using System.Reflection.Metadata;
-
 public enum ChestItemType {
 	WEAPON,
 	SHIELD

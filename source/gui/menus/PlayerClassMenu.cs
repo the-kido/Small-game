@@ -2,7 +2,6 @@ using System;
 using Game.Players;
 using Godot;
 using System.Linq;
-using Game.Actors;
 
 namespace Game.UI;
 
@@ -31,6 +30,10 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     public void Enable(Player player) {
         this.player = player;
         Visible = true;
+        
+        // Show the first menu
+        currentIndex = 0;
+        SetToNewClass(0);
 
         left.Pressed += () => {
             currentIndex = (currentIndex - 1 + PlayerClasses.List.Count) % PlayerClasses.List.Count;
@@ -46,16 +49,24 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
 
         changeClass.Pressed += SwitchClass;
     }
-    int currentIndex;
+
+    int currentIndex = 0;
 
     private void SetToNewClass(int index) {
         var temp = PlayerClasses.List.Values.ToList();
         classInfo.Text = temp[index].Discription;
+        
+        var animations = (Godot.Collections.Dictionary) temp[index].playerSprites.Animations[0];
+        var frames = (Godot.Collections.Array) animations["frames"];
+        var firstFrame = (Godot.Collections.Dictionary) frames[0];
+
+        textureRect.Texture = (AtlasTexture) firstFrame["texture"]; 
     }
 
     private void SwitchClass() {
         PlayerManager.SwitchClass(PlayerClasses.List.Keys.ToArray()[currentIndex], player.GlobalPosition);
         OnDisable();
+        
     }
 
     private void OnDisable() {

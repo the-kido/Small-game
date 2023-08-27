@@ -17,7 +17,7 @@ public partial class Level : Node, ISaveable{
     public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
     public static LevelCriteria CurrentEvent {get; private set;}
 
-    public SaveData saveData => new("LevelCompletions", LevelCompletions);
+    public SaveData SaveData => new("LevelCompletions", LevelCompletions);
     // The parent is the root of the level, so that's the name we want to save.
     public string SaveName => GetParent().Name;
 
@@ -56,6 +56,7 @@ public partial class Level : Node, ISaveable{
             Complete();
             return;
         }
+        
         CurrentEvent = levelEvents[index];
         
         LevelCriteria currentCriterion = levelEvents[index];
@@ -66,21 +67,24 @@ public partial class Level : Node, ISaveable{
         // Because the above is a deferred call, I have to invoke CriterionStarted deferred too; we will have a race condition otherwise
         CallDeferred("InvokeCriterionStarted", currentCriterion);
     }
+
     private void InvokeCriterionStarted(LevelCriteria currentCriterion) =>
         CriterionStarted?.Invoke(currentCriterion);
 
     private void Change() {
         CurrentLevel = this;
         LevelStarted?.Invoke();
-    }    
+    }
+
     private void Complete() {
         CurrentEvent = null;
         LevelCompletions[SaveName] = true;
         LevelCompleted?.Invoke();
     }
+
     private bool LoadCompletion() {
         LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
-        return LevelCompletions.ContainsKey(SaveName) ? LevelCompletions[SaveName] : false;
+        return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
     }
 }
 

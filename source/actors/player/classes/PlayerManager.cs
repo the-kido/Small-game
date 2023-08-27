@@ -3,13 +3,23 @@ using Game.Data;
 using Game.LevelContent;
 using System.Collections.Generic;
 using Game.Actors;
+using System;
 
 namespace Game.Players;
 // This will be preloaded
 public partial class PlayerManager : Node2D, ISaveable {
-    public SaveData saveData => new("PlayerClass", currentPlayerClassScript.ResourcePath);
+    public SaveData SaveData => new("PlayerClass", currentPlayerClassScript.ResourcePath);
+    
+    private Script LoadClass() {
+        string pathToScript = (string) (this as ISaveable).LoadData();
+        return string.IsNullOrEmpty(pathToScript) ? PlayerClasses.NormalPlayerScript : PlayerClasses.temp[pathToScript];
+    }
     
     public override void _Ready() {
+        (this as ISaveable).InitSaveable();
+        
+        currentPlayerClassScript = LoadClass();
+        
         if (queuedDoor is not null) {
             Level.CurrentLevel.GetLinkedDoor(queuedDoor).SetPlayerAtDoor();
             queuedDoor = null;
@@ -48,6 +58,7 @@ public partial class PlayerManager : Node2D, ISaveable {
     }
     
     // Used by the PlayerClassMenu
+    public static event Action ClassSwitched;
     public static void SwitchClass(Script newPlayerClassScript, Vector2 position) {
         currentPlayerClassScript = newPlayerClassScript;
         
@@ -55,8 +66,11 @@ public partial class PlayerManager : Node2D, ISaveable {
             if (child is Player player)
                 Level.CurrentLevel.RemoveChild(player);
         }
+        ClassSwitched?.Invoke();
         
         PlacePlayer(position);
+        
+        GameDataService.Save(); // Save the change in class
     }
 
     static string queuedDoor = null;
@@ -73,5 +87,10 @@ public static class PlayerClasses {
     public static Dictionary<Script, PlayerClassResource> List => new() {
         {NormalPlayerScript, ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres")},
         {WeirdPlayerScript, ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/weird.tres")},
+    };
+
+    public static Godot.Collections.Dictionary<string, Script> temp => new() {
+        {NormalPlayerScript.ResourcePath, NormalPlayerScript},
+        {WeirdPlayerScript.ResourcePath, WeirdPlayerScript}
     };
 }

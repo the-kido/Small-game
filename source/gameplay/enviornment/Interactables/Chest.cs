@@ -3,10 +3,11 @@ using System;
 using LootTables;
 using Game.Players;
 using Game.Players.Mechanics;
+using Game.Data;
 
 namespace Game.LevelContent;
 
-public partial class Chest : Sprite2D {
+public partial class Chest : Sprite2D, ISaveable {
 
     [Export]
     ChestTables chestLootTable;
@@ -19,7 +20,23 @@ public partial class Chest : Sprite2D {
 
     IChestItem containedWeapon;
 
+
+    private bool LoadChestOpened() {
+        ChestOpened = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
+        return ChestOpened.ContainsKey(GetPath()) && ChestOpened[GetPath()];
+    }
+
     public override void _Ready() {
+        (this as ISaveable).InitSaveable();
+        bool isChestOpened = LoadChestOpened();
+        
+        if (isChestOpened) {
+            Disable(null);
+            return;
+        }
+
+        ChestOpened[GetPath()] = isChestOpened; 
+
         interactable.Interacted += OnInteracted;
 
         float chance = 0;
@@ -55,15 +72,25 @@ public partial class Chest : Sprite2D {
     }
 
     KidoUtils.Timer timer = KidoUtils.Timer.NONE;
+    
+    private static Godot.Collections.Dictionary<string, bool> ChestOpened = new();
+    
+    public SaveData SaveData => new("Chest States", ChestOpened);
+
     private void Disable(Texture2D sprite) {
+        
+        ChestOpened[GetPath()] = true;
+
         interactable.QueueFree();
         SelfModulate = new(0.8f, 0.8f, 0.9f);
         
-        itemShowcase.Texture = sprite;
-        
+        if (sprite is not null)
+            itemShowcase.Texture = sprite;
+         
         timer = new(5);
         timer.TimeOver += FullyDisable;
     }
+
     // fantastic
     private void FullyDisable() {
         itemShowcase.QueueFree();

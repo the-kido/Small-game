@@ -14,7 +14,7 @@ public static class DungeonRunData {
             Coins instance = new();
         }
 
-        public SaveData saveData => new("Coins", _count);
+        public SaveData SaveData => new("Coins", _count);
 
         public static event Action<int> ValueChanged;
         
@@ -36,7 +36,7 @@ public static class DungeonRunData {
             FreezeOrbs instance = new();
         }
 
-        public SaveData saveData => new("FreezeOrbs", _count);
+        public SaveData SaveData => new("FreezeOrbs", _count);
         
         public static event Action FreezeWave;
         private static int _count = 0;
@@ -62,7 +62,7 @@ public static class DungeonRunData {
             EnemiesKilled instance = new();
         }
 
-        public SaveData saveData => new("EnemiesKilled", count);
+        public SaveData SaveData => new("EnemiesKilled", count);
         public static event Action<Enemy> EnemyKilled;
         
         private static int count = 0;

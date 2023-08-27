@@ -16,9 +16,9 @@ public partial class Condition : Resource, ISaveable {
     
     // Required for saving the conditions
     public static Dictionary<string, bool> All {get; private set;} = new();
-    public SaveData saveData => new("Conditions", All);
+    public SaveData SaveData => new("Conditions", All);
     private static void Load() => All = (Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
-    private bool GetAchieved() => All.ContainsKey(Name) ? All[Name] : false;
+    private bool GetAchieved() => All.ContainsKey(Name) && All[Name];
     static Condition() => Level.LevelStarted += Load;
 
     public Condition() {
