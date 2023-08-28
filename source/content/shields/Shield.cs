@@ -5,13 +5,14 @@ using Game.Damage;
 namespace Game.Players.Mechanics;
 
 public abstract partial class Shield : Node2D, IChestItem {
-    public Texture2D Icon {get => sprite.Texture;}
+    public Texture2D Icon => sprite.Texture;
     public abstract string Description {get;}
     
-    // TOOD: This name is prolly too vague
-    public event Action Updated;
+    public event Action Updated; // TOOD: This name is prolly too vague
 
     public ChestItemType Type => ChestItemType.SHIELD;
+
+    public abstract PackedScene Resource {get;} 
 
     [Export]
     private Sprite2D sprite;

@@ -66,7 +66,6 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     private void SwitchClass() {
         PlayerManager.SwitchClass(PlayerClasses.List.Keys.ToArray()[currentIndex], player.GlobalPosition);
         OnDisable();
-        
     }
 
     private void OnDisable() {
