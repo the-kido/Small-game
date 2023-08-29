@@ -6,7 +6,7 @@ using Game.LevelContent;
 
 namespace Game.SealedContent;
 
-public sealed partial class Weird : PlayerClass {
+public sealed class Weird : IPlayerClass {
     ActorStats classStats = new() {
         damageTaken = new(2f, 0),
         damageDealt = new(4f, 0.2f),
@@ -14,10 +14,11 @@ public sealed partial class Weird : PlayerClass {
         speed = new(2, 0),
     };
 
-    public PlayerClassResource PlayerClassResource => 
+    public PlayerClassResource classResource => 
         PlayerClasses.List["Weird"]; 
 
     WeirdInput weirdInput;
+
     public void ClassInit(Player player) {
         player.StatsManager.AddStats(classStats);
 

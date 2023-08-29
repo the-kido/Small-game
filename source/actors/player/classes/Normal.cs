@@ -1,7 +1,8 @@
 using Game.Actors;
+using Game.Players;
 using Godot;
 
-namespace Game.Players;
+namespace Game.SealedContent;
 
 // What I want:
 //  I want a player scene which is static / never changing
@@ -13,7 +14,7 @@ namespace Game.Players;
 //          Creating a placeholder node for the player, which must call "spawn player" at some point
 //          Having the player have a "PlayerClass" field which is a class 
 
-public sealed partial class Normal : PlayerClass {
+public sealed class Normal : IPlayerClass {
     
     ActorStats classStats = new() {
         damageTaken = new(0.8f, 0),
@@ -21,7 +22,7 @@ public sealed partial class Normal : PlayerClass {
         reloadSpeed = new(0.1f, 0),
     };
 
-    public PlayerClassResource PlayerClassResource => ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
+    public PlayerClassResource classResource => ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
 
     public void ClassInit(Player player) {
         player.StatsManager.AddStats(classStats);

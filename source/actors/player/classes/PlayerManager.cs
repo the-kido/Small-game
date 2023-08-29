@@ -1,9 +1,7 @@
 using Godot;
-using Game.Data;
 using Game.LevelContent;
 using System.Collections.Generic;
 using Game.Actors;
-using System;
 using Game.SealedContent;
 
 namespace Game.Players;
@@ -39,20 +37,6 @@ public partial class PlayerManager : Node2D {
         } 
     }
     
-    /// <summary>
-    /// Invoked after the player class is switched. It's invocation list is cleared when the game scene changes.
-    /// </summary>
-    public static event Action<PlayerClass> ClassSwitched;
-
-    PlayerManager() =>
-        ClassSwitched = null; // Clear all subscribers
-
-    public static void SwitchClass(PlayerClass newPlayerClass) {
-        instancedPlayer.SetClass(newPlayerClass);
-        ClassSwitched?.Invoke(newPlayerClass);
-        
-        GameDataService.Save(); // Save the change in class
-    }
 
     static string queuedDoor = null;
     // This is carried out in "ready"
@@ -71,7 +55,7 @@ public static class PlayerClasses {
         {"Normal", ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres")},
         {"Weird", ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/weird.tres")},
     };
-    public static Dictionary<string, PlayerClass> Other => new() {
+    public static Dictionary<string, IPlayerClass> Other => new() {
         {"Normal", normal},
         {"Weird", weird},
     };

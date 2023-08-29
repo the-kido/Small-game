@@ -25,7 +25,11 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
 
     public event Action Disable;
 
-    public void Enable(Player _) {
+    private Player player;
+
+    public void Enable(Player player) {
+        this.player = player;
+
         Visible = true;
 
         Disable = null;
@@ -75,7 +79,9 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     }
 
     private void SwitchClass() {
-        PlayerManager.SwitchClass(PlayerClasses.Other.Values.ToArray()[currentIndex]);
+        IPlayerClass newClass = PlayerClasses.Other.Values.ToArray()[currentIndex];
+        player.classManager.SwitchClass(newClass);
+
         OnDisable();
     }
 

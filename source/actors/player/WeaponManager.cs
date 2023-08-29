@@ -27,9 +27,9 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     public static string[] SavedWeapons {get; private set;} = new string[3]; 
     // Save more at walmart 
 
-    private void OnClassSwitched(PlayerClass playerClass) {
+    private void OnClassSwitched(IPlayerClass playerClass) {
         RemoveSavedWeapons();
-        AddWeapon(playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
+        AddWeapon(playerClass.classResource.defaultWeapon.Instantiate<Weapon>(), 0);
     }
 
     private void LoadWeapons() {
@@ -52,7 +52,7 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
 
 
     public void Init(Player player) {
-        PlayerManager.ClassSwitched += OnClassSwitched; 
+        player.classManager.ClassSwitched += OnClassSwitched; 
         
         player.InputController.WeaponController = new(this, player);
         WeaponController = player.InputController.WeaponController;
@@ -61,7 +61,7 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         
         LoadWeapons();
         
-        AddWeapon(player.playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
+        AddWeapon(player.classManager.playerClass.classResource.defaultWeapon.Instantiate<Weapon>(), 0);
 
         reloadVisual.Init(this);
 

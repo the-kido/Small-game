@@ -20,8 +20,8 @@ public partial class ShieldManager : Node2D, ISaveable {
 
     Damageable playerDamageableComponent;
     
-    private void SwitchToDefaultShield(PlayerClass playerClass) {
-        PackedScene defaultShield = playerClass.PlayerClassResource.defaultShield;
+    private void SwitchToDefaultShield(IPlayerClass playerClass) {
+        PackedScene defaultShield = playerClass.classResource.defaultShield;
         
         if (defaultShield is null) 
             RemoveShield();
@@ -43,7 +43,7 @@ public partial class ShieldManager : Node2D, ISaveable {
         playerDamageableComponent = player.DamageableComponent;
         player.InputController.ShieldInput = new(player);
 
-        PlayerManager.ClassSwitched += SwitchToDefaultShield;
+        player.classManager.ClassSwitched += SwitchToDefaultShield;
 
         (this as ISaveable).InitSaveable();
         LoadShieldFromSave();

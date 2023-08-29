@@ -4,14 +4,9 @@ using Game.Players.Mechanics;
 using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
+using Game.Data;
 
 namespace Game.Players;
-
-public interface PlayerClass {
-    public void ClassInit(Player player);
-    public void ClassRemoved(Player player);
-    public PlayerClassResource PlayerClassResource {get;}
-}
 
 public sealed partial class Player : Actor {
 
@@ -35,31 +30,19 @@ public sealed partial class Player : Actor {
     
     protected override void SetStats(ActorStats newStats) {
         base.SetStats(newStats);
+
         // Additional things for player
         WeaponManager.reloadSpeed = newStats.reloadSpeed;
     }
     
-    public PlayerClass playerClass = PlayerClasses.weird;
-    
-    public void SetClass(PlayerClass newClass) {
-        playerClass?.ClassRemoved(this);
-
-        playerClass = newClass;
-        playerClass.ClassInit(this);
-        playerClass.PlayerClassResource.DoSafetyChecks(); // Do safety checks first because I can't do this any better.
-    }
-    
-    private void LoadClass() {
-        // do some saving stuff here.
-        SetClass(PlayerClasses.weird);
-    }
+    public PlayerClassManager classManager;
 
     public void Init() {
         _Ready();
         Players = new() { this };
 
-        UpdateSpritesFromResource(playerClass.PlayerClassResource);
-        
+        classManager = new(this);
+
         Camera.currentCamera.Init(this);
         
         InputController.Init(this);
@@ -74,9 +57,6 @@ public sealed partial class Player : Actor {
         DamageableComponent.OnDamaged += playerDeathHandler.DamageFramePause;
         DamageableComponent.OnDeath += playerDeathHandler.OnDeath;
 
-        LoadClass();
+        classManager.SwitchClassFromSave();
     }
-
-    private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>
-        sprite.SpriteFrames = playerClassResource.playerSprites;
 }

@@ -1,9 +1,6 @@
 using Godot;
 using System;
-using System.Linq;
-using Game.Players.Mechanics;
 using System.Collections.Generic;
-using Game.ActorStatuses;
 
 namespace Game.Actors;
 
@@ -14,7 +11,8 @@ public class ModifiedStat {
 
     public ModifiedStat() {}
     public ModifiedStat(float multiplier, float adder) {
-        if (multiplier < 0) throw new ArgumentOutOfRangeException("The multiplier argument in the ModifiedStat constructor cannot be less than 0");
+        if (multiplier < 0) 
+            throw new ArgumentOutOfRangeException(nameof(multiplier), "The multiplier argument in the ModifiedStat constructor cannot be less than 0");
         this.multiplier = multiplier;
         this.adder = adder;
     }
