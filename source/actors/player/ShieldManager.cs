@@ -18,31 +18,24 @@ public partial class ShieldManager : Node2D, ISaveable {
     public event Action<Shield> ShieldRemoved;
 
     Player player;
-
-    ShieldManager() {
-        PlayerManager.ClassSwitched += OnPlayerClassSwitched;
-    }
-    private void OnPlayerClassSwitched() {
-        HeldShield = null;
+    
+    private void OnPlayerClassSwitched(PlayerClass playerClass) {
+        RemoveShield();
     }
 
     private Shield LoadShieldFromSave() {
         string resourcePath = (string)(this as ISaveable).LoadData();
-        
-        GD.Print(resourcePath);
 
-        if (string.IsNullOrEmpty(resourcePath)) 
-            return null;
-        else 
-            return ResourceLoader.Load<PackedScene>(resourcePath).Instantiate<Shield>();
+        return string.IsNullOrEmpty(resourcePath) ? null : ResourceLoader.Load<PackedScene>(resourcePath).Instantiate<Shield>();
     }
 
     public void Init(Player player, PlayerClassResource playerClassResource) {
         this.player = player;
         player.InputController.ShieldInput = new(player);
-        
+
+        PlayerManager.ClassSwitched += OnPlayerClassSwitched;
+
         (this as ISaveable).InitSaveable();
-        
         HeldShield = LoadShieldFromSave();
         
         if (HeldShield is null) {
@@ -53,11 +46,17 @@ public partial class ShieldManager : Node2D, ISaveable {
         } else {
             ChangeShield(HeldShield);
         }
-
-        
     }
 
     public override void _Process(double delta) => HeldShield?.Update(delta);
+
+    public void RemoveShield() {
+        if (HeldShield is not null)
+            ShieldRemoved?.Invoke(HeldShield);
+        
+        HeldShield = null;
+        ShieldAdded?.Invoke(HeldShield);
+    }
 
     public void ChangeShield(Shield newShield) {
         

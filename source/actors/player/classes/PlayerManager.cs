@@ -4,21 +4,15 @@ using Game.LevelContent;
 using System.Collections.Generic;
 using Game.Actors;
 using System;
+using Game.SealedContent;
 
 namespace Game.Players;
-// This will be preloaded
-public partial class PlayerManager : Node2D, ISaveable {
-    public SaveData SaveData => new("PlayerClass", currentPlayerClassScript.ResourcePath);
-    
-    private Script LoadClass() {
-        string pathToScript = (string) (this as ISaveable).LoadData();
-        return string.IsNullOrEmpty(pathToScript) ? PlayerClasses.NormalPlayerScript : PlayerClasses.temp[pathToScript];
-    }
-    
+
+public partial class PlayerManager : Node2D {
+
     public override void _Ready() {
-        (this as ISaveable).InitSaveable();
         
-        currentPlayerClassScript = LoadClass();
+        instancedPlayer = null;
         
         if (queuedDoor is not null) {
             Level.CurrentLevel.GetLinkedDoor(queuedDoor).SetPlayerAtDoor();
@@ -29,46 +23,33 @@ public partial class PlayerManager : Node2D, ISaveable {
         PlacePlayer(Position);
     }
 
-    static Script currentPlayerClassScript = PlayerClasses.WeirdPlayerScript;
-
     static readonly PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
     
+    static Player instancedPlayer = null;
+
     public static void PlacePlayer(Vector2 position) {
+        if (instancedPlayer is null) {
+            instancedPlayer = playerScene.Instantiate<Player>();
 
-        Player instancedPlayer = playerScene.Instantiate<Player>();
-        
-        Dictionary<string, Variant> serializedData = instancedPlayer.SerializedPlayerExports;
-
-        instancedPlayer.GlobalPosition = position;
-        
-        Level.CurrentLevel.AddChild(instancedPlayer);
-
-        instancedPlayer.SetScript(currentPlayerClassScript);
-
-        InitNewPlayerScript(serializedData); 
-    }
-
-    private static void InitNewPlayerScript(Dictionary<string, Variant> serializedData) {
-        foreach (Node child in Level.CurrentLevel.GetChildren()) {
-            if (child is Player player) {
-                player.SetDataFromSerializedExports(serializedData);
-                player.Init();
-            }
-        }
+            instancedPlayer.GlobalPosition = position;
+            
+            Level.CurrentLevel.AddChild(instancedPlayer);
+            
+            instancedPlayer.Init();
+        } 
     }
     
-    // Used by the PlayerClassMenu
-    public static event Action ClassSwitched;
-    public static void SwitchClass(Script newPlayerClassScript, Vector2 position) {
-        currentPlayerClassScript = newPlayerClassScript;
-        
-        foreach (Node child in Level.CurrentLevel.GetChildren()) {
-            if (child is Player player)
-                Level.CurrentLevel.RemoveChild(player);
-        }
-        ClassSwitched?.Invoke();
-        
-        PlacePlayer(position);
+    /// <summary>
+    /// Invoked after the player class is switched. It's invocation list is cleared when the game scene changes.
+    /// </summary>
+    public static event Action<PlayerClass> ClassSwitched;
+
+    PlayerManager() =>
+        ClassSwitched = null; // Clear all subscribers
+
+    public static void SwitchClass(PlayerClass newPlayerClass) {
+        instancedPlayer.SetClass(newPlayerClass);
+        ClassSwitched?.Invoke(newPlayerClass);
         
         GameDataService.Save(); // Save the change in class
     }
@@ -81,16 +62,17 @@ public partial class PlayerManager : Node2D, ISaveable {
 }
 
 public static class PlayerClasses {
+    public static readonly Weird weird = new();
+    public static readonly Normal normal = new();
     public static readonly Script NormalPlayerScript = ResourceLoader.Load<Script>("res://source/actors/player/classes/Normal.cs");
     public static readonly Script WeirdPlayerScript = ResourceLoader.Load<Script>("res://source/actors/player/classes/Weird.cs");
 
-    public static Dictionary<Script, PlayerClassResource> List => new() {
-        {NormalPlayerScript, ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres")},
-        {WeirdPlayerScript, ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/weird.tres")},
+    public static Dictionary<string, PlayerClassResource> List => new() {
+        {"Normal", ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres")},
+        {"Weird", ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/weird.tres")},
     };
-
-    public static Godot.Collections.Dictionary<string, Script> temp => new() {
-        {NormalPlayerScript.ResourcePath, NormalPlayerScript},
-        {WeirdPlayerScript.ResourcePath, WeirdPlayerScript}
+    public static Dictionary<string, PlayerClass> Other => new() {
+        {"Normal", normal},
+        {"Weird", weird},
     };
 }

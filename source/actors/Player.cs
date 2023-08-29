@@ -6,11 +6,16 @@ using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
 using Game.Damage;
-using Game.ActorStatuses;
 
 namespace Game.Players;
 
-public partial class Player : Actor {
+public interface PlayerClass {
+    public void ClassInit(Player player);
+    public void ClassRemoved(Player player);
+    public PlayerClassResource PlayerClassResource {get;}
+}
+
+public sealed partial class Player : Actor {
 
     [ExportCategory("Required")]
     [Export]
@@ -29,75 +34,54 @@ public partial class Player : Actor {
     private AudioStreamPlayer2D epicSoundEffectPlayer;
 
     public static List<Player> Players {get; private set;}
-
-    public Dictionary<string, Variant> SerializedPlayerExports => new() {
-            {"GUI", GUI},
-            {"InteractableRadar", InteractableRadar},
-            {"InputController", InputController},
-            {"WeaponManager", WeaponManager},
-            {"ShieldManager", ShieldManager},
-            {"epicSoundEffectPlayer", epicSoundEffectPlayer},
-            {"Effect", Effect},
-            {"DamageableComponent", DamageableComponent},
-            {"flippedSprite", sprite},
-            {"CollisionShape", CollisionShape},
-            {"MoveSpeed", moveSpeed},
-        };
-
-    public void SetDataFromSerializedExports(Dictionary<string, Variant> serializedInfo) {
-        GUI = (GUI) serializedInfo["GUI"];
-        InteractableRadar = (PlayerInteractableRadar) serializedInfo["InteractableRadar"];
-        InputController = (InputController) serializedInfo["InputController"];
-        WeaponManager = (WeaponManager) serializedInfo["WeaponManager"];
-        ShieldManager = (ShieldManager) serializedInfo["ShieldManager"];
-        epicSoundEffectPlayer = (AudioStreamPlayer2D) serializedInfo["epicSoundEffectPlayer"];
-        Effect = (EffectInflictable) serializedInfo["Effect"];
-        DamageableComponent = (Damageable) serializedInfo["DamageableComponent"];
-        sprite = (AnimatedSprite2D) serializedInfo["flippedSprite"];
-        CollisionShape = (CollisionShape2D) serializedInfo["CollisionShape"];
-        moveSpeed = (int) serializedInfo["MoveSpeed"];
-    }
-
+    
     protected override void UpdateStats(ActorStats newStats) {
         base.UpdateStats(newStats);
         // Additional things for player
         WeaponManager.reloadSpeed = newStats.reloadSpeed;
     }
     
-    public virtual void ClassInit() {}
+    public PlayerClass playerClass = PlayerClasses.weird;
     
-    public sealed override void _Ready() {}
-    
-    protected virtual PlayerClassResource PlayerClassResource => 
-        PlayerClasses.List[PlayerClasses.NormalPlayerScript];
+    public void SetClass(PlayerClass newClass) {
+        playerClass?.ClassRemoved(this);
+
+        playerClass = newClass;
+        playerClass.ClassInit(this);
+        playerClass.PlayerClassResource.DoSafetyChecks(); // Do safety checks first because I can't do this any better.
+    }
+    private void LoadClass() {
+        // do some saving stuff here.
+        SetClass(PlayerClasses.weird);
+    }
 
     public void Init() {
-        base._Ready();
-        ClassInit();
-        
+        _Ready();
         Players = new() { this };
 
-        PlayerClassResource.DoSafetyChecks(); // Do safety checks first because I can't do this any better.
-        UpdateSpritesFromResource(PlayerClassResource);
+        UpdateSpritesFromResource(playerClass.PlayerClassResource);
         
         Camera.currentCamera.Init(this);
         
         InputController.Init(this);
         
         // Init required components
-        WeaponManager.Init(this, PlayerClassResource);
-        ShieldManager.Init(this, PlayerClassResource);
+        WeaponManager.Init(this);
+        ShieldManager.Init(this, playerClass.PlayerClassResource);
 
         GUI.Init(this);
 
         DamageableComponent.OnDamaged += DamageFramePause;
         DamageableComponent.OnDeath += OnDeath;
+
+        LoadClass();
     }
 
     private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>
         sprite.SpriteFrames = playerClassResource.playerSprites;
     
     public void OnDeath(DamageInstance damageInstance) {
+
         GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
         
         PlayImpactFrames(1000);

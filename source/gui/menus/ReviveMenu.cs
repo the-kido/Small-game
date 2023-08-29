@@ -31,11 +31,7 @@ public partial class ReviveMenu : Control, IMenu{
         animationPlayer.Play("Open");
 
         //Clear all methods the event is attached to.
-        if (Disable is not null) {
-            foreach (Delegate func in Disable.GetInvocationList()) {
-                Disable -= func as Action;
-            }
-        }
+        Disable = null;
     }
 
     public void Close() {

@@ -4,6 +4,7 @@ using Game.UI;
 using Game.Actors;
 using Game.Data;
 using Game.Damage;
+using Game.Players.Inputs;
 
 namespace Game.Players.Mechanics;
 
@@ -25,11 +26,10 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     public static string[] SavedWeapons {get; private set;} = new string[3]; 
     // Save more at walmart 
 
-    static WeaponManager() {
-        PlayerManager.ClassSwitched += OnClassSwitched; 
-    }
-    private static void OnClassSwitched() {
-        RemoveSavedWeapons(null);
+    private void OnClassSwitched(PlayerClass playerClass) {
+        GD.Print("Weapon manager: ", this);
+        RemoveSavedWeapons();
+        AddWeapon(playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
     }
 
     private void LoadWeapons() {
@@ -45,46 +45,50 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         }
     }
 
-    private static void RemoveSavedWeapons(DamageInstance _) {
+    private static void RemoveSavedWeapons() {
         SavedWeapons = new string[3];
         GameDataService.Save();
     }
 
-    public void Init(Player player, PlayerClassResource playerClassResource) {
+    WeaponController weaponController;
 
-        player.InputController.WeaponController = new(this, player);
+    public void Init(Player player) {
+        GD.Print("ADDED");
+        PlayerManager.ClassSwitched += OnClassSwitched; 
         
+        player.InputController.WeaponController = new(this, player);
+        weaponController = player.InputController.WeaponController;
+
         (this as ISaveable).InitSaveable();
+        
         LoadWeapons();
         
-        if (Weapons[0] is null)       
-            AddWeapon(playerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
+        AddWeapon(player.playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
 
-        HeldWeapon.Enable(true);
+        // HeldWeapon.Enable(true, weaponController);
 
         reloadVisual.Init(this);
 
-        player.DamageableComponent.OnDeath += RemoveSavedWeapons;
+        player.DamageableComponent.OnDeath += (_) => RemoveSavedWeapons();
     }
     
-    // Hide the one being used RN and switch to another one
     public void SwitchHeldWeapon(int slot) {
         if (Weapons[slot] is null) 
             return;
         
-        Weapons[slot].Enable(true);
+        Weapons[slot].Enable(true, weaponController);
         WeaponSwitched?.Invoke(Weapons[slot]);
         HeldWeaponChanged?.Invoke(Weapons[slot], slot);
         
         if (slot == SelectedSlot) 
             return;
 
-        Weapons[SelectedSlot].Enable(false);
+        Weapons[SelectedSlot].Enable(false, weaponController);
         SelectedSlot = slot;
 	}
 
     private void RemoveWeapon(int slot) {
-        Weapons[slot]?.Enable(false);
+        Weapons[slot]?.Enable(false, weaponController);
         Weapons[slot]?.QueueFree();
         Weapons[slot] = null;
         SavedWeapons[slot] = null;

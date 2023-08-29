@@ -30,24 +30,37 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     public void Enable(Player player) {
         this.player = player;
         Visible = true;
+
+        Disable = null;
         
         // Show the first menu
         currentIndex = 0;
         SetToNewClass(0);
 
-        left.Pressed += () => {
-            currentIndex = (currentIndex - 1 + PlayerClasses.List.Count) % PlayerClasses.List.Count;
-            SetToNewClass(currentIndex);
-        };
-
-        right.Pressed += () => {
-            currentIndex = (currentIndex + 1) % PlayerClasses.List.Count;
-            SetToNewClass(currentIndex);
-        };
+        left.Pressed += LeftPressed;
+        right.Pressed += RightPressed;
 
         close.Pressed += OnDisable;
-
         changeClass.Pressed += SwitchClass;
+    }
+
+    Action LeftPressed => () => {
+        currentIndex = (currentIndex - 1 + PlayerClasses.List.Count) % PlayerClasses.List.Count;
+        SetToNewClass(currentIndex);
+    };
+    Action RightPressed => () => {
+        currentIndex = (currentIndex + 1) % PlayerClasses.List.Count;
+        SetToNewClass(currentIndex);
+    };
+
+    private void OnDisable() {
+        close.Pressed -= OnDisable;
+        changeClass.Pressed -= SwitchClass;
+        
+        left.Pressed -= LeftPressed;
+        right.Pressed -= RightPressed;
+        
+        Disable?.Invoke();
     }
 
     int currentIndex = 0;
@@ -64,13 +77,8 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     }
 
     private void SwitchClass() {
-        PlayerManager.SwitchClass(PlayerClasses.List.Keys.ToArray()[currentIndex], player.GlobalPosition);
+        PlayerManager.SwitchClass(PlayerClasses.Other.Values.ToArray()[currentIndex]);
         OnDisable();
-    }
-
-    private void OnDisable() {
-        close.Pressed -= OnDisable;
-        Disable?.Invoke();
     }
 
     public void Close() {

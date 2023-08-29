@@ -60,6 +60,10 @@ public partial class InputController : Node {
 		if (blockedByUI) NonUIInputs.Add(input);
 		else UIInputs.Add(input);
 	}
+	public void RemoveInput(IInput input, bool blockedByUI) {
+		if (blockedByUI) NonUIInputs.Remove(input);
+		else UIInputs.Remove(input);
+	}
 
 	private readonly List<IInput> NonUIInputs = new();
 	private readonly List<IInput> UIInputs = new();

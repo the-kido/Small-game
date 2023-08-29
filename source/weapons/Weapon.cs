@@ -43,25 +43,22 @@ public abstract partial class Weapon : Node2D, IChestItem {
 
     public override void _Ready() => Init();
 
-	public void Enable(bool enable) {
+	public void Enable(bool enable, WeaponController weaponController) {
         Visible = enable;
 
 		if (enable)
-			AttachEvents();
+			AttachEvents(weaponController);
         else
-            DetachEvents();
+            DetachEvents(weaponController);
 	}
 
-	private void AttachEvents() {
-		WeaponController weaponController = Hand.GetNode<InputController>("../Input Controller").WeaponController;
-
+	private void AttachEvents(WeaponController weaponController) {
 		weaponController.UpdateWeaponDirection += UpdateWeapon;
 		weaponController.UseWeapon += OnWeaponUsing;
 		weaponController.OnWeaponLetGo += OnWeaponLetGo;
 	}
-	private void DetachEvents() {
-		WeaponController weaponController = Hand.GetNode<InputController>("../Input Controller").WeaponController;
-
+	private void DetachEvents(WeaponController weaponController) {
+		
 		weaponController.UpdateWeaponDirection -= UpdateWeapon;
 		weaponController.UseWeapon -= OnWeaponUsing;
 		weaponController.OnWeaponLetGo -= OnWeaponLetGo;

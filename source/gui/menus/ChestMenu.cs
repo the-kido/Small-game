@@ -125,12 +125,8 @@ public partial class ChestMenu : Control, IMenu {
         // Hide all of the preview images such that a selected few will change later
         for (int i = 0; i < 3; i++)
             PreviewPanel(i).Visible = false;
-
-        if (Disable is not null) {
-            foreach (Delegate func in Disable.GetInvocationList()) {
-                Disable -= func as Action;
-            }
-        }
+        
+        Disable = null;
     }
     private void FreezeStatOverview() {
         if (previewedIndex != null) {

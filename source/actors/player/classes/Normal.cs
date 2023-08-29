@@ -1,4 +1,5 @@
 using Game.Actors;
+using Godot;
 
 namespace Game.Players;
 
@@ -12,15 +13,21 @@ namespace Game.Players;
 //          Creating a placeholder node for the player, which must call "spawn player" at some point
 //          Having the player have a "PlayerClass" field which is a class 
 
-public sealed partial class Normal : Player {
+public sealed partial class Normal : PlayerClass {
     
     ActorStats classStats = new() {
         damageTaken = new(0.8f, 0),
         damageDealt = new(2, 0.2f),
         reloadSpeed = new(0.1f, 0),
     };
-    
-    public override void ClassInit() {
-        StatsManager.AddStats(classStats);
+
+    public PlayerClassResource PlayerClassResource => ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
+
+    public void ClassInit(Player player) {
+        player.StatsManager.AddStats(classStats);
+    }
+
+    public void ClassRemoved(Player player) {
+        player.StatsManager.RemoveStats(classStats);
     }
 }

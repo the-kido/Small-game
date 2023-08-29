@@ -4,7 +4,7 @@ using Game.Players.Mechanics;
 
 namespace Game.UI;
 
-public partial class ShieldInfo : Control{
+public partial class ShieldInfo : Control {
     [Export]
     private TextureRect icon;
     [Export]
@@ -17,6 +17,7 @@ public partial class ShieldInfo : Control{
     Shield HeldShield => player.ShieldManager.HeldShield;
 
     Player player;
+
     public void Init(Player player) {
         this.player = player;
 
@@ -39,6 +40,12 @@ public partial class ShieldInfo : Control{
     private void EnableShieledUsageIndicator(bool @bool) => usingShildIndicator.Visible = @bool;
     
     private void UpdateNewShield(Shield newShield) {
+        
+        if (newShield is null) { 
+            Disable();
+            return;
+        }
+
         Visible = true;
         icon.Texture = newShield.Icon;
         healthLabel.Text = newShield.Health.ToString();
@@ -46,10 +53,15 @@ public partial class ShieldInfo : Control{
         newShield.Updated += UpdateShield;
     }
 
+    private void Disable() {
+        Visible = false;
+    }
+
     private void RemoveOldShield(Shield oldShield) =>
         oldShield.Updated -= UpdateShield;
 
-    private Color white = new(1, 1, 1);
+    private readonly Color white = new(1, 1, 1);
+    
     private void UpdateShield() {
         healthLabel.Text = HeldShield.Health.ToString();
         Modulate = HeldShield.Alive ? white : shieldDisabledModulation;

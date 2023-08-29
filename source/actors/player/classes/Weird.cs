@@ -4,11 +4,9 @@ using Game.Players.Inputs;
 using Godot;
 using Game.LevelContent;
 
-
 namespace Game.SealedContent;
 
-public sealed partial class Weird : Player {
-    
+public sealed partial class Weird : PlayerClass {
     ActorStats classStats = new() {
         damageTaken = new(2f, 0),
         damageDealt = new(4f, 0.2f),
@@ -16,14 +14,20 @@ public sealed partial class Weird : Player {
         speed = new(2, 0),
     };
 
-    protected override PlayerClassResource PlayerClassResource => 
-        PlayerClasses.List[PlayerClasses.WeirdPlayerScript]; 
+    public PlayerClassResource PlayerClassResource => 
+        PlayerClasses.List["Weird"]; 
 
-    public override void ClassInit() {
-        StatsManager.AddStats(classStats);
+    WeirdInput weirdInput;
+    public void ClassInit(Player player) {
+        player.StatsManager.AddStats(classStats);
 
-        WeirdInput weirdInput = new(this);
-        InputController.AddInput(weirdInput, true);
+        weirdInput = new(player);
+        player.InputController.AddInput(weirdInput, true);
+    }
+
+    public void ClassRemoved(Player player) {
+        player.StatsManager.RemoveStats(classStats);
+        player.InputController.RemoveInput(weirdInput, true);
     }
 }
 

@@ -34,6 +34,7 @@ script = ExtResource("2_cuvjw")
 script = ExtResource("3_pn4x1")
 text = "AGRO ENEMY DEATH-1"
 portrait = ExtResource("4_08wan")
+charactersPerSecond = null
 
 [node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_nwpfc")
@@ -53,10 +54,12 @@ script = ExtResource("12_78176")
 
 [node name="Hillbilly" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(548, 597)
+moveSpeed = null
 
 [node name="Base Enemy2" parent="Waves/wave" instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
+moveSpeed = null
 
 [node name="Weird enemy" parent="Waves/wave" instance=ExtResource("4_rymms")]
 position = Vector2(714, 597)
@@ -83,6 +86,7 @@ environment = ExtResource("12_2c1uv")
 
 [node name="Chest" parent="Enivornment" instance=ExtResource("16_dddk7")]
 position = Vector2(338, 656)
+chestLootTable = null
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Enivornment"]
 
