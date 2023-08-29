@@ -35,10 +35,9 @@ public partial class ReloadVisual : ProgressBar {
 
     public void Init(WeaponManager hand) {
         this.hand = hand;
-
-        WeaponController weaponController = hand.GetNode<InputController>("../Input Controller").WeaponController;
-        weaponController.UseWeapon += UpdateBar;
-        weaponController.OnWeaponLetGo += ResetBar;
+        
+        hand.WeaponController.UseWeapon += UpdateBar;
+        hand.WeaponController.OnWeaponLetGo += ResetBar;
 
         hand.WeaponSwitched += OnWeaponSwitched;
 

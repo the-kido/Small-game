@@ -19,8 +19,13 @@ public partial class ShieldManager : Node2D, ISaveable {
 
     Player player;
     
-    private void OnPlayerClassSwitched(PlayerClass playerClass) {
-        RemoveShield();
+    private void SwitchToDefaultShield(PlayerClass playerClass) {
+        PackedScene defaultShield = playerClass.PlayerClassResource.defaultShield;
+        
+        if (defaultShield is null) 
+            RemoveShield();
+        else
+            ChangeShield(defaultShield.Instantiate<Shield>());
     }
 
     private Shield LoadShieldFromSave() {
@@ -33,7 +38,7 @@ public partial class ShieldManager : Node2D, ISaveable {
         this.player = player;
         player.InputController.ShieldInput = new(player);
 
-        PlayerManager.ClassSwitched += OnPlayerClassSwitched;
+        PlayerManager.ClassSwitched += SwitchToDefaultShield;
 
         (this as ISaveable).InitSaveable();
         HeldShield = LoadShieldFromSave();

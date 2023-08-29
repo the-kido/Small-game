@@ -30,7 +30,6 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	public abstract void Attack();
 	// These don't have to be implemented so keep them virtual
 	public virtual void OnWeaponLetGo() {}
-	public virtual void Init() {}
 
 	[Export]
 	public float BaseReloadSpeed {get; private set;} = 1;
@@ -38,30 +37,33 @@ public abstract partial class Weapon : Node2D, IChestItem {
 
 	protected double reloadTimer = 0;
 
-	protected WeaponManager Hand => GetParent<WeaponManager>();
-	protected Player Player => Hand?.GetParent<Player>();
+	protected WeaponManager Hand {get; private set;}
+	protected Player Player => Hand.GetParent<Player>();
 
-    public override void _Ready() => Init();
+	public void Init(WeaponManager hand) {
+		Hand = hand;
+	}
 
-	public void Enable(bool enable, WeaponController weaponController) {
+	public void Enable(bool enable) {
         Visible = enable;
 
 		if (enable)
-			AttachEvents(weaponController);
+			AttachEvents();
         else
-            DetachEvents(weaponController);
+            DetachEvents();
 	}
 
-	private void AttachEvents(WeaponController weaponController) {
-		weaponController.UpdateWeaponDirection += UpdateWeapon;
-		weaponController.UseWeapon += OnWeaponUsing;
-		weaponController.OnWeaponLetGo += OnWeaponLetGo;
+
+	private void AttachEvents() {
+		Hand.WeaponController.UpdateWeaponDirection += UpdateWeapon;
+		Hand.WeaponController.UseWeapon += OnWeaponUsing;
+		Hand.WeaponController.OnWeaponLetGo += OnWeaponLetGo;
 	}
-	private void DetachEvents(WeaponController weaponController) {
+	private void DetachEvents() {
 		
-		weaponController.UpdateWeaponDirection -= UpdateWeapon;
-		weaponController.UseWeapon -= OnWeaponUsing;
-		weaponController.OnWeaponLetGo -= OnWeaponLetGo;
+		Hand.WeaponController.UpdateWeaponDirection -= UpdateWeapon;
+		Hand.WeaponController.UseWeapon -= OnWeaponUsing;
+		Hand.WeaponController.OnWeaponLetGo -= OnWeaponLetGo;
 	}
 
 

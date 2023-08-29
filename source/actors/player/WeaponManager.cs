@@ -3,7 +3,6 @@ using System;
 using Game.UI;
 using Game.Actors;
 using Game.Data;
-using Game.Damage;
 using Game.Players.Inputs;
 
 namespace Game.Players.Mechanics;
@@ -13,7 +12,9 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     public Action<Weapon, int> HeldWeaponChanged; // This is for the visuals
     public event Action<Weapon> WeaponSwitched; // This is for the reloadbar thing
     public ModifiedStat reloadSpeed = new();
-    
+
+    public WeaponController WeaponController {get; private set;}
+
     [Export]
     private ReloadVisual reloadVisual;
     public readonly Weapon[] Weapons = new Weapon[3];
@@ -27,7 +28,6 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     // Save more at walmart 
 
     private void OnClassSwitched(PlayerClass playerClass) {
-        GD.Print("Weapon manager: ", this);
         RemoveSavedWeapons();
         AddWeapon(playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
     }
@@ -50,22 +50,18 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         GameDataService.Save();
     }
 
-    WeaponController weaponController;
 
     public void Init(Player player) {
-        GD.Print("ADDED");
         PlayerManager.ClassSwitched += OnClassSwitched; 
         
         player.InputController.WeaponController = new(this, player);
-        weaponController = player.InputController.WeaponController;
+        WeaponController = player.InputController.WeaponController;
 
         (this as ISaveable).InitSaveable();
         
         LoadWeapons();
         
         AddWeapon(player.playerClass.PlayerClassResource.defaultWeapon.Instantiate<Weapon>(), 0);
-
-        // HeldWeapon.Enable(true, weaponController);
 
         reloadVisual.Init(this);
 
@@ -76,19 +72,19 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         if (Weapons[slot] is null) 
             return;
         
-        Weapons[slot].Enable(true, weaponController);
+        Weapons[slot].Enable(true);
         WeaponSwitched?.Invoke(Weapons[slot]);
         HeldWeaponChanged?.Invoke(Weapons[slot], slot);
         
         if (slot == SelectedSlot) 
             return;
 
-        Weapons[SelectedSlot].Enable(false, weaponController);
+        Weapons[SelectedSlot].Enable(false);
         SelectedSlot = slot;
 	}
 
     private void RemoveWeapon(int slot) {
-        Weapons[slot]?.Enable(false, weaponController);
+        Weapons[slot]?.Enable(false);
         Weapons[slot]?.QueueFree();
         Weapons[slot] = null;
         SavedWeapons[slot] = null;
@@ -104,6 +100,8 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         SavedWeapons[slot] = newWeapon.PackedScene.ResourcePath;
 
 		AddChild(newWeapon);
+
+        newWeapon.Init(this);
 
         // Just for funzies also switch to the new weapon
         SwitchHeldWeapon(slot);

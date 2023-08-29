@@ -21,7 +21,6 @@ shape = SubResource("CircleShape2D_6iry4")
 collision_layer = 1
 collision_mask = 8
 Health = 5
-ImmunityFrames = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_g21xc")
