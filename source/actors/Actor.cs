@@ -34,10 +34,10 @@ public abstract partial class Actor : CharacterBody2D {
 
         DamageableComponent.OnDamaged += DamageFlash;
         Effect.Init(this);
-        StatsManager = new(UpdateStats);
+        StatsManager = new(SetStats);
 	}
 
-    protected virtual void UpdateStats(ActorStats newStats) {
+    protected virtual void SetStats(ActorStats newStats) {
         MoveSpeed = newStats.speed;
         DamageableComponent.damageTaken = newStats.damageTaken;
         DamageDealt = newStats.damageDealt;

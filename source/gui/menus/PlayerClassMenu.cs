@@ -25,10 +25,7 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
 
     public event Action Disable;
 
-    private Player player;
-
-    public void Enable(Player player) {
-        this.player = player;
+    public void Enable(Player _) {
         Visible = true;
 
         Disable = null;
@@ -67,12 +64,13 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
 
     private void SetToNewClass(int index) {
         var temp = PlayerClasses.List.Values.ToList();
+
         classInfo.Text = temp[index].Discription;
         
         var animations = (Godot.Collections.Dictionary) temp[index].playerSprites.Animations[0];
         var frames = (Godot.Collections.Array) animations["frames"];
         var firstFrame = (Godot.Collections.Dictionary) frames[0];
-
+        
         textureRect.Texture = (AtlasTexture) firstFrame["texture"]; 
     }
 

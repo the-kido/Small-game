@@ -1,11 +1,9 @@
 using Godot;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Game.Players.Mechanics;
 using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
-using Game.Damage;
 
 namespace Game.Players;
 
@@ -35,8 +33,8 @@ public sealed partial class Player : Actor {
 
     public static List<Player> Players {get; private set;}
     
-    protected override void UpdateStats(ActorStats newStats) {
-        base.UpdateStats(newStats);
+    protected override void SetStats(ActorStats newStats) {
+        base.SetStats(newStats);
         // Additional things for player
         WeaponManager.reloadSpeed = newStats.reloadSpeed;
     }
@@ -50,6 +48,7 @@ public sealed partial class Player : Actor {
         playerClass.ClassInit(this);
         playerClass.PlayerClassResource.DoSafetyChecks(); // Do safety checks first because I can't do this any better.
     }
+    
     private void LoadClass() {
         // do some saving stuff here.
         SetClass(PlayerClasses.weird);
@@ -65,47 +64,19 @@ public sealed partial class Player : Actor {
         
         InputController.Init(this);
         
-        // Init required components
         WeaponManager.Init(this);
-        ShieldManager.Init(this, playerClass.PlayerClassResource);
+        ShieldManager.Init(this);
 
         GUI.Init(this);
 
-        DamageableComponent.OnDamaged += DamageFramePause;
-        DamageableComponent.OnDeath += OnDeath;
+        PlayerDeathHandler playerDeathHandler = new(this);
+
+        DamageableComponent.OnDamaged += playerDeathHandler.DamageFramePause;
+        DamageableComponent.OnDeath += playerDeathHandler.OnDeath;
 
         LoadClass();
     }
 
     private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>
         sprite.SpriteFrames = playerClassResource.playerSprites;
-    
-    public void OnDeath(DamageInstance damageInstance) {
-
-        GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
-        
-        PlayImpactFrames(1000);
-        Camera.currentCamera.StartShake(300, 300, 2);
-        
-        //Make player immune to everything and anything all of the time
-        CollisionLayer = 0;
-        CollisionMask = 0;
-
-        CallDeferred("SetProcessMode", false);
-    }
-    
-    #region death stuff
-    private void SetProcessMode(bool enable) =>
-        ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
-    
-    public void DamageFramePause(DamageInstance damageInstance) {
-        if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
-    }
-
-    private async void PlayImpactFrames(int milliseconds) {
-        GetTree().Paused = true;
-        await Task.Delay(milliseconds);
-        GetTree().Paused = false;
-    }
-    #endregion
 }

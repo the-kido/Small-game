@@ -1,4 +1,5 @@
 using Game.Actors;
+using Game.Damage;
 using Game.Data;
 using Godot;
 using System;
@@ -17,7 +18,7 @@ public partial class ShieldManager : Node2D, ISaveable {
     public event Action<Shield> ShieldAdded;
     public event Action<Shield> ShieldRemoved;
 
-    Player player;
+    Damageable playerDamageableComponent;
     
     private void SwitchToDefaultShield(PlayerClass playerClass) {
         PackedScene defaultShield = playerClass.PlayerClassResource.defaultShield;
@@ -28,29 +29,24 @@ public partial class ShieldManager : Node2D, ISaveable {
             ChangeShield(defaultShield.Instantiate<Shield>());
     }
 
-    private Shield LoadShieldFromSave() {
+    private void LoadShieldFromSave() {
         string resourcePath = (string)(this as ISaveable).LoadData();
+        Shield loadedShield = string.IsNullOrEmpty(resourcePath) ? null : ResourceLoader.Load<PackedScene>(resourcePath).Instantiate<Shield>();
+        
+        if (loadedShield is null) 
+            return;
 
-        return string.IsNullOrEmpty(resourcePath) ? null : ResourceLoader.Load<PackedScene>(resourcePath).Instantiate<Shield>();
+        ChangeShield(loadedShield);
     }
 
-    public void Init(Player player, PlayerClassResource playerClassResource) {
-        this.player = player;
+    public void Init(Player player) {
+        playerDamageableComponent = player.DamageableComponent;
         player.InputController.ShieldInput = new(player);
 
         PlayerManager.ClassSwitched += SwitchToDefaultShield;
 
         (this as ISaveable).InitSaveable();
-        HeldShield = LoadShieldFromSave();
-        
-        if (HeldShield is null) {
-            if (playerClassResource.defaultShield is not null) {
-                Shield shield = playerClassResource.defaultShield.Instantiate<Shield>();
-                ChangeShield(shield);
-            }
-        } else {
-            ChangeShield(HeldShield);
-        }
+        LoadShieldFromSave();
     }
 
     public override void _Process(double delta) => HeldShield?.Update(delta);
@@ -67,7 +63,7 @@ public partial class ShieldManager : Node2D, ISaveable {
         
         if (HeldShield is not null) {
             HeldShield.QueueFree();
-            player.DamageableComponent.DamagedBlocked -= HeldShield.Use;
+            playerDamageableComponent.DamagedBlocked -= HeldShield.Use;
             ShieldRemoved?.Invoke(HeldShield);
         }
 
@@ -75,6 +71,6 @@ public partial class ShieldManager : Node2D, ISaveable {
         HeldShield.Init();
         ShieldAdded?.Invoke(HeldShield);
 
-        player.DamageableComponent.DamagedBlocked += HeldShield.Use;
+        playerDamageableComponent.DamagedBlocked += HeldShield.Use;
     }
 }
