@@ -29,8 +29,9 @@ from a previous save file.
 */
 public static class GameDataService {
 
-    public const string SAVE_FILE = "user://savegame.json";
-    public const string DEBUG_FILE = "user://copy.json";
+    const bool USING_DEBUG = true;
+    const string SAVE_FILE = "user://savegame.json";
+    const string DEBUG_FILE = "user://copy.json";
 
     public static readonly System.Collections.Generic.List<ISaveable> dynamicallySavedItems = new();
     static Dictionary<string, Variant> SavedItemsAsDictionary => 
@@ -73,7 +74,7 @@ public static class GameDataService {
             return GetData();
         }
 
-        using FileAccess saveFile = FileAccess.Open(SAVE_FILE, FileAccess.ModeFlags.Read);
+        using FileAccess saveFile = FileAccess.Open(USING_DEBUG ? DEBUG_FILE : SAVE_FILE, FileAccess.ModeFlags.Read);
         string data = saveFile.GetLine();
         
         Json json = new();

@@ -5,10 +5,9 @@ namespace Game.UI;
 public partial class InteractButton : Button {
     [Export]
     AnimationPlayer animationPlayer;
-
     
     public void Enable(bool enable) {
-        Disabled = !enable;
+        // Disabled = !enable;
 
         if (enable) {
             Visible = true;
@@ -16,14 +15,15 @@ public partial class InteractButton : Button {
         }
         else {
             animationPlayer.PlayBackwards("show");
-            animationPlayer.AnimationFinished += Hide;
-            
+            animationPlayer.AnimationFinished += Hide;   
         }
     }
 
     private void Hide(StringName _) {
         animationPlayer.AnimationFinished -= Hide;
-        if (!Disabled) return;
+        
+        if (!Disabled) 
+            return;
         
         Visible = false;
     }

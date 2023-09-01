@@ -1,7 +1,7 @@
 using Godot;
 using Game.Players;
 using Game.Players.Mechanics;
-using Game.Players.Inputs;
+
 public enum ChestItemType {
 	WEAPON,
 	SHIELD
@@ -40,32 +40,17 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	protected WeaponManager Hand {get; private set;}
 	protected Player Player => Hand.GetParent<Player>();
 
-	public void Init(WeaponManager hand) {
+	public void Init(WeaponManager hand, int slot) {
+		Name = $"{Name}: {slot}";
 		Hand = hand;
+		Visible = false;
 	}
 
-	public void Enable(bool enable) {
-        Visible = enable;
-
-		if (enable)
-			AttachEvents();
-        else
-            DetachEvents();
-	}
-
-
-	private void AttachEvents() {
+	public void AttachEvents() {
 		Hand.WeaponController.UpdateWeaponDirection += UpdateWeapon;
 		Hand.WeaponController.UseWeapon += OnWeaponUsing;
 		Hand.WeaponController.OnWeaponLetGo += OnWeaponLetGo;
 	}
-	private void DetachEvents() {
-		
-		Hand.WeaponController.UpdateWeaponDirection -= UpdateWeapon;
-		Hand.WeaponController.UseWeapon -= OnWeaponUsing;
-		Hand.WeaponController.OnWeaponLetGo -= OnWeaponLetGo;
-	}
-
 
 	//While the player is "using" (holding click for) the weapon.
 	//Can be overridden if need be

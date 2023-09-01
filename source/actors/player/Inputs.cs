@@ -95,6 +95,12 @@ public class WeaponController {
     }
 	bool hoveringOverGui;
 
+	public void UnsubEvents() {
+		UpdateWeaponDirection = null;
+		UseWeapon = null;
+		OnWeaponLetGo = null;
+	}
+	
 	private List<InputType> GetAttackInputs() {
 		List<InputType> inputMap = new();
 
@@ -169,11 +175,13 @@ public class WeaponController {
     public void Update(double delta) {
 		heldItemInputController.Update();
 
-		if (hand.HeldWeapon is null) return;
+		if (hand.HeldWeapon is null)
+			return;
 		
 		List<InputType> inputMap = GetAttackInputs();
 
-		if (inputMap.Contains(InputType.LeftClickJustReleased)) OnWeaponLetGo?.Invoke();
+		if (inputMap.Contains(InputType.LeftClickJustReleased)) 
+			OnWeaponLetGo?.Invoke();
 
 		if (inputMap.Contains(InputType.RightClickJustPressed)) {
             targettedAttackable = FindInteractableWithinCursor();

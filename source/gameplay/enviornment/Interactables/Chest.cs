@@ -57,7 +57,7 @@ public partial class Chest : Sprite2D, ISaveable {
             Weapon containedWeaponInstance = ((Weapon) containedWeapon).PackedScene.Instantiate<Weapon>();
             Weapon oldWeapon = player.WeaponManager.GetWeapon(oldWeaponIndex);
 
-            player.WeaponManager.AddWeapon(containedWeaponInstance, oldWeaponIndex);
+            player.WeaponManager.AddAndSwitchWeapon(containedWeaponInstance, oldWeaponIndex);
             containedWeapon = oldWeapon?.PackedScene.Instantiate<IChestItem>();
 
             if (containedWeapon is null)
@@ -106,7 +106,7 @@ public partial class Chest : Sprite2D, ISaveable {
                 for (int i = 0; i < player.WeaponManager.Weapons.Length; i++) {
                     Weapon weapon = player.WeaponManager.Weapons[i];
                     if (weapon is null) {
-                        player.WeaponManager.AddWeapon((Weapon) containedWeapon, i);
+                        player.WeaponManager.AddAndSwitchWeapon((Weapon) containedWeapon, i);
                         Disable(containedWeapon.Icon);
                         return;
                     }
@@ -120,9 +120,15 @@ public partial class Chest : Sprite2D, ISaveable {
                 }
                 break;
         }
-
-        player.GUI.chestMenu.OnSelectionMade += (oldWeaponIndex) => SwitchItems(oldWeaponIndex, player);
+        
+        player.GUI.chestMenu.IHateEverything();
+        player.GUI.chestMenu.OnSelectionMade += (oldWeaponIndex) => Callthing(oldWeaponIndex, player);
 
         player.GUI.OpenChestMenu(containedWeapon);
+    }
+
+    private void Callthing(int oldWeaponIndex, Player player) {
+        player.GUI.chestMenu.OnSelectionMade -= (oldWeaponIndex) => Callthing(oldWeaponIndex, player);
+        SwitchItems(oldWeaponIndex, player);
     }
 }

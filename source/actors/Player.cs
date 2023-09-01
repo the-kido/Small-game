@@ -59,4 +59,7 @@ public sealed partial class Player : Actor {
 
         classManager.SwitchClassFromSave();
     }
+
+    private void SetProcessMode(bool enable) =>
+        ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 }

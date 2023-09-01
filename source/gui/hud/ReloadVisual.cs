@@ -1,5 +1,4 @@
 using Godot;
-using Game.Players.Inputs;
 using Game.Players.Mechanics;
 
 namespace Game.UI;
@@ -9,16 +8,8 @@ public partial class ReloadVisual : ProgressBar {
 
     double barProgress = 0;
 
-    private void OnWeaponSwitched(Weapon newWeapon) {
-
-        if (!newWeapon.UsesReloadVisuals) {
-            Visible = false;
-            return;
-        }
-
-        Visible = true;
-    }
-
+    private void ApplyProgress(double value) => Value = value;
+    
     private void UpdateBar(double delta) {
         barProgress += delta;
         ApplyProgress(barProgress / hand.HeldWeapon.EffectiveReloadSpeed);
@@ -29,19 +20,29 @@ public partial class ReloadVisual : ProgressBar {
         ApplyProgress(0);
     }
 
-    private void ApplyProgress(double value) {
-        Value = value;
+    private void OnWeaponSwitched(Weapon newWeapon) {
+
+        AttachEvents();
+
+        if (!newWeapon.UsesReloadVisuals) {
+            Visible = false;
+            return;
+        }
+
+        Visible = true;
+    }
+
+    private void AttachEvents() {
+        hand.WeaponController.UseWeapon += UpdateBar;
+        hand.WeaponController.OnWeaponLetGo += ResetBar;
     }
 
     public void Init(WeaponManager hand) {
         this.hand = hand;
         
-        hand.WeaponController.UseWeapon += UpdateBar;
-        hand.WeaponController.OnWeaponLetGo += ResetBar;
-
+        // Call these initially
         hand.WeaponSwitched += OnWeaponSwitched;
-
-        // Call it initially
+        AttachEvents();
         OnWeaponSwitched(hand.HeldWeapon);
     }
 }

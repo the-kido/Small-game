@@ -30,9 +30,6 @@ public class PlayerDeathHandler {
         player.CallDeferred("SetProcessMode", false);
     }
     
-    private void SetProcessMode(bool enable) =>
-        player.ProcessMode = enable ? Node.ProcessModeEnum.Inherit : Node.ProcessModeEnum.Disabled;
-    
     public void DamageFramePause(DamageInstance damageInstance) {
         if (!damageInstance.suppressImpactFrames) PlayImpactFrames(300);
     }

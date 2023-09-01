@@ -6,27 +6,15 @@ public class Utils {
 
     public static T GetPreloadedScene<T>(Node node, PreloadedScene preloadedScene) where T : GodotObject {
 
-        switch(preloadedScene){
-            case PreloadedScene.BulletFactory:
-                return node.GetNode<T>("/root/BulletFactory");
-
-            case PreloadedScene.ParticleFactory:
-                return node.GetNode<T>("/root/ParticleFactory");
-
-            case PreloadedScene.SceneSwitcher:
-                return node.GetNode<T>("/root/SceneSwitcher");
-
-            case PreloadedScene.GlobalCursor:
-                return node.GetNode<T>("/root/GlobalCursor");
-            
-            case PreloadedScene.DamageTextManager:
-                return node.GetNode<T>("/root/DamageTextMultiplier");
-
-            case PreloadedScene.PickupablesManager:
-                return node.GetNode<T>("/root/PickupablesManager");
-        }
-
-        return default;
+        return preloadedScene switch {
+            PreloadedScene.BulletFactory => node.GetNode<T>("/root/BulletFactory"),
+            PreloadedScene.ParticleFactory => node.GetNode<T>("/root/ParticleFactory"),
+            PreloadedScene.SceneSwitcher => node.GetNode<T>("/root/SceneSwitcher"),
+            PreloadedScene.GlobalCursor => node.GetNode<T>("/root/GlobalCursor"),
+            PreloadedScene.DamageTextManager => node.GetNode<T>("/root/DamageTextMultiplier"),
+            PreloadedScene.PickupablesManager => node.GetNode<T>("/root/PickupablesManager"),
+            _ => default,
+        };
     }
 }
 

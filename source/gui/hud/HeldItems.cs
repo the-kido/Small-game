@@ -29,16 +29,23 @@ public partial class HeldItems : Control {
     private void ButtonSetup() {
         foreach (Button button in GetChildren()) {
             // Check if there is even a weapon in that slot
-            
             int buttonName = int.Parse(button.Name);
             button.Pressed += () => SetWeapon(buttonName - 1);
         }
     }
 
-    void SetWeapon(int index) {
+    void SetWeapon(int index) =>
         player.WeaponManager.SwitchHeldWeapon(index);
-    }
         
-    private void UpdateWeaponDisplays(Weapon weapon, int index) =>
-        GetChild<Button>(index).GetChild<TextureRect>(0).Texture = weapon.Icon;
+    private void UpdateWeaponDisplays(Weapon weapon, int index) {
+        GetChild<Button>(index).GetChild<TextureRect>(0).Texture = weapon?.Icon;
+
+        Godot.Collections.Array<Node> list = GetChildren();
+
+        for (int i = 0; i < list.Count; i++)
+            ((Button) list[i]).Modulate = i == index ? enabledColor : disabledColor;
+    }
+
+    static readonly Color disabledColor = new("959595");
+    static readonly Color enabledColor = new("ffffff");
 }

@@ -22,12 +22,19 @@ public class PlayerClassManager : ISaveable {
     public void SwitchClassFromSave() {
         string className = (string) (this as ISaveable).LoadData();
         
-        if (string.IsNullOrEmpty(className)) 
-            SwitchClass(new Normal());
+        if (string.IsNullOrEmpty(className)) {
+            SetClass(new Normal());
+            return;
+        }
 
-        Type playerClassType = Type.GetType(className, true);
+        Type playerClassType = Type.GetType(className);
+        
+        if (playerClassType is null)  {
+            SetClass(new Normal());
+            return;
+        }
 
-        SwitchClass((IPlayerClass) Activator.CreateInstance(playerClassType));
+        SetClass((IPlayerClass) Activator.CreateInstance(playerClassType));
     }
 
     /// <summary>
@@ -41,7 +48,7 @@ public class PlayerClassManager : ISaveable {
         
         SetClass(newClass);
 
-        GameDataService.Save(); // Save the change in class
+        ClassSwitched?.Invoke(newClass);
     }
 
     private void SetClass(IPlayerClass newClass) {
@@ -53,7 +60,7 @@ public class PlayerClassManager : ISaveable {
         
         UpdateSpritesFromResource(playerClass.classResource);
         
-        ClassSwitched?.Invoke(newClass);
+        GameDataService.Save(); // Save the change in class
     }
 
     private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>

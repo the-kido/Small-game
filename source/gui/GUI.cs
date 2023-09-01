@@ -8,7 +8,9 @@ public partial class GUI : CanvasLayer {
 
     private Player player;
     public void Init(Player player) {
+
         this.player = player;
+
         HealthLable.Init(player);
         HeldItems.Init(player);
         ShieldInfo.Init(player);
@@ -94,5 +96,3 @@ public partial class GUI : CanvasLayer {
         CurrentMenu.Disable += CloseCurrentMenu;
     }
 }
-
-

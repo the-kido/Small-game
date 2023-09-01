@@ -15,6 +15,10 @@ public partial class ChestMenu : Control, IMenu {
         Disable += () => OnSelectionMade.GetInvocationList().ToList().ForEach(func => OnSelectionMade -= func as Action<int>);
     }
 
+    public void IHateEverything() {
+        OnSelectionMade = null;
+    }
+
     [Export]
     private AnimationPlayer animationPlayer;
     [Export]
@@ -108,8 +112,7 @@ public partial class ChestMenu : Control, IMenu {
                 break;
         }
     }
-
-
+    
     public void Enable(Player player) {
 
         // reset values
@@ -128,6 +131,7 @@ public partial class ChestMenu : Control, IMenu {
         
         Disable = null;
     }
+    
     private void FreezeStatOverview() {
         if (previewedIndex != null) {
             selectedIndex = previewedIndex;
@@ -156,6 +160,7 @@ public partial class ChestMenu : Control, IMenu {
                 break;
         }
     }
+    
     public void Close() => Visible = false;
 }
 
