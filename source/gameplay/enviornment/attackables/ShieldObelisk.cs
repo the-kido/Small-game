@@ -11,7 +11,8 @@ namespace Game.SealedContent;
 public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {       
     public Vector2 GetPosition() => GlobalPosition;
     public bool IsInteractable() => Damageable.IsAlive;
-
+    public Node2D GetNode() => this;
+    
     public ShieldObelisk() {
         Level.CriterionStarted += AddEffectToEveryone;
     }

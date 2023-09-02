@@ -11,8 +11,9 @@ public partial class Coin : Pickupable {
 
 	protected override void AbsorbPickupable(Player player) {
         // somehow add "money" via HUD
-        DungeonRunData.Coins.Count += 1;
-        DungeonRunData.FreezeOrbs.Count += 1;
+        
+        RunData.AllData[RunDataEnum.Coins].Add(1);
+        RunData.AllData[RunDataEnum.FreezeOrbs].Add(1);
 	}
 
 	public override async void _Ready() {

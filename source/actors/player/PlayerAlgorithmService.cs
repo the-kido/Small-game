@@ -1,5 +1,5 @@
 using Game.Actors;
-using Game.Data;
+using Game.Damage;
 
 namespace Game.Players;
 
@@ -19,14 +19,14 @@ public class AggressionMetric {
     KidoUtils.Timer timer;
     public AggressionMetric(Player player) {
         this.player = player;
-        DungeonRunData.EnemiesKilled.EnemyKilled += OnPlayerKilledEnemy;
+        Enemy.EnemyKilled += OnPlayerKilledEnemy;
         timer = new(5);
     }
 
     // Depending on how much health the enemy has, the score should go up by a bit.
 
     int score;
-    private void OnPlayerKilledEnemy(Enemy enemyKilled) {
+    private void OnPlayerKilledEnemy(Enemy enemyKilled, DamageInstance killingDamageInstance) {
         score += enemyKilled.DamageableComponent.BaseMaxHealth;
     }
 }

@@ -5,34 +5,36 @@ namespace Game.UI;
 
 public partial class SelectedTargetIndicator : Sprite2D {
 	
-	IPlayerAttackable target;
-	public void Enable(IPlayerAttackable target) {
-		this.target = target;
-		Visible = true;
+	static IPlayerAttackable playerTarget;
+	static SelectedTargetIndicator currentIndicator;
+
+	private void CreateDuplicate() {
+		currentIndicator = (SelectedTargetIndicator) Duplicate();
+		playerTarget.GetNode().AddChild(currentIndicator);
+		currentIndicator.TreeExited += RemoveDuplicate;
+		currentIndicator.Visible = true;
+	}
+	
+	public void Enable(IPlayerAttackable newTarget) {
+		RemoveDuplicate();
+		playerTarget = newTarget;
+		CreateDuplicate();
 	}
 
-	public void Disable() {
-		target = null;
-		Visible = false;
-	}
-
-	private void UpdatePosition() {
-		if (target is null) return;
-		
-		if (!target.IsInteractable()) {
-			Disable();
+	public static void RemoveDuplicate() {
+		if (currentIndicator is null || playerTarget.IsInteractable()) 
 			return;
-		}
 
-		Vector2 offset = Vector2.One;
-		offset.Y *= -50;
-		GlobalPosition = target.GetPosition() + offset;
+		currentIndicator.QueueFree();
+		currentIndicator = null;
+		playerTarget = null;
 	}
+
 	public override void _Process(double delta) {
-		UpdatePosition();
+		if (currentIndicator is not null && !playerTarget.IsInteractable())
+            RemoveDuplicate();
 	}
 
-    public override void _Ready() {
-		Visible = false;
-    }
+    public override void _Ready() => Visible = false;
+
 }
