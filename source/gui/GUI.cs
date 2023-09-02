@@ -17,8 +17,15 @@ public partial class GUI : CanvasLayer {
         debugHUD.Init();
 
         player.DamageableComponent.OnDeath += (_) => OpenReviveMenu();
-        player.InputController.PressedEscape += CloseCurrentMenu;
-
+        player.InputController.PressedEscape += OnEscapePressed;
+    }
+    // If there's a menu, close it
+    // If there's no menu, open the escape menu/
+    private void OnEscapePressed() {
+        if (CurrentMenu is null)
+            OpenEscapeMenu();
+        else
+            CloseCurrentMenu();
     }
 
     [Export]
@@ -50,6 +57,8 @@ public partial class GUI : CanvasLayer {
     // Menus accessible at spawn
     [Export]
     public PlayerClassMenu playerClassMenu;
+    [Export]
+    public EscapeMenu escapeMenu;
     
     public enum SpawnMenu {
         PlayerClassMenu = 0,
@@ -63,6 +72,7 @@ public partial class GUI : CanvasLayer {
 
     #region Menu open methods
     public void OpenReviveMenu() => SetCurrentMenu(reviveMenu);
+    private void OpenEscapeMenu() => SetCurrentMenu(escapeMenu);
 
     public void OpenChestMenu(IChestItem newWeapon) {
         SetCurrentMenu(chestMenu);

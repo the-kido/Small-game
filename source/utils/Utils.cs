@@ -4,14 +4,14 @@ namespace KidoUtils;
 
 public class Utils {
 
-    public static T GetPreloadedScene<T>(Node node, PreloadedScene preloadedScene) where T : Node => preloadedScene switch {
+    public static T GetPreloadedScene<T>(Node node, PreloadedScene preloadedScene) where T : Node => preloadedScene switch{
         PreloadedScene.BulletFactory => node.GetNode<T>("/root/BulletFactory"),
         PreloadedScene.ParticleFactory => node.GetNode<T>("/root/ParticleFactory"),
         PreloadedScene.SceneSwitcher => node.GetNode<T>("/root/SceneSwitcher"),
         PreloadedScene.GlobalCursor => node.GetNode<T>("/root/GlobalCursor"),
         PreloadedScene.DamageTextManager => node.GetNode<T>("/root/DamageTextMultiplier"),
         PreloadedScene.PickupablesManager => node.GetNode<T>("/root/PickupablesManager"),
-        PreloadedScene.SettingsPage => node.GetNode<T>("/root/SettingsPage"),
+        PreloadedScene.GUI => node.GetNode<T>("/root/GUI"),
         _ => default,
     };
 }
@@ -23,5 +23,5 @@ public enum PreloadedScene {
     GlobalCursor,
     DamageTextManager,
     PickupablesManager,
-    SettingsPage,
+    GUI,
 }

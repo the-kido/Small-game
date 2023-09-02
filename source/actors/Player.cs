@@ -5,14 +5,13 @@ using Game.Actors;
 using Game.Players.Inputs;
 using Game.UI;
 using Game.Data;
+using KidoUtils;
 
 namespace Game.Players;
 
 public sealed partial class Player : Actor {
 
     [ExportCategory("Required")]
-    [Export]
-    public GUI GUI {get; private set;}
     [Export]
     public PlayerInteractableRadar InteractableRadar {get; private set;}
     [Export]
@@ -26,6 +25,7 @@ public sealed partial class Player : Actor {
     [Export]
     private AudioStreamPlayer2D epicSoundEffectPlayer;
 
+    public GUI GUI {get; private set;}
     public static List<Player> Players {get; private set;}
     
     protected override void SetStats(ActorStats newStats) {
@@ -40,7 +40,8 @@ public sealed partial class Player : Actor {
     public void Init() {
         _Ready();
         Players = new() { this };
-
+        GUI = Utils.GetPreloadedScene<GUI>(this, PreloadedScene.GUI);
+        
         classManager = new(this);
 
         Camera.currentCamera.Init(this);

@@ -19,43 +19,6 @@
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[sub_resource type="Animation" id="Animation_kuql6"]
-resource_name = "Close"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(2.2974, 1),
-"update": 0,
-"values": [Vector2(0, 781), Vector2(0, 1128)]
-}
-
-[sub_resource type="Animation" id="Animation_ggilv"]
-resource_name = "Open"
-length = 0.7
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 0.7),
-"transitions": PackedFloat32Array(0.482967, 1.41421, 1),
-"update": 0,
-"values": [Vector2(0, 1128), Vector2(0, 770), Vector2(0, 781)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrhtd"]
-_data = {
-"Close": SubResource("Animation_kuql6"),
-"Open": SubResource("Animation_ggilv")
-}
-
 [sub_resource type="Animation" id="Animation_gjelb"]
 length = 0.001
 tracks/0/type = "value"
@@ -128,6 +91,43 @@ tracks/0/keys = {
 _data = {
 "Open": SubResource("Animation_ki2dc"),
 "RESET": SubResource("Animation_jw21v")
+}
+
+[sub_resource type="Animation" id="Animation_kuql6"]
+resource_name = "Close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(2.2974, 1),
+"update": 0,
+"values": [Vector2(0, 781), Vector2(0, 1128)]
+}
+
+[sub_resource type="Animation" id="Animation_ggilv"]
+resource_name = "Open"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.7),
+"transitions": PackedFloat32Array(0.482967, 1.41421, 1),
+"update": 0,
+"values": [Vector2(0, 1128), Vector2(0, 770), Vector2(0, 781)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrhtd"]
+_data = {
+"Close": SubResource("Animation_kuql6"),
+"Open": SubResource("Animation_ggilv")
 }
 
 [sub_resource type="Animation" id="Animation_efsd5"]
@@ -214,85 +214,6 @@ toggle_mode = true
 text = "⁂ Auto Aim ⁂
 "
 script = ExtResource("4_13lqt")
-
-[node name="Dialogue Bar" type="Control" parent="." node_paths=PackedStringArray("Label", "PortraitRect", "animationPlayer")]
-layout_mode = 1
-anchor_top = 0.635185
-anchor_right = 1.0
-anchor_bottom = 0.915741
-offset_top = 442.0
-offset_bottom = 442.003
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_vertical = 4
-script = ExtResource("5_i761r")
-Label = NodePath("Background/Text Background/RichTextLabel")
-PortraitRect = NodePath("Background/TextureRect/TextureRect")
-animationPlayer = NodePath("AnimationPlayer")
-metadata/_edit_use_anchors_ = true
-
-[node name="Background" type="ColorRect" parent="Dialogue Bar"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.038
-anchor_top = 0.036
-anchor_right = 0.962
-anchor_bottom = 0.927
-offset_left = 0.0399933
-offset_top = 0.0919991
-offset_right = -0.0401611
-offset_bottom = 11.119
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.223529, 0.223529, 0.223529, 1)
-
-[node name="Text Background" type="ColorRect" parent="Dialogue Bar/Background"]
-layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 317.0
-offset_top = 53.0
-offset_right = -32.9999
-offset_bottom = -43.0031
-grow_horizontal = 0
-grow_vertical = 2
-color = Color(0.180392, 0.180392, 0.180392, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue Bar/Background/Text Background"]
-layout_mode = 2
-anchor_right = 1.001
-anchor_bottom = 1.038
-offset_top = 17.0
-offset_right = -1.42407
-offset_bottom = -8.03001
-grow_horizontal = 2
-grow_vertical = 2
-bbcode_enabled = true
-text = "[b] Hello you should not see this [/b]"
-fit_content = true
-visible_characters = 27
-visible_ratio = 0.9
-
-[node name="TextureRect" type="Control" parent="Dialogue Bar/Background"]
-layout_mode = 2
-anchors_preset = 0
-offset_top = 141.0
-offset_bottom = 141.0
-grow_vertical = 2
-
-[node name="TextureRect" type="TextureRect" parent="Dialogue Bar/Background/TextureRect"]
-layout_mode = 2
-offset_left = 83.0
-offset_top = -95.9999
-offset_right = 299.0
-offset_bottom = 104.0
-texture = ExtResource("6_lqvlh")
-stretch_mode = 4
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Dialogue Bar"]
-libraries = {
-"": SubResource("AnimationLibrary_xrhtd")
-}
 
 [node name="Interact" type="Button" parent="." node_paths=PackedStringArray("animationPlayer")]
 layout_mode = 1
@@ -539,6 +460,85 @@ offset_right = -0.811058
 offset_bottom = 2.994
 grow_horizontal = 2
 color = Color(0.219608, 0.219608, 0.219608, 1)
+
+[node name="Dialogue Bar" type="Control" parent="." node_paths=PackedStringArray("Label", "PortraitRect", "animationPlayer")]
+layout_mode = 1
+anchor_top = 0.635185
+anchor_right = 1.0
+anchor_bottom = 0.915741
+offset_top = 442.0
+offset_bottom = 442.003
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 4
+script = ExtResource("5_i761r")
+Label = NodePath("Background/Text Background/RichTextLabel")
+PortraitRect = NodePath("Background/TextureRect/TextureRect")
+animationPlayer = NodePath("AnimationPlayer")
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="ColorRect" parent="Dialogue Bar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.038
+anchor_top = 0.036
+anchor_right = 0.962
+anchor_bottom = 0.927
+offset_left = 0.0399933
+offset_top = 0.0919991
+offset_right = -0.0401611
+offset_bottom = 11.119
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.223529, 0.223529, 0.223529, 1)
+
+[node name="Text Background" type="ColorRect" parent="Dialogue Bar/Background"]
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 317.0
+offset_top = 53.0
+offset_right = -32.9999
+offset_bottom = -43.0031
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.180392, 0.180392, 0.180392, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue Bar/Background/Text Background"]
+layout_mode = 2
+anchor_right = 1.001
+anchor_bottom = 1.038
+offset_top = 17.0
+offset_right = -1.42407
+offset_bottom = -8.03001
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "[b] Hello you should not see this [/b]"
+fit_content = true
+visible_characters = 27
+visible_ratio = 0.9
+
+[node name="TextureRect" type="Control" parent="Dialogue Bar/Background"]
+layout_mode = 2
+anchors_preset = 0
+offset_top = 141.0
+offset_bottom = 141.0
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Dialogue Bar/Background/TextureRect"]
+layout_mode = 2
+offset_left = 83.0
+offset_top = -95.9999
+offset_right = 299.0
+offset_bottom = 104.0
+texture = ExtResource("6_lqvlh")
+stretch_mode = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Dialogue Bar"]
+libraries = {
+"": SubResource("AnimationLibrary_xrhtd")
+}
 
 [node name="HUD Cover" type="ColorRect" parent="." node_paths=PackedStringArray("animationPlayer")]
 visible = false

@@ -23,7 +23,7 @@ public class WeaponController {
 	readonly Player	player;
 	private GUI GUI => player.GUI;
 
-	readonly NodePath[] unclickableHUDElements = {"Auto Aim Button", "Dialogue Bar", "Interact", 
+    private readonly NodePath[] unclickableHUDElements = {"Auto Aim Button", "Dialogue Bar", "Interact", 
 	"Held Weapons/1", "Held Weapons/2", "Held Weapons/3", "Held Weapons"};
     public WeaponController(WeaponManager hand, Player player) {
 		this.hand = hand;
@@ -80,6 +80,7 @@ public class WeaponController {
         PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
         var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Environment);
         var result = spaceState.IntersectRay(ray);
+
         //if nothing hit the ray, then we good. OR, if the ray hit the interactable, we're also good.
         return result.Count <= 0 || (Rid) result["collider"] == interactable.GetRid();
     }
@@ -104,12 +105,11 @@ public class WeaponController {
 	private ControlMethod useMethod; 
 
 	private ControlMethod GetUseMethod(IPlayerAttackable targettedInteractable) {
-		List<InputType> inputMap = GetAttackInputs();
 
 		// If something happened to the interactable, default to default aim method.
         if (useMethod is ControlMethod.SelectedAutoaim && targettedInteractable is null) return ControlMethod.ManualAim;
 
-		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) return ControlMethod.Autoaim;
+		if (GetAttackInputs().Contains(InputType.AutoAttackButtonToggled)) return ControlMethod.Autoaim;
 
 		// This is put last for most priority. If the player explicitly wants to target a unit, it should 
 		if (targettedInteractable is not null && targettedInteractable.IsInteractable()) return ControlMethod.SelectedAutoaim;
@@ -148,11 +148,9 @@ public class WeaponController {
 					UseWeapon?.Invoke(delta);
 					break;
 				}
-                GD.Print("this is work");
 
 				//If the interactable is still in tact and is still visible, autoshoot it.
 				if (IsInteractableVisible(targettedAttackable)) {
-                    GD.Print("Visible");
 					UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 					UseWeapon?.Invoke(delta);
 				}

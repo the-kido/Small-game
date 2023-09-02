@@ -24,6 +24,7 @@ SceneSwitcher="*res://source/autoload/scene_switcher.tscn"
 GlobalCursor="*res://Global Cursor.tscn"
 DamageTextManager="*res://source/autoload/DamageTextManager.cs"
 PickupablesManager="*res://source/autoload/PickupablesManager.cs"
+GUI="*res://gui.tscn"
 
 [display]
 

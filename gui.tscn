@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dvp5o73q03vs5"]
+[gd_scene load_steps=18 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="PackedScene" uid="uid://crdkmn1ouh8k2" path="res://hud.tscn" id="2_ckuxr"]
@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="7_8aqmd"]
 [ext_resource type="Script" path="res://source/gui/menus/PlayerClassMenu.cs" id="8_d8fj3"]
 [ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
+[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_1eh1k"]
+[ext_resource type="Script" path="res://source/gui/menus/EscapeMenu.cs" id="9_l0a7d"]
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
 resource_name = "Open"
@@ -70,13 +72,67 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("HUD", "reviveMenu", "chestMenu", "playerClassMenu", "debugHUD")]
+[sub_resource type="Animation" id="Animation_sxwil"]
+resource_name = "Open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_rooea"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_tu48m"]
+resource_name = "Close"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n78yn"]
+_data = {
+"Close": SubResource("Animation_tu48m"),
+"Open": SubResource("Animation_sxwil"),
+"RESET": SubResource("Animation_rooea")
+}
+
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu", "playerClassMenu", "escapeMenu", "debugHUD")]
 layer = 10
 script = ExtResource("1_7vbvm")
+TargetIndicator = NodePath("TargetEnemyCursor")
 HUD = NodePath("HUD")
 reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
 playerClassMenu = NodePath("PlayerClassMenu")
+escapeMenu = NodePath("EscapeMenu")
 debugHUD = NodePath("DEBUG")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
@@ -506,3 +562,47 @@ offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "Confirm Switch"
+
+[node name="EscapeMenu" type="Control" parent="." node_paths=PackedStringArray("closeButton")]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 100)
+script = ExtResource("9_l0a7d")
+closeButton = NodePath("ColorRect/Close")
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="EscapeMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 162.0
+offset_top = 98.0
+offset_right = -162.0
+offset_bottom = -98.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(100, 0)
+color = Color(0.196078, 0.196078, 0.196078, 1)
+
+[node name="Close" type="Button" parent="EscapeMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -121.0
+offset_bottom = 121.0
+grow_horizontal = 0
+text = "X"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EscapeMenu"]
+libraries = {
+"": SubResource("AnimationLibrary_n78yn")
+}
+
+[node name="TargetEnemyCursor" parent="." instance=ExtResource("9_1eh1k")]
