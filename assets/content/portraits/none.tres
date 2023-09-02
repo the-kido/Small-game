@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dkhmndlw03uo5"]
+[gd_resource type="Resource" script_class="Portrait" load_steps=2 format=3 uid="uid://dkhmndlw03uo5"]
 
 [ext_resource type="Script" path="res://source/resources/Portrait.cs" id="1_l1q5j"]
 

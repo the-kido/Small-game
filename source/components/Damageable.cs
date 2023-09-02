@@ -30,6 +30,7 @@ public partial class Damageable : Area2D {
 	public bool IsAlive => Health > 0;
 
 	public event Action<DamageInstance> OnDamaged;
+	public event Action<int> TotalDamageTaken;
 	public event Action<DamageInstance> DamagedBlocked;
 
 	public Action<DamageInstance> OnDeath;
@@ -97,6 +98,7 @@ public partial class Damageable : Area2D {
 
 		Health -= totalDamage;
 		OnDamaged?.Invoke(damageInstance);
+		TotalDamageTaken?.Invoke(totalDamage);
 		
 		SpawnDamageText(totalDamage);
 

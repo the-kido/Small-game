@@ -83,7 +83,7 @@ public partial class Level : Node, ISaveable{
     }
 
     private bool LoadCompletion() {
-        LevelCompletions = (Godot.Collections.Dictionary<string,bool>) (this as ISaveable).LoadData();
+        LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
         return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
     }
 }

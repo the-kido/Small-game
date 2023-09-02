@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Game.Actors;
 using Godot;
 
 namespace Game.Players.Inputs;
 
 public partial class PlayerInteractableRadar : Area2D{
-    public List<Actor> NearbyEnemies {get; private set;} = new();
+    public List<IPlayerAttackable> NearbyEnemies {get; private set;} = new();
 
     public override void _Ready() {
         BodyEntered += OnNearbyEnemyAreaEntered;
@@ -13,8 +12,8 @@ public partial class PlayerInteractableRadar : Area2D{
     }
     
     private void OnNearbyEnemyAreaEntered(Node2D body) =>
-        NearbyEnemies.Add((Actor) body);
+        NearbyEnemies.Add((IPlayerAttackable) body);
     private void OnNearbyEnemyAreaExited(Node2D body) =>
-        NearbyEnemies.Remove((Actor) body);
+        NearbyEnemies.Remove((IPlayerAttackable) body);
 
 }

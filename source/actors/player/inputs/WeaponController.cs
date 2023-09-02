@@ -3,63 +3,9 @@ using System;
 using System.Collections.Generic;
 using KidoUtils;
 using Game.Players.Mechanics;
-using Game.Actors;
 using Game.UI;
 
 namespace Game.Players.Inputs;
-
-public interface IInput {
-	void Update(double delta);
-}
-
-#region Player required
-public class ShieldInput  {
-	readonly Player player;
-
-	public ShieldInput(Player player) {
-		this.player = player;
-	}
-	public event Action<bool> PlayerShieldsDamage;
-	bool cache; 
-	public void Update() {
-		if (cache != IsBlockingDamage()) {
-			cache = IsBlockingDamage();
-			player.DamageableComponent.BlocksDamage = IsBlockingDamage();
-			PlayerShieldsDamage?.Invoke(cache);
-		}
-	}
-
-	private bool IsBlockingDamage() {
-		if (player.ShieldManager.HeldShield is null) 
-			return false;
-
-		if (!player.ShieldManager.HeldShield.Alive)
-			return false;
-		
-		if (Input.IsActionPressed("utility_used"))
-			return true;
-		
-		return false;
-	}
-}
-
-public class HeldItemInputController {
-	readonly WeaponManager hand;
-	public HeldItemInputController(WeaponManager hand) {
-		this.hand = hand;
-	}
-
-	public void Update() {
-		if (Input.IsActionJustPressed("select_slot_1"))
-			hand.SwitchHeldWeapon(0);
-
-		if (Input.IsActionJustPressed("select_slot_2"))
-			hand.SwitchHeldWeapon(1);
-		
-		if (Input.IsActionJustPressed("select_slot_3"))
-			hand.SwitchHeldWeapon(2);
-	}
-}
 
 public class WeaponController {
 	
@@ -134,21 +80,21 @@ public class WeaponController {
         PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
         var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, interactable.GetPosition(), (uint) Layers.Environment);
         var result = spaceState.IntersectRay(ray);
-        //if nothing hit the ray, they we good.
-        return result.Count <= 0;
+        //if nothing hit the ray, then we good. OR, if the ray hit the interactable, we're also good.
+        return result.Count <= 0 || (Rid) result["collider"] == interactable.GetRid();
     }
  
 	readonly uint faceObjectMask = (uint) Layers.Environment + (uint) Layers.Enemies;
-    private Actor FindObjectToFace(List<Actor> _) {
+    private IPlayerAttackable FindObjectToFace(List<IPlayerAttackable> _) {
         //Check if the player is clicking/pressing on the screen. 
-        foreach (Actor enemy in Player.Players[0].InteractableRadar.NearbyEnemies) {
+        foreach (IPlayerAttackable playerAttactable in Player.Players[0].InteractableRadar.NearbyEnemies) {
 
             PhysicsDirectSpaceState2D spaceState = hand.GetWorld2D().DirectSpaceState;
-            var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, enemy.GlobalPosition, faceObjectMask);
+            var ray = PhysicsRayQueryParameters2D.Create(hand.GlobalPosition, playerAttactable.GetNode().GlobalPosition, faceObjectMask);
             var result = spaceState.IntersectRay(ray);
 
-            if (result.Count > 0 && (Rid) result["collider"] == enemy.GetRid())
-                return enemy;
+            if (result.Count > 0 && (Rid) result["collider"] == playerAttactable.GetRid())
+                return playerAttactable;
         }
         return null;
     }
@@ -161,7 +107,7 @@ public class WeaponController {
 		List<InputType> inputMap = GetAttackInputs();
 
 		// If something happened to the interactable, default to default aim method.
-		if (useMethod is ControlMethod.SelectedAutoaim && targettedInteractable is null) return ControlMethod.ManualAim;
+        if (useMethod is ControlMethod.SelectedAutoaim && targettedInteractable is null) return ControlMethod.ManualAim;
 
 		if (inputMap.Contains(InputType.AutoAttackButtonToggled)) return ControlMethod.Autoaim;
 
@@ -185,9 +131,9 @@ public class WeaponController {
 
 		if (inputMap.Contains(InputType.RightClickJustPressed)) {
             targettedAttackable = FindInteractableWithinCursor();
-
+            
             if (targettedAttackable is null)
-				GUI.TargetIndicator.Disable();
+                SelectedTargetIndicator.RemoveDuplicate();
 			else
 				GUI.TargetIndicator.Enable(targettedAttackable);
 		}
@@ -198,27 +144,29 @@ public class WeaponController {
 			case ControlMethod.SelectedAutoaim:
 				//If using a hold-to-charge weapon, the charge should increase when not looking at thing.
 				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
-					UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
+                    UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 					UseWeapon?.Invoke(delta);
 					break;
 				}
-				
+                GD.Print("this is work");
+
 				//If the interactable is still in tact and is still visible, autoshoot it.
 				if (IsInteractableVisible(targettedAttackable)) {
+                    GD.Print("Visible");
 					UpdateWeaponDirection?.Invoke(targettedAttackable.GetPosition());
 					UseWeapon?.Invoke(delta);
 				}
 				break;
 
 			case ControlMethod.Autoaim:
-                Actor see = FindObjectToFace(Player.Players[0].InteractableRadar.NearbyEnemies);
+                IPlayerAttackable see = FindObjectToFace(Player.Players[0].InteractableRadar.NearbyEnemies);
 				
 				if (hand.HeldWeapon.WeaponType is Weapon.Type.HoldToCharge) {
 					UseWeapon?.Invoke(delta); 
 				}
 
 				if (see is not null) {
-					UpdateWeaponDirection?.Invoke(see.GlobalPosition);
+					UpdateWeaponDirection?.Invoke(see.GetNode().GlobalPosition);
 					//This is literally the only solution i can  think of..
 					if (hand.HeldWeapon.WeaponType is not Weapon.Type.HoldToCharge)
 						UseWeapon?.Invoke(delta);
@@ -238,44 +186,3 @@ public class WeaponController {
 		}
 	}
 }
-
-public class DialogueController {
-	readonly InputController inputController;
-	readonly GUI GUI;
-	public DialogueController(InputController inputController, GUI GUI) {
-		this.inputController = inputController;
-		this.GUI = GUI;
-		
-		// TODO: I don't like having to use this event :(
-		GUI.DialogueBar.Ready += DialogueControlInit;
-	}
-
-	private bool WithinDialogueBar() {
-		var rect = GUI.DialogueBar.GetGlobalRect();
-		var mouse_position = GUI.DialogueBar.GetGlobalMousePosition();
-		return rect.HasPoint(mouse_position);
-	}
-	private void DialogueControlInit() {
-		GUI.DialoguePlayer.Started += (info) => inputController.UIInputFilter.SetFilterMode(info.PausePlayerInput);
-		GUI.DialoguePlayer.Ended += () => inputController.UIInputFilter.SetFilterMode(false);
-	}
-	
-	public void Continue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.Clicked?.Invoke();}	
-}
-
-public class InteractablesButtonController {
-
-	readonly Player player;
-	public InteractablesButtonController(Player player, GUI GUI) {
-		this.player = player;
-		GUI.InteractButton.Pressed += InvokeInteracted;
-	}
-
-	public event Action<Player> Interacted;
-	private void InvokeInteracted() {
-		// this is a seperate method incase I wanna add some more logic to this sometime
-		Interacted?.Invoke(player);
-	}
-}
-
-#endregion Player required

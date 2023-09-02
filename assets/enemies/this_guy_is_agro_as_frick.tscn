@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://fktd2hmwbgea"]
+[gd_scene load_steps=38 format=3 uid="uid://fktd2hmwbgea"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/AgroEnemyMiniBoss.cs" id="1_3njyc"]
 [ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/sprites/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
@@ -8,9 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="4_y3w8l"]
 [ext_resource type="Texture2D" uid="uid://71w6lvj63lpu" path="res://assets/sprites/enemies/agro/agro-guy-wake-up.png" id="6_o5gc5"]
 [ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="9_6ypl0"]
+[ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_wrtln"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rr0j3"]
-size = Vector2(14.8, 13)
+size = Vector2(17.5, 14.25)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g1gg3"]
 atlas = ExtResource("3_fd2p1")
@@ -317,14 +318,14 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4cr6s"]
-size = Vector2(15, 14)
+size = Vector2(15, 12.6225)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d2kor"]
 size = Vector2(18.8, 16.8)
 
 [node name="This guy is agro as frick" type="CharacterBody2D" node_paths=PackedStringArray("pathfinder", "animationPlayer", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
 z_index = 1
-scale = Vector2(5, 5)
+scale = Vector2(4, 4)
 disable_mode = 2
 collision_layer = 4
 collision_mask = 11
@@ -341,12 +342,14 @@ CollisionShape = NodePath("CollisionShape2D")
 moveSpeed = 100
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.4, 0.5)
+position = Vector2(0, 1.375)
+scale = Vector2(1.00306, 1)
 shape = SubResource("RectangleShape2D_rr0j3")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="AgroGuy" type="AnimatedSprite2D" parent="."]
 z_index = 1
+scale = Vector2(1.245, 1.245)
 sprite_frames = SubResource("SpriteFrames_f4ect")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AgroGuy"]
@@ -361,7 +364,8 @@ collision_mask = 8
 Health = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
-position = Vector2(0.5, 0)
+position = Vector2(0.5, 0.688755)
+scale = Vector2(1.245, 1.245)
 shape = SubResource("RectangleShape2D_4cr6s")
 debug_color = Color(1, 0.168627, 0.431373, 0)
 
@@ -377,7 +381,10 @@ collision_layer = 4
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RushCollisionArea"]
+scale = Vector2(1.245, 1.245)
 shape = SubResource("RectangleShape2D_d2kor")
 debug_color = Color(0.619608, 0.533333, 0, 0)
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("9_6ypl0")]
+
+[node name="TargetEnemyCursor" parent="." instance=ExtResource("9_wrtln")]

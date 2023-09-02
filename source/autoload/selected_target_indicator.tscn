@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://source/autoload/SelectedTargetIndicator.cs" id="2_nq8s6"]
 
 [node name="TargetEnemyCursor" type="Sprite2D"]
-scale = Vector2(2.99, 2.99)
+position = Vector2(0, -8)
+scale = Vector2(2, 2)
 texture = ExtResource("1_vilhq")
 script = ExtResource("2_nq8s6")

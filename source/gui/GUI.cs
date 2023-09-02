@@ -17,6 +17,7 @@ public partial class GUI : CanvasLayer {
         debugHUD.Init();
 
         player.DamageableComponent.OnDeath += (_) => OpenReviveMenu();
+        player.InputController.PressedEscape += CloseCurrentMenu;
 
     }
 

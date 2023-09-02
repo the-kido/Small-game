@@ -67,7 +67,6 @@ position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
-moveSpeed = null
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(907, 670)
@@ -91,7 +90,10 @@ environment = ExtResource("13_w1ius")
 
 [node name="Chest" parent="Enviornment" instance=ExtResource("24_vfgcu")]
 position = Vector2(361, 626)
-chestLootTable = null
+
+[node name="Chest2" parent="Enviornment" instance=ExtResource("24_vfgcu")]
+position = Vector2(687, 599)
+chestLootTable = 1
 
 [node name="TileMap" type="TileMap" parent="Enviornment"]
 z_index = -1
@@ -108,7 +110,3 @@ position = Vector2(473, 397)
 
 [node name="Node2D" type="Node2D" parent="."]
 script = ExtResource("16_nns66")
-
-[node name="Chest" parent="." instance=ExtResource("24_vfgcu")]
-position = Vector2(687, 599)
-chestLootTable = 1

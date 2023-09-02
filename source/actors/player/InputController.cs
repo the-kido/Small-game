@@ -31,8 +31,12 @@ public partial class InputController : Node {
 
 	#region GUI
 	public event Action LeftClicked; 
+	public event Action PressedEscape; 
 	private void InvokeGUILeftClick() {
 		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
+	}
+	private void InvokeEscape() {
+		if (Input.IsActionJustPressed("escape")) PressedEscape?.Invoke();
 	}
 	#endregion
 
@@ -81,6 +85,7 @@ public partial class InputController : Node {
 	private void UpdateUIInput(double delta) {
 		DialogueController.Continue();
 		InvokeGUILeftClick();
+		InvokeEscape();
 
 		UIInputs.ForEach(input => input.Update(delta));
 	}

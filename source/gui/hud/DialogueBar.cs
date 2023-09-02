@@ -71,7 +71,7 @@ public class ConversationController {
     // rename to "continueDIalouge"
     public void OnClicked() {
         // Make sure that the player cannot click on the dialogue bar as it's going down.
-        if (currentDialogue.Length == 0) return;
+        if (currentDialogue.Length is 0) return;
        
         if (currentItem is DialogueLineConversationItem) {
             dialoguePlayer.Skip();
@@ -82,8 +82,9 @@ public class ConversationController {
             return;
         }
     }
+    
     public void Start(ConversationItem[] dialogue, ConversationInfo info) {
-        if (dialogue.Length == 0)
+        if (dialogue.Length is 0)
             throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
         itemAt = -1;
         currentDialogue = dialogue;
@@ -94,6 +95,7 @@ public class ConversationController {
         
         ContinueConversation();       
     }
+
     public void ContinueConversation() {
         // Initialize to the next line, otherwise as soon as the bar opens it will have old stuff on it
         itemAt += 1;

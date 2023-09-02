@@ -18,7 +18,6 @@ public sealed partial class DialogueLineConversationItem : ConversationItem {
 public class DialoguePlayer {
     private readonly ConversationController conversationController;
     private readonly DialogueBar bar;
-    
     public DialoguePlayer(ConversationController conversationController, DialogueBar bar) {
         this.conversationController = conversationController;
         this.bar = bar;
@@ -29,7 +28,7 @@ public class DialoguePlayer {
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
-        if (nextLine.portrait.CurrentSprite is null) 
+        if (nextLine.portrait.CurrentSprite is null)
             return;
 
         nextLine.portrait.PlayAnimation(delta);
@@ -40,10 +39,12 @@ public class DialoguePlayer {
         // Update portrait even if the text has stopped typing
         UpdatePortraitImage(delta);
 
-        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
+        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) 
+            return;
         
-        // Skip spaces.
-        if (CurrentCharacter == ' ') lineProgress += 1;
+        if (CurrentCharacter == ' ') // Skip spaces.
+            lineProgress += 1;
+        
         lineProgress += delta * nextLine.charactersPerSecond;
         
         bar.Label.VisibleCharacters = (int) lineProgress;

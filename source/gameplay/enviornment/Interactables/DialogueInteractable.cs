@@ -19,7 +19,7 @@ public partial class DialogueInteractable : Node2D {
     
     bool ignoreSpam;
 
-    ConversationInfo dialogueInfo => new(true, showPortraitImage);
+    ConversationInfo DialogueInfo => new(true, showPortraitImage);
 
     public override void _Ready() {
         interactable.Interacted += OnInteracted;
@@ -31,7 +31,7 @@ public partial class DialogueInteractable : Node2D {
 
         interactable.SetIndicatorVisibility(player, false);
         
-        player.GUI.DialoguePlayer.Start(dialogueLines.ToArray(), dialogueInfo);
+        player.GUI.DialoguePlayer.Start(dialogueLines.ToArray(), DialogueInfo);
 
         player.GUI.DialoguePlayer.Ended += () => IgnoreSpam(player); 
 	}

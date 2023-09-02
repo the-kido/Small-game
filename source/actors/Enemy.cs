@@ -4,14 +4,16 @@ using KidoUtils;
 using LootTables;
 using Game.Actors.AI;
 using Game.Damage;
-using Game.Data;
 using Game.Animation;
 using Game.Players;
+using System;
 
 namespace Game.Actors;
 
 public abstract partial class Enemy : Actor, IPlayerAttackable {
     
+    public static event Action<Enemy, DamageInstance> EnemyKilled; 
+
     [Export]
     private AnimationPlayer animationPlayer = new();
     private AIStateMachine stateMachine;
@@ -29,7 +31,8 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     private void OnDeath(DamageInstance damageInstance) {
         DeathAnimation(damageInstance);
         DropLootTable();
-        DungeonRunData.EnemiesKilled.AddDeath(this);
+
+        EnemyKilled?.Invoke(this, damageInstance);
     }
 
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
@@ -70,6 +73,8 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     bool IPlayerAttackable.IsInteractable() => DamageableComponent.IsAlive;
 
     Vector2 IPlayerAttackable.GetPosition() => GlobalPosition;
+
+    Node2D IPlayerAttackable.GetNode() => this;
 
 
     ///<Summary>

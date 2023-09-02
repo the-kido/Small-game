@@ -10,7 +10,8 @@ namespace Game.Data;
 public partial class Condition : Resource, ISaveable {
     
     [Export, Description("Required to differentiate condition entries in the save file")]
-    private string Name;
+    private string Name; 
+
     public Action Achieved;
     public bool IsAchieved {get; private set;} = false;
     
@@ -19,16 +20,18 @@ public partial class Condition : Resource, ISaveable {
     public SaveData SaveData => new("Conditions", All);
     private static void Load() => All = (Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
     private bool GetAchieved() => All.ContainsKey(Name) && All[Name];
+    
     static Condition() => Level.LevelStarted += Load;
 
     public Condition() {
         Level.LevelStarted += (this as ISaveable).InitSaveable;
         All = (Dictionary<string, bool>) (this as ISaveable).LoadData();
-        
-        Achieved += () => {
-            IsAchieved = true;
-            All[Name] = true;
-        };
+    }
+    
+    public void Achieve() {
+        IsAchieved = true;
+        All[Name] = true;
+        Achieved?.Invoke();
     }
 
     public void Init() {

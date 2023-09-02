@@ -18,7 +18,6 @@ public static class Extensions {
 
 	}
 
-	public static string Colored(this string @string, string hexColor) {
-        return $"[color={hexColor}]{@string}[/color]";
-	}
+	public static string Colored(this string @string, string hexColor) =>
+        $"[color={hexColor}]{@string}[/color]";
 }
