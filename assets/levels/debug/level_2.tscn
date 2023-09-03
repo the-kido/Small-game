@@ -108,5 +108,6 @@ position = Vector2(380, 356)
 [node name="Temp" parent="Enviornment" instance=ExtResource("18_i70b7")]
 position = Vector2(473, 397)
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="Player Manager" type="Node2D" parent="."]
+position = Vector2(533, 588)
 script = ExtResource("16_nns66")

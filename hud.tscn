@@ -151,7 +151,7 @@ _data = {
 "enable": SubResource("Animation_efsd5")
 }
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "HUDCover")]
+[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "levelCompletionIndicator", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "HUDCover")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -165,6 +165,7 @@ size_flags_vertical = 6
 script = ExtResource("1_8tgmq")
 AttackButton = NodePath("Auto Aim Button")
 dialogueBar = NodePath("Dialogue Bar")
+levelCompletionIndicator = NodePath("Level Completed Indicator")
 healthLable = NodePath("Health label background/Label")
 coinsLabel = NodePath("Coins")
 interactButton = NodePath("Interact")

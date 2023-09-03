@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dvp5o73q03vs5"]
+[gd_scene load_steps=20 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="PackedScene" uid="uid://crdkmn1ouh8k2" path="res://hud.tscn" id="2_ckuxr"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://source/gui/menus/PlayerClassMenu.cs" id="8_d8fj3"]
 [ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_1eh1k"]
+[ext_resource type="Script" path="res://source/gui/global-menus/SettingsPage.cs" id="9_dv56e"]
 [ext_resource type="Script" path="res://source/gui/menus/EscapeMenu.cs" id="9_l0a7d"]
+[ext_resource type="Texture2D" uid="uid://b70rm5564h00k" path="res://assets/sprites/gui/temp.png" id="11_b0krh"]
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
 resource_name = "Open"
@@ -72,19 +74,84 @@ _data = {
 "RESET": SubResource("Animation_2wji2")
 }
 
-[sub_resource type="Animation" id="Animation_sxwil"]
-resource_name = "Open"
+[sub_resource type="Animation" id="Animation_tu48m"]
+resource_name = "Close"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(500, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sxwil"]
+resource_name = "Open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(500, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_rooea"]
@@ -101,20 +168,29 @@ tracks/0/keys = {
 "update": 1,
 "values": [false]
 }
-
-[sub_resource type="Animation" id="Animation_tu48m"]
-resource_name = "Close"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n78yn"]
@@ -124,7 +200,7 @@ _data = {
 "RESET": SubResource("Animation_rooea")
 }
 
-[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu", "playerClassMenu", "escapeMenu", "debugHUD")]
+[node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu", "playerClassMenu", "escapeMenu", "settingsPage", "debugHUD")]
 layer = 10
 script = ExtResource("1_7vbvm")
 TargetIndicator = NodePath("TargetEnemyCursor")
@@ -133,6 +209,7 @@ reviveMenu = NodePath("Revive")
 chestMenu = NodePath("ChestMenu")
 playerClassMenu = NodePath("PlayerClassMenu")
 escapeMenu = NodePath("EscapeMenu")
+settingsPage = NodePath("SettingsPage")
 debugHUD = NodePath("DEBUG")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
@@ -563,18 +640,22 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Confirm Switch"
 
-[node name="EscapeMenu" type="Control" parent="." node_paths=PackedStringArray("closeButton")]
+[node name="EscapeMenu" type="Control" parent="." node_paths=PackedStringArray("closeButton", "animationPlayer", "goToMainMenu", "settingsButton")]
 visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 0.000732422
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(0, 100)
+size_flags_horizontal = 4
+size_flags_vertical = 4
 script = ExtResource("9_l0a7d")
 closeButton = NodePath("ColorRect/Close")
-metadata/_edit_use_anchors_ = true
+animationPlayer = NodePath("AnimationPlayer")
+goToMainMenu = NodePath("ColorRect/GoToMainMenu")
+settingsButton = NodePath("Settings")
 
 [node name="ColorRect" type="ColorRect" parent="EscapeMenu"]
 layout_mode = 1
@@ -587,8 +668,8 @@ offset_right = -162.0
 offset_bottom = -98.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(100, 0)
-color = Color(0.196078, 0.196078, 0.196078, 1)
+theme = ExtResource("2_lc21n")
+color = Color(0.176471, 0.141176, 0.160784, 1)
 
 [node name="Close" type="Button" parent="EscapeMenu/ColorRect"]
 layout_mode = 1
@@ -600,9 +681,61 @@ offset_bottom = 121.0
 grow_horizontal = 0
 text = "X"
 
+[node name="GoToMainMenu" type="Button" parent="EscapeMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = -217.0
+offset_right = 184.0
+offset_bottom = -55.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_lc21n")
+text = "Go To Main Menu"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="EscapeMenu"]
 libraries = {
 "": SubResource("AnimationLibrary_n78yn")
 }
+
+[node name="Settings" type="Button" parent="EscapeMenu"]
+layout_mode = 0
+offset_left = 1221.0
+offset_top = 765.0
+offset_right = 1728.0
+offset_bottom = 1258.0
+scale = Vector2(0.3, 0.3)
+icon = ExtResource("11_b0krh")
+
+[node name="SettingsPage" type="Control" parent="." node_paths=PackedStringArray("closeButton")]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_dv56e")
+closeButton = NodePath("Close")
+
+[node name="ColorRect" type="ColorRect" parent="SettingsPage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.152941, 0.152941, 0.152941, 1)
+
+[node name="Close" type="Button" parent="SettingsPage"]
+layout_mode = 1
+offset_right = 164.0
+offset_bottom = 164.0
+theme = ExtResource("2_lc21n")
+text = "X"
 
 [node name="TargetEnemyCursor" parent="." instance=ExtResource("9_1eh1k")]

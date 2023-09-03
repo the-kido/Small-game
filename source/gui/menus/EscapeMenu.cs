@@ -1,23 +1,40 @@
 using System;
+using Game.Autoload;
 using Game.Players;
 using Godot;
+using KidoUtils;
 
 namespace Game.UI;
 
 public partial class EscapeMenu : Control, IMenu {
     [Export]
     private Button closeButton;
+    [Export]
+    private AnimationPlayer animationPlayer;
+    [Export]
+    private Button goToMainMenu;
+    [Export]
+    private Button settingsButton;
 
     public event Action Disable;
 
-    public override void _Ready() => closeButton.Pressed += () => Disable?.Invoke();
+    public override void _Ready() {
+        
+        closeButton.Pressed += () => Disable?.Invoke();
+        settingsButton.Pressed += () => Utils.GetPreloadedScene<GUI>(this, PreloadedScene.GUI).OpenSettingsPage(); 
+
+        goToMainMenu.Pressed += () => {
+            Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath("res://source/gui/MainMenu.tscn");
+            Disable?.Invoke();
+        };
+    }
 
     public void Close() {
-        Visible = false;
+        animationPlayer.Play("Close");
         Disable = null;
     }
 
     public void Enable(Player player) {
-        Visible = true;
+        animationPlayer.Play("Open");
     }
 }

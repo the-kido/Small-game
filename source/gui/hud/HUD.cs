@@ -11,6 +11,8 @@ public partial class HUD : Control {
     [Export]
     public DialogueBar dialogueBar;
     [Export]
+    public LevelCompletionIndicator levelCompletionIndicator;
+    [Export]
     public HealthLabelTemp healthLable;
     [Export]
     public CoinsLabel coinsLabel;   

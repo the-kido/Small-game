@@ -14,6 +14,8 @@ public partial class GUI : CanvasLayer {
         HealthLable.Init(player);
         HeldItems.Init(player);
         ShieldInfo.Init(player);
+        LevelCompletionIndicator.Init();
+
         debugHUD.Init();
 
         player.DamageableComponent.OnDeath += (_) => OpenReviveMenu();
@@ -38,6 +40,7 @@ public partial class GUI : CanvasLayer {
     // Make easier access to important member fields of HUD above for encapsulation purposes
     public ToggleAttackButton AttackButton => HUD.AttackButton;
     public DialogueBar DialogueBar => HUD.dialogueBar;
+    public LevelCompletionIndicator LevelCompletionIndicator => HUD.levelCompletionIndicator;
     public ConversationController DialoguePlayer => HUD.dialogueBar.ConversationController;
     public HealthLabelTemp HealthLable => HUD.healthLable;
     public CoinsLabel CoinsLable => HUD.coinsLabel;
@@ -59,6 +62,8 @@ public partial class GUI : CanvasLayer {
     public PlayerClassMenu playerClassMenu;
     [Export]
     public EscapeMenu escapeMenu;
+    [Export]
+    public SettingsPage settingsPage;
     
     public enum SpawnMenu {
         PlayerClassMenu = 0,
@@ -73,7 +78,8 @@ public partial class GUI : CanvasLayer {
     #region Menu open methods
     public void OpenReviveMenu() => SetCurrentMenu(reviveMenu);
     private void OpenEscapeMenu() => SetCurrentMenu(escapeMenu);
-
+    public void OpenSettingsPage() => SetCurrentMenu(settingsPage);
+    
     public void OpenChestMenu(IChestItem newWeapon) {
         SetCurrentMenu(chestMenu);
         chestMenu.SetItems(newWeapon);

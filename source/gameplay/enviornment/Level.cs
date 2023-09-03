@@ -8,7 +8,7 @@ using Game.LevelContent.Criteria;
 namespace Game.LevelContent;
 
 [GlobalClass]
-public partial class Level : Node, ISaveable{
+public partial class Level : Node, ISaveable {
 
     public static event Action LevelStarted;
     public static event Action<LevelCriteria> CriterionStarted;
@@ -26,6 +26,10 @@ public partial class Level : Node, ISaveable{
     public event Action LevelCompleted;
 
     private List<LevelCriteria> levelEvents;
+
+    public static LastLevelPlayedSaver LastLevelPlayedSaver {get; private set;}
+    public static string LastLevelFilePath {get; private set;}
+    static Level() => LastLevelPlayedSaver = new();
 
     public Door GetLinkedDoor(string name) {
         foreach (NodePath doorPath in doors) {
@@ -73,6 +77,7 @@ public partial class Level : Node, ISaveable{
 
     private void Change() {
         CurrentLevel = this;
+        LastLevelFilePath = CurrentLevel.GetParent().SceneFilePath; 
         LevelStarted?.Invoke();
     }
 
@@ -86,6 +91,11 @@ public partial class Level : Node, ISaveable{
         LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
         return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
     }
+}
+
+public class LastLevelPlayedSaver : ISaveable {
+    public SaveData SaveData => new("LastLevel", Level.LastLevelFilePath);
+    public LastLevelPlayedSaver() => (this as ISaveable).InitSaveable();
 }
 
 public class FreezeOrbMechanic {
