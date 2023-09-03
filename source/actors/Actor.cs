@@ -33,8 +33,8 @@ public abstract partial class Actor : CharacterBody2D {
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
 
         DamageableComponent.OnDamaged += DamageFlash;
-        Effect.Init(this);
         StatsManager = new(SetStats);
+        Effect.Init(this);
 	}
 
     protected virtual void SetStats(ActorStats newStats) {

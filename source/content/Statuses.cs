@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using Game.Actors;
 using Game.Autoload;
@@ -7,15 +8,35 @@ using Game.Graphics;
 
 namespace Game.ActorStatuses;
 
-public sealed class FireEffect : IActorStatus {
-    public override float duration {get; protected set;} = 10;
+
+public enum AllStatuses {
+    FireEffect,
+    WetStatus,
+    ShieldedStatus,
+    GasStatus,
+    PlasmaEffect,
+    
+    
+    None = -1,
+}
+
+// Just for the list
+public abstract partial class ActorStatus {
+    public static readonly List<Type> All = new() {
+        typeof(FireEffect), typeof(WetStatus), typeof(ShieldedStatus), typeof(GasStatus), typeof(PlasmaEffect), 
+    };
+}
+
+
+public sealed class FireEffect : ActorStatus {
+    public override float Duration {get; protected set;} = 10;
     public override ConvertsTo[] opposites { get; init;}
     //use nameof to get the name of the class that it is incompatible with. 
     public override string[] incompatibles {get; init;}
 
     public FireEffect() {
         opposites = new ConvertsTo[] {
-            new ConvertsTo(typeof(WetStatus), new GasStatus()),
+            new(typeof(WetStatus), new GasStatus()),
         };
 
         incompatibles = new string[] {
@@ -47,16 +68,20 @@ public sealed class FireEffect : IActorStatus {
     public float damagePeriod = 2;
 
     public override void Update(Actor actor, double delta) {
-
+        
         damageTime += delta;
         if (damageTime > damagePeriod) {
             damageTime = 0;
+
+            if (actor.DamageableComponent?.ImmuneToDamageFrom.Contains(AllStatuses.FireEffect) ?? false) 
+                return;
+
             actor.DamageableComponent.Damage(damage);
         }
     }
 }
 
-public sealed class WetStatus : IPermanentStatus {
+public sealed class WetStatus : PermanentStatus {
 
     public override ConvertsTo[] opposites {get; init;}
     public override string[] incompatibles {get; init;}
@@ -89,7 +114,7 @@ public sealed class WetStatus : IPermanentStatus {
     }
 }
 
-public sealed class ShieldedStatus : IPermanentStatus {
+public sealed class ShieldedStatus : PermanentStatus {
     public override ConvertsTo[] opposites {get; init;} = Array.Empty<ConvertsTo>();
     public override string[] incompatibles {get; init;} = Array.Empty<string>();
 
@@ -110,7 +135,7 @@ public sealed class ShieldedStatus : IPermanentStatus {
     }
 }
 
-public sealed class GasStatus : IPermanentStatus {
+public sealed class GasStatus : PermanentStatus {
     public override ConvertsTo[] opposites {get; init;}
     public override string[] incompatibles {get; init;}
 
@@ -130,11 +155,10 @@ public sealed class GasStatus : IPermanentStatus {
     }
 }
 
-
 // Fire and electricity ? 
 // Or fire and gas ?
-public sealed class PlasmaEffect : IActorStatus {
-    public override float duration {get; protected set;} = 10;
+public sealed class PlasmaEffect : ActorStatus {
+    public override float Duration {get; protected set;} = 10;
     public override ConvertsTo[] opposites { get; init;}
     //use nameof to get the name of the class that it is incompatible with. 
     public override string[] incompatibles {get; init;}

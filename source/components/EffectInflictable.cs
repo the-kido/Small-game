@@ -7,16 +7,15 @@ using Game.Damage;
 namespace Game.ActorStatuses;
 
 public partial class EffectInflictable : Node {
-    private readonly List<IActorStatus> statusEffects = new();
+
+    [Export]
+    private AllStatuses defaultStatus = AllStatuses.None;
+
+    private readonly List<ActorStatus> statusEffects = new();
     public void ClearAllEffects() {
         // InvalidOperationException is thrown if this is a foreach... idk why...
         for (int i = 0; i < statusEffects.Count; i++)
             RemoveEffect(statusEffects[i]);
-    }
-
-    
-    private void ParseSynergies() {
-        //Ice + Fire = Water
     }
 
     private Actor actor;
@@ -27,29 +26,28 @@ public partial class EffectInflictable : Node {
         actor.DamageableComponent.OnDamaged += UpdateEffectHealth;
         actor.DamageableComponent.OnDeath += (_) => ClearAllEffects();
 
-        /*
-        // Debug
-        DamageInstance waterDamage = new(actor) {
-            damage = 3,
-            statusEffect = new WetStatus(),
-        };
-        DebugHUD.instance.anyButton.Pressed += () => actor.DamageableComponent.Damage(waterDamage);
-        // Debug
-        */
+        if (defaultStatus is not AllStatuses.None)
+            AddDefaultEffect(defaultStatus);
     }
+
+    private void AddDefaultEffect(AllStatuses status) {
+        ActorStatus newEffect = (ActorStatus) Activator.CreateInstance(ActorStatus.All[(int) status]);
+        Add(newEffect, true);
+    }
+
     private void UpdateEffectHealth(DamageInstance damageInstance) {
-        foreach (IActorStatus effect in statusEffects) {
+        foreach (ActorStatus effect in statusEffects) {
             effect.OnDamaged(damageInstance);
         }
     }
 
-    private bool EffectIsAllowed(IActorStatus statusEffect) {
+    private bool EffectIsAllowed(ActorStatus statusEffect) {
         //Add a way to override effects. Should it prioritize strenght? Maybe I must enforce a value for the "strenght"
         //Of the effect?
 
         //TODO: Temporary solution: If the name is the same, don't add it again.
 
-        foreach (IActorStatus effect in statusEffects) {
+        foreach (ActorStatus effect in statusEffects) {
             if (statusEffect.ToString() == effect.ToString()) return false;
 
             //Idk why this does the thing it does but this is null sometimes?
@@ -63,7 +61,7 @@ public partial class EffectInflictable : Node {
         return true;
     }
     
-    public void Add(IActorStatus effectInstance) {
+    public void Add(ActorStatus effectInstance, bool IsPermanent = false) {
         
         // if there's an effect which is a conversion of an effect already here 
         // i.e there's water and we're tryna add fire
@@ -74,16 +72,18 @@ public partial class EffectInflictable : Node {
 
         if (!EffectIsAllowed(effectInstance)) return;
 
-        ParseSynergies();
         statusEffects.Add(effectInstance);
         effectInstance.Init(actor);
         effectInstance.Reset();
+
+        if (IsPermanent)
+            effectInstance.MakePermanent();
     }
 
     //Called from the actor this is attached to.
     public override void _Process(double delta) {
         
-        foreach (IActorStatus effect in statusEffects.ToArray()) {
+        foreach (ActorStatus effect in statusEffects.ToArray()) {
             effect.UpdateTimer(delta);
             effect.Update(actor, delta);
 
@@ -98,16 +98,16 @@ public partial class EffectInflictable : Node {
                 RemoveEffect(effect);
         }
     }
-    private void RemoveEffect(IActorStatus statusEffect) {
+    private void RemoveEffect(ActorStatus statusEffect) {
         statusEffect.Disable(actor);
         statusEffects.Remove(statusEffect);
     }
 }
 
-public abstract class IActorStatus {
+public abstract partial class ActorStatus {
 
-    public abstract float duration {get; protected set;}
-    public bool IsPermanent => duration < 0;
+    public abstract float Duration {get; protected set;}
+    public bool IsPermanent => Duration < 0;
     public abstract void Update(Actor actor, double delta);
     public abstract void Init(Actor actor);
     public abstract void Disable(Actor actor);
@@ -115,9 +115,13 @@ public abstract class IActorStatus {
     public abstract ConvertsTo[] opposites {get; init;}
     public abstract string[] incompatibles {get; init;}
 
-    public double EffectCountdown => duration - effectTime;
+    public double EffectCountdown => Duration - effectTime;
     
     private double effectTime;
+
+    public void MakePermanent() {
+        Duration = -1;
+    }
 
     public void Reset() {
         effectTime = 0;
@@ -139,18 +143,18 @@ public abstract class IActorStatus {
     }
 }
 
-public abstract class IPermanentStatus : IActorStatus {
+public abstract class PermanentStatus : ActorStatus {
     // Close Update so that it cannot be edited.
     public override void Update(Actor actor, double delta) {}
 
-    public override float duration {get; protected set;} = -1;
+    public override float Duration {get; protected set;} = -1;
 }
 
 public struct ConvertsTo {
     //The type that increases the conversion rate. I.e Fire on Water will cause Gas. Fire is the type.
     public Type type;
-    public IActorStatus goTo;
-    public ConvertsTo(Type type, IActorStatus goTo) {
+    public ActorStatus goTo;
+    public ConvertsTo(Type type, ActorStatus goTo) {
         this.type = type;
         this.goTo = goTo;
         Progress = 0;

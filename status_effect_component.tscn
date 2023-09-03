@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://b368macoruqxa"]
 
 [ext_resource type="Script" path="res://source/components/EffectInflictable.cs" id="1_m51el"]
 
