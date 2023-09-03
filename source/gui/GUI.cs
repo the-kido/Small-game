@@ -26,7 +26,7 @@ public partial class GUI : CanvasLayer {
     private void OnEscapePressed() {
         if (CurrentMenu is null)
             OpenEscapeMenu();
-        else
+        else if (CurrentMenu is not ReviveMenu) // You can't close out of the revive menu with escape..
             CloseCurrentMenu();
     }
 

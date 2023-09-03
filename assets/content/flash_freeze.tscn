@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ceud6pw6cw5jr"]
+
+[ext_resource type="Texture2D" uid="uid://cwgn3oqlr0s1f" path="res://assets/sprites/gameplay/pickupables/freeze-charge.png" id="1_dd0rd"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Pickupables/FreezeCharge.cs" id="1_kn8gb"]
+
+[node name="Freeze Charge" type="Node2D"]
+scale = Vector2(4, 4)
+script = ExtResource("1_kn8gb")
+Speed = 0.5
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_dd0rd")

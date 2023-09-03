@@ -1,5 +1,4 @@
 using Godot;
-using System.Threading.Tasks;
 using Game.Data;
 using Game.Players;
 
@@ -27,23 +26,22 @@ public partial class Coin : Pickupable {
         RunData.AllData[RunDataEnum.FreezeOrbs].Add(1);
 	}
 
-	protected override void Update(double delta) {
-        
-    }
+     KidoUtils.Timer timer = new(0.75f);
 
-	public override async void _Ready() {
+	protected override void Update(double delta) => timer.Update(delta);
+
+	public override void _Ready() {
         CurrentCoins += 1;
 
         // make the orb take time for it to eventually be absorbable (this is when the orb is just spawned)
         IsPickupable = false;
-        await Task.Delay(750);
-        IsPickupable = true;
+         Speed = 0;
 
-        Speed = 0;
-        for (int i = 0; i < 100; i++) {
-            Speed += 0.01f;
-            await Task.Delay(10);
-        }
+        timer.TimeOver += () => {
+            IsPickupable = true;
+            timer = new(0.01f, false, 100);
+            timer.TimeOver += () => Speed += 0.01f;
+        };
 	}
 }
 

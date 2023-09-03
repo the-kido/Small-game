@@ -18,6 +18,8 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     private AnimationPlayer animationPlayer = new();
     private AIStateMachine stateMachine;
 
+    public bool PauseAI {get; set;} = false;
+
     public override void _Ready() {
         base._Ready();
 
@@ -41,7 +43,9 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
 
     public override void _Process(double delta) {
         base._Process(delta);
-        stateMachine.UpdateState(delta);
+        
+        if (!PauseAI)
+            stateMachine.UpdateState(delta);
     }
 
     public void DropLootTable() => DeathDrops.ForEach(loot => loot.Init(this));

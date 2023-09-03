@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctm3rahwqhi53"]
+
+[ext_resource type="Texture2D" uid="uid://c5mif4q4n5chw" path="res://assets/effects/ice.png" id="1_spup4"]
+
+[node name="Ice" type="Sprite2D"]
+modulate = Color(1, 1, 1, 0.8)
+z_index = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_spup4")

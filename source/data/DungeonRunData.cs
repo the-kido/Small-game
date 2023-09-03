@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Actors;
+using Game.Mechanics;
 
 namespace Game.Data;
 
@@ -23,7 +24,7 @@ public abstract class RunData : ISaveable {
         _count = (int) (this as ISaveable).LoadData();
     }
     public void Add(int value) {
-        _count += value;
+        Count += value;
     }
 
     public abstract int Count {get; set;}
@@ -47,6 +48,8 @@ public static class DungeonRunData {
         }
     }
     public class FreezeOrbs : RunData, ISaveable {
+        public FreezeOrbs() : base() => FreezeWave += FreezeOrbMechanic.Freeze;
+
         public static event Action FreezeWave;
         public override int Count {
             get => _count;

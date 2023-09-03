@@ -31,7 +31,7 @@ public struct Timer {
     TimerPause timerPause = new();
 
     public void Update(double delta) {
-        if (invokable == false) 
+        if (invokable is false) 
             return;
 
         if (timerPause.paused) {

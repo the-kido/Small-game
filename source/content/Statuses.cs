@@ -5,6 +5,7 @@ using Game.Actors;
 using Game.Autoload;
 using Game.Damage;
 using Game.Graphics;
+using Game.Players;
 
 namespace Game.ActorStatuses;
 
@@ -15,7 +16,7 @@ public enum AllStatuses {
     ShieldedStatus,
     GasStatus,
     PlasmaEffect,
-    
+    FreezeEffect,
     
     None = -1,
 }
@@ -23,7 +24,7 @@ public enum AllStatuses {
 // Just for the list
 public abstract partial class ActorStatus {
     public static readonly List<Type> All = new() {
-        typeof(FireEffect), typeof(WetStatus), typeof(ShieldedStatus), typeof(GasStatus), typeof(PlasmaEffect), 
+        typeof(FireEffect), typeof(WetStatus), typeof(ShieldedStatus), typeof(GasStatus), typeof(PlasmaEffect), typeof(FreezeEffect) 
     };
 }
 
@@ -31,7 +32,6 @@ public abstract partial class ActorStatus {
 public sealed class FireEffect : ActorStatus {
     public override float Duration {get; protected set;} = 10;
     public override ConvertsTo[] opposites { get; init;}
-    //use nameof to get the name of the class that it is incompatible with. 
     public override string[] incompatibles {get; init;}
 
     public FireEffect() {
@@ -174,5 +174,43 @@ public sealed class PlasmaEffect : ActorStatus {
     public override void Disable(Actor actor) {
         actor.StatsManager.RemoveStats(buff);
     }
+    public override void Update(Actor actor, double delta) {}
+}
+
+public sealed class FreezeEffect : ActorStatus {
+    public override float Duration {get; protected set; } = 5;
+    public override ConvertsTo[] opposites {get; init;}
+    public override string[] incompatibles { get; init;}
+
+    public FreezeEffect() {
+        opposites = new ConvertsTo[] {
+            new(typeof(FireEffect), new WetStatus()),
+        };
+        incompatibles = new string[] {
+            nameof(FireEffect),
+            nameof(WetStatus),
+        };
+    }
+
+    private static void Freeze(Actor actor, bool @bool) {
+        
+        if (actor is Player player)
+            player.InputController.UIInputFilter.SetFilterMode(@bool);
+        else if (actor is Enemy enemy)
+            enemy.PauseAI = @bool;
+
+    }
+    
+    public override void Disable(Actor actor) {
+        Freeze(actor, false);
+        ParticleFactory.RemoveParticle(particle);
+    } 
+    
+    Node2D particle;
+    public override void Init(Actor actor) {
+        Freeze(actor, true);
+        particle = ParticleFactory.AddParticle(actor, Effects.Ice);
+    }
+
     public override void Update(Actor actor, double delta) {}
 }

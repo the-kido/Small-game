@@ -10,9 +10,9 @@ public abstract partial class Pickupable : Node2D {
 
     [Export]
     protected float Speed {get; set;} = 1;
-    [Export]
-    const int ATTRACTION_DISTANCE = 400;
-    const int MINIMUM_ATTACTION_DISTANCE = 50;
+    
+    protected virtual int AttractionDistance {get;} = 400;
+    protected virtual int MinimumAttractionDistance {get;} = 50;
 
     public sealed override void _Process(double delta) {
         Player.Players.ForEach(player => MoveTowardsPlayer(player, delta));
@@ -22,12 +22,12 @@ public abstract partial class Pickupable : Node2D {
 
     protected bool IsPickupable {get; set;} = true;
 
-    private static float Multiplier(float distance) {
+    private float Multiplier(float distance) {
         
-        if (distance > ATTRACTION_DISTANCE) return 0;
-        if (distance < MINIMUM_ATTACTION_DISTANCE) distance = 50;
+        if (distance > AttractionDistance) return 0;
+        if (distance < MinimumAttractionDistance) distance = 50;
         
-        float multiplier = -3 * MathF.Log10(MathF.Pow(distance - MINIMUM_ATTACTION_DISTANCE, 1/4.6f)) + 1.67f;
+        float multiplier = -3 * MathF.Log10(MathF.Pow(distance - MinimumAttractionDistance, 1/4.6f)) + 1.67f;
         
         //multiplier cannot go past 1.5
         return MathF.Min(multiplier, 1.5f);
@@ -51,7 +51,7 @@ public abstract partial class Pickupable : Node2D {
 
         float distance = GlobalPosition.DistanceTo(player.GlobalPosition);
         
-        if (distance < MINIMUM_ATTACTION_DISTANCE / 2) 
+        if (distance < MinimumAttractionDistance / 2) 
             Absorb(player);
 
         float flatMultipler = (float) delta * 1000f * Speed;
