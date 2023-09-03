@@ -32,16 +32,14 @@ public abstract partial class Pickupable : Node2D {
         //multiplier cannot go past 1.5
         return MathF.Min(multiplier, 1.5f);
     }
+
     protected abstract void AbsorbPickupable(Player player);
     protected virtual void Update(double delta) {}
-
-    
 
     private void Absorb(Player player) {
         AbsorbPickupable(player);
         QueueFree();
         Utils.GetPreloadedScene<PickupablesManager>(this, PreloadedScene.PickupablesManager).RemoveChild(this);
-
     }
    
     private void MoveTowardsPlayer(Player player, double delta) {

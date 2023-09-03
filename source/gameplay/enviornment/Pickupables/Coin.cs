@@ -26,21 +26,24 @@ public partial class Coin : Pickupable {
         RunData.AllData[RunDataEnum.FreezeOrbs].Add(1);
 	}
 
-     KidoUtils.Timer timer = new(0.75f);
+    KidoUtils.Timer timer = new(0.75);
 
-	protected override void Update(double delta) => timer.Update(delta);
+	protected override void Update(double delta) {
+        timer.Update(delta);
+    }
 
 	public override void _Ready() {
         CurrentCoins += 1;
+        IsPickupable = false;
+        Speed = 0;
 
         // make the orb take time for it to eventually be absorbable (this is when the orb is just spawned)
-        IsPickupable = false;
-         Speed = 0;
-
         timer.TimeOver += () => {
             IsPickupable = true;
-            timer = new(0.01f, false, 100);
-            timer.TimeOver += () => Speed += 0.01f;
+            timer = new(time: 0.01, cycles: 100);
+            timer.TimeOver += () => {
+                Speed += 0.01f;
+            };
         };
 	}
 }

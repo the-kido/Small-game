@@ -6,28 +6,27 @@ using Game.Mechanics;
 namespace Game.Data;
 
 public abstract class RunData : ISaveable {
-    public static Dictionary<RunDataEnum, RunData> AllData = new() {
+    public readonly static Dictionary<RunDataEnum, RunData> AllData = new() {
         {RunDataEnum.Coins, new DungeonRunData.Coins()},
         {RunDataEnum.FreezeOrbs, new DungeonRunData.FreezeOrbs()},
         {RunDataEnum.EnemiesKilled, new DungeonRunData.EnemiesKilled()},
         {RunDataEnum.DamageTaken, new DungeonRunData.DamageTaken()},
     };
 
+    public abstract int Count {get; set;}
+    public abstract string ValueName {get;}
+
     protected int _count = 0;
 
     public Action<int> ValueChanged {get; set;}
 
-    public SaveData SaveData => new("Coins", _count);
+    public SaveData SaveData => new(ValueName, _count);    
+    public void Add(int value) => Count += value;
     
     public RunData() {
         (this as ISaveable).InitSaveable();
         _count = (int) (this as ISaveable).LoadData();
     }
-    public void Add(int value) {
-        Count += value;
-    }
-
-    public abstract int Count {get; set;}
 }
 
 public enum RunDataEnum {
@@ -38,7 +37,10 @@ public enum RunDataEnum {
 }
 
 public static class DungeonRunData {
-    public class Coins : RunData, ISaveable { 
+    public class Coins : RunData { 
+        
+        public override string ValueName => "Coins";
+
         public override int Count {
             get => _count;
             set {
@@ -47,7 +49,10 @@ public static class DungeonRunData {
             }
         }
     }
-    public class FreezeOrbs : RunData, ISaveable {
+
+    public class FreezeOrbs : RunData {
+        public override string ValueName => "FreezeOrbs";
+
         public FreezeOrbs() : base() => FreezeWave += FreezeOrbMechanic.Freeze;
 
         public static event Action FreezeWave;
@@ -65,8 +70,12 @@ public static class DungeonRunData {
         }
     }
 
-    public class EnemiesKilled : RunData, ISaveable {
+    public class EnemiesKilled : RunData {
+
+        public override string ValueName => "EnemiesKilled";
+        
         public EnemiesKilled() : base() => Enemy.EnemyKilled += (_,_) => Add(1);
+        
         public override int Count { 
             get => _count;
             set {
@@ -76,7 +85,10 @@ public static class DungeonRunData {
         }
     }
 
-    public class DamageTaken : RunData, ISaveable {
+    public class DamageTaken : RunData {
+
+        public override string ValueName => "DamageTaken";
+
         public override int Count { 
             get => _count;
             set {

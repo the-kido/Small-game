@@ -14,7 +14,7 @@
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="12_78176"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="12_qjdua"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="16_dddk7"]
-[ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/flash_freeze.tscn" id="16_qpqxl"]
+[ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="16_qpqxl"]
 [ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/door.tscn" id="17_dhp43"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jnddw"]
@@ -96,11 +96,11 @@ shape = SubResource("RectangleShape2D_jnddw")
 position = Vector2(436, 434)
 script = ExtResource("12_qjdua")
 
-[node name="flash_freeze" parent="." instance=ExtResource("16_qpqxl")]
-position = Vector2(823, 747)
+[node name="Freeze Charge" parent="." instance=ExtResource("16_qpqxl")]
+position = Vector2(497, 573)
 
-[node name="flash_freeze2" parent="." instance=ExtResource("16_qpqxl")]
-position = Vector2(419, 816)
+[node name="Freeze Charge2" parent="." instance=ExtResource("16_qpqxl")]
+position = Vector2(605, 578)
 
-[node name="flash_freeze3" parent="." instance=ExtResource("16_qpqxl")]
-position = Vector2(692, 816)
+[node name="Freeze Charge3" parent="." instance=ExtResource("16_qpqxl")]
+position = Vector2(711, 577)

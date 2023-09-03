@@ -73,7 +73,7 @@ public sealed class FireEffect : ActorStatus {
         if (damageTime > damagePeriod) {
             damageTime = 0;
 
-            if (actor.DamageableComponent?.ImmuneToDamageFrom.Contains(AllStatuses.FireEffect) ?? false) 
+            if (actor.DamageableComponent?.ImmuneToDamageFrom?.Contains(AllStatuses.FireEffect) ?? false) 
                 return;
 
             actor.DamageableComponent.Damage(damage);
