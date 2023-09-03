@@ -48,6 +48,7 @@ public class PlayerClassManager : ISaveable {
         
         SetClass(newClass);
 
+        GameDataService.Save(); // Save the change in class
         ClassSwitched?.Invoke(newClass);
     }
 
@@ -59,8 +60,6 @@ public class PlayerClassManager : ISaveable {
         playerClass.ClassInit(player);
         
         UpdateSpritesFromResource(playerClass.classResource);
-        
-        GameDataService.Save(); // Save the change in class
     }
 
     private void UpdateSpritesFromResource(PlayerClassResource playerClassResource) =>

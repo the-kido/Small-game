@@ -29,7 +29,7 @@ from a previous save file.
 */
 public static class GameDataService {
 
-    const bool USING_DEBUG = true;
+    const bool USING_DEBUG = false;
     const string SAVE_FILE = "user://savegame.json";
     const string DEBUG_FILE = "user://copy.json";
 
@@ -76,6 +76,9 @@ public static class GameDataService {
 
         using FileAccess saveFile = FileAccess.Open(USING_DEBUG ? DEBUG_FILE : SAVE_FILE, FileAccess.ModeFlags.Read);
         string data = saveFile.GetLine();
+
+        if (string.IsNullOrEmpty(data)) 
+            return new();
         
         Json json = new();
 

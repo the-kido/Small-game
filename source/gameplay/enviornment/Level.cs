@@ -91,6 +91,11 @@ public partial class Level : Node, ISaveable {
         LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
         return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
     }
+
+    public static bool CurrentLevelCompleted() {
+        bool valueRecieved = LevelCompletions.TryGetValue(CurrentLevel.SaveName, out bool levelWon);
+        return valueRecieved && levelWon;
+    }
 }
 
 public class LastLevelPlayedSaver : ISaveable {

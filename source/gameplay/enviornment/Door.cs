@@ -1,7 +1,6 @@
 using Godot;
 using KidoUtils;
 using Game.Players;
-using Game.Autoload;
 using Game.Data;
 
 namespace Game.LevelContent;
@@ -35,11 +34,12 @@ public partial class Door : Area2D {
 
         // Set up how the door will be opened
         if (condition is null) {
-            if (Level.LevelCompletions[Level.CurrentLevel.SaveName]) OpenDoor(); 
+            if (Level.CurrentLevelCompleted()) OpenDoor(); 
             else Level.CurrentLevel.LevelCompleted += OpenDoor;
-        }
-        else {
+        
+        } else {
             condition.Init();
+            
             if (condition.IsAchieved)
                 OpenDoor();
             else

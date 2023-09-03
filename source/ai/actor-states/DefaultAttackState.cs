@@ -98,8 +98,6 @@ public sealed class DefaultAttackState : AIState {
 
         FlipActor(lastRememberedPlayer);
         Move(player);
-
-        
     }
 
     Player lastRememberedPlayer = Player.Players[0];

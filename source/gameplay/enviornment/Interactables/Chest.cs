@@ -86,7 +86,10 @@ public partial class Chest : Sprite2D, ISaveable {
         
         if (sprite is not null)
             itemShowcase.Texture = sprite;
-         
+        
+        if (Level.CurrentLevelCompleted())
+            GameDataService.Save(); // Only when the level is complete can we save this chest openage
+
         timer = new(5);
         timer.TimeOver += FullyDisable;
     }

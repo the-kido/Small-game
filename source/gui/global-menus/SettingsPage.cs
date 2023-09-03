@@ -1,11 +1,38 @@
 using System;
-using System.Collections.Generic;
+using Game.Data;
 using Game.Players;
 using Game.UI;
 using Godot;
 
-public class Settings {
-    string language;
+public class Settings : ISaveable {
+
+    public static Settings CurrentSettings = new();
+
+    static Settings() {
+        var data = (Godot.Collections.Array) (CurrentSettings as ISaveable).LoadData();
+        (CurrentSettings as ISaveable).InitSaveable();
+        
+        if (data.ToString() == "[]") return;
+
+        CurrentSettings = new() {
+            languageSelected = (int) data[0]
+        };
+    }
+
+    public Godot.Collections.Array Serialize() {
+        Godot.Collections.Array array = new() {
+            languageSelected,
+        };
+        return array;
+    }
+
+    public static readonly string[] languages = new string[] {
+        "en", "fr"
+    };
+
+    public int languageSelected = 0;
+
+    public SaveData SaveData => new("Settings", CurrentSettings.Serialize());
 }
 
 public partial class SettingsPage : Control, IMenu {
@@ -20,16 +47,15 @@ public partial class SettingsPage : Control, IMenu {
         closeButton.Pressed += () => Disable?.Invoke();
 
         languageChoice.ItemSelected += OnLanguageItemSelected; 
+        languageChoice.Select(Settings.CurrentSettings.languageSelected);
     }
-    static readonly string[] languages = new string[] {
-        "en", "fr"
-    };
 
-    private void OnLanguageItemSelected(long index) {
-        
+    private void OnLanguageItemSelected(long longIndex) {
+        int index = (int) longIndex;
         if (index < 0) return;
-        
-        TranslationServer.SetLocale(languages[index]);
+
+        Settings.CurrentSettings.languageSelected = index;
+        TranslationServer.SetLocale(Settings.languages[index]);
     }
     
     public void Enable(Player player) {

@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using Game.Players;
+using KidoUtils;
+using Game.Autoload;
 
 namespace Game.LevelContent.Pickupables;
 
@@ -13,7 +15,8 @@ public abstract partial class Pickupable : Node2D {
     const int MINIMUM_ATTACTION_DISTANCE = 50;
 
     public sealed override void _Process(double delta) {
-        Player.Players.ForEach(player => Update(player, delta));
+        Player.Players.ForEach(player => MoveTowardsPlayer(player, delta));
+        Player.Players.ForEach(player => Update(delta));
         SplashUpdate(delta);
 	}
 
@@ -29,15 +32,19 @@ public abstract partial class Pickupable : Node2D {
         //multiplier cannot go past 1.5
         return MathF.Min(multiplier, 1.5f);
     }
-
     protected abstract void AbsorbPickupable(Player player);
+    protected virtual void Update(double delta) {}
+
+    
 
     private void Absorb(Player player) {
         AbsorbPickupable(player);
         QueueFree();
+        Utils.GetPreloadedScene<PickupablesManager>(this, PreloadedScene.PickupablesManager).RemoveChild(this);
+
     }
    
-    private void Update(Player player, double delta) {
+    private void MoveTowardsPlayer(Player player, double delta) {
         // Don't continue to move the orb if it's not pickupable
         if (!IsPickupable) 
             return;
