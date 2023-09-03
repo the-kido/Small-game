@@ -29,7 +29,7 @@ from a previous save file.
 */
 public static class GameDataService {
 
-    const bool USING_DEBUG = false;
+    const bool USING_DEBUG = true;
     const string SAVE_FILE = "user://savegame.json";
     const string DEBUG_FILE = "user://copy.json";
 
