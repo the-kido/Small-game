@@ -7,7 +7,7 @@ using Game.Data;
 
 namespace Game.LevelContent;
 
-public partial class Chest : Sprite2D, ISaveable {
+public partial class Chest : AnimatedSprite2D, ISaveable {
 
     [Export]
     ChestTables chestLootTable;
@@ -78,7 +78,6 @@ public partial class Chest : Sprite2D, ISaveable {
     public SaveData SaveData => new("Chest States", ChestOpened);
 
     private void Disable(Texture2D sprite) {
-        
         ChestOpened[GetPath()] = true;
 
         interactable.QueueFree();
@@ -104,6 +103,8 @@ public partial class Chest : Sprite2D, ISaveable {
 
     private void OnInteracted(Player player) {
         
+        Play("open");
+
         switch (containedWeapon.Type) {
             case ChestItemType.WEAPON:
                 for (int i = 0; i < player.WeaponManager.Weapons.Length; i++) {
@@ -123,14 +124,15 @@ public partial class Chest : Sprite2D, ISaveable {
                 }
                 break;
         }
-        
-        player.GUI.chestMenu.IHateEverything();
-        player.GUI.chestMenu.OnSelectionMade += (oldWeaponIndex) => Callthing(oldWeaponIndex, player);
 
         player.GUI.OpenChestMenu(containedWeapon);
+        
+        player.GUI.chestMenu.OnSelectionMade += (oldWeaponIndex) => Callthing(oldWeaponIndex, player);
+        player.GUI.chestMenu.Disable += () => PlayBackwards("open");
     }
 
     private void Callthing(int oldWeaponIndex, Player player) {
+
         player.GUI.chestMenu.OnSelectionMade -= (oldWeaponIndex) => Callthing(oldWeaponIndex, player);
         SwitchItems(oldWeaponIndex, player);
     }

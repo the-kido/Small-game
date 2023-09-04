@@ -12,11 +12,7 @@ namespace Game.UI;
 public partial class ChestMenu : Control, IMenu {
     public event Action Disable;
     public ChestMenu() {
-        Disable += () => OnSelectionMade.GetInvocationList().ToList().ForEach(func => OnSelectionMade -= func as Action<int>);
-    }
-
-    public void IHateEverything() {
-        OnSelectionMade = null;
+        Disable += () => OnSelectionMade = null;
     }
 
     [Export]
@@ -130,6 +126,7 @@ public partial class ChestMenu : Control, IMenu {
             PreviewPanel(i).Visible = false;
         
         Disable = null;
+        OnSelectionMade = null;
     }
     
     private void FreezeStatOverview() {
