@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=20 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -14,6 +14,7 @@
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="16_nns66"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="17_8xcsb"]
+[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="18_43gtg"]
 [ext_resource type="PackedScene" uid="uid://caqqb3q7pfcr1" path="res://assets/enviornment/attackables/shield_obelisk.tscn" id="18_i70b7"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="24_vfgcu"]
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="25_o38qo"]
@@ -89,21 +90,9 @@ position = Vector2(503, 681)
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Enviornment"]
 environment = ExtResource("13_w1ius")
 
-[node name="Chest" parent="Enviornment" node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("24_vfgcu")]
-position = Vector2(361, 626)
-frame = 0
-frame_progress = 0.0
-chestLootTable = 0
-interactable = NodePath("")
-itemShowcase = NodePath("")
-
-[node name="Chest2" parent="Enviornment" node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("24_vfgcu")]
+[node name="Chest2" parent="Enviornment" instance=ExtResource("24_vfgcu")]
 position = Vector2(687, 599)
-frame = 0
-frame_progress = 0.0
 chestLootTable = 1
-interactable = NodePath("")
-itemShowcase = NodePath("")
 
 [node name="TileMap" type="TileMap" parent="Enviornment"]
 z_index = -1
@@ -130,3 +119,11 @@ position = Vector2(680, 672)
 
 [node name="Freeze Charge3" parent="." instance=ExtResource("17_8xcsb")]
 position = Vector2(613, 665)
+
+[node name="Player" parent="." instance=ExtResource("18_43gtg")]
+y_sort_enabled = true
+position = Vector2(395, 616)
+
+[node name="Chest" parent="Player" instance=ExtResource("24_vfgcu")]
+position = Vector2(-41.3044, 15.2173)
+scale = Vector2(2.17391, 2.17391)

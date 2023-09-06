@@ -64,9 +64,8 @@ public class DialogueController {
 	public DialogueController(InputController inputController, GUI GUI) {
 		this.inputController = inputController;
 		this.GUI = GUI;
-		
 		// TODO: I don't like having to use this event :(
-		GUI.DialogueBar.Ready += DialogueControlInit;
+		DialogueControlInit();
 	}
 
 	private bool WithinDialogueBar() {
@@ -75,11 +74,17 @@ public class DialogueController {
 		return rect.HasPoint(mouse_position);
 	}
 	private void DialogueControlInit() {
-		GUI.DialoguePlayer.Started += (info) => inputController.UIInputFilter.SetFilterMode(info.PausePlayerInput);
+
+		GUI.DialoguePlayer.Started += (info) => {
+			inputController.UIInputFilter.SetFilterMode(info.PausePlayerInput);
+			GD.Print(info.PausePlayerInput, " Limiting");
+		};
 		GUI.DialoguePlayer.Ended += () => inputController.UIInputFilter.SetFilterMode(false);
 	}
 	
-	public void Continue() { if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.Clicked?.Invoke();}	
+	public void Continue() { 
+		if (Input.IsActionJustPressed("default_attack") && WithinDialogueBar()) GUI.DialoguePlayer.Clicked?.Invoke();
+	}	
 }
 
 public class InteractablesButtonController {

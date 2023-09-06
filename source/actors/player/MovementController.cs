@@ -3,7 +3,7 @@ using Game.Players.Inputs;
 
 namespace Game.Players;
 
-public partial class MovementController : Node{
+public partial class MovementController : Node {
 	public const int CORNER_CORRECTION_RANGE = 25;
 
 	[Export]
@@ -25,13 +25,18 @@ public partial class MovementController : Node{
 	}
 
 	public void Init(Player player, InputController inputController) {
+		GD.Print("wat the heck... ", player.Name);
 		this.player = player;
 		this.inputController = inputController;
 		// Used in case the player is holding the move button even when the input is frozen. Resets velocity to nothing.
+		inputController.UIInputFilter.OnFilterModeChanged += (a) => GD.Print("Filter mode changed to ", a, " for ", player.Name);
 		inputController.UIInputFilter.OnFilterModeChanged += (changed) => player.Velocity = changed ? Vector2.Zero : player.Velocity;
 	}
+    public override void _Process(double _) {
+		GD.Print(player.Name);
+    }
 
-	private Vector2 GetMovementInput() {
+    private Vector2 GetMovementInput() {
 		if (inputController.UIInputFilter.FilterNonUiInput) return Vector2.Zero;
 		
 		return new Vector2(

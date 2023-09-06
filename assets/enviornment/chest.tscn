@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://cwbjqawig7pct"]
+[gd_scene load_steps=75 format=3 uid="uid://cwbjqawig7pct"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/Chest.cs" id="1_8vto3"]
 [ext_resource type="Texture2D" uid="uid://b387wgxbvjuvv" path="res://assets/sprites/enviornment/interactables/chest-open.png" id="1_ii2m5"]
@@ -492,7 +492,11 @@ animations = [{
 "speed": 24.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xca0x"]
+size = Vector2(24, 13)
+
 [node name="Chest" type="AnimatedSprite2D" node_paths=PackedStringArray("interactable", "itemShowcase")]
+y_sort_enabled = true
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8ooks")
 animation = &"open"
@@ -507,3 +511,10 @@ scale = Vector2(2, 2)
 [node name="New Item Showcase" type="Sprite2D" parent="."]
 position = Vector2(0, -0.5)
 scale = Vector2(2, 2)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_mask = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 7.5)
+shape = SubResource("RectangleShape2D_xca0x")

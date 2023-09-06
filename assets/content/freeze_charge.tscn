@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Pickupables/FreezeCharge.cs" id="1_kn8gb"]
 
 [node name="Freeze Charge" type="Node2D"]
+z_index = 4
 scale = Vector2(4, 4)
 script = ExtResource("1_kn8gb")
 Speed = 0.5

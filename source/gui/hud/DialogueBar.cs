@@ -86,6 +86,7 @@ public class ConversationController {
     public void Start(ConversationItem[] dialogue, ConversationInfo info) {
         if (dialogue.Length is 0)
             throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
+        
         itemAt = -1;
         currentDialogue = dialogue;
         bar.Show(true);

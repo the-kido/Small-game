@@ -8,9 +8,11 @@ namespace Game.Players.Inputs;
 
 public class UIInputFilter {
 
-	public UIInputFilter(Player player) =>
+	public UIInputFilter(Player player) {
 		player.DamageableComponent.OnDeath += SetFilterModeOnDeath;
-    public event Action<bool> OnFilterModeChanged = delegate{};
+	}
+	
+    public event Action<bool> OnFilterModeChanged = null;
 	
 	bool _filterNonUiInput = false;	
 	public bool FilterNonUiInput => _filterNonUiInput;
@@ -51,13 +53,14 @@ public partial class InputController : Node {
 	public InteractablesButtonController InteractablesButtonController {get; private set;} // TODO: Rename
 
 	public void Init(Player player) {
+		
 		attachedPlayer = player;
 		UIInputFilter = new(player);
 		
 		// Init everything required
+		MovementController.Init(player, this);
 		DialogueController = new(this, GUI);
 		InteractablesButtonController = new(player, GUI);
-		MovementController.Init(player, this);
 	}
 
 	public void AddInput(IInput input, bool blockedByUI) {
