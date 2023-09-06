@@ -10,9 +10,16 @@ public class UIInputFilter {
 
 	public UIInputFilter(Player player) {
 		player.DamageableComponent.OnDeath += SetFilterModeOnDeath;
+		OnFilterModeChanged = null;
 	}
 	
-    public event Action<bool> OnFilterModeChanged = null;
+
+	public void Die() {
+		GD.Print(OnFilterModeChanged?.GetInvocationList().Length, " size");
+		OnFilterModeChanged = null;	
+	}
+	
+    public Action<bool> OnFilterModeChanged = null;
 	
 	bool _filterNonUiInput = false;	
 	public bool FilterNonUiInput => _filterNonUiInput;
@@ -20,6 +27,7 @@ public class UIInputFilter {
 	public void SetFilterMode(bool @bool) {
 		OnFilterModeChanged?.Invoke(@bool);
 		_filterNonUiInput = @bool;
+		GD.Print("Filter mode set");
 	}
 
 	private void SetFilterModeOnDeath(DamageInstance _) => SetFilterMode(true);
@@ -42,7 +50,8 @@ public partial class InputController : Node {
 	}
 	#endregion
 
-	public UIInputFilter UIInputFilter {get; private set;}
+	public UIInputFilter UIInputFilter {get; private set;} 
+
 	// Exposed components
 	public WeaponController WeaponController {get; set;}
 	public ShieldInput ShieldInput {get; set;}
@@ -53,8 +62,10 @@ public partial class InputController : Node {
 	public InteractablesButtonController InteractablesButtonController {get; private set;} // TODO: Rename
 
 	public void Init(Player player) {
+		GD.Print("how many times is INIT called");
 		
 		attachedPlayer = player;
+
 		UIInputFilter = new(player);
 		
 		// Init everything required
@@ -63,24 +74,31 @@ public partial class InputController : Node {
 		InteractablesButtonController = new(player, GUI);
 	}
 
-	public void AddInput(IInput input, bool blockedByUI) {
-		if (blockedByUI) NonUIInputs.Add(input);
-		else UIInputs.Add(input);
-	}
-	public void RemoveInput(IInput input, bool blockedByUI) {
-		if (blockedByUI) NonUIInputs.Remove(input);
-		else UIInputs.Remove(input);
-	}
-
 	private readonly List<IInput> NonUIInputs = new();
 	private readonly List<IInput> UIInputs = new();
+	
+	public void AddInput(IInput input, bool blockedByUI) {
+		if (blockedByUI) 
+			NonUIInputs.Add(input);
+		else 
+			UIInputs.Add(input);
+	}
+	
+	public void RemoveInput(IInput input, bool blockedByUI) {
+		if (blockedByUI) 
+			NonUIInputs.Remove(input);
+		else 
+			UIInputs.Remove(input);
+	}
 
 	public override void _Process(double delta) {
-		if (attachedPlayer is null) return; // Enforce that this node is initialized
-		// Allow player to interact with UI even if input is filtered.
-		UpdateUIInput(delta);
+		if (attachedPlayer is null) 
+			return; // Enforce that this node is initialized
+		
+		UpdateUIInput(delta); // Allow player to interact with UI even if input is filtered.
 
-		if (UIInputFilter.FilterNonUiInput) return;
+		if (UIInputFilter.FilterNonUiInput) 
+			return;
 		
 		UpdateNonUIInput(delta);
 	}

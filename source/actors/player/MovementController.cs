@@ -14,45 +14,42 @@ public partial class MovementController : Node {
 	
 	private Vector2 previousFramePosition = new();
 
-	private bool PlayerIsMoving {
-		get {
-			if (player.Position == previousFramePosition)
-				return false;
+    private bool GetPlayerIsMoving() {
+        if (player.Position == previousFramePosition)
+            return false;
 
-			previousFramePosition = player.Position;
-			return true;
-		}
-	}
+        previousFramePosition = player.Position;
+        return true;
+    }
 
-	public void Init(Player player, InputController inputController) {
-		GD.Print("wat the heck... ", player.Name);
+    public void Init(Player player, InputController inputController) {
 		this.player = player;
 		this.inputController = inputController;
 		// Used in case the player is holding the move button even when the input is frozen. Resets velocity to nothing.
-		inputController.UIInputFilter.OnFilterModeChanged += (a) => GD.Print("Filter mode changed to ", a, " for ", player.Name);
-		inputController.UIInputFilter.OnFilterModeChanged += (changed) => player.Velocity = changed ? Vector2.Zero : player.Velocity;
+		inputController.UIInputFilter.OnFilterModeChanged += Temp; 
 	}
-    public override void _Process(double _) {
-		GD.Print(player.Name);
-    }
 
-    private Vector2 GetMovementInput() {
-		if (inputController.UIInputFilter.FilterNonUiInput) return Vector2.Zero;
-		
-		return new Vector2(
+	private void Temp(bool @bool) {
+		GD.Print(player);
+		player.Velocity = @bool ? Vector2.Zero : player.Velocity;
+	}
+
+
+    private Vector2 GetMovementInput() => inputController.UIInputFilter.FilterNonUiInput
+		? Vector2.Zero
+		: new Vector2(
 			Input.GetAxis("left", "right"),
 			Input.GetAxis("up", "down")
 		).Normalized();
-	}
 
-	public void UpdateMovement() {
+    public void UpdateMovement() {
 		Vector2 normalizedInput = GetMovementInput();
 		player.Velocity = normalizedInput * player.EffectiveSpeed * 100;
 
 		if (normalizedInput != Vector2.Zero) {
 			CornerCorrection(normalizedInput);
 		}
-		PlayMovementAnimations(PlayerIsMoving);
+		PlayMovementAnimations(GetPlayerIsMoving());
 	}
 
 	// I hope to god I never touch this code ever again

@@ -735,6 +735,7 @@ stream = ExtResource("11_laf6i")
 [node name="On Player HUD" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
+metadata/_edit_use_anchors_ = true
 
 [node name="Reload Visual" type="ProgressBar" parent="On Player HUD"]
 z_index = 3
@@ -745,3 +746,4 @@ offset_right = 51.2609
 offset_bottom = -44.7391
 max_value = 1.0
 script = ExtResource("12_f1bp5")
+metadata/_edit_use_anchors_ = true
