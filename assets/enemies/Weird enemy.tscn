@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
-[ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="2_m5e2g"]
+[ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="2_m5e2g"]
 [ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
 [ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
-[ext_resource type="PackedScene" path="res://status_effect_component.tscn" id="7_o34sa"]
+[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://status_effect_component.tscn" id="7_o34sa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2o215"]
 size = Vector2(19, 20)
@@ -205,7 +205,8 @@ _data = {
 }
 
 [node name="Weird enemy" type="CharacterBody2D" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
-z_index = 1
+z_as_relative = false
+y_sort_enabled = true
 scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 11
@@ -232,6 +233,7 @@ scale = Vector2(2.364, 2.408)
 collision_layer = 4
 collision_mask = 8
 Health = 10
+ImmunityFrames = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 shape = SubResource("RectangleShape2D_0m8x3")
@@ -256,3 +258,4 @@ agent = NodePath("../NavigationAgent2D")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("7_o34sa")]
+defaultStatus = null

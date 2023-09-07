@@ -21,6 +21,7 @@ _data = {
 
 [node name="Base Enemy" type="CharacterBody2D" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape")]
 z_as_relative = false
+y_sort_enabled = true
 scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 9

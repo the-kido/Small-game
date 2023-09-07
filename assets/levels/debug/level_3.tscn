@@ -1,14 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://bgfgxlgncsmho"]
+[gd_scene load_steps=13 format=3 uid="uid://bgfgxlgncsmho"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_fgpcw"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_3wa3g"]
 [ext_resource type="PackedScene" uid="uid://c4qvs3qftka0d" path="res://assets/levels/enviornment.tscn" id="2_8waop"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_37we6"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="3_k1clx"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="4_21v4f"]
-[ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="6_verg4"]
+[ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_51kbw"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="8_5mkwa"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="9_mgbxg"]
 [ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/door.tscn" id="10_hj2w4"]
+[ext_resource type="PackedScene" uid="uid://dafgd73bj50my" path="res://assets/misc/player_manager.tscn" id="11_hjbvo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="11_wydy7"]
 
 [node name="Level 3" type="Node"]
@@ -16,6 +18,10 @@
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_fgpcw")
 doors = [NodePath("../Y Sort/Gameplay/Door 2")]
+
+[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+script = ExtResource("2_3wa3g")
+wave = NodePath("../../Y Sort/Gameplay/Waves/EnemyWave")
 
 [node name="Enviornment" parent="." instance=ExtResource("2_8waop")]
 
@@ -30,19 +36,21 @@ environment = ExtResource("4_21v4f")
 
 [node name="Gameplay" parent="Y Sort" instance=ExtResource("3_37we6")]
 
-[node name="PlayerManager" type="Node2D" parent="Y Sort/Gameplay"]
-script = ExtResource("6_verg4")
-
 [node name="Waves" parent="Y Sort/Gameplay" instance=ExtResource("3_37we6")]
 
 [node name="EnemyWave" type="Node2D" parent="Y Sort/Gameplay/Waves"]
+z_as_relative = false
+y_sort_enabled = true
 script = ExtResource("8_5mkwa")
 
+[node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
+position = Vector2(214, 144)
+
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
-position = Vector2(77, 40)
+position = Vector2(214, 14)
 
 [node name="Freeze Charge2" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
-position = Vector2(142, 102)
+position = Vector2(174, 40)
 
 [node name="Door 2" parent="Y Sort/Gameplay" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("10_hj2w4")]
 position = Vector2(488, 86)
@@ -51,6 +59,8 @@ levelSwitcher = NodePath("LevelSwitcher")
 [node name="LevelSwitcher" type="Node" parent="Y Sort/Gameplay/Door 2"]
 script = ExtResource("11_wydy7")
 nextLevel = "res://assets/levels/debug/level_2.tscn"
+
+[node name="Player Manager" parent="Y Sort/Gameplay" instance=ExtResource("11_hjbvo")]
 
 [node name="Decor" parent="Y Sort" instance=ExtResource("3_37we6")]
 

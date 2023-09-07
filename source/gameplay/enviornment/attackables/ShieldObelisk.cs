@@ -13,24 +13,32 @@ public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {
     public bool IsInteractable() => Damageable.IsAlive;
     public Node2D GetNode() => this;
     
-    public ShieldObelisk() {
-        Level.CriterionStarted += AddEffectToEveryone;
-    }
-    
     public override void _Ready() {
         base._Ready();
         Damageable.OnDeath += Uneffect;
+        
+        Level.CriterionStarted += AddEffectToEveryone;
+        
+        // In case the criterion already started, check again
+        if (Level.CurrentCriterion is not null)
+            AddEffectToEveryone(Level.CurrentCriterion);
+        
     }
 
-    private void Uneffect(DamageInstance damageInstance) {
-        if (Level.CurrentEvent is EnemyWaveEvent enemyWaveEvent) {
+    public override void _ExitTree() {
+        Level.CriterionStarted -= AddEffectToEveryone;
+        Damageable.OnDeath -= Uneffect;
+    }
+
+    private static void Uneffect(DamageInstance damageInstance) {
+        if (Level.CurrentCriterion is EnemyWaveEvent enemyWaveEvent) {
             foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren) {
                 enemy.Effect.ClearAllEffects();
             }
         }
     }
 
-    private void AddEffectToEveryone(LevelCriteria levelCriteria) {
+    private static void AddEffectToEveryone(LevelCriteria levelCriteria) {
         if (levelCriteria is EnemyWaveEvent enemyWaveEvent) {
             foreach (Enemy enemy in enemyWaveEvent.wave.EnemyChildren) 
                 enemy.Effect.Add(new ShieldedStatus());

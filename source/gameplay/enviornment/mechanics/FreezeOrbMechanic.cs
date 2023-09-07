@@ -13,7 +13,7 @@ public static class FreezeOrbMechanic {
     };
 
     public static void Freeze() {
-        if (Level.CurrentEvent is EnemyWaveEvent enemyWaveEvent)
+        if (Level.CurrentCriterion is EnemyWaveEvent enemyWaveEvent)
             enemyWaveEvent.wave.EnemyChildren.ForEach(child => child.DamageableComponent.Damage(GetFreezeDamage(child)));
     }
 }

@@ -645,6 +645,8 @@ size = Vector2(55, 69)
 radius = 591.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
+z_as_relative = false
+y_sort_enabled = true
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2

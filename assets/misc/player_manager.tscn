@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dafgd73bj50my"]
+
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="1_g4y11"]
+
+[node name="Player Manager" type="Node2D"]
+z_as_relative = false
+y_sort_enabled = true
+script = ExtResource("1_g4y11")

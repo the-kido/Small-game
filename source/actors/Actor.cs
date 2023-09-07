@@ -31,6 +31,7 @@ public abstract partial class Actor : CharacterBody2D {
 	public override void _Ready() {
         // safety check for reasons
 		ErrorUtils.AvoidEmptyCollisionLayers(DamageableComponent);
+		ErrorUtils.AvoidImproperOrdering(this);
 
         DamageableComponent.OnDamaged += DamageFlash;
         StatsManager = new(SetStats);

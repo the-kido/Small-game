@@ -6,20 +6,19 @@ using Game.SealedContent;
 
 namespace Game.Players;
 
-[GlobalClass]
 public partial class PlayerManager : Node2D {
 
     public override void _Ready() {
-        
         instancedPlayer = null;
 
         PlacePlayer(GetSpawnPosition());
 
-        if (queuedDoor is not null) queuedDoor = null;
+        if (queuedDoor is not null) 
+            queuedDoor = null;
     }
 
-    private static Vector2 GetSpawnPosition() => 
-        queuedDoor is not null ? Level.CurrentLevel.GetLinkedDoor(queuedDoor).PlayerSpawnPosition : Vector2.Zero;
+    private Vector2 GetSpawnPosition() => 
+        queuedDoor is not null ? Level.CurrentLevel.GetLinkedDoor(queuedDoor).PlayerSpawnPosition - Position : Vector2.Zero;
 
     static readonly PackedScene PlayerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
     
