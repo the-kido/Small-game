@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Threading.Tasks;
 
 namespace Game.Actors.AI;
 
@@ -11,9 +10,9 @@ public sealed class PatrolState : AIState {
     public PatrolState(Pathfinder pathfinderComponent, int HoverAtSpawnPointDistance) {
         this.HoverAtSpawnPointDistance = HoverAtSpawnPointDistance;
         this.pathfinderComponent = pathfinderComponent;
-        //help this i sbad
-    }
 
+        timer.TimeOver += OnCooldownFinished;
+    }
 
     public Action IsIdle;
     public Action IsMoving;
@@ -57,7 +56,8 @@ public sealed class PatrolState : AIState {
     }
 
 
-    public async void SwitchPatrolPoint() {
+    KidoUtils.Timer timer = KidoUtils.Timer.NONE;
+    public void SwitchPatrolPoint() {
         if (state == State.Idle) return;
 
         IsIdle?.Invoke();
@@ -66,19 +66,21 @@ public sealed class PatrolState : AIState {
 
         pathOn = (pathOn + 1) % 3;
         state = State.Idle;
+        
+        timer.Reset();
+    }
 
-        await Task.Delay(5000);
-
+    private void OnCooldownFinished() {
         stateSwitchCooldown = 0;
         state = State.Walking;
         IsMoving?.Invoke();
         //pathfinderComponent.SetTargetPosition(goBetween[pathOn]);
         pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
-        
     }
 
     double stateSwitchCooldown = 0;
     public override void Update(double delta) {
+        timer.Update(delta);
         FlipActor();
 
         stateSwitchCooldown += delta;
@@ -102,9 +104,9 @@ public sealed class PatrolState : AIState {
     private void FlipActor() {
         int val = MathF.Sign(actor.Velocity.X);
         
-        if (val is 0) return;
-        
-        bool flip = val is -1;
-        actor.Flip(flip);
+        if (val is 0) 
+            return;
+
+        actor.Flip(val is -1);
     }
 }

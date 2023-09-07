@@ -9,7 +9,7 @@ public partial class Coin : Pickupable {
     int CurrentCoins {
         get => _currentCoins;
         set {
-            if (Level.CurrentLevelCompleted())  
+            if (Level.IsCurrentLevelCompleted())  
                 GameDataService.Save();
             
             _currentCoins = value;

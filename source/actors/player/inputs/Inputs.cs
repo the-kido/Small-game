@@ -77,9 +77,10 @@ public class DialogueController {
 
 		GUI.DialoguePlayer.Started += (info) => {
 			inputController.UIInputFilter.SetFilterMode(info.PausePlayerInput);
-			GD.Print(info.PausePlayerInput, " Limiting");
 		};
-		GUI.DialoguePlayer.Ended += () => inputController.UIInputFilter.SetFilterMode(false);
+		
+		GUI.DialoguePlayer.Ended += () => 
+			inputController.UIInputFilter.SetFilterMode(false);
 	}
 	
 	public void Continue() { 

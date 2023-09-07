@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4qvs3qftka0d"]
+
+[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="1_jyps1"]
+
+[node name="Enviornment" type="Node"]
+
+[node name="Room" type="TileMap" parent="."]
+position = Vector2(0, 2)
+scale = Vector2(3, 3)
+format = 2
+
+[node name="Ambient Occlusion" type="TileMap" parent="."]
+scale = Vector2(3, 3)
+tile_set = ExtResource("1_jyps1")
+format = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

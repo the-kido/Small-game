@@ -92,7 +92,7 @@ public partial class Level : Node, ISaveable {
         return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
     }
 
-    public static bool CurrentLevelCompleted() {
+    public static bool IsCurrentLevelCompleted() {
         bool valueRecieved = LevelCompletions.TryGetValue(CurrentLevel.SaveName, out bool levelWon);
         return valueRecieved && levelWon;
     }

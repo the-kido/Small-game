@@ -9,10 +9,10 @@ public partial class Camera : Camera2D {
 	private TileMap tileMap;
 
 	public static Camera currentCamera;
+	// public ShakePlayer ShakePlayer {get; init;} = new();
 	
-	private Camera() {
+	private Camera() =>
 		currentCamera = this;
-	}
 	
 	//0.9 -- 1.4
 	private const float SCALE_MAX = 1.9f, SCALE_MIN = 1.5f;
@@ -36,8 +36,7 @@ public partial class Camera : Camera2D {
 		Rect2 cameraRect = GetViewportRect();
 		Vector2 sides = cameraRect.Size - cameraRect.Position;
 
-		//Set diagonal lenght equal to the diagonal size of the USUAL scene.
-		
+		// Set diagonal lenght equal to the diagonal size of the USUAL scene.
 		diagonalLength = Mathf.Sqrt(Mathf.Pow(sides.X, 2) + Mathf.Pow(sides.Y, 2));
 		diagonalLength /= (SCALE_MAX + SCALE_MIN) * 2;
 		
@@ -45,7 +44,8 @@ public partial class Camera : Camera2D {
 	}
 
 	public override void _Process(double delta) {
-		if (player is null) return;
+		if (player is null) 
+			return;
 
 		Rect2 importantObjectsRect = ImportantObjectsRect();
 
@@ -56,12 +56,12 @@ public partial class Camera : Camera2D {
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
 
 		Position = Position.Lerp(finalPosition, (float) delta * 2);
-
+		
 		UpdateShake(delta);
-
+		// Offset = ShakePlayer.GetShakeOffset(delta);
 	}
 
-	private List<Node2D> importantObjects = new();
+	private readonly List<Node2D> importantObjects = new();
 
 	public Vector2 FinalCameraZoom(Rect2 importantObjectsRect) {
 		Vector2 bottomLeft = importantObjectsRect.Position;
@@ -71,7 +71,7 @@ public partial class Camera : Camera2D {
 		float diagonal = Mathf.Sqrt(diff.X*diff.X + diff.Y*diff.Y);
 
 		//				the scale factor 				The default zoom.
-		float dif = ((SCALE_MAX + SCALE_MIN) / 2) / (diagonal / diagonalLength);
+		float dif = (SCALE_MAX + SCALE_MIN) / 2 / (diagonal / diagonalLength);
 		//If the dif is greater than the max, set it to the lower number.
 
 		dif = Mathf.Min(dif, SCALE_MAX);
@@ -79,16 +79,10 @@ public partial class Camera : Camera2D {
 		//if the dif is lower than the min, set it to the min.
 		dif = Mathf.Max(dif, SCALE_MIN);
 		
-		return Vector2.One * (dif); //TODsO. 
+		return Vector2.One * dif;  
 	}
 	
-	public Vector2 ConstantCameraOffset() {
-		Vector2 finalCameraOffset = Vector2.Zero;
-
-		finalCameraOffset += player.Position - GetLocalMousePosition();
-
-		return finalCameraOffset;
-	}
+	public Vector2 ConstantCameraOffset => player.GlobalPosition - GetLocalMousePosition();
 
 	public Vector2 FinalCameraPosition(Vector2 importantObjectsRectCenter) {
 		
@@ -101,24 +95,25 @@ public partial class Camera : Camera2D {
 		return FinalCameraPosition / 7f;
 	}
 
-	
 	private Vector2 PlayerCameraShift() {
+		
 		Vector2 cameraShift = player.Velocity.Normalized() * 100;
 		cameraShift.Y *= 1.5f;
 
-		return player.Position + cameraShift;
+		return player.GlobalPosition + cameraShift;
 	}
 	
 	private Rect2 ImportantObjectsRect() { 
-		Vector2 pos = importantObjects[0].Position;
-		Vector2 size = importantObjects[0].Position;
+
+		Vector2 pos = importantObjects[0].GlobalPosition;
+		Vector2 size = importantObjects[0].GlobalPosition;
 
 		foreach (Node2D body in importantObjects) {
-			pos.X = Mathf.Min(body.Position.X, pos.X);
-			pos.Y = Mathf.Max(body.Position.Y, pos.Y);
+			pos.X = Mathf.Min(body.GlobalPosition.X, pos.X);
+			pos.Y = Mathf.Max(body.GlobalPosition.Y, pos.Y);
 			
-			size.X = Mathf.Max(body.Position.X, size.X);
-			size.Y = Mathf.Min(body.Position.Y, size.Y);
+			size.X = Mathf.Max(body.GlobalPosition.X, size.X);
+			size.Y = Mathf.Min(body.GlobalPosition.Y, size.Y);
 		}
 		return new(pos,size);
 	}
@@ -159,11 +154,11 @@ public partial class Camera : Camera2D {
 	}
 
 	#region signal methods
-	private void OnBodyEntered(Node2D body) {
+	private void OnBodyEntered(Node2D body) =>
 		importantObjects.Add(body);
-	}
-	private void OnBodyLeave(Node2D body) {
+	
+	private void OnBodyLeave(Node2D body) =>
 		importantObjects.Remove(body);
-	}
+	
 	#endregion
 }

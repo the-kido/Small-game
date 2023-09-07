@@ -100,7 +100,7 @@ public sealed class DefaultAttackState : AIState {
         Move(player);
     }
 
-    Player lastRememberedPlayer = Player.Players[0];
+    Player lastRememberedPlayer = null;
     float distanceToPlayer = 0;
 
     private void UpdatePathfind(Player currentlyVisiblePlayer) {

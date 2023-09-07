@@ -4,12 +4,11 @@ using System.Linq;
 using System.Collections.Generic;
 using Game.Actors;
 using Game.Damage;
-using KidoUtils;
 
 namespace Game.LevelContent;
 
 [GlobalClass]
-public partial class EnemyWave : Node {
+public partial class EnemyWave : Node2D {
     // this will have children of type ENEMY. It defaults to 
     // no process but when the wave starts there "is" a process 
     

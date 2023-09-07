@@ -10,7 +10,7 @@ public partial class LevelCompletionIndicator : Control {
     public void Init() {
         if (Level.CurrentEvent is null) return;
 
-        if (Level.CurrentLevelCompleted()) Enable(); 
+        if (Level.IsCurrentLevelCompleted()) Enable(); 
         else Level.CurrentLevel.LevelCompleted += Enable;
     }
 

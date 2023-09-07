@@ -8,26 +8,20 @@ namespace Game.Players.Inputs;
 
 public class UIInputFilter {
 
-	public UIInputFilter(Player player) {
+	public UIInputFilter(Player player) =>
 		player.DamageableComponent.OnDeath += SetFilterModeOnDeath;
+	
+	public void UnsubEvents() =>
 		OnFilterModeChanged = null;
-	}
-	
 
-	public void Die() {
-		GD.Print(OnFilterModeChanged?.GetInvocationList().Length, " size");
-		OnFilterModeChanged = null;	
-	}
-	
     public Action<bool> OnFilterModeChanged = null;
 	
-	bool _filterNonUiInput = false;	
+	private bool _filterNonUiInput = false;	
 	public bool FilterNonUiInput => _filterNonUiInput;
 
 	public void SetFilterMode(bool @bool) {
 		OnFilterModeChanged?.Invoke(@bool);
 		_filterNonUiInput = @bool;
-		GD.Print("Filter mode set");
 	}
 
 	private void SetFilterModeOnDeath(DamageInstance _) => SetFilterMode(true);
@@ -41,15 +35,18 @@ public partial class InputController : Node {
 
 	#region GUI
 	public event Action LeftClicked; 
-	public event Action PressedEscape; 
+	public event Action PressedEscape;
+
 	private void InvokeGUILeftClick() {
 		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
 	}
+
 	private void InvokeEscape() {
 		if (Input.IsActionJustPressed("escape")) PressedEscape?.Invoke();
 	}
-	#endregion
 
+	#endregion
+	
 	public UIInputFilter UIInputFilter {get; private set;} 
 
 	// Exposed components
@@ -62,8 +59,7 @@ public partial class InputController : Node {
 	public InteractablesButtonController InteractablesButtonController {get; private set;} // TODO: Rename
 
 	public void Init(Player player) {
-		GD.Print("how many times is INIT called");
-		
+
 		attachedPlayer = player;
 
 		UIInputFilter = new(player);
@@ -74,7 +70,11 @@ public partial class InputController : Node {
 		InteractablesButtonController = new(player, GUI);
 	}
 
-	private readonly List<IInput> NonUIInputs = new();
+    public override void _ExitTree() {
+		UIInputFilter.UnsubEvents();
+    }
+
+    private readonly List<IInput> NonUIInputs = new();
 	private readonly List<IInput> UIInputs = new();
 	
 	public void AddInput(IInput input, bool blockedByUI) {

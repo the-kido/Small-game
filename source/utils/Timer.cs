@@ -31,7 +31,7 @@ public struct Timer {
     TimerPause timerPause = new();
 
     public void Update(double delta) {
-        if (invokable is false) 
+        if (!invokable) 
             return;
 
         if (timerPause.paused) {
@@ -66,22 +66,31 @@ public struct Timer {
     
     public void Pause(double timePaused) => timerPause = new(timePaused);
 
+    public void Reset() {
+        invokable = true;
+        timerPause.Reset();
+        TimeElapsed = 0;
+        cyclesDone = 0;
+    }
 }
 
 struct TimerPause {
-    double pauseTime;
-    public bool paused = false;
+    readonly double pauseTime;
+    public bool paused = true;
     double pauseTimeElapsed = 0;
     
     public TimerPause(double pauseTime) { 
         this.pauseTime = pauseTime;
-        paused = true;
     }
 
     public void Update(double delta) {
         pauseTimeElapsed += delta;
-        if (pauseTimeElapsed > pauseTime) {
+        
+        if (pauseTimeElapsed > pauseTime)
             paused = false;
-        }
+    }
+    public void Reset() {
+        paused = true;
+        pauseTimeElapsed = 0;
     }
 }

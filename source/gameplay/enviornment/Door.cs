@@ -29,12 +29,13 @@ public partial class Door : Area2D {
         opened = false;
 
         ErrorUtils.AvoidEmptyCollisionLayers(this);
+        ErrorUtils.AvoidNullExportedVariables(levelSwitcher, this);
         
         BodyEntered += OnEnterArea;
 
         // Set up how the door will be opened
         if (condition is null) {
-            if (Level.CurrentLevelCompleted()) OpenDoor(); 
+            if (Level.IsCurrentLevelCompleted()) OpenDoor(); 
             else Level.CurrentLevel.LevelCompleted += OpenDoor;
         
         } else {
@@ -63,15 +64,10 @@ public partial class Door : Area2D {
             levelSwitcher.SwitchLevel();
             tempName = Name.ToString(); // Create a copy of the name because otherwise i'll access a disposed object in "UpdateNewDoor"
             PlayerManager.QueueSpawn(Name);
-
-            // SceneSwitcher.SceneSwitched += UpdateNewDoor;
         }
     }
 
-    public void SetPlayerAtDoor() {
-        Vector2 newPos = GlobalPosition + doorOpeningDirection * 100;
-        PlayerManager.PlacePlayer(newPos);
-    }
+    public Vector2 PlayerSpawnPosition => GlobalPosition + doorOpeningDirection * 100;
 
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {

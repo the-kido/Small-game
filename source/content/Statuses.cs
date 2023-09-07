@@ -11,20 +11,19 @@ namespace Game.ActorStatuses;
 
 
 public enum AllStatuses {
+    None,
     FireEffect,
     WetStatus,
     ShieldedStatus,
     GasStatus,
     PlasmaEffect,
     FreezeEffect,
-    
-    None = -1,
 }
 
 // Just for the list
 public abstract partial class ActorStatus {
     public static readonly List<Type> All = new() {
-        typeof(FireEffect), typeof(WetStatus), typeof(ShieldedStatus), typeof(GasStatus), typeof(PlasmaEffect), typeof(FreezeEffect) 
+        null, typeof(FireEffect), typeof(WetStatus), typeof(ShieldedStatus), typeof(GasStatus), typeof(PlasmaEffect), typeof(FreezeEffect) 
     };
 }
 

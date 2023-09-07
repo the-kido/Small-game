@@ -14,6 +14,10 @@ public partial class FreezeCharge : Pickupable {
     }
 
     public override void _Ready() {
+        
+        if (Level.IsCurrentLevelCompleted()) 
+            QueueFree();
+        
         Random random = new();
         float single = random.NextSingle();
         

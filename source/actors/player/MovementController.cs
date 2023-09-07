@@ -25,15 +25,11 @@ public partial class MovementController : Node {
     public void Init(Player player, InputController inputController) {
 		this.player = player;
 		this.inputController = inputController;
+
 		// Used in case the player is holding the move button even when the input is frozen. Resets velocity to nothing.
-		inputController.UIInputFilter.OnFilterModeChanged += Temp; 
+		inputController.UIInputFilter.OnFilterModeChanged += (changed) => 
+			player.Velocity = changed ? Vector2.Zero : player.Velocity; 
 	}
-
-	private void Temp(bool @bool) {
-		GD.Print(player);
-		player.Velocity = @bool ? Vector2.Zero : player.Velocity;
-	}
-
 
     private Vector2 GetMovementInput() => inputController.UIInputFilter.FilterNonUiInput
 		? Vector2.Zero
@@ -46,22 +42,22 @@ public partial class MovementController : Node {
 		Vector2 normalizedInput = GetMovementInput();
 		player.Velocity = normalizedInput * player.EffectiveSpeed * 100;
 
-		if (normalizedInput != Vector2.Zero) {
-			CornerCorrection(normalizedInput);
-		}
+		if (normalizedInput != Vector2.Zero)
+			player.Translate(GetCornerCorrectionOffset(normalizedInput));
+		
 		PlayMovementAnimations(GetPlayerIsMoving());
 	}
 
 	// I hope to god I never touch this code ever again
-	private void CornerCorrection(Vector2 movementDirection) {
+	// Thanks celeste
+	private Vector2 GetCornerCorrectionOffset(Vector2 movementDirection) {
 		if (player.TestMove(player.GlobalTransform, new Vector2(0, movementDirection.Y))) {
 			//Find where exactly this object's corner is offseted. 
 			//The range (20 — -20) accounts for both left and right shifting
 			for (int xOffset = CORNER_CORRECTION_RANGE; xOffset > -CORNER_CORRECTION_RANGE - 1; xOffset -= 5) {
 				if (player.TestMove(player.GlobalTransform.Translated(new Vector2(xOffset, 0)), new Vector2(0, movementDirection.Y)))
 					continue;
-				player.Translate(new Vector2(xOffset / 5f, 0));
-				return;
+				return new Vector2(xOffset / 5f, 0);
 			}
 		}
 		// Same thing, but for x
@@ -70,10 +66,10 @@ public partial class MovementController : Node {
 			for (int yOffset = CORNER_CORRECTION_RANGE; yOffset > -CORNER_CORRECTION_RANGE - 1; yOffset -= 5) {
 				if (player.TestMove(player.GlobalTransform.Translated(new Vector2(0, yOffset)), new Vector2(movementDirection.X, 0)))
 					continue;
-				player.Translate(new Vector2(0, yOffset / 5f));
-				return;
+				return new Vector2(0, yOffset / 5f);
 			}
 		}
+		return Vector2.Zero;
 	}
 
 	private void PlayMovementAnimations(bool isMoving) {

@@ -34,7 +34,9 @@ public class PlayerClassManager : ISaveable {
             return;
         }
 
-        SetClass((IPlayerClass) Activator.CreateInstance(playerClassType));
+        IPlayerClass playerClassInstance = (IPlayerClass) Activator.CreateInstance(playerClassType);
+        
+        SetClass(playerClassInstance);
     }
 
     /// <summary>

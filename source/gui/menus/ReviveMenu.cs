@@ -17,9 +17,8 @@ public partial class ReviveMenu : Control, IMenu{
     private Button close;
 
     public event Action Disable;
-    public override void _Ready() {
-        close.Pressed += OnDisable; 
-    }
+    public override void _Ready() => close.Pressed += OnDisable; 
+
     private void OnDisable() {
         close.Pressed -= OnDisable; 
         Disable?.Invoke();
@@ -35,7 +34,13 @@ public partial class ReviveMenu : Control, IMenu{
     }
 
     public void Close() {
-        animationPlayer.Play("Open", -1, -1);
+        animationPlayer.PlayBackwards("Open");
+        animationPlayer.AnimationFinished += OnClosed; 
+    }
+
+    private void OnClosed(StringName _) {
+        Visible = false;
+        animationPlayer.AnimationFinished -= OnClosed; 
     }
 }
 

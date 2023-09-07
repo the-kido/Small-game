@@ -6,37 +6,43 @@ using Game.SealedContent;
 
 namespace Game.Players;
 
+[GlobalClass]
 public partial class PlayerManager : Node2D {
-
+    static PlayerManager currentPlayerManager;
     public override void _Ready() {
         
+        currentPlayerManager = this;
         instancedPlayer = null;
         
-        if (queuedDoor is not null) {
-            Level.CurrentLevel.GetLinkedDoor(queuedDoor).SetPlayerAtDoor();
-            queuedDoor = null;
-            return;
-        } 
+        Vector2 spawnPosition;
 
-        PlacePlayer(Position);
+        if (queuedDoor is not null) {
+            spawnPosition = Level.CurrentLevel.GetLinkedDoor(queuedDoor).PlayerSpawnPosition - Position;
+            queuedDoor = null;
+        } else {
+            spawnPosition = Vector2.Zero;
+        }
+
+        PlacePlayer(spawnPosition);
     }
 
     static readonly PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
     
     static Player instancedPlayer = null;
 
-    public static void PlacePlayer(Vector2 position) {
-        if (instancedPlayer is null) {
-            instancedPlayer = playerScene.Instantiate<Player>();
+    private void PlacePlayer(Vector2 position) {
 
-            instancedPlayer.GlobalPosition = position;
-            
-            Level.CurrentLevel.AddChild(instancedPlayer);
-            
-            instancedPlayer.Init();
-        } 
-    }
-    
+        if (instancedPlayer is not null) 
+            return;
+        
+        instancedPlayer = playerScene.Instantiate<Player>();
+
+        instancedPlayer.Position = position;
+
+        AddChild(instancedPlayer);
+        
+        instancedPlayer.Init();
+    }    
 
     static string queuedDoor = null;
     // This is carried out in "ready"
