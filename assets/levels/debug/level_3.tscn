@@ -16,6 +16,7 @@
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_fgpcw")
+doors = [NodePath("../Y Sort/Gameplay/Door To level 2")]
 
 [node name="Enviornment" parent="." instance=ExtResource("2_8waop")]
 
@@ -47,7 +48,7 @@ position = Vector2(77, 40)
 position = Vector2(142, 102)
 
 [node name="Door To level 2" parent="Y Sort/Gameplay" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("10_hj2w4")]
-position = Vector2(431, 102)
+position = Vector2(488, 86)
 levelSwitcher = NodePath("LevelSwitcher")
 
 [node name="LevelSwitcher" type="Node" parent="Y Sort/Gameplay/Door To level 2"]

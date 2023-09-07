@@ -6,22 +6,36 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ctjel"]
 texture = ExtResource("1_i8dui")
 0:0/0 = 0
+0:0/0/z_index = -5
 1:0/0 = 0
+1:0/0/z_index = -5
 2:0/0 = 0
+2:0/0/z_index = -5
 3:0/0 = 0
+3:0/0/z_index = -5
 4:0/0 = 0
+4:0/0/z_index = -5
 5:0/0 = 0
+5:0/0/z_index = -5
 0:1/0 = 0
+0:1/0/z_index = -5
 2:1/0 = 0
+2:1/0/z_index = -5
 4:1/0 = 0
+4:1/0/z_index = -5
 5:1/0 = 0
+5:1/0/z_index = -5
 1:1/0 = 0
+1:1/0/z_index = -5
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eiegq"]
 texture = ExtResource("2_w6kqc")
 0:0/0 = 0
+0:0/0/z_index = -5
 1:0/0 = 0
+1:0/0/z_index = -5
 2:0/0 = 0
+2:0/0/z_index = -5
 
 [resource]
 sources/0 = SubResource("TileSetAtlasSource_ctjel")

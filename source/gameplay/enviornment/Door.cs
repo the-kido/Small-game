@@ -50,7 +50,9 @@ public partial class Door : Area2D {
 
     bool opened;
     public void OpenDoor() {
-        if (opened) return;
+        
+        if (opened) 
+            return;
 
         opened = true;
         doorSprite.Play("default");
@@ -58,13 +60,13 @@ public partial class Door : Area2D {
     
     string tempName;
     private void OnEnterArea(Node2D body) {
-        if (!opened) return;
+        
+        if (!opened || body is not Player) 
+            return;
 
-        if (body is Player) {
-            levelSwitcher.SwitchLevel();
-            tempName = Name.ToString(); // Create a copy of the name because otherwise i'll access a disposed object in "UpdateNewDoor"
-            PlayerManager.QueueSpawn(Name);
-        }
+        levelSwitcher.SwitchLevel();
+        tempName = Name.ToString(); // Create a copy of the name because otherwise i'll access a disposed object in "UpdateNewDoor"
+        PlayerManager.QueueSpawn(Name);
     }
 
     public Vector2 PlayerSpawnPosition => GlobalPosition + doorOpeningDirection * 100;
