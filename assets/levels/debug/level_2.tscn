@@ -118,7 +118,7 @@ position = Vector2(380, 356)
 position = Vector2(473, 397)
 
 [node name="Player Manager" type="Node2D" parent="."]
-position = Vector2(380, 577)
+position = Vector2(125, 431)
 script = ExtResource("16_nns66")
 
 [node name="Freeze Charge" parent="." instance=ExtResource("17_8xcsb")]

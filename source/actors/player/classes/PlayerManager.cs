@@ -8,25 +8,20 @@ namespace Game.Players;
 
 [GlobalClass]
 public partial class PlayerManager : Node2D {
-    static PlayerManager currentPlayerManager;
+
     public override void _Ready() {
         
-        currentPlayerManager = this;
         instancedPlayer = null;
-        
-        Vector2 spawnPosition;
 
-        if (queuedDoor is not null) {
-            spawnPosition = Level.CurrentLevel.GetLinkedDoor(queuedDoor).PlayerSpawnPosition - Position;
-            queuedDoor = null;
-        } else {
-            spawnPosition = Vector2.Zero;
-        }
+        PlacePlayer(GetSpawnPosition());
 
-        PlacePlayer(spawnPosition);
+        if (queuedDoor is not null) queuedDoor = null;
     }
 
-    static readonly PackedScene playerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
+    private static Vector2 GetSpawnPosition() => 
+        queuedDoor is not null ? Level.CurrentLevel.GetLinkedDoor(queuedDoor).PlayerSpawnPosition : Vector2.Zero;
+
+    static readonly PackedScene PlayerScene = ResourceLoader.Load<PackedScene>("res://assets/player.tscn");
     
     static Player instancedPlayer = null;
 
@@ -35,7 +30,7 @@ public partial class PlayerManager : Node2D {
         if (instancedPlayer is not null) 
             return;
         
-        instancedPlayer = playerScene.Instantiate<Player>();
+        instancedPlayer = PlayerScene.Instantiate<Player>();
 
         instancedPlayer.Position = position;
 

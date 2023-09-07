@@ -32,9 +32,12 @@ public partial class Level : Node, ISaveable {
     static Level() => LastLevelPlayedSaver = new();
 
     public Door GetLinkedDoor(string name) {
+        
         foreach (NodePath doorPath in doors) {
             Door door = GetNode<Door>(doorPath);
-            if (door.Name == name) return door;
+
+            if (door.Name == name) 
+                return door;
         }
         return null;
     }
