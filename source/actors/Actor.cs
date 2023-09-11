@@ -4,6 +4,7 @@ using KidoUtils;
 using Game.ActorStatuses;
 using Game.Players;
 using Game.Damage;
+using System;
 
 namespace Game.Actors;
 
@@ -54,11 +55,11 @@ public abstract partial class Actor : CharacterBody2D {
     Color increaseByColor = new(0, 0.05f, 0.05f, 0);
 
     private async void DamageFlash(DamageInstance _) {
-        
         if (!DamageableComponent.IsAlive) 
             return;
 
         if (percentRed != 0) {
+            Modulate = new Color(1f, 1f, 1f, 1f);
             percentRed = 100;
             return;
         }

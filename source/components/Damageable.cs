@@ -74,7 +74,9 @@ public sealed partial class Damageable : Area2D {
 		float effectiveDamageDealt = damageInstance.damageDealt.GetEffectiveValue(damageInstance.damage);
 		float effectiveDamageAbsorbed = damageTaken.GetEffectiveValue(1);
 
-		return (int) MathF.Round(effectiveDamageAbsorbed * effectiveDamageDealt);
+		int effectSynergyBonus = damageInstance.statusEffect?.GetEffectSynergyDamageBonus() ?? 0;
+
+		return (int) MathF.Round(effectiveDamageAbsorbed * effectiveDamageDealt) + effectSynergyBonus;
 	}
 	
 	private bool CanTakeDamage(DamageInstance damageInstance) {
@@ -91,7 +93,7 @@ public sealed partial class Damageable : Area2D {
 		if (!CanTakeDamage(damageInstance)) 
 			return;
 
-		// This is for shielding. Make sure to deal with damage that goes thru  shields tho
+		// This is for shielding. Make sure to deal with damage that goes thru shields tho
 		if (BlocksDamage) {
 			DamagedBlocked?.Invoke(damageInstance);
 			return;

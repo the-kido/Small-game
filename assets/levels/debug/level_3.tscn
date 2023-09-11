@@ -45,6 +45,7 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
 position = Vector2(214, 144)
+moveSpeed = 0
 
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(214, 14)

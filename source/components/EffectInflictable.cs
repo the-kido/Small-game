@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Actors;
 using Game.Damage;
 
@@ -17,6 +18,8 @@ public partial class EffectInflictable : Node {
         for (int i = 0; i < statusEffects.Count; i++)
             RemoveEffect(statusEffects[i]);
     }
+    
+    public bool HasEffect(Type effectType) => statusEffects.Any(effect => effect.GetType() == effectType);
 
     private Actor actor;
     public void Init(Actor actor) {
@@ -41,20 +44,19 @@ public partial class EffectInflictable : Node {
         }
     }
 
-    private bool EffectIsAllowed(ActorStatus statusEffect) {
+    private bool EffectIsAllowed(ActorStatus newEffect) {
         //Add a way to override effects. Should it prioritize strenght? Maybe I must enforce a value for the "strenght"
         //Of the effect?
 
         //TODO: Temporary solution: If the name is the same, don't add it again.
 
-        foreach (ActorStatus effect in statusEffects) {
-            if (statusEffect.ToString() == effect.ToString()) return false;
+        foreach (ActorStatus otherEffect in statusEffects) {
+            if (newEffect.ToString() == otherEffect.ToString() || otherEffect.ConvertsTo is null) 
+                return false;
 
-            //Idk why this does the thing it does but this is null sometimes?
-            if (effect.incompatibles is null) continue;
-
-            foreach (string incompatible in effect.incompatibles) {
-                if (statusEffect.ToString() == incompatible) return false;
+            foreach (ConvertsTo incompatible in otherEffect.ConvertsTo) {
+                if (newEffect.ToString() == incompatible.type.ToString()) 
+                    return false;
             }
         }
 
@@ -62,22 +64,26 @@ public partial class EffectInflictable : Node {
     }
     
     public void Add(ActorStatus effectInstance, bool IsPermanent = false) {
-        
         // if there's an effect which is a conversion of an effect already here 
         // i.e there's water and we're tryna add fire
         // then we don't add the fire, but instead let the fire damage the water until
         // it replaces it. 
 
-        if (effectInstance is null) return;
+        if (effectInstance is null || !EffectIsAllowed(effectInstance))
+            return;
 
-        if (!EffectIsAllowed(effectInstance)) return;
-
-        statusEffects.Add(effectInstance);
-        effectInstance.Init(actor);
-        effectInstance.Reset();
+        InitializeEffect(effectInstance);
 
         if (IsPermanent)
             effectInstance.MakePermanent();
+    }
+
+    private void InitializeEffect(ActorStatus effectInstance) {
+        statusEffects.Add(effectInstance);
+        effectInstance.AttachActor(actor);
+
+        effectInstance.Init();
+        effectInstance.Reset();
     }
 
     //Called from the actor this is attached to.
@@ -85,35 +91,43 @@ public partial class EffectInflictable : Node {
         
         foreach (ActorStatus effect in statusEffects.ToArray()) {
             effect.UpdateTimer(delta);
-            effect.Update(actor, delta);
-
-            foreach (ConvertsTo convertsTo in effect.opposites) {
-                if (convertsTo.Progress >= 10) {
-                    RemoveEffect(effect);
-                    Add(convertsTo.goTo);
-                }
-            }
+            effect.Update(delta);
 
             if (effect.EffectCountdown < 0 && !effect.IsPermanent)
                 RemoveEffect(effect);
+
+            if (effect.ConvertsTo is not null) {
+                foreach (ConvertsTo convertsTo in effect.ConvertsTo) {
+                    if (convertsTo.Progress >= 10) {
+                        RemoveEffect(effect);
+                        Add(convertsTo.goTo);
+                    }
+                }
+            }
         }
     }
     private void RemoveEffect(ActorStatus statusEffect) {
-        statusEffect.Disable(actor);
+        statusEffect.Disable();
         statusEffects.Remove(statusEffect);
     }
 }
 
 public abstract partial class ActorStatus {
 
+    protected Actor actorAttachedTo;
+
     public abstract float Duration {get; protected set;}
     public bool IsPermanent => Duration < 0;
-    public abstract void Update(Actor actor, double delta);
-    public abstract void Init(Actor actor);
-    public abstract void Disable(Actor actor);
 
-    public abstract ConvertsTo[] opposites {get; init;}
-    public abstract string[] incompatibles {get; init;}
+    public void AttachActor(Actor actor) => actorAttachedTo = actor;
+    
+    public virtual void Update(double delta) {}
+    public abstract void Init();
+    public abstract void Disable();
+    public virtual int GetEffectSynergyDamageBonus() => 0;
+
+    public abstract ConvertsTo[] ConvertsTo {get; init;}
+    public abstract Type[] Incompatibles {get; init;}
 
     public double EffectCountdown => Duration - effectTime;
     
@@ -132,11 +146,15 @@ public abstract partial class ActorStatus {
     }
     
     public void OnDamaged(DamageInstance damage) {
-        for (int i = 0; i < opposites.Length; i++) {
-            if (damage.statusEffect is null) continue;
+        if (ConvertsTo is null) 
+            return;
+        
+        for (int i = 0; i < ConvertsTo.Length; i++) {
+            if (damage.statusEffect is null) 
+                continue;
             
-            if (damage.statusEffect.GetType() == opposites[i].type) {
-                opposites[i].IncreaseProgress(damage.damage);
+            if (damage.statusEffect.GetType() == ConvertsTo[i].type) {
+                ConvertsTo[i].IncreaseProgress(damage.damage);
                 return;
             }
         } 
@@ -145,7 +163,7 @@ public abstract partial class ActorStatus {
 
 public abstract class PermanentStatus : ActorStatus {
     // Close Update so that it cannot be edited.
-    public override void Update(Actor actor, double delta) {}
+    public override void Update(double delta) {}
 
     public override float Duration {get; protected set;} = -1;
 }

@@ -1,6 +1,7 @@
 using Godot;
 using Game.Damage;
 using Game.Bullets;
+using Game.ActorStatuses;
 
 public partial class WeirdGun : Gun {
     public override Type WeaponType {get; protected set;} = Type.InstantShot;
@@ -8,7 +9,10 @@ public partial class WeirdGun : Gun {
     public static PackedScene PackedSceneResource {get; set;} = ResourceLoader.Load<PackedScene>("res://source/weapons/WeirdGun.tscn");
     public override PackedScene PackedScene => PackedSceneResource;
 
-    protected override DamageInstance Damage => new(Player) {damage = 1};
+    protected override DamageInstance Damage => new(Player) {
+        damage = 1, 
+        statusEffect = new WetStatus()
+    };
 
     public override string Description => 
     $@"I don't even know man
