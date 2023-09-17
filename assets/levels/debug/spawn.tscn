@@ -62,12 +62,15 @@ script = ExtResource("7_6y6ar")
 
 [node name="Chest" parent="." instance=ExtResource("9_f61de")]
 position = Vector2(361, 379)
+chestLootTable = 0
 
 [node name="Chest2" parent="." instance=ExtResource("9_f61de")]
-position = Vector2(602, 791)
+position = Vector2(236, 479)
+chestLootTable = 0
 
 [node name="Chest3" parent="." instance=ExtResource("9_f61de")]
 position = Vector2(997, 821)
+chestLootTable = 0
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(495, 479)

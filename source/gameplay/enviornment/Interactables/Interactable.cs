@@ -2,6 +2,7 @@ using System;
 using Godot;
 using KidoUtils;
 using Game.Players;
+using System.Collections.Generic;
 
 namespace Game.LevelContent;
 
@@ -25,20 +26,27 @@ public sealed partial class Interactable : AnimatedSprite2D {
     }
 
     // NOTE: This will 100% break when there are several players
+
+
+    // Currently does not support many players. Or does it?
+    static readonly List<Interactable> interactedWith = new();
     private void OnBodyEntered(Node2D body) {
         if (body is Player player) {
-            SetIndicatorVisibility(player, true);
-            AttachEvent(player, true);
+            interactedWith.Add(this);
+            Enable(player, true);
         }
+    }
+    private void Enable(Player player, bool enable) {
+        SetIndicatorVisibility(player, enable);
+        AttachEvent(player, enable);
     }
 
     private void OnBodyExited(Node2D body) {
         if (body is Player player) {
-            SetIndicatorVisibility(player, false);
-            AttachEvent(player, false);
+            interactedWith.Remove(this);
+            Enable(player, false);
         }
     }
-
 	public override void _Ready() {
         // Enforce the proper layers
         range.CollisionLayer = (uint) Layers.Environment;

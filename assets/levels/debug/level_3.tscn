@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_51kbw"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="8_5mkwa"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="9_mgbxg"]
-[ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/door.tscn" id="10_hj2w4"]
+[ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/normal_door.tscn" id="10_hj2w4"]
 [ext_resource type="PackedScene" uid="uid://dafgd73bj50my" path="res://assets/misc/player_manager.tscn" id="11_hjbvo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="11_wydy7"]
 
@@ -45,7 +45,6 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
 position = Vector2(214, 144)
-moveSpeed = 0
 
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(214, 14)
@@ -62,6 +61,7 @@ script = ExtResource("11_wydy7")
 nextLevel = "res://assets/levels/debug/level_2.tscn"
 
 [node name="Player Manager" parent="Y Sort/Gameplay" instance=ExtResource("11_hjbvo")]
+position = Vector2(338, 86)
 
 [node name="Decor" parent="Y Sort" instance=ExtResource("3_37we6")]
 

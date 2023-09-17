@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dvp5o73q03vs5"]
+[gd_scene load_steps=21 format=3 uid="uid://dvp5o73q03vs5"]
 
 [ext_resource type="Script" path="res://source/gui/GUI.cs" id="1_7vbvm"]
 [ext_resource type="PackedScene" uid="uid://crdkmn1ouh8k2" path="res://hud.tscn" id="2_ckuxr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://source/gui/menus/ReviveMenu.cs" id="5_kdcv6"]
 [ext_resource type="Script" path="res://source/gui/menus/ChestMenu.cs" id="6_iybjn"]
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="7_8aqmd"]
+[ext_resource type="Script" path="res://source/types/HoverButton.cs" id="8_3gbio"]
 [ext_resource type="Script" path="res://source/gui/menus/PlayerClassMenu.cs" id="8_d8fj3"]
 [ext_resource type="Script" path="res://source/gui/hud/DebugHUD.cs" id="8_or5hb"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_1eh1k"]
@@ -330,7 +331,6 @@ libraries = {
 }
 
 [node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemOverview", "itemDecription", "newItemDescription", "newItemImage", "itemPreviews", "switchItemButton", "closeButton")]
-visible = false
 layout_mode = 3
 anchor_left = 0.11
 anchor_top = 0.11
@@ -431,7 +431,7 @@ offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="1" type="ColorRect" parent="ChestMenu/Item Preview"]
+[node name="1" type="ColorRect" parent="ChestMenu/Item Preview" node_paths=PackedStringArray("controlShownOnHover")]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.23
@@ -440,6 +440,8 @@ offset_right = 0.309998
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12549, 0.12549, 0.12549, 1)
+script = ExtResource("8_3gbio")
+controlShownOnHover = NodePath("../../Item Stats Overview")
 
 [node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/1"]
 layout_mode = 1
@@ -449,7 +451,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="2" type="ColorRect" parent="ChestMenu/Item Preview"]
+[node name="2" type="ColorRect" parent="ChestMenu/Item Preview" node_paths=PackedStringArray("controlShownOnHover")]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.23
@@ -459,6 +461,8 @@ offset_right = 312.31
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12549, 0.12549, 0.12549, 1)
+script = ExtResource("8_3gbio")
+controlShownOnHover = NodePath("../../Item Stats Overview")
 
 [node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/2"]
 layout_mode = 1
@@ -468,7 +472,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="3" type="ColorRect" parent="ChestMenu/Item Preview"]
+[node name="3" type="ColorRect" parent="ChestMenu/Item Preview" node_paths=PackedStringArray("controlShownOnHover")]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.23
@@ -478,6 +482,8 @@ offset_right = 610.31
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12549, 0.12549, 0.12549, 1)
+script = ExtResource("8_3gbio")
+controlShownOnHover = NodePath("../../Item Stats Overview")
 
 [node name="Image" type="TextureRect" parent="ChestMenu/Item Preview/3"]
 layout_mode = 1

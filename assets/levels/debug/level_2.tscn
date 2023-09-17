@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="7_nm5at"]
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/LevelSwitcher.cs" id="9_x5ao3"]
-[ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/door.tscn" id="9_y0vey"]
+[ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/normal_door.tscn" id="9_y0vey"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/regions/FallingArea.cs" id="10_bqs4e"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="13_472v1"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
@@ -78,7 +78,6 @@ position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
-moveSpeed = 0
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(907, 670)

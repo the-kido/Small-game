@@ -99,6 +99,13 @@ public partial class Level : Node, ISaveable {
         bool valueRecieved = LevelCompletions.TryGetValue(CurrentLevel.SaveName, out bool levelWon);
         return valueRecieved && levelWon;
     }
+
+    /// <summary>
+    /// Is required for static mechanics which are relative to the scope of a level.
+    /// I.E Interactables are contained within a level and need to update per frame the level is awake
+    /// </summary>
+    public static event Action LevelProcessedFrame;
+    public override void _Process(double delta) => LevelProcessedFrame?.Invoke(); 
 }
 
 public class LastLevelPlayedSaver : ISaveable {

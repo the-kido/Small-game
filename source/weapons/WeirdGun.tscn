@@ -5,12 +5,16 @@
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="3_v7rhi"]
 
 [node name="WeirdGun" type="Node2D" node_paths=PackedStringArray("nuzzle", "sprite")]
+z_as_relative = false
+y_sort_enabled = true
 script = ExtResource("1_pl0pq")
 bulletAsset = ExtResource("2_uqtse")
 nuzzle = NodePath("Nuzzle")
 sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_as_relative = false
+y_sort_enabled = true
 rotation = 1.57079
 scale = Vector2(4.89195, 4.98834)
 texture = ExtResource("3_v7rhi")

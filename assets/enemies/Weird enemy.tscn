@@ -233,7 +233,6 @@ scale = Vector2(2.364, 2.408)
 collision_layer = 4
 collision_mask = 8
 Health = 10
-ImmunityFrames = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 shape = SubResource("RectangleShape2D_0m8x3")

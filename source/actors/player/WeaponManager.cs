@@ -109,6 +109,8 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     private void AddWeapon(Weapon newWeapon, int slot) {
         RemoveWeapon(slot); // Remove whatever is currently there.
 
+        newWeapon.DoSafetyChecks();
+        
         newWeapon.Init(this, slot);
         
 		AddChild(newWeapon);

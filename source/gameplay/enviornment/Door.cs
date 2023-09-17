@@ -55,7 +55,7 @@ public partial class Door : Area2D {
             return;
 
         opened = true;
-        doorSprite.Play("default");
+        doorSprite.Play("open");
     }
     
     string tempName;
@@ -73,6 +73,6 @@ public partial class Door : Area2D {
 
     // TODO: Replace with method in animationplayer instead.
 	public override void _Process(double delta) {
-        if (doorSprite.Frame + 1 == doorSprite.SpriteFrames.GetFrameCount("default")) doorSprite.Pause();
+        if (doorSprite.Frame + 1 == doorSprite.SpriteFrames.GetFrameCount("open")) doorSprite.Pause();
 	}
 }

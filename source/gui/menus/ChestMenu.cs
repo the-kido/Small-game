@@ -158,6 +158,9 @@ public partial class ChestMenu : Control, IMenu {
         }
     }
     
-    public void Close() => Visible = false;
+    public void Close() {
+        Visible = false;
+        
+    }
 }
 

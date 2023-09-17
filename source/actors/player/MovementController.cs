@@ -1,10 +1,12 @@
 using Godot;
 using Game.Players.Inputs;
+using System;
 
 namespace Game.Players;
 
 public partial class MovementController : Node {
 	public const int CORNER_CORRECTION_RANGE = 25;
+	public event Action PlayerMoved;
 
 	[Export]
 	private AnimationTree playerAnimationTree;
@@ -46,6 +48,7 @@ public partial class MovementController : Node {
 			player.Translate(GetCornerCorrectionOffset(normalizedInput));
 		
 		PlayMovementAnimations(GetPlayerIsMoving());
+		PlayerMoved?.Invoke();
 	}
 
 	// I hope to god I never touch this code ever again

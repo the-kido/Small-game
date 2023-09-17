@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="5_3ebte"]
 [ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
 [ext_resource type="Script" path="res://source/actors/player/ShieldManager.cs" id="8_kpbfh"]
-[ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="8_spu4k"]
+[ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="8_spu4k"]
 [ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="11_laf6i"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
@@ -689,6 +689,8 @@ position = Vector2(0, 20)
 script = ExtResource("8_kpbfh")
 
 [node name="Hand" type="Node2D" parent="." node_paths=PackedStringArray("reloadVisual")]
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(0, 20)
 script = ExtResource("2_v0jdn")
 reloadVisual = NodePath("../On Player HUD/Reload Visual")

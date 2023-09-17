@@ -81,15 +81,18 @@ blend_point_3/pos = Vector2(-0.1, -1)
 blend_mode = 1
 
 [node name="Base Gun" type="Node2D" node_paths=PackedStringArray("nuzzle", "sprite")]
+z_as_relative = false
+y_sort_enabled = true
 script = ExtResource("1_d7w4p")
 bulletAsset = ExtResource("2_6x1e6")
 nuzzle = NodePath("Nuzzle")
 sprite = NodePath("Sprite")
 UsesReloadVisuals = true
-ReloadSpeed = 2.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 z_index = 2
+z_as_relative = false
+y_sort_enabled = true
 position = Vector2(22, 0)
 scale = Vector2(7.16, 7.16)
 texture = ExtResource("2_e4ea4")

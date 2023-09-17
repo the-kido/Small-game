@@ -71,5 +71,9 @@ public abstract partial class Weapon : Node2D, IChestItem {
 		//Hold to shoot stronger
 		HoldToCharge,
 	}
+
+	public void DoSafetyChecks() {
+		KidoUtils.ErrorUtils.AvoidImproperOrdering(this);
+	}
 }
 
