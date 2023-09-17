@@ -17,8 +17,10 @@ public partial class ChestMenu : Control, IMenu {
 
     [Export]
     private AnimationPlayer animationPlayer;
-    [Export]
-    private Control itemOverview;
+    
+    // [Export]
+    // private Control itemOverview;
+    
     [Export] 
     private RichTextLabel itemDecription;
     
@@ -39,11 +41,6 @@ public partial class ChestMenu : Control, IMenu {
     /// </summary>
     public event Action<int> OnSelectionMade;
     
-    private int? selectedIndex = null;
-    private int? previewedIndex = null;
-    private bool hoveringWithinStatsOverview = false;
-    private bool freezeStatOverview = false;
-    
     private Player viewer;
     
     private ColorRect PreviewPanel(int index) => itemPreviews.GetChild<ColorRect>(index);
@@ -51,58 +48,32 @@ public partial class ChestMenu : Control, IMenu {
  
     public override void _Ready() {
         closeButton.Pressed += () => Disable?.Invoke();
-        switchItemButton.Pressed += SelectionMade;
 
         // Make it so that hovering over the items in the GUI will show the statistics
         var children = itemPreviews.GetChildren();
         
-        foreach (ColorRect child in itemPreviews.GetChildren().Cast<ColorRect>()) {
-            child.MouseEntered += () => previewedIndex = int.Parse(child.Name) - 1;
-            child.MouseExited += () => previewedIndex = null;
+        foreach (HoverButton child in itemPreviews.GetChildren().Cast<HoverButton>()) {
+            int index = int.Parse(child.Name) - 1;
+
+            child.SelectionMade += () => SelectionMade(index); 
+            child.BeingInspected += () => UpdateItemPreview(index);
         }
-        
-        itemOverview.MouseEntered += () => hoveringWithinStatsOverview = true;
-        itemOverview.MouseExited += () => hoveringWithinStatsOverview = false;
     }
 
-    private void SelectionMade() {
-        OnSelectionMade?.Invoke(selectedIndex ?? -1);
+    private void SelectionMade(int selectedIndex) {
+        OnSelectionMade?.Invoke(selectedIndex);
         Disable?.Invoke();
     }
 
-    public override void _Process(double delta) {
-
-        if (freezeStatOverview) {
-            itemOverview.MouseFilter = MouseFilterEnum.Stop;
-            if (!hoveringWithinStatsOverview && previewedIndex is null) freezeStatOverview = false;
-            else return;
-        }
-        else{
-            itemOverview.MouseFilter = MouseFilterEnum.Ignore;
-        }
-        if (hoveringWithinStatsOverview) return;
-
-        if (previewedIndex != null) {
-            UpdateItemPreview();
-            itemOverview.GlobalPosition = GetGlobalMousePosition();
-        }
-        else {
-            itemOverview.Visible = false;
-        }
-    }
-
-    private void UpdateItemPreview() {
+    private void UpdateItemPreview(int index) {
         switch (inspectedItem.Type) {
             case ChestItemType.WEAPON:
-                if (viewer.WeaponManager.GetWeapon(previewedIndex ?? 0) is not null) {
-                    itemOverview.Visible = true;
-                    itemDecription.Text = viewer.WeaponManager.GetWeapon(previewedIndex ?? 0).Description;
+                if (viewer.WeaponManager.GetWeapon(index) is not null) {
+                    itemDecription.Text = viewer.WeaponManager.GetWeapon(index).Description;
                 }
-                
                 break;
             case ChestItemType.SHIELD:
                 if (viewer.ShieldManager.HeldShield is not null) {
-                    itemOverview.Visible = true;
                     itemDecription.Text = viewer.ShieldManager.HeldShield.Description;
                 }
                 break;
@@ -110,30 +81,19 @@ public partial class ChestMenu : Control, IMenu {
     }
     
     public void Enable(Player player) {
-
-        // reset values
-        hoveringWithinStatsOverview = false;
-        selectedIndex = null;
-        previewedIndex = null;
-
         viewer = player;
         Visible = true;
-
-        player.InputController.LeftClicked += FreezeStatOverview;
 
         // Hide all of the preview images such that a selected few will change later
         for (int i = 0; i < 3; i++)
             PreviewPanel(i).Visible = false;
+
+        foreach (HoverButton hoverButton in itemPreviews.GetChildren()) {
+            hoverButton.Init(player);
+        }
         
         Disable = null;
         OnSelectionMade = null;
-    }
-    
-    private void FreezeStatOverview() {
-        if (previewedIndex != null) {
-            selectedIndex = previewedIndex;
-            freezeStatOverview = true;
-        }
     }
     
     IChestItem inspectedItem;
@@ -160,7 +120,9 @@ public partial class ChestMenu : Control, IMenu {
     
     public void Close() {
         Visible = false;
-        
+        foreach (HoverButton child in itemPreviews.GetChildren().Cast<HoverButton>()) {
+            child.Close(viewer);
+        }
     }
 }
 

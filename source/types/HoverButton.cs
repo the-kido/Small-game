@@ -7,11 +7,12 @@ public partial class HoverButton : ColorRect {
     Control controlShownOnHover;
 
     public event Action SelectionMade;
+    public event Action BeingInspected;
+    
 
     public void Init(Player player) {
         player.InputController.LeftClicked += OnLeftClicked;
     }
-
     public void Close(Player player) {
         player.InputController.LeftClicked -= OnLeftClicked;
     }
@@ -39,8 +40,12 @@ public partial class HoverButton : ColorRect {
     bool showingControl = false;
     private void ShowHoverControl() {
         showingControl = true;
+        controlShownOnHover.Visible = true;
+        BeingInspected?.Invoke();
     }
+    
     private void HideHoverControl() {
         showingControl = false;
+        controlShownOnHover.Visible = false;
     }
 }

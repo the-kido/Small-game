@@ -57,7 +57,7 @@ texture = ExtResource("8_osgkk")
 position = Vector2(-2, -86)
 
 [node name="Player Manager" type="Node2D" parent="."]
-position = Vector2(282, 503)
+position = Vector2(714, 799)
 script = ExtResource("7_6y6ar")
 
 [node name="Chest" parent="." instance=ExtResource("9_f61de")]

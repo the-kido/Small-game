@@ -330,7 +330,8 @@ libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
 
-[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemOverview", "itemDecription", "newItemDescription", "newItemImage", "itemPreviews", "switchItemButton", "closeButton")]
+[node name="ChestMenu" type="Control" parent="." node_paths=PackedStringArray("itemDecription", "newItemDescription", "newItemImage", "itemPreviews", "switchItemButton", "closeButton")]
+visible = false
 layout_mode = 3
 anchor_left = 0.11
 anchor_top = 0.11
@@ -343,7 +344,6 @@ offset_bottom = -0.200073
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("6_iybjn")
-itemOverview = NodePath("Item Stats Overview")
 itemDecription = NodePath("Item Stats Overview/RichTextLabel")
 newItemDescription = NodePath("New Item Description/Text Description")
 newItemImage = NodePath("New Item Description/Image")
@@ -500,6 +500,7 @@ anchors_preset = -1
 anchor_right = 0.209
 offset_bottom = 127.0
 scale = Vector2(1.19595, 1.19595)
+mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ChestMenu/Item Stats Overview"]
@@ -652,8 +653,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_right = 5760.0
+offset_bottom = 3240.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_l0a7d")
