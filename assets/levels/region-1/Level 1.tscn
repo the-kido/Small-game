@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3 uid="uid://btphvdanxlgi3"]
+
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
+[ext_resource type="TileSet" uid="uid://gqbewfy6k5vq" path="res://assets/levels/region-1/new_tile_set.tres" id="2_jmklh"]
+[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="2_p4x51"]
+[ext_resource type="PackedScene" uid="uid://efpfsnuwlefm" path="res://assets/enviornment/decor/lights/dungeon_lamp.tscn" id="4_fu4ew"]
+[ext_resource type="TileSet" uid="uid://bu5uqnxeukvqv" path="res://assets/levels/region-3/region_3_tileset.tres" id="4_n7dsy"]
+[ext_resource type="Texture2D" uid="uid://beycrukxt85vd" path="res://assets/sprites/enviornment/tilemaps/skull_two.png" id="5_i682j"]
+[ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="6_tqm1w"]
+[ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="7_ff2ca"]
+[ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="8_3vv2j"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qj1ud"]
+
+[node name="Level 1" type="Node"]
+
+[node name="Level" type="Node" parent="."]
+script = ExtResource("1_53p3x")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Ambient Occlusion" type="TileMap" parent="Node"]
+scale = Vector2(3, 3)
+tile_set = ExtResource("2_p4x51")
+format = 2
+layer_0/tile_data = PackedInt32Array(196608, 0, 0, 196609, 65536, 0, 196610, 65536, 0, 196611, 65536, 0, 196612, 65536, 0, 196613, 131072, 0, 8, 0, 0, 9, 131072, 0, 65545, 131072, 1, 131081, 131072, 1, 196617, 131072, 1, 262153, 131072, 1, 327689, 131072, 1, 393225, 131072, 1, 458761, 131072, 1, 131072, 1, 0, 131073, 65537, 0, 131074, 65537, 0, 131075, 65537, 0, 131076, 65537, 0, 131077, 65537, 0, 65536, 0, 1, 458752, 0, 1, 393216, 0, 1, 327680, 0, 1, 262144, 0, 1, -65528, 65537, 0, -65527, 131073, 0, -131063, 131072, 1, 262149, 131072, 1, 327685, 327680, 0, 327688, 262144, 0, 327686, 65536, 0, 327687, 65536, 0, 262152, 0, 1, 196616, 0, 1, 131080, 0, 1, 65544, 0, 1, 262150, 65537, 0, 262151, 65537, 0)
+
+[node name="TileMap" type="TileMap" parent="Node"]
+scale = Vector2(3, 3)
+tile_set = ExtResource("2_jmklh")
+format = 2
+layer_0/z_index = -10
+layer_0/tile_data = PackedInt32Array(196608, 4, 0, 196609, 4, 0, 196610, 4, 0, 196611, 3, 0, 196612, 3, 0, 196613, 3, 0, 196614, 5, 0, 196615, 5, 0, 7, 131074, 1, 8, 4, 0, 9, 4, 0, 65545, 4, 0, 65544, 4, 0, 131080, 4, 0, 196616, 3, 0, 131081, 3, 0, 196617, 3, 0, 262153, 3, 0, 327689, 3, 0, 393225, 4, 0, 458761, 4, 0, 458760, 4, 0, 458759, 3, 0, 458758, 1, 0, 458757, 131087, 2, 393220, 65551, 1, 393219, 65551, 1, 393218, 65551, 1, 458754, 65551, 2, 458753, 15, 2, 458752, 3, 0, 393216, 3, 0, 327680, 3, 0, 262144, 4, 0, 262145, 15, 0, 327681, 15, 1, 393217, 15, 1, 458755, 65551, 2, 458756, 65551, 2, 393221, 131087, 1, 327685, 131087, 1, 327684, 65551, 1, 327683, 65551, 1, 262147, 65551, 0, 262146, 65551, 0, 327682, 65551, 1, 327686, 3, 0, 327687, 1, 0, 262150, 5, 0, 262149, 131087, 0, 262148, 65551, 0, 327688, 1, 0, 393224, 1, 0, 393223, 1, 0, 262151, 5, 0, 262152, 1, 0, 393222, 4, 0, 131072, 5, 0, 65536, 5, 0, 65537, 5, 0, 131073, 5, 0, 131074, 12, 0, 65538, 12, 0, 65539, 11, 0, 65540, 12, 0, 65541, 11, 0, 131077, 11, 0, 131076, 11, 0, 131075, 11, 0, 131078, 2, 2, -65529, 131074, 1, -131064, 11, 0, -65528, 11, 0, -131063, 11, 0, -65527, 11, 0, 0, 65538, 2, 1, 65538, 2, 2, 65538, 2, 3, 65538, 2, 4, 65538, 2, 5, 65538, 2, -196600, 65538, 2, -196599, 65538, 2, 65542, 2, 1, 131079, 131074, 2, 65543, 131074, 1, 6, 131074, 3, -131065, 131074, 1, -196601, 196610, 3, -196598, 131074, 3, -131062, 2, 1, -65526, 2, 1, 10, 2, 1, 65546, 2, 1, 131082, 2, 1, 196618, 2, 1, 262154, 2, 1, 327690, 2, 1, 393226, 2, 1, 458762, 2, 1, 524298, 2, 3, 524296, 65538, 0, 524295, 65538, 0, 524294, 65538, 0, 524293, 65538, 0, 524292, 65538, 0, 524297, 65538, 0, 524291, 65538, 0, 524290, 65538, 0, 524289, 65538, 0, 524288, 65538, 0, 589823, 65538, 3, 524287, 131074, 1, 458751, 131074, 1, 393215, 131074, 1, 327679, 131074, 1, 262143, 131074, 1, 196607, 131074, 1, 131071, 131074, 1, 65535, 196610, 3)
+
+[node name="test" type="TileMap" parent="Node"]
+scale = Vector2(3, 3)
+tile_set = ExtResource("2_jmklh")
+format = 2
+layer_0/z_index = -6
+layer_0/tile_data = PackedInt32Array(65538, 14, 0, 131074, 14, 0, 196610, 8, 0, 524292, 6, 0, 458756, 6, 0, 131073, 13, 0, 65537, 13, 0)
+
+[node name="test2" type="TileMap" parent="Node"]
+scale = Vector2(-3, 3)
+tile_set = ExtResource("2_jmklh")
+format = 2
+layer_0/tile_data = PackedInt32Array(524292, 6, 0, 458756, 6, 0, 262137, 7, 0, 327673, 6, 0, 393209, 8, 0, 65527, 10, 0)
+
+[node name="TileMap2" type="TileMap" parent="Node"]
+tile_set = ExtResource("4_n7dsy")
+format = 2
+layer_0/tile_data = PackedInt32Array(65534, 0, 0, 65533, 0, 0, 131069, 1, 0, 131070, 1, 0, 131071, 1, 0, 0, 0, 0, -65536, 2, 0, -1, 2, 0, -2, 2, 0, 65536, 1, 0, 65537, 1, 0, 65535, 0, 0, -3, 2, 0, 1, 0, 0, -65535, 2, 0, 131068, 1, 0, 196604, 2, 0, 196605, 2, 0, 196606, 2, 0, 196607, 2, 0, 131072, 2, 0, 131073, 2, 0, 65538, 1, 0, 65532, 0, 0, -4, 2, 0, 2, 0, 0, 3, 0, 0, 65539, 1, 0, 131074, 2, 0, 131075, 2, 0, -65533, 2, 0, -65534, 2, 0)
+
+[node name="dungeon_lamp" parent="." instance=ExtResource("4_fu4ew")]
+position = Vector2(207, 75)
+
+[node name="SkullTwo" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_qj1ud")
+position = Vector2(69, 171)
+scale = Vector2(3, 3)
+texture = ExtResource("5_i682j")
+
+[node name="Chandelier" parent="." instance=ExtResource("6_tqm1w")]
+position = Vector2(178, 162)
+
+[node name="PlayerManager" type="Node2D" parent="."]
+position = Vector2(266, 350)
+script = ExtResource("7_ff2ca")
+
+[node name="Camera" parent="." node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
+scale = Vector2(1.62912, 1.62912)
+tileMap = NodePath("../Node/TileMap")

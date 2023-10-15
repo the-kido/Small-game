@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://efpfsnuwlefm"]
+
+[ext_resource type="Texture2D" uid="uid://blvl8uok84lyl" path="res://assets/sprites/enviornment/tilemaps/k.png" id="1_u6fr3"]
+[ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/light.png" id="2_5agsm"]
+
+[node name="dungeon_lamp" type="Node2D"]
+
+[node name="K" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_u6fr3")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 0.831373, 0.521569, 1)
+energy = 1.33
+texture = ExtResource("2_5agsm")

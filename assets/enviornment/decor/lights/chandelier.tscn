@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://71nxoi2lr7ne"]
+
+[ext_resource type="Texture2D" uid="uid://e70kjdjiev8p" path="res://assets/sprites/enviornment/tilemaps/chandelier.png" id="1_8rqes"]
+[ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/light.png" id="2_qg0cy"]
+
+[node name="Chandelier" type="Node2D"]
+z_index = 10
+
+[node name="Chandelier" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_8rqes")
+
+[node name="Main light" type="PointLight2D" parent="."]
+position = Vector2(3, 95)
+scale = Vector2(2.99298, 1.78153)
+color = Color(1, 1, 0.584314, 1)
+energy = 2.9
+texture = ExtResource("2_qg0cy")
