@@ -11,57 +11,57 @@ namespace Game.Players;
 
 public sealed partial class Player : Actor {
 
-    [ExportCategory("Required")]
-    [Export]
-    public PlayerInteractableRadar InteractableRadar {get; private set;}
-    [Export]
-    public InputController InputController {get; private set;}
-    [Export]
-    public WeaponManager WeaponManager;
-    [Export]
-    public ShieldManager ShieldManager;
+	[ExportCategory("Required")]
+	[Export]
+	public PlayerInteractableRadar InteractableRadar {get; private set;}
+	[Export]
+	public InputController InputController {get; private set;}
+	[Export]
+	public WeaponManager WeaponManager;
+	[Export]
+	public ShieldManager ShieldManager;
 
-    [ExportCategory("Optional")]
-    [Export]
-    private AudioStreamPlayer2D epicSoundEffectPlayer;
+	[ExportCategory("Optional")]
+	[Export]
+	private AudioStreamPlayer2D epicSoundEffectPlayer;
 
-    public GUI GUI {get; private set;}
-    public static List<Player> Players {get; private set;}
-    
-    protected override void SetStats(ActorStats newStats) {
-        base.SetStats(newStats);
+	public GUI GUI {get; private set;}
+	public static List<Player> Players {get; private set;}
+	
+	protected override void SetStats(ActorStats newStats) {
+		base.SetStats(newStats);
 
-        // Additional things for player
-        WeaponManager.reloadSpeed = newStats.reloadSpeed;
-    }
-    
-    public PlayerClassManager classManager;
+		// Additional things for player
+		WeaponManager.reloadSpeed = newStats.reloadSpeed;
+	}
+	
+	public PlayerClassManager classManager;
 
-    public void Init() {
-        _Ready();
-        Players = new() { this };
-        GUI = Utils.GetPreloadedScene<GUI>(this, PreloadedScene.GUI);
-        
-        classManager = new(this);
+	public void Init() {
+		_Ready();
+		Players = new() { this };
+		GUI = Utils.GetPreloadedScene<GUI>(this, PreloadedScene.GUI);
+		
+		classManager = new(this);
 
-        Camera.currentCamera.Init(this);
-        
-        InputController.Init(this);
-        
-        WeaponManager.Init(this);
-        ShieldManager.Init(this);
+		Camera.currentCamera.Init(this);
+		
+		InputController.Init(this);
+		
+		WeaponManager.Init(this);
+		ShieldManager.Init(this);
 
-        GUI.Init(this);
+		GUI.Init(this);
 
-        PlayerDeathHandler playerDeathHandler = new(this);
+		PlayerDeathHandler playerDeathHandler = new(this);
 
-        DamageableComponent.OnDamaged += playerDeathHandler.DamageFramePause;
-        DamageableComponent.TotalDamageTaken += RunData.AllData[RunDataEnum.DamageTaken].Add;
-        DamageableComponent.OnDeath += playerDeathHandler.OnDeath;
+		DamageableComponent.OnDamaged += playerDeathHandler.DamageFramePause;
+		DamageableComponent.TotalDamageTaken += RunData.AllData[RunDataEnum.DamageTaken].Add;
+		DamageableComponent.OnDeath += playerDeathHandler.OnDeath;
 
-        classManager.SwitchClassFromSave();
-    }
+		classManager.SwitchClassFromSave();
+	}
 
-    private void SetProcessMode(bool enable) =>
-        ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+	private void SetProcessMode(bool enable) =>
+		ProcessMode = enable ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
 }

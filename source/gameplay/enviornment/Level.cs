@@ -10,105 +10,105 @@ namespace Game.LevelContent;
 [GlobalClass]
 public partial class Level : Node, ISaveable {
 
-    public static event Action LevelStarted;
-    public static event Action<LevelCriteria> CriterionStarted;
+	public static event Action LevelStarted;
+	public static event Action<LevelCriteria> CriterionStarted;
 
-    public static Level CurrentLevel {get; private set;} = new();
-    public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
-    public static LevelCriteria CurrentCriterion {get; private set;}
+	public static Level CurrentLevel {get; private set;} = new();
+	public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
+	public static LevelCriteria CurrentCriterion {get; private set;}
 
-    public SaveData SaveData => new("LevelCompletions", LevelCompletions);
-    // The parent is the root of the level, so that's the name we want to save.
-    public string SaveName => GetParent().Name;
+	public SaveData SaveData => new("LevelCompletions", LevelCompletions);
+	// The parent is the root of the level, so that's the name we want to save.
+	public string SaveName => GetParent().Name;
 
-    [Export]
-    public Godot.Collections.Array<NodePath> doors = new();
-    public event Action LevelCompleted;
+	[Export]
+	public Godot.Collections.Array<NodePath> doors = new();
+	public event Action LevelCompleted;
 
-    private List<LevelCriteria> levelEvents;
+	private List<LevelCriteria> levelEvents;
 
-    public static LastLevelPlayedSaver LastLevelPlayedSaver {get; private set;}
-    public static string LastLevelFilePath {get; private set;}
-    static Level() => LastLevelPlayedSaver = new();
+	public static LastLevelPlayedSaver LastLevelPlayedSaver {get; private set;}
+	public static string LastLevelFilePath {get; private set;}
+	static Level() => LastLevelPlayedSaver = new();
 
-    public Door GetLinkedDoor(string name) {
-        
-        foreach (NodePath doorPath in doors) {
-            Door door = GetNode<Door>(doorPath);
+	public Door GetLinkedDoor(string name) {
+		
+		foreach (NodePath doorPath in doors) {
+			Door door = GetNode<Door>(doorPath);
 
-            if (door.Name == name) 
-                return door;
-        }
-        return null;
-    }
+			if (door.Name == name) 
+				return door;
+		}
+		return null;
+	}
 
-    public override void _Ready() {
-        (this as ISaveable).InitSaveable();
-        
-        levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
-        
-        LevelCompleted += GameDataService.Save;
-        
-        Change();
+	public override void _Ready() {
+		(this as ISaveable).InitSaveable();
+		
+		levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
+		
+		LevelCompleted += GameDataService.Save;
+		
+		Change();
 
-        if (!LoadCompletion())
-            CompleteAllEvents(0);
-        else
-            Complete();
-    }
+		if (!LoadCompletion())
+			CompleteAllEvents(0);
+		else
+			Complete();
+	}
 
-    // I ♥ recursion
-    private void CompleteAllEvents(int index) {
-        if (index == levelEvents.Count) {
-            Complete();
-            return;
-        }
-        
-        CurrentCriterion = levelEvents[index];
-        
-        LevelCriteria currentCriterion = levelEvents[index];
+	// I ♥ recursion
+	private void CompleteAllEvents(int index) {
+		if (index == levelEvents.Count) {
+			Complete();
+			return;
+		}
+		
+		CurrentCriterion = levelEvents[index];
+		
+		LevelCriteria currentCriterion = levelEvents[index];
 
-        currentCriterion.Finished += () => CompleteAllEvents(index + 1);
-        currentCriterion.CallDeferred("Start");
-        
-        // Because the above is a deferred call, I have to invoke CriterionStarted deferred too; we will have a race condition otherwise
-        CallDeferred("InvokeCriterionStarted", currentCriterion);
-    }
+		currentCriterion.Finished += () => CompleteAllEvents(index + 1);
+		currentCriterion.CallDeferred("Start");
+		
+		// Because the above is a deferred call, I have to invoke CriterionStarted deferred too; we will have a race condition otherwise
+		CallDeferred("InvokeCriterionStarted", currentCriterion);
+	}
 
-    private void InvokeCriterionStarted(LevelCriteria currentCriterion) =>
-        CriterionStarted?.Invoke(currentCriterion);
+	private void InvokeCriterionStarted(LevelCriteria currentCriterion) =>
+		CriterionStarted?.Invoke(currentCriterion);
 
-    private void Change() {
-        CurrentLevel = this;
-        LastLevelFilePath = CurrentLevel.GetParent().SceneFilePath; 
-        LevelStarted?.Invoke();
-    }
+	private void Change() {
+		CurrentLevel = this;
+		LastLevelFilePath = CurrentLevel.GetParent().SceneFilePath; 
+		LevelStarted?.Invoke();
+	}
 
-    private void Complete() {
-        CurrentCriterion = null;
-        LevelCompletions[SaveName] = true;
-        LevelCompleted?.Invoke();
-    }
+	private void Complete() {
+		CurrentCriterion = null;
+		LevelCompletions[SaveName] = true;
+		LevelCompleted?.Invoke();
+	}
 
-    private bool LoadCompletion() {
-        LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
-        return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
-    }
+	private bool LoadCompletion() {
+		LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
+		return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
+	}
 
-    public static bool IsCurrentLevelCompleted() {
-        bool valueRecieved = LevelCompletions.TryGetValue(CurrentLevel.SaveName, out bool levelWon);
-        return valueRecieved && levelWon;
-    }
+	public static bool IsCurrentLevelCompleted() {
+		bool valueRecieved = LevelCompletions.TryGetValue(CurrentLevel.SaveName, out bool levelWon);
+		return valueRecieved && levelWon;
+	}
 
-    /// <summary>
-    /// Is required for static mechanics which are relative to the scope of a level.
-    /// I.E Interactables are contained within a level and need to update per frame the level is awake
-    /// </summary>
-    public static event Action LevelProcessedFrame;
-    public override void _Process(double delta) => LevelProcessedFrame?.Invoke(); 
+	/// <summary>
+	/// Is required for static mechanics which are relative to the scope of a level.
+	/// I.E Interactables are contained within a level and need to update per frame the level is awake
+	/// </summary>
+	public static event Action LevelProcessedFrame;
+	public override void _Process(double delta) => LevelProcessedFrame?.Invoke(); 
 }
 
 public class LastLevelPlayedSaver : ISaveable {
-    public SaveData SaveData => new("LastLevel", Level.LastLevelFilePath);
-    public LastLevelPlayedSaver() => (this as ISaveable).InitSaveable();
+	public SaveData SaveData => new("LastLevel", Level.LastLevelFilePath);
+	public LastLevelPlayedSaver() => (this as ISaveable).InitSaveable();
 }

@@ -15,7 +15,7 @@ public partial class MainMenu : Control {
 	
 	PackedScene lastLevelLeftOff;
 	
-    public override void _Ready() {
+	public override void _Ready() {
 		gui = Utils.GetPreloadedScene<GUI>(this, PreloadedScene.GUI);
 		
 		gui.Visible = false;
@@ -27,7 +27,7 @@ public partial class MainMenu : Control {
 		};
 
 		lastLevelLeftOff = GetLastLevelLeftOff(); 
-    }
+	}
 	
 	private static PackedScene GetLastLevelLeftOff() {
 		string level = (string) (Level.LastLevelPlayedSaver as ISaveable).LoadData();
@@ -38,7 +38,7 @@ public partial class MainMenu : Control {
 		return ResourceLoader.Load<PackedScene>(level);
 	}
 
-    private void OnButtonDown() {
+	private void OnButtonDown() {
 		Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(lastLevelLeftOff);
 		SceneSwitcher.SceneSwitched += OnSceneSwitch; 
 	}

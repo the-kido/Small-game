@@ -96,7 +96,6 @@ position = Vector2(711, 577)
 [node name="Chest" parent="Node2D/Gameplay" instance=ExtResource("16_dddk7")]
 z_as_relative = false
 position = Vector2(326, 630)
-chestLootTable = 0
 
 [node name="Waves" type="Node2D" parent="Node2D"]
 z_as_relative = false
