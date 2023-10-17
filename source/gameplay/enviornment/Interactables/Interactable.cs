@@ -36,11 +36,18 @@ public sealed partial class Interactable : AnimatedSprite2D {
             return; // The _process method will deal with surplus interactables;
         }
 
+        if (interactedWith.Count == 1 || enable is false) {
+            interactedWith[0].Enable(player, true);
+        }
+        
         SetIndicatorVisibility(player, enable);
         AttachEvent(player, enable);
 
         if (enable) {
             currentEnabledInteractable = this;
+        }
+        if (!enable && interactedWith.Count <= 1) {
+            currentEnabledInteractable = null;  
         }
     }
 
@@ -83,14 +90,10 @@ public sealed partial class Interactable : AnimatedSprite2D {
 
         Interactable closestInteractable = ClosestInteractable(player);
         
-        if (closestInteractable == currentEnabledInteractable) return;
+        if (closestInteractable is null || closestInteractable == currentEnabledInteractable) return;
 
-        for (int i = 0; i < interactedWith.Count; i++) {
-            Interactable temp = interactedWith[i];
-            temp.Enable(player, false);
-        }
-        
         closestInteractable.Enable(player, true);
+        currentEnabledInteractable?.Enable(player, false);
 
     }
     
@@ -115,3 +118,18 @@ public sealed partial class Interactable : AnimatedSprite2D {
     }
 }
 
+
+
+// what do we want:
+/*
+When  a player enters 1 area, it will enable that interactable
+When a player is within 2 areas, it will start to check for which one is closer ONLY
+When a player leaves an area and there's 1 area they're still within, that area is enabled ONLY
+*/
+
+/*
+Maybe, instead, the process will deal with ALL interactable stuff
+
+
+
+*/
