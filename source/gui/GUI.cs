@@ -27,7 +27,8 @@ public partial class GUI : CanvasLayer {
 		if (CurrentMenu is null)
 			OpenEscapeMenu();
 		else if (CurrentMenu is not ReviveMenu) // You can't close out of the revive menu with escape..
-			CloseCurrentMenu();
+			CurrentMenu.Disable?.Invoke();
+			// CloseCurrentMenu();
 	}
 
 	[Export]

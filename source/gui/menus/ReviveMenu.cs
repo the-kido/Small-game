@@ -16,7 +16,7 @@ public partial class ReviveMenu : Control, IMenu{
     [Export]
     private Button close;
 
-    public event Action Disable;
+    public Action Disable {get; set;}
     public override void _Ready() => close.Pressed += OnDisable; 
 
     private void OnDisable() {

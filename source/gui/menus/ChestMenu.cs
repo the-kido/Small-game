@@ -10,7 +10,7 @@ using Game.Players;
 namespace Game.UI;
 
 public partial class ChestMenu : Control, IMenu {
-    public event Action Disable;
+    public Action Disable {get; set;}
     public ChestMenu() {
         Disable += () => OnSelectionMade = null;
     }

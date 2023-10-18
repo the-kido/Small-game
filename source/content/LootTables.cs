@@ -50,14 +50,28 @@ public record ChestItemDrop(PackedScene ChestItem, float Chance);
 
 
 public static class ChestLootTables {
+
+    public static IChestItem Roll(ChestTables table) {
+        float chance = 0;
+		float random = new Random().NextSingle();
+
+		foreach (ChestItemDrop item in All[table]) {
+
+			chance += item.Chance;
+			
+			if (chance >= random)
+				return item.ChestItem.Instantiate<IChestItem>();
+		}
+        return null;
+    }
  
     public static readonly Dictionary<ChestTables, List<ChestItemDrop>> All = new() {
         {ChestTables.ChargedGun, new() {
-            new(ChargedGun.PackedSceneResource, 1f)
+            new(WeirdGun.PackedSceneResource, 1f)
             }
         },
         {ChestTables.BadShield, new() {
-            new(BadShield.PackedSceneResource, 1f),
+            new(ChargedGun.PackedSceneResource, 1f),
             }
         }
     };

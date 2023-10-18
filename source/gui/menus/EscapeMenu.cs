@@ -16,8 +16,7 @@ public partial class EscapeMenu : Control, IMenu {
     [Export]
     private Button settingsButton;
 
-    public event Action Disable;
-
+    public Action Disable {get; set;}
     public override void _Ready() {
         
         closeButton.Pressed += () => Disable?.Invoke();

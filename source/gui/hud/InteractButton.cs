@@ -7,19 +7,24 @@ public partial class InteractButton : Button {
     AnimationPlayer animationPlayer;
     
     public void Enable(bool enable) {
-        // Disabled = !enable;
 
         if (enable) {
             Visible = true;
             animationPlayer.Play("show");
         }
         else {
+            if (connected) return;
+
             animationPlayer.PlayBackwards("show");
-            animationPlayer.AnimationFinished += Hide;   
+            animationPlayer.AnimationFinished += Hide;
+            connected = true;
         }
     }
+    bool connected;
 
     private void Hide(StringName _) {
+        connected = false;
+
         animationPlayer.AnimationFinished -= Hide;
         
         if (!Disabled) 

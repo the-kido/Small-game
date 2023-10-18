@@ -23,8 +23,7 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
     [Export]
     private Button changeClass;
 
-    public event Action Disable;
-
+    public Action Disable {get; set;}
     private Player player;
 
     public void Enable(Player player) {

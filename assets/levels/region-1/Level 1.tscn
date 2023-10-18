@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=14 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
 [ext_resource type="TileSet" uid="uid://gqbewfy6k5vq" path="res://assets/levels/region-1/new_tile_set.tres" id="2_jmklh"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="8_3vv2j"]
 [ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop.tscn" id="10_exj4u"]
 [ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/weapon_shop_item.tscn" id="11_jx2oq"]
+[ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/content/coin.tscn" id="12_o2gfm"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qj1ud"]
 
@@ -74,15 +75,28 @@ tileMap = NodePath("../Node/TileMap")
 
 [node name="Shop" parent="." node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
 position = Vector2(379, 270)
-shopItems = [NodePath("WeaponShopItem3"), NodePath("WeaponShopItem2"), NodePath("WeaponShopItem")]
-chances = Array[float]([1.0, 1.0, 1.0])
+shopItems = [NodePath("1_bad"), NodePath("2_trash"), NodePath("3_worst")]
+chanceWeight = Array[int]([1, 1, 1])
 
-[node name="WeaponShopItem3" parent="Shop" instance=ExtResource("11_jx2oq")]
+[node name="1_bad" parent="Shop" instance=ExtResource("11_jx2oq")]
+visible = false
+chestLootTable = 1
+
+[node name="2_trash" parent="Shop" instance=ExtResource("11_jx2oq")]
+visible = false
+chestLootTable = 1
+
+[node name="3_worst" parent="Shop" instance=ExtResource("11_jx2oq")]
 visible = false
 
-[node name="WeaponShopItem2" parent="Shop" instance=ExtResource("11_jx2oq")]
-visible = false
+[node name="Coin" parent="." instance=ExtResource("12_o2gfm")]
+position = Vector2(558, 79)
 
-[node name="WeaponShopItem" parent="Shop" instance=ExtResource("11_jx2oq")]
-visible = false
-position = Vector2(0, 0)
+[node name="Coin2" parent="." instance=ExtResource("12_o2gfm")]
+position = Vector2(553, 34)
+
+[node name="Coin3" parent="." instance=ExtResource("12_o2gfm")]
+position = Vector2(539, -14)
+
+[node name="Coin4" parent="." instance=ExtResource("12_o2gfm")]
+position = Vector2(563, -35)

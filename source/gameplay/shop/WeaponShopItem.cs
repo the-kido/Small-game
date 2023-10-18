@@ -1,4 +1,5 @@
-using System;
+using Game.Players;
+using Game.Players.Mechanics;
 using Godot;
 using LootTables;
 
@@ -8,24 +9,20 @@ public sealed partial class WeaponShopItem : ShopItem {
 
     IChestItem heldWeapon;
 
+
     public override void _Ready() {
         base._Ready();
-
-        float chance = 0;
-		float random = new Random().NextSingle();
-
-		foreach (ChestItemDrop item in ChestLootTables.All[chestLootTable]) {
-
-			chance += item.Chance;
-			
-			if (chance >= random)
-				heldWeapon = item.ChestItem.Instantiate<IChestItem>();
-		}
-
+        heldWeapon = ChestLootTables.Roll(chestLootTable);
         Texture = heldWeapon.Icon;
     }
 
-    public override void OnPurchased() {
-        GD.Print("we do a bit of trollolol");
+    public override void OnPurchased(Player player) {
+        if (heldWeapon is Weapon weapon) 
+            player.WeaponManager.AddAndSwitchWeapon(weapon, player.WeaponManager.SelectedSlot);
+        if (heldWeapon is Shield shield) 
+            player.ShieldManager.ChangeShield(shield);
+        
+        Destroy(player);
     }
 }
+

@@ -41,8 +41,7 @@ public partial class SettingsPage : Control, IMenu {
     [Export]
     private OptionButton languageChoice;
 
-    public event Action Disable;
-
+    public Action Disable {get; set;}
     public override void _Ready() {
         closeButton.Pressed += () => Disable?.Invoke();
 

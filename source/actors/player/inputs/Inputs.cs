@@ -101,6 +101,10 @@ public class InteractablesButtonController {
 		// this is a seperate method incase I wanna add some more logic to this sometime
 		Interacted?.Invoke(player);
 	}
+
+	public void ClearInteractionInvokations() {
+		Interacted = null;
+	}
 }
 
 #endregion Player required

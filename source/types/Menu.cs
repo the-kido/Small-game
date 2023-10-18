@@ -7,5 +7,5 @@ public interface IMenu {
     public abstract void Enable(Player player);
     public abstract void Close();
 
-    public event Action Disable;
+    public Action Disable {get; set;}
 }

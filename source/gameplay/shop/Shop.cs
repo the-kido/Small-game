@@ -1,4 +1,3 @@
-
 using System;
 using Godot;
 
@@ -7,7 +6,7 @@ public partial class Shop : Sprite2D {
 	[Export]    
 	Godot.Collections.Array<ShopItem> shopItems;
 	[Export]
-	Godot.Collections.Array<float> chances;
+	Godot.Collections.Array<int> chanceWeight;
 
 	[ExportGroup("Don't edit")]
 	[Export]
@@ -20,17 +19,38 @@ public partial class Shop : Sprite2D {
 			item.Visible = false;     
 		}
 
-		if (shopItems.Count < 3 || chances.Count < 3) 
+		if (shopItems.Count < 3 || chanceWeight.Count < 3) 
 			throw new Exception("This 'Shop' doesn't have 3 or more shopItems attached to it");
 
-        // temporary implementaiton
-        for (int i = 0; i < 3; i++) {
-            ShopItem item = shopItems[i];
+        RollShopItems();
+	}
+	private void RollShopItems() {
+		// iterate over all items REQUIRED
+		for (int shopItemIndex = 0; shopItemIndex < 3; shopItemIndex++) { 
+			
+			float chance = 0;
+			float random = new Random().NextSingle();
+			int shopItemCount = shopItems.Count;
 
-            item.GlobalPosition = GetItemAnchor(i).GlobalPosition;
-            item.ProcessMode = ProcessModeEnum.Inherit;
-			item.Visible = true;    
-        }
+			for (int i = 0; i < shopItemCount; i++) {
+				chance += (float) chanceWeight[i] / shopItemCount;
+				
+				if (chance >= random) {
+					InitItem(shopItems[i], shopItemIndex);
+					// When an item is selected, remove from pool:
+					shopItems.RemoveAt(i);
+					chanceWeight.RemoveAt(i);
+					// Move to next shopItemIndex
+					break; 
+				}
+			}
+		}
+	}
+
+	private void InitItem(ShopItem item, int index) {
+		item.GlobalPosition = GetItemAnchor(index).GlobalPosition;
+		item.ProcessMode = ProcessModeEnum.Inherit;
+		item.Visible = true;    
 	}
 
 	// find a way to init 3 items.

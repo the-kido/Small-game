@@ -23,45 +23,18 @@ public sealed partial class Interactable : AnimatedSprite2D {
         if (attach)
             player.InputController.InteractablesButtonController.Interacted += Interacted;
         else
-            player.InputController.InteractablesButtonController.Interacted -= Interacted;
+            player.InputController.InteractablesButtonController.ClearInteractionInvokations();
     }
-    
-    private void Enable(Player player, bool enable) {
-        if (enable)
-            interactedWith.Add(this);
-        else 
-            interactedWith.Remove(this);
-        
-        if (interactedWith.Count > 1) {
-            return; // The _process method will deal with surplus interactables;
-        }
-
-        if (interactedWith.Count == 1 || enable is false) {
-            interactedWith[0].Enable(player, true);
-        }
-        
-        SetIndicatorVisibility(player, enable);
-        AttachEvent(player, enable);
-
-        if (enable) {
-            currentEnabledInteractable = this;
-        }
-        if (!enable && interactedWith.Count <= 1) {
-            currentEnabledInteractable = null;  
-        }
-    }
-
-    static Interactable currentEnabledInteractable = null;
 
     private void OnBodyEntered(Node2D body) {
-        if (body is Player player) {
-            Enable(player, true);
-        }
+        if (body is Player)
+            interactedWith.Add(this);
     }
 
     private void OnBodyExited(Node2D body) {
-        if (body is Player player) {
-            Enable(player, false);
+        if (body is Player) {
+            interactedWith.Remove(this);
+            DisableLingering();
         }
     }
 
@@ -78,31 +51,44 @@ public sealed partial class Interactable : AnimatedSprite2D {
 
     // NOTE: This will 100% break when there are several players
     // Currently does not support many players. Or does it?
+    private static Interactable currentEnabledInteractable = null;
     static readonly List<Interactable> interactedWith = new(); 
 
+    private void Enable(Player player, bool enable) {
+        SetIndicatorVisibility(player, enable);
+        AttachEvent(player, enable);
+        
+        if (enable) {
+            currentEnabledInteractable = this;
+        }
+        if (!enable && interactedWith.Count is 0) {
+            currentEnabledInteractable = null;  
+        }
+    }
 
+    private void DisableLingering() {
+        if (interactedWith.Count == 0) {
+            currentEnabledInteractable?.Enable(Player.Players[0], false);
+        }
+    }
     // TODO
-    
     private void DealWithMultipleThings() {
-        if (interactedWith.Count <= 1) return;
-
         Player player = Player.Players[0];
 
         Interactable closestInteractable = ClosestInteractable(player);
         
         if (closestInteractable is null || closestInteractable == currentEnabledInteractable) return;
-
-        closestInteractable.Enable(player, true);
+        
         currentEnabledInteractable?.Enable(player, false);
-
+        closestInteractable.Enable(player, true);
     }
     
-    private Interactable ClosestInteractable(Player player) {
+    private static Interactable ClosestInteractable(Player player) {
         float closestDistance = float.MaxValue;
         Interactable closestInteractable = null;
 
         foreach (Interactable interactable in interactedWith) {
-            float distance = interactable.GlobalPosition.DistanceTo(Player.Players[0].GlobalPosition);
+            float distance = interactable.GlobalPosition.DistanceTo(player.GlobalPosition);
             
             if (distance < closestDistance) {
                 closestDistance = distance;
@@ -115,6 +101,19 @@ public sealed partial class Interactable : AnimatedSprite2D {
     
     public override void _Process(double delta) {
         DealWithMultipleThings();
+    }
+
+    public void Destroy(Player player) {
+            
+        Interacted = null;
+        interactedWith.Remove(this);
+        player.InputController.InteractablesButtonController.ClearInteractionInvokations();
+
+        currentEnabledInteractable.Enable(player, false);
+        currentEnabledInteractable = null;
+        QueueFree();
+
+
     }
 }
 
@@ -129,7 +128,5 @@ When a player leaves an area and there's 1 area they're still within, that area 
 
 /*
 Maybe, instead, the process will deal with ALL interactable stuff
-
-
 
 */
