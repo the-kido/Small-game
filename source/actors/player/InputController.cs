@@ -103,7 +103,15 @@ public partial class InputController : Node {
 		UpdateNonUIInput(delta);
 	}
 
-	private void UpdateUIInput(double delta) {
+
+	//Update Non-UI-Input which requires Physics Process
+    public override void _PhysicsProcess(double delta) {
+        if (attachedPlayer is null || UIInputFilter.FilterNonUiInput) 
+			return;
+		MovementController.UpdateMovement();
+    }
+
+    private void UpdateUIInput(double delta) {
 		DialogueController.Continue();
 		InvokeGUILeftClick();
 		InvokeEscape();
@@ -112,7 +120,6 @@ public partial class InputController : Node {
 	}
 
 	private void UpdateNonUIInput(double delta) {
-		MovementController.UpdateMovement();
 		WeaponController?.Update(delta);
 		ShieldInput?.Update();
 

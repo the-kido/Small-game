@@ -18,18 +18,18 @@ public partial class ParticleFactory : Node {
         node.AddChild(instance);
         return instance;
     }
+
 	public async static void RemoveParticle(Node2D particleToRemove) {
 		if (particleToRemove is GpuParticles2D gpuParticles3D) {
         	gpuParticles3D.Emitting = false;
-
 		}
         
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
         await Task.Delay(5000);
 
 		// Stop updating this particle's position. 
-		if (updatedParticles.ContainsKey(particleToRemove)) {
-			updatedParticles.Remove(particleToRemove);
+		if (UpdatedParticles.ContainsKey(particleToRemove)) {
+			UpdatedParticles.Remove(particleToRemove);
 		}
         
         try {
@@ -40,13 +40,14 @@ public partial class ParticleFactory : Node {
         }
     }
 
-	public override void _Process(double delta) {
-		foreach (var particle in updatedParticles.Keys) {
-			particle.Position = updatedParticles[particle].Position; 
+	public override void _PhysicsProcess(double delta) {
+		foreach (Node2D particle in UpdatedParticles.Keys) {
+			particle.Position = UpdatedParticles[particle].Position; 
 		}
 	}
 
-	static Dictionary<Node2D, Node2D> updatedParticles = new();
+	static Dictionary<Node2D, Node2D> UpdatedParticles = new();
+	/*
 	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D nodeToFollow) {
 		
 		Node2D instance =  particle.Instantiate<Node2D>();
@@ -57,6 +58,7 @@ public partial class ParticleFactory : Node {
 		
 		return instance;
 	}
+	*/
 
 	public static Node2D SpawnGlobalParticle(Node2D particle, Vector2 position, float rotation) {
 		
@@ -64,8 +66,10 @@ public partial class ParticleFactory : Node {
 		factoryNode.AddChild(newParticles);
 		newParticles.Position = position;
 		newParticles.Rotation = rotation;
+		
 		if (particle is GpuParticles2D gpuParticles2D)
 			gpuParticles2D.Emitting = true;
+		
 		return newParticles;
 	}
 }

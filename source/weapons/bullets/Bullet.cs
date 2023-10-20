@@ -11,7 +11,8 @@ public abstract partial class Bullet : Node2D {
 
     private DamageInstance damageInstance;
 
-    private int speed;
+    [Export(PropertyHint.Enum)]
+    private BulletSpeed speed;
     [Export]
     private GpuParticles2D particles;
     [Export(PropertyHint.Range, "0,or_greater")]
@@ -37,8 +38,8 @@ public abstract partial class Bullet : Node2D {
     
     public virtual void DestroyBullet() {
         OnCollided?.Invoke();
-        QueueFree();
         SpawnDestroyedParticle();
+        QueueFree();
     }
     #endregion
 
@@ -56,6 +57,7 @@ public abstract partial class Bullet : Node2D {
     
     public async void SpawnDestroyedParticle() {
         var newParticle = ParticleFactory.SpawnGlobalParticle(particles, GlobalPosition, GlobalRotation + 90);
+        GD.Print("WHAT");
         await Task.Delay(particleDeletionTime * 1000);
         newParticle.QueueFree();
     }
@@ -89,7 +91,7 @@ public abstract partial class Bullet : Node2D {
         }
 
         Rotation = radians;
-        speed = (int) bulletInfo.speed;
+        speed = bulletInfo.speed;
         directionFacing = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
 
         damageInstance = GetBulletDamageInstance(bulletInfo, directionFacing);
@@ -98,10 +100,10 @@ public abstract partial class Bullet : Node2D {
     }
 
     public void MoveBulletForward(double delta) {
-        Position += directionFacing * (float) delta * speed;
+        Position += directionFacing * (float) delta * (int) speed;
     }
 
-    public override void _Process(double delta) {
+    public override void _PhysicsProcess(double delta) {
         MoveBulletForward(delta);
     }
 }
