@@ -22,7 +22,8 @@ public sealed partial class WeaponShopItem : ShopItem {
         if (heldWeapon is Shield shield) 
             player.ShieldManager.ChangeShield(shield);
         
-        Destroy(player);
+        DisconnectEvents(player);
+        QueueFree();
     }
 }
 

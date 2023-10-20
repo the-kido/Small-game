@@ -1,22 +1,197 @@
-[gd_scene load_steps=3 format=3 uid="uid://dl1c2lkk7o2ik"]
+[gd_scene load_steps=8 format=3 uid="uid://dl1c2lkk7o2ik"]
 
 [ext_resource type="Texture2D" uid="uid://ci4snaehfcqae" path="res://assets/sprites/enviornment/interactables/shop.png" id="1_xa43e"]
 [ext_resource type="Script" path="res://source/gameplay/shop/Shop.cs" id="2_luemq"]
 
-[node name="Shop" type="Sprite2D" node_paths=PackedStringArray("shopItems", "shopItemAnchorsParent")]
+[sub_resource type="Animation" id="Animation_wuanb"]
+resource_name = "Land"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Moved Stuff:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -100), Vector2(0, -40), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StaticBody/CollisionShape2D:disabled")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_3xmal"]
+resource_name = "Pull Up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Moved Stuff:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -200)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StaticBody/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_2yey7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Moved Stuff:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StaticBody/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b47p4"]
+_data = {
+"Land": SubResource("Animation_wuanb"),
+"Pull Up": SubResource("Animation_3xmal"),
+"RESET": SubResource("Animation_2yey7")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0mh08"]
+size = Vector2(45.3333, 15)
+
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("shopItems", "shopItemAnchorsParent", "animationPlayer")]
 scale = Vector2(3, 3)
-texture = ExtResource("1_xa43e")
 script = ExtResource("2_luemq")
 shopItems = []
-shopItemAnchorsParent = NodePath("Anchor Points Parent")
+shopItemAnchorsParent = NodePath("Moved Stuff/Anchor Points Parent")
+animationPlayer = NodePath("AnimationPlayer")
 
-[node name="Anchor Points Parent" type="Node2D" parent="."]
+[node name="Moved Stuff" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Moved Stuff"]
+texture = ExtResource("1_xa43e")
+
+[node name="Anchor Points Parent" type="Node2D" parent="Moved Stuff"]
 position = Vector2(0, 9)
 
-[node name="1" type="Node2D" parent="Anchor Points Parent"]
+[node name="1" type="Node2D" parent="Moved Stuff/Anchor Points Parent"]
 position = Vector2(-16, 0)
 
-[node name="2" type="Node2D" parent="Anchor Points Parent"]
+[node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/1"]
+offset_left = -6.0
+offset_top = 2.66667
+offset_right = 34.0
+offset_bottom = 42.6667
+scale = Vector2(0.3, 0.3)
+text = "~"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="3" type="Node2D" parent="Anchor Points Parent"]
+[node name="2" type="Node2D" parent="Moved Stuff/Anchor Points Parent"]
+
+[node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/2"]
+offset_left = -6.0
+offset_top = 2.66667
+offset_right = 34.0
+offset_bottom = 42.6667
+scale = Vector2(0.3, 0.3)
+text = "~"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="3" type="Node2D" parent="Moved Stuff/Anchor Points Parent"]
 position = Vector2(16, 0)
+
+[node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/3"]
+offset_left = -6.0
+offset_top = 2.66667
+offset_right = 34.0
+offset_bottom = 42.6667
+scale = Vector2(0.3, 0.3)
+text = "~"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b47p4")
+}
+
+[node name="StaticBody" type="StaticBody2D" parent="."]
+collision_mask = 10
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody"]
+position = Vector2(0, 4.16667)
+shape = SubResource("RectangleShape2D_0mh08")
+disabled = true

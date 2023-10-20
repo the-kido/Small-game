@@ -10,7 +10,7 @@ public abstract partial class ShopItem : Sprite2D {
 
     // in the future don't export but instead get the price based on rarity of item.
     [Export]
-    protected int coinAmount;
+    public int Price {get; private set;}
 
     public override void _Ready() {
         interactable.Interacted += OnInteracted;
@@ -18,21 +18,19 @@ public abstract partial class ShopItem : Sprite2D {
     }
 
     private void UpdateInteractableInteractability(int newValue) {
-        interactable.ProcessMode = newValue >= coinAmount ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+        interactable.ProcessMode = newValue >= Price ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
     }
 
     private void OnInteracted(Player player) {
-        RunData.AllData[RunDataEnum.Coins].Add(-coinAmount);
+        RunData.AllData[RunDataEnum.Coins].Add(-Price);
         OnPurchased(player);
     }
 
     public abstract void OnPurchased(Player player);
 
-    protected void Destroy(Player player) {
+    public void DisconnectEvents(Player player) {
         interactable.Destroy(player);
         
         RunData.AllData[RunDataEnum.Coins].ValueChanged -= UpdateInteractableInteractability;
-        
-        QueueFree();
     }
 }

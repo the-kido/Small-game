@@ -116,3 +116,4 @@ locale/fallback="fr"
 
 textures/canvas_textures/default_texture_filter=3
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.152941, 0.152941, 0.152941, 1)

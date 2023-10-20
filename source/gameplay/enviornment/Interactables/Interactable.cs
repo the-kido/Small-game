@@ -109,11 +109,9 @@ public sealed partial class Interactable : AnimatedSprite2D {
         interactedWith.Remove(this);
         player.InputController.InteractablesButtonController.ClearInteractionInvokations();
 
-        currentEnabledInteractable.Enable(player, false);
+        currentEnabledInteractable?.Enable(player, false);
         currentEnabledInteractable = null;
         QueueFree();
-
-
     }
 }
 
