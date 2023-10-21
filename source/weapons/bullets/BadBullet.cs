@@ -1,6 +1,8 @@
 using Godot;
 using System;
 using Game.Bullets;
+using Game.Autoload;
+using Game.Graphics;
 
 namespace Game.SealedContent;
 
@@ -10,10 +12,11 @@ public sealed partial class BadBullet : Bullet {
     private float wiggleStrength;
     private double wiggleDistance;
     
-    GpuParticles2D particle;
+    Node2D particle;
     public override void _Ready() {
-        // particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
-        // OnCollided += () => ParticleFactory.RemoveParticle(particle);
+        particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
+        OnCollided += () => ParticleFactory.RemoveParticle(particle);
+        OnCollided += () => particle.GetChild<GpuParticles2D>(0).Emitting = false;
 
         Random random = new();
         wiggleDistance = random.Next((int) wiggleStrength * 2) - wiggleStrength;

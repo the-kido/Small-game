@@ -16,7 +16,7 @@ public partial class ShopDropEvent : LevelCriteria {
     KidoUtils.Timer timer = KidoUtils.Timer.NONE;
     public override void Start() {
         shop.Drop();
-        GD.Print("!?!?");
+
         timer = new(time, false, -1);
         timer.TimeOver += Close;
     }

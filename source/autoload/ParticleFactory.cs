@@ -20,8 +20,8 @@ public partial class ParticleFactory : Node {
     }
 
 	public async static void RemoveParticle(Node2D particleToRemove) {
-		if (particleToRemove is GpuParticles2D gpuParticles3D) {
-        	gpuParticles3D.Emitting = false;
+		if (particleToRemove is GpuParticles2D gpuParticles) {
+			gpuParticles.Emitting = false;
 		}
         
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
@@ -32,12 +32,7 @@ public partial class ParticleFactory : Node {
 			UpdatedParticles.Remove(particleToRemove);
 		}
         
-        try {
-            particleToRemove.QueueFree();
-        }
-        catch {
-            
-        }
+		particleToRemove.QueueFree();
     }
 
 	public override void _PhysicsProcess(double delta) {
@@ -47,29 +42,27 @@ public partial class ParticleFactory : Node {
 	}
 
 	static Dictionary<Node2D, Node2D> UpdatedParticles = new();
-	/*
+	
 	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D nodeToFollow) {
 		
 		Node2D instance =  particle.Instantiate<Node2D>();
 		factoryNode.AddChild(instance);
 
-		updatedParticles.Add(instance, nodeToFollow);
-		nodeToFollow.TreeExited += () => updatedParticles.Remove(instance);
+		UpdatedParticles.Add(instance, nodeToFollow);
+		nodeToFollow.TreeExited += () => UpdatedParticles.Remove(instance);
 		
 		return instance;
 	}
-	*/
 
-	public static Node2D SpawnGlobalParticle(Node2D particle, Vector2 position, float rotation) {
+	public static Node2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {
+		GpuParticles2D newParticle = (GpuParticles2D) particle.Duplicate();
+
+		newParticle.Position = position;
+		newParticle.Rotation = rotation;
+		newParticle.Emitting = true;
 		
-		Node2D newParticles = (Node2D) particle.Duplicate();
-		factoryNode.AddChild(newParticles);
-		newParticles.Position = position;
-		newParticles.Rotation = rotation;
+		factoryNode.AddChild(newParticle);
 		
-		if (particle is GpuParticles2D gpuParticles2D)
-			gpuParticles2D.Emitting = true;
-		
-		return newParticles;
+		return newParticle;
 	}
 }

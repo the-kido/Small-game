@@ -15,7 +15,7 @@ public abstract partial class Bullet : Node2D {
     private BulletSpeed speed;
     [Export]
     private GpuParticles2D particles;
-    [Export(PropertyHint.Range, "0,or_greater")]
+    [Export]
     private int particleDeletionTime;
     [Export]
     private Area2D hitbox;
@@ -57,7 +57,6 @@ public abstract partial class Bullet : Node2D {
     
     public async void SpawnDestroyedParticle() {
         var newParticle = ParticleFactory.SpawnGlobalParticle(particles, GlobalPosition, GlobalRotation + 90);
-        GD.Print("WHAT");
         await Task.Delay(particleDeletionTime * 1000);
         newParticle.QueueFree();
     }
