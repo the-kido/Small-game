@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Actors;
+using Game.LevelContent;
 using Game.Mechanics;
 
 namespace Game.Data;

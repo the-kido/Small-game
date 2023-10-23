@@ -15,7 +15,7 @@ public sealed partial class ChargedGun : Gun {
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
     
 	public static readonly PackedScene PackedSceneResource = ResourceLoader.Load<PackedScene>("res://source/weapons/BaseGun.tscn");
-    public override PackedScene PackedScene {get => PackedSceneResource;}
+    public override PackedScene PackedScene => PackedSceneResource;
 
 	protected override DamageInstance Damage => new(Player) {
         statusEffect = new FireEffect(), 

@@ -24,6 +24,7 @@ public partial class Shop : Node2D {
 
 	// Drop then Stop the Shop
 	public void Drop() {
+		ProcessMode = ProcessModeEnum.Inherit;
 		Visible = true;
 		animationPlayer.Play("Land");
 	}
@@ -33,6 +34,8 @@ public partial class Shop : Node2D {
 	}
 
 	public override void _Ready() {
+		ProcessMode = ProcessModeEnum.Disabled;
+
 		Visible = false;
 
 		foreach (var item in shopItems) {
@@ -42,10 +45,6 @@ public partial class Shop : Node2D {
 
 		if (shopItems.Count < 3 || chanceWeight.Count < 3) 
 			throw new Exception("This 'Shop' doesn't have 3 or more shopItems attached to it");
-
-		foreach(ShopItem shopItem in shopItems) {
-			shopItem.ProcessMode = ProcessModeEnum.Disabled;
-		}
 
         RollShopItems();
 	}

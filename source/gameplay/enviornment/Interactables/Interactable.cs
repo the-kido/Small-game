@@ -48,10 +48,6 @@ public sealed partial class Interactable : AnimatedSprite2D {
     }
 
 	public override void _Ready() {
-        // Enforce the proper layers
-        range.CollisionLayer = (uint) Layers.Environment;
-        range.CollisionMask = (uint) Layers.Player;
-
         range.BodyEntered += OnBodyEntered;
         range.BodyExited += OnBodyExited;
 

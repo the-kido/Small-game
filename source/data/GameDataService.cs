@@ -1,3 +1,4 @@
+using Game.LevelContent;
 using Godot;
 using Godot.Collections;
 using System.Linq;
@@ -15,11 +16,11 @@ public interface ISaveable {
 	}
 	
 	void InitSaveable() {
-		// Make sure there's no duplicates
-		if (GameDataService.dynamicallySavedItems.Any(item => item.SaveData.Key == SaveData.Key)) 
-			return;
-		
-		GameDataService.dynamicallySavedItems.Add(this);
+		// Remove ISaveable's of the same key in case the old object is now gone (i.e a past scene)
+		GameDataService.DynamicallySavedItems.RemoveAll((item) => item.SaveData.Key == SaveData.Key);
+
+		// Then add this refreshed one		
+		GameDataService.DynamicallySavedItems.Add(this);
 	}
 }
 
@@ -29,13 +30,13 @@ from a previous save file.
 */
 public static class GameDataService {
 
-	const bool USING_DEBUG = true;
+	const bool USING_DEBUG = false;
 	const string SAVE_FILE = "user://savegame.json";
 	const string DEBUG_FILE = "user://copy.json";
 
-	public static readonly System.Collections.Generic.List<ISaveable> dynamicallySavedItems = new();
+	public static readonly System.Collections.Generic.List<ISaveable> DynamicallySavedItems = new();
 	static Dictionary<string, Variant> SavedItemsAsDictionary => 
-		new(dynamicallySavedItems.ToDictionary(x => x.SaveData.Key, x => x.SaveData.Value));
+		new(DynamicallySavedItems.ToDictionary(x => x.SaveData.Key, x => x.SaveData.Value));
 
 	// Pull from the previous data, then add the new data that needs to be added.
 	private static Dictionary<string, Variant> GetCompiledSaveData() {
@@ -43,12 +44,13 @@ public static class GameDataService {
 
 		foreach (var oldItem in GetData()) {
 			// We don't want to overwrite the new data with old data.
-			if (newData.ContainsKey(oldItem.Key)) 
+			if (newData.ContainsKey(oldItem.Key))
 				continue;
-			
+
+
 			newData.Add(oldItem.Key, oldItem.Value);
 		}
-		
+
 		return newData;
 	}
 

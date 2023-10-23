@@ -21,12 +21,20 @@ public abstract partial class ShopItem : Sprite2D {
         interactable.ProcessMode = newValue >= Price ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
     }
 
+    public override void _ExitTree() {
+        RunData.AllData[RunDataEnum.Coins].ValueChanged -= UpdateInteractableInteractability;
+    }
+
     private void OnInteracted(Player player) {
         RunData.AllData[RunDataEnum.Coins].Add(-Price);
         OnPurchased(player);
         
         DisconnectEvents(player);
         QueueFree();
+
+        // Save any purchases made
+        if (Level.IsCurrentLevelCompleted())
+            GameDataService.Save(); 
     }
 
     public abstract void OnPurchased(Player player);

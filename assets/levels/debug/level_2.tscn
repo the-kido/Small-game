@@ -133,3 +133,4 @@ position = Vector2(613, 665)
 [node name="Respawn Token Shop Item" parent="." instance=ExtResource("18_a052s")]
 position = Vector2(430, 609)
 scale = Vector2(3, 3)
+Price = 1

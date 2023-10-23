@@ -701,7 +701,8 @@ offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
-text = "Bad"
+text = "
+"
 
 [node name="Press E" type="Control" parent="Interactable Description/Bg"]
 layout_mode = 1

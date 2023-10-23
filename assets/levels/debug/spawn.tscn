@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bbq82o8g6ohd2"]
+[gd_scene load_steps=14 format=3 uid="uid://bbq82o8g6ohd2"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/SpawnDoor.cs" id="1_1pfbd"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_mhyby"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="9_f61de"]
 [ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="9_pbc07"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/regions/FallingArea.cs" id="10_7l3ol"]
+[ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/content/coin.tscn" id="11_fd2vq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_52yow"]
 size = Vector2(68, 139)
@@ -76,3 +77,6 @@ script = ExtResource("10_7l3ol")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_gsuug")
+
+[node name="Coin" parent="." instance=ExtResource("11_fd2vq")]
+position = Vector2(435, 255)
