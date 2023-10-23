@@ -6,7 +6,7 @@ using Godot;
 public abstract partial class ShopItem : Sprite2D {
 
     [Export] 
-    Interactable interactable; 
+    protected Interactable interactable; 
 
     // in the future don't export but instead get the price based on rarity of item.
     [Export]
@@ -30,7 +30,6 @@ public abstract partial class ShopItem : Sprite2D {
 
     public void DisconnectEvents(Player player) {
         interactable.Destroy(player);
-        
         RunData.AllData[RunDataEnum.Coins].ValueChanged -= UpdateInteractableInteractability;
     }
 }

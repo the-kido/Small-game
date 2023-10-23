@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://dl1c2lkk7o2ik"]
+[gd_scene load_steps=9 format=3 uid="uid://dl1c2lkk7o2ik"]
 
 [ext_resource type="Texture2D" uid="uid://ci4snaehfcqae" path="res://assets/sprites/enviornment/interactables/shop.png" id="1_xa43e"]
+[ext_resource type="Texture2D" uid="uid://c2u6lx1n1mopx" path="res://assets/sprites/enviornment/interactables/shadow.png" id="2_ivoh0"]
 [ext_resource type="Script" path="res://source/gameplay/shop/Shop.cs" id="2_luemq"]
 
 [sub_resource type="Animation" id="Animation_wuanb"]
@@ -41,6 +42,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [true, false]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Shadow:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.7, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.368627)]
+}
 
 [sub_resource type="Animation" id="Animation_3xmal"]
 resource_name = "Pull Up"
@@ -79,6 +92,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Shadow:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.368627), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_2yey7"]
@@ -136,6 +161,13 @@ script = ExtResource("2_luemq")
 shopItems = []
 shopItemAnchorsParent = NodePath("Moved Stuff/Anchor Points Parent")
 animationPlayer = NodePath("AnimationPlayer")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = -1
+z_as_relative = false
+position = Vector2(0, 9.33333)
+texture = ExtResource("2_ivoh0")
 
 [node name="Moved Stuff" type="Node2D" parent="."]
 

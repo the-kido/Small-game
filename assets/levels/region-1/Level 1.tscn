@@ -81,7 +81,7 @@ scale = Vector2(1.62912, 1.62912)
 tileMap = NodePath("../Node/TileMap")
 
 [node name="Shop" parent="." node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
-position = Vector2(381, 294)
+position = Vector2(161, 230)
 shopItems = [NodePath("1_bad"), NodePath("2_trash"), NodePath("3_worst")]
 chanceWeight = Array[int]([1, 1, 1])
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=33 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://l0yngo1lhnsi" path="res://source/shields/bad_shield.png" id="12_ymmpf"]
 [ext_resource type="Texture2D" uid="uid://4ex2ihoiytul" path="res://source/shields/indicator.png" id="13_rima0"]
 [ext_resource type="Script" path="res://source/gui/hud/LevelCompletionIndicator.cs" id="14_yw1tb"]
+[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="15_a153q"]
+[ext_resource type="Script" path="res://source/gui/hud/InteractableDescription.cs" id="15_kguth"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -151,7 +153,95 @@ _data = {
 "enable": SubResource("Animation_efsd5")
 }
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "levelCompletionIndicator", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "HUDCover")]
+[sub_resource type="Animation" id="Animation_vkjvj"]
+resource_name = "Close"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bg:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(30, 30), Vector2(400, 30)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bg:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Bg:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j0t4s"]
+resource_name = "Open"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Bg:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(400, 30), Vector2(30, 30)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bg:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Bg:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xjvok"]
+_data = {
+"Close": SubResource("Animation_vkjvj"),
+"Open": SubResource("Animation_j0t4s")
+}
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "levelCompletionIndicator", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "InteractableDescription", "HUDCover")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -171,6 +261,7 @@ coinsLabel = NodePath("Coins")
 interactButton = NodePath("Interact")
 heldItems = NodePath("Held Weapons")
 shieldInfo = NodePath("Shield Info")
+InteractableDescription = NodePath("Interactable Description")
 HUDCover = NodePath("HUD Cover")
 
 [node name="Health label background" type="ColorRect" parent="."]
@@ -198,6 +289,7 @@ script = ExtResource("2_nt4yp")
 healthLable = NodePath(".")
 
 [node name="Auto Aim Button" type="Button" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -217,6 +309,7 @@ text = "⁂ Auto Aim ⁂
 script = ExtResource("4_13lqt")
 
 [node name="Interact" type="Button" parent="." node_paths=PackedStringArray("animationPlayer")]
+visible = false
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -561,3 +654,96 @@ animationPlayer = NodePath("AnimationPlayer")
 libraries = {
 "": SubResource("AnimationLibrary_vjk6c")
 }
+
+[node name="Interactable Description" type="Control" parent="." node_paths=PackedStringArray("textLabel", "animationPlayer")]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -373.0
+offset_top = -404.0
+offset_right = -12.0
+offset_bottom = 3.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(111.111, 0)
+script = ExtResource("15_kguth")
+textLabel = NodePath("Bg/Text Description")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Interactable Description"]
+libraries = {
+"": SubResource("AnimationLibrary_xjvok")
+}
+
+[node name="Bg" type="ColorRect" parent="Interactable Description"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_left = 400.0
+offset_top = 30.0
+offset_right = 701.0
+offset_bottom = 377.0
+size_flags_vertical = 3
+color = Color(0.243137, 0.243137, 0.243137, 1)
+
+[node name="Text Description" type="RichTextLabel" parent="Interactable Description/Bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = -21.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "Bad"
+
+[node name="Press E" type="Control" parent="Interactable Description/Bg"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ColorRect" type="ColorRect" parent="Interactable Description/Bg/Press E"]
+layout_mode = 0
+offset_left = -53.0
+offset_top = -18.0
+offset_right = 56.0
+offset_bottom = 12.0
+color = Color(0.333333, 0.333333, 0.333333, 1)
+
+[node name="Label" type="Label" parent="Interactable Description/Bg/Press E/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press \"E\""
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Interactable Description"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.918
+anchor_top = 0.927
+anchor_right = 0.918
+anchor_bottom = 0.927
+offset_left = -88.398
+offset_top = -89.289
+offset_right = -5.39801
+offset_bottom = -6.28903
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("15_a153q")

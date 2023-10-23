@@ -97,6 +97,12 @@ public class InteractablesButtonController {
 	}
 
 	public event Action<Player> Interacted;
+
+	public void InvokeInteractPressed() {
+		if (Input.IsActionJustPressed("interaction_made")) 
+			InvokeInteracted();
+	}
+
 	private void InvokeInteracted() {
 		// this is a seperate method incase I wanna add some more logic to this sometime
 		Interacted?.Invoke(player);

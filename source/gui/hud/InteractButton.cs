@@ -8,6 +8,10 @@ public partial class InteractButton : Button {
     
     public void Enable(bool enable) {
 
+        return; 
+        // I don't think i'll be using it.
+
+
         if (enable) {
             Visible = true;
             animationPlayer.Play("show");

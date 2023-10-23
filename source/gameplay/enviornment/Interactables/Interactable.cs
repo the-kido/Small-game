@@ -8,15 +8,24 @@ namespace Game.LevelContent;
 
 public sealed partial class Interactable : AnimatedSprite2D {
 
-
     [Export]
     private Area2D range;
+
+    public string Description;
     
     public event Action<Player> Interacted;
 
     public void SetIndicatorVisibility(Player player, bool isVisible) {
         player.GUI.InteractButton.Enable(isVisible);
         Visible = isVisible;
+        ShowDescription(player, isVisible);
+    }
+
+    private void ShowDescription(Player player, bool show) {
+        if (show && !string.IsNullOrEmpty(Description))
+            player.GUI.InteractableDescription.Enable(true, Description);
+        else
+            player.GUI.InteractableDescription.Enable(false, "null");
     }
 
     private void AttachEvent(Player player, bool attach) {
@@ -71,7 +80,7 @@ public sealed partial class Interactable : AnimatedSprite2D {
             currentEnabledInteractable?.Enable(Player.Players[0], false);
         }
     }
-    // TODO
+
     private void DealWithMultipleThings() {
         Player player = Player.Players[0];
 
@@ -114,17 +123,3 @@ public sealed partial class Interactable : AnimatedSprite2D {
         QueueFree();
     }
 }
-
-
-
-// what do we want:
-/*
-When  a player enters 1 area, it will enable that interactable
-When a player is within 2 areas, it will start to check for which one is closer ONLY
-When a player leaves an area and there's 1 area they're still within, that area is enabled ONLY
-*/
-
-/*
-Maybe, instead, the process will deal with ALL interactable stuff
-
-*/

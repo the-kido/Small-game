@@ -41,6 +41,7 @@ public partial class InputController : Node {
 		if (Input.IsActionJustPressed("default_attack")) LeftClicked?.Invoke();
 	}
 
+	
 	private void InvokeEscape() {
 		if (Input.IsActionJustPressed("escape")) PressedEscape?.Invoke();
 	}
@@ -122,6 +123,7 @@ public partial class InputController : Node {
 	private void UpdateNonUIInput(double delta) {
 		WeaponController?.Update(delta);
 		ShieldInput?.Update();
+		InteractablesButtonController.InvokeInteractPressed();
 
 		NonUIInputs.ForEach(input => input.Update(delta));
 	}

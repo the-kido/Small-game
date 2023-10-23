@@ -13,6 +13,7 @@ public sealed partial class WeaponShopItem : ShopItem {
     public override void _Ready() {
         base._Ready();
         heldWeapon = ChestLootTables.Roll(chestLootTable);
+        interactable.Description = heldWeapon.Description;
         Texture = heldWeapon.Icon;
     }
 

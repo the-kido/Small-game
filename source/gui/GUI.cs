@@ -48,6 +48,7 @@ public partial class GUI : CanvasLayer {
 	public InteractButton InteractButton => HUD.interactButton;
 	public HeldItems HeldItems => HUD.heldItems;
 	public ShieldInfo ShieldInfo => HUD.shieldInfo;
+	public InteractableDescription InteractableDescription => HUD.InteractableDescription;
 
 	private void CoverHUD(bool cover) => HUD.Cover(cover);
 

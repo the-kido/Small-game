@@ -30,10 +30,6 @@ public partial class Shop : Node2D {
 
 	public void Stop() {
 		animationPlayer.Play("Pull Up");
-		
-		foreach(ShopItem shopItem in shopItems) {
-			shopItem.DisconnectEvents(Player.Players[0]);
-		}
 	}
 
 	public override void _Ready() {
@@ -58,7 +54,6 @@ public partial class Shop : Node2D {
 
 		List<int> skipped = new();
 
-		
 		// iterate over all items REQUIRED
 		for (int shopItemIndex = 0; shopItemIndex < 3; shopItemIndex++) { 
 			
@@ -91,9 +86,7 @@ public partial class Shop : Node2D {
 
 		item.ProcessMode = ProcessModeEnum.Inherit;
 		item.Visible = true;
+
 		GetItemPriceLabel(index).Text = $"${item.Price}"; 
 	}
-
-	// find a way to init 3 items.
-	// also have a method that the "shopdropevent" can access to show this shop. 
 }
