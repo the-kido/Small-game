@@ -53,19 +53,21 @@ public partial class Shop : Node2D {
     private void RollShopItems() {
 
 		List<int> skipped = new();
+		
 
 		// iterate over all items REQUIRED
 		for (int shopItemIndex = 0; shopItemIndex < 3; shopItemIndex++) { 
 			
+			int totalWeight = WeightSum(chanceWeight, skipped) ; 
+			
 			float chance = 0;
 			float random = new Random().NextSingle();
-			int shopItemCount = shopItems.Count - skipped.Count;
 
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < shopItems.Count; i++) {
 				
 				if (skipped.Contains(i)) continue;
 
-				chance += (float) chanceWeight[i] / shopItemCount;
+				chance += (float) chanceWeight[i] / totalWeight;
 				
 				if (chance >= random) {
 					InitItem(shopItems[i], shopItemIndex);
@@ -76,6 +78,15 @@ public partial class Shop : Node2D {
 				}
 			}
 		}
+	}
+
+	private static int WeightSum(Godot.Collections.Array<int> weights, List<int> skipped) {
+		int ans = 0;
+		for (int i = 0; i < weights.Count; i++) {
+			if (skipped.Contains(i)) continue;
+			ans += weights[i];
+		}
+		return ans;
 	}
 
     private void InitItem(ShopItem item, int index) {

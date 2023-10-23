@@ -24,6 +24,9 @@ public abstract partial class ShopItem : Sprite2D {
     private void OnInteracted(Player player) {
         RunData.AllData[RunDataEnum.Coins].Add(-Price);
         OnPurchased(player);
+        
+        DisconnectEvents(player);
+        QueueFree();
     }
 
     public abstract void OnPurchased(Player player);

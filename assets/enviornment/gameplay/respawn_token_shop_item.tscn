@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://catq2ey4gxfuk"]
+
+[ext_resource type="PackedScene" uid="uid://b1ewi2kqaod66" path="res://assets/enviornment/interactable.tscn" id="1_34iew"]
+[ext_resource type="Script" path="res://source/gameplay/shop/RespawnTokenShopItem.cs" id="1_58mko"]
+
+[node name="Respawn Token Shop Item" type="Sprite2D" node_paths=PackedStringArray("interactable")]
+script = ExtResource("1_58mko")
+interactable = NodePath("Interactable")
+
+[node name="Interactable" parent="." instance=ExtResource("1_34iew")]
+position = Vector2(0, -15.333)
+scale = Vector2(1, 1)

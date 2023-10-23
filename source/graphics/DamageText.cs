@@ -48,7 +48,7 @@ public partial class DamageText : Node2D {
         };
         Modulate = color;
 
-        label.Text = totalDamage.ToString();
+        label.Text = totalDamage >= 0 ? totalDamage.ToString() : $"+{-totalDamage}";
 
         GlobalPosition = globalPosition;
 

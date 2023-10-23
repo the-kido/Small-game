@@ -88,6 +88,13 @@ public sealed partial class Damageable : Area2D {
 		return true; // it passes the test. pog champ
 	}
 
+
+	public void Heal(int healthAdded) {
+		SpawnDamageText(-healthAdded);
+		Health = Mathf.Min(Health + healthAdded, EffectiveHealth);
+
+	}
+
 	public void Damage(DamageInstance damageInstance) {
 		
 		if (!CanTakeDamage(damageInstance)) 

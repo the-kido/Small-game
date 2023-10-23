@@ -9,7 +9,6 @@ public sealed partial class WeaponShopItem : ShopItem {
 
     IChestItem heldWeapon;
 
-
     public override void _Ready() {
         base._Ready();
         heldWeapon = ChestLootTables.Roll(chestLootTable);
@@ -22,9 +21,6 @@ public sealed partial class WeaponShopItem : ShopItem {
             player.WeaponManager.AddAndSwitchWeapon(weapon, player.WeaponManager.SelectedSlot);
         if (heldWeapon is Shield shield) 
             player.ShieldManager.ChangeShield(shield);
-        
-        DisconnectEvents(player);
-        QueueFree();
     }
 }
 

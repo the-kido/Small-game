@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=20 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
@@ -14,6 +14,7 @@
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="13_w1ius"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="16_nns66"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="17_8xcsb"]
+[ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/respawn_token_shop_item.tscn" id="18_a052s"]
 [ext_resource type="PackedScene" uid="uid://caqqb3q7pfcr1" path="res://assets/enviornment/attackables/shield_obelisk.tscn" id="18_i70b7"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="24_vfgcu"]
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="25_o38qo"]
@@ -128,3 +129,7 @@ position = Vector2(680, 672)
 
 [node name="Freeze Charge3" parent="." instance=ExtResource("17_8xcsb")]
 position = Vector2(613, 665)
+
+[node name="Respawn Token Shop Item" parent="." instance=ExtResource("18_a052s")]
+position = Vector2(430, 609)
+scale = Vector2(3, 3)

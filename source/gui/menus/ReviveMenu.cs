@@ -3,6 +3,7 @@ using Godot;
 using Game.Players;
 using Game.Autoload;
 using KidoUtils;
+using Game.Data;
 /*This should include:
 The enabling disableding
 A way to set the menu to NULL in the playerHud 
@@ -15,6 +16,8 @@ public partial class ReviveMenu : Control, IMenu{
     private AnimationPlayer animationPlayer;
     [Export]
     private Button close;
+    [Export]
+    private Button respawn;
 
     public Action Disable {get; set;}
     public override void _Ready() => close.Pressed += OnDisable; 
@@ -28,6 +31,12 @@ public partial class ReviveMenu : Control, IMenu{
     public void Enable(Player _) {
         Visible = true;
         animationPlayer.Play("Open");
+        
+        int tokenCount = RunData.AllData[RunDataEnum.RespawnTokens].Count;
+
+        respawn.Text = tokenCount > 0 
+            ? $"You have {tokenCount} respawn token" + (tokenCount > 1 ? "s" : "") 
+            : "You have no respawn tokens left";
 
         //Clear all methods the event is attached to.
         Disable = null;

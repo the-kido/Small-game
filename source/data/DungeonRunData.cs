@@ -11,6 +11,7 @@ public abstract class RunData : ISaveable {
         {RunDataEnum.FreezeOrbs, new DungeonRunData.FreezeOrbs()},
         {RunDataEnum.EnemiesKilled, new DungeonRunData.EnemiesKilled()},
         {RunDataEnum.DamageTaken, new DungeonRunData.DamageTaken()},
+        {RunDataEnum.RespawnTokens, new DungeonRunData.RespawnTokens()},
     };
 
     public abstract int Count {get; set;}
@@ -34,6 +35,7 @@ public enum RunDataEnum {
     FreezeOrbs,
     EnemiesKilled,
     DamageTaken,
+    RespawnTokens,
 }
 
 public static class DungeonRunData {
@@ -88,6 +90,19 @@ public static class DungeonRunData {
     public class DamageTaken : RunData {
 
         public override string ValueName => "DamageTaken";
+
+        public override int Count { 
+            get => _count;
+            set {
+                _count = (int) MathF.Max(0, value);
+                ValueChanged?.Invoke(_count);
+            }
+        }
+    }
+
+     public class RespawnTokens : RunData {
+
+        public override string ValueName => "RespawnTokens";
 
         public override int Count { 
             get => _count;

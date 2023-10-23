@@ -156,6 +156,8 @@ _data = {
 size = Vector2(45.3333, 15)
 
 [node name="Shop" type="Node2D" node_paths=PackedStringArray("shopItems", "shopItemAnchorsParent", "animationPlayer")]
+z_as_relative = false
+y_sort_enabled = true
 scale = Vector2(3, 3)
 script = ExtResource("2_luemq")
 shopItems = []
@@ -175,16 +177,16 @@ texture = ExtResource("2_ivoh0")
 texture = ExtResource("1_xa43e")
 
 [node name="Anchor Points Parent" type="Node2D" parent="Moved Stuff"]
-position = Vector2(0, 9)
+position = Vector2(0, 6)
 
 [node name="1" type="Node2D" parent="Moved Stuff/Anchor Points Parent"]
 position = Vector2(-16, 0)
 
 [node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/1"]
 offset_left = -6.0
-offset_top = 2.66667
+offset_top = 5.66667
 offset_right = 34.0
-offset_bottom = 42.6667
+offset_bottom = 45.6667
 scale = Vector2(0.3, 0.3)
 text = "~"
 horizontal_alignment = 1
@@ -194,9 +196,9 @@ vertical_alignment = 1
 
 [node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/2"]
 offset_left = -6.0
-offset_top = 2.66667
+offset_top = 5.66667
 offset_right = 34.0
-offset_bottom = 42.6667
+offset_bottom = 45.6667
 scale = Vector2(0.3, 0.3)
 text = "~"
 horizontal_alignment = 1
@@ -207,9 +209,9 @@ position = Vector2(16, 0)
 
 [node name="RichTextLabel" type="Label" parent="Moved Stuff/Anchor Points Parent/3"]
 offset_left = -6.0
-offset_top = 2.66667
+offset_top = 5.66667
 offset_right = 34.0
-offset_bottom = 42.6667
+offset_bottom = 45.6667
 scale = Vector2(0.3, 0.3)
 text = "~"
 horizontal_alignment = 1
