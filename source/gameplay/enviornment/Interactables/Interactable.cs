@@ -23,9 +23,9 @@ public sealed partial class Interactable : AnimatedSprite2D {
 
     private void ShowDescription(Player player, bool show) {
         if (show && !string.IsNullOrEmpty(Description))
-            player.GUI.InteractableDescription.Enable(true, Description);
+            player.GUI.InteractableDescription.Enable(Description);
         else
-            player.GUI.InteractableDescription.Enable(false, "null");
+            player.GUI.InteractableDescription.Disable();
     }
 
     private void AttachEvent(Player player, bool attach) {

@@ -4,11 +4,8 @@ using Game.Players;
 using Game.Autoload;
 using KidoUtils;
 using Game.Data;
-using System.Reflection;
-/*This should include:
-The enabling disableding
-A way to set the menu to NULL in the playerHud 
-*/
+using Game.LevelContent;
+
 namespace Game.UI;
 
 public partial class ReviveMenu : Control, IMenu{
@@ -22,14 +19,23 @@ public partial class ReviveMenu : Control, IMenu{
 
     public Action Disable {get; set;}
     public override void _Ready() {
-        close.Pressed += OnDisable;
-        // respawn.Pressed
-    } 
+        close.Pressed += Die;
+        respawn.Pressed += Respawn;
+    }
+    
+    private void Respawn() {
+        OnDisable();
+        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(Level.CurrentScenePath);
+    }
+
+    const string spawnScene = "res://assets/levels/debug/spawn.tscn";
+    private void Die() {
+        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(spawnScene);
+        OnDisable();
+    }
 
     private void OnDisable() {
-        close.Pressed -= OnDisable; 
         Disable?.Invoke();
-        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath("res://assets/levels/debug/spawn.tscn");
     }
 
     public void Enable(Player _) {
@@ -44,18 +50,17 @@ public partial class ReviveMenu : Control, IMenu{
 
         respawn.Disabled = tokenCount <= 0;
 
-        //Clear all methods the event is attached to.
         Disable = null;
     }
 
     public void Close() {
         animationPlayer.PlayBackwards("Open");
-        animationPlayer.AnimationFinished += OnClosed; 
+        animationPlayer.AnimationFinished += OnMenuClosed; 
     }
 
-    private void OnClosed(StringName _) {
+    private void OnMenuClosed(StringName _) {
         Visible = false;
-        animationPlayer.AnimationFinished -= OnClosed; 
+        animationPlayer.AnimationFinished -= OnMenuClosed; 
     }
 }
 

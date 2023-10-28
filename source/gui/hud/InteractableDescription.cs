@@ -7,13 +7,14 @@ public partial class InteractableDescription : Control {
     AnimationPlayer animationPlayer;
 
     public override void _Ready() => textLabel.Text = null;
-    
 
-    public void Enable(bool @bool, string description) {
-        if (!@bool && string.IsNullOrEmpty(textLabel.Text)) return;
+    public void Disable() {
+        if (string.IsNullOrEmpty(textLabel.Text)) return;
+        animationPlayer.Play("Close");
+    }
 
+    public void Enable(string description) {
         textLabel.Text = description;
-
-        animationPlayer.Play(@bool ? "Open" : "Close");
+        animationPlayer.Play("Open");
     }
 }
