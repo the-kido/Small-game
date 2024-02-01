@@ -10,7 +10,7 @@ public partial class FreezeCharge : Pickupable {
     protected override int AttractionDistance => 100;
 
     protected override void AbsorbPickupable(Player player) {
-        RunData.AllData[RunDataEnum.FreezeOrbs].Add(1);
+        RunData.FreezeOrbs.Add(1);
     }
 
     public override void _Ready() {

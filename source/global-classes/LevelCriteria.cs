@@ -9,5 +9,7 @@ public abstract partial class LevelCriteria : Node {
     public abstract void Start();
 
     public abstract event Action Finished;
+    
+    public virtual string Description {get;}
 
 }

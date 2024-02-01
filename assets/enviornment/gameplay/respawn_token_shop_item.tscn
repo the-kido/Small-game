@@ -6,6 +6,7 @@
 [node name="Respawn Token Shop Item" type="Sprite2D" node_paths=PackedStringArray("interactable")]
 script = ExtResource("1_58mko")
 interactable = NodePath("Interactable")
+Price = null
 
 [node name="Interactable" parent="." instance=ExtResource("1_34iew")]
 position = Vector2(0, -15.333)

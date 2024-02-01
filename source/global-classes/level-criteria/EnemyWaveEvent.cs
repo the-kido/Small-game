@@ -11,6 +11,8 @@ public partial class EnemyWaveEvent : LevelCriteria {
 
     public override event Action Finished;
 
+    public override string Description => "Defeat Every Wave of Enemies";
+
     public override void Start() {
         wave.CallDeferred("StartWave");
         wave.WaveFinished += () => Finished?.Invoke();

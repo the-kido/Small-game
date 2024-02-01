@@ -8,6 +8,6 @@ public sealed partial class RespawnTokenShopItem : ShopItem {
     }
     
     public override void OnPurchased(Player player) {   
-        RunData.AllData[RunDataEnum.RespawnTokens].Add(1);
+        RunData.RespawnTokens.Add(1);
     }
 }

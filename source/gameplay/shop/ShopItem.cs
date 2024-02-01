@@ -14,7 +14,7 @@ public abstract partial class ShopItem : Sprite2D {
 
     public override void _Ready() {
         interactable.Interacted += OnInteracted;
-        RunData.AllData[RunDataEnum.Coins].ValueChanged += UpdateInteractableInteractability;
+        RunData.Coins.ValueChanged += UpdateInteractableInteractability;
     }
 
     private void UpdateInteractableInteractability(int newValue) {
@@ -22,11 +22,11 @@ public abstract partial class ShopItem : Sprite2D {
     }
 
     public override void _ExitTree() {
-        RunData.AllData[RunDataEnum.Coins].ValueChanged -= UpdateInteractableInteractability;
+        RunData.Coins.ValueChanged -= UpdateInteractableInteractability;
     }
 
     private void OnInteracted(Player player) {
-        RunData.AllData[RunDataEnum.Coins].Add(-Price);
+        RunData.Coins.Add(-Price);
         OnPurchased(player);
         
         DisconnectEvents(player);
@@ -41,6 +41,6 @@ public abstract partial class ShopItem : Sprite2D {
 
     public void DisconnectEvents(Player player) {
         interactable.Destroy(player);
-        RunData.AllData[RunDataEnum.Coins].ValueChanged -= UpdateInteractableInteractability;
+        RunData.Coins.ValueChanged -= UpdateInteractableInteractability;
     }
 }

@@ -56,7 +56,7 @@ public sealed partial class Player : Actor {
 		PlayerDeathHandler playerDeathHandler = new(this);
 
 		DamageableComponent.OnDamaged += playerDeathHandler.DamageFramePause;
-		DamageableComponent.TotalDamageTaken += RunData.AllData[RunDataEnum.DamageTaken].Add;
+		DamageableComponent.TotalDamageTaken += RunData.DamageTaken.Add;
 		DamageableComponent.OnDeath += playerDeathHandler.OnDeath;
 
 		classManager.SwitchClassFromSave();

@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
 using Game.Actors;
-using Game.LevelContent;
 using Game.Mechanics;
 
 namespace Game.Data;
 
 public abstract class RunData : ISaveable {
+
+    public  readonly static RunData 
+    Coins = new DungeonRunData.Coins(),
+    FreezeOrbs = new DungeonRunData.FreezeOrbs(),
+    EnemiesKilled = new DungeonRunData.EnemiesKilled(),
+    DamageTaken = new DungeonRunData.DamageTaken(), 
+    RespawnTokens = new DungeonRunData.RespawnTokens();
+
     public readonly static Dictionary<RunDataEnum, RunData> AllData = new() {
-        {RunDataEnum.Coins, new DungeonRunData.Coins()},
-        {RunDataEnum.FreezeOrbs, new DungeonRunData.FreezeOrbs()},
-        {RunDataEnum.EnemiesKilled, new DungeonRunData.EnemiesKilled()},
-        {RunDataEnum.DamageTaken, new DungeonRunData.DamageTaken()},
-        {RunDataEnum.RespawnTokens, new DungeonRunData.RespawnTokens()},
+        {RunDataEnum.Coins, Coins},
+        {RunDataEnum.FreezeOrbs, FreezeOrbs},
+        {RunDataEnum.EnemiesKilled, EnemiesKilled},
+        {RunDataEnum.DamageTaken, DamageTaken},
+        {RunDataEnum.RespawnTokens, RespawnTokens},
     };
 
     public abstract int Count {get; set;}
@@ -30,7 +37,6 @@ public abstract class RunData : ISaveable {
         _count = (int) (this as ISaveable).LoadData();
     }
 }
-
 public enum RunDataEnum {
     Coins,
     FreezeOrbs,

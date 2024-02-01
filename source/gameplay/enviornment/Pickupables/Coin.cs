@@ -13,7 +13,7 @@ public partial class Coin : Pickupable {
     public static PackedScene PackedScene {get; private set;} = ResourceLoader.Load<PackedScene>("res://assets/content/coin.tscn"); 
 
 	protected override void AbsorbPickupable(Player player) {
-        RunData.AllData[RunDataEnum.Coins].Add(1);
+        RunData.Coins.Add(1);
         UpdateCoins();
 	}
 

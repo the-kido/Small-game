@@ -26,6 +26,8 @@ public partial class ReviveMenu : Control, IMenu{
     private void Respawn() {
         OnDisable();
         Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(Level.CurrentScenePath);
+        RunData.RespawnTokens.Add(-1);
+        GameDataService.Save();
     }
 
     const string spawnScene = "res://assets/levels/debug/spawn.tscn";
@@ -42,7 +44,7 @@ public partial class ReviveMenu : Control, IMenu{
         Visible = true;
         animationPlayer.Play("Open");
         
-        int tokenCount = RunData.AllData[RunDataEnum.RespawnTokens].Count;
+        int tokenCount = RunData.RespawnTokens.Count;
 
         respawn.Text = tokenCount > 0 
             ? $"You have {tokenCount} respawn token" + (tokenCount > 1 ? "s" : "") 

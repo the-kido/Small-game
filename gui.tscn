@@ -214,10 +214,8 @@ settingsPage = NodePath("SettingsPage")
 debugHUD = NodePath("DEBUG")
 
 [node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
-offset_left = 4.0
-offset_top = -10.0
-offset_right = 4.0
-offset_bottom = -10.0
+offset_left = 0.0
+offset_right = 0.0
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
 layout_mode = 3
@@ -654,8 +652,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 26880.0
-offset_bottom = 15120.0
+offset_right = 32640.0
+offset_bottom = 18360.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_l0a7d")
