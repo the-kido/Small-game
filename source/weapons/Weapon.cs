@@ -43,6 +43,7 @@ public abstract partial class Weapon : Node2D, IChestItem {
 	public void Init(WeaponManager hand, int slot) {
 		Name = $"{Name}: {slot}";
 		Hand = hand;
+		// this.ToggleYSorting();
 		Visible = false;
 	}
 

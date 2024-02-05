@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace Game.Autoload;
 
-
 public partial class ParticleFactory : Node {
 	// Called when the node enters the scene tree for the first time.
 	private static Node factoryNode;
@@ -20,9 +19,10 @@ public partial class ParticleFactory : Node {
     }
 
 	public async static void RemoveParticle(Node2D particleToRemove) {
-		if (particleToRemove is GpuParticles2D gpuParticles) {
-			gpuParticles.Emitting = false;
-		}
+		// if it's not here why would we delete it.
+		if (!UpdatedParticles.ContainsKey(particleToRemove)) return;
+
+		if (particleToRemove is GpuParticles2D gpuParticles) gpuParticles.Emitting = false;
         
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
         await Task.Delay(5000);
@@ -36,32 +36,38 @@ public partial class ParticleFactory : Node {
     }
 
 	public override void _PhysicsProcess(double delta) {
-		foreach (Node2D particle in UpdatedParticles.Keys) {
-			particle.Position = UpdatedParticles[particle].Position; 
-		}
+		foreach (Node2D particle in UpdatedParticles.Keys) particle.Position = UpdatedParticles[particle].Position; 
 	}
 
-	static Dictionary<Node2D, Node2D> UpdatedParticles = new();
+	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
 	
-	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D nodeToFollow) {
-		
-		Node2D instance =  particle.Instantiate<Node2D>();
-		factoryNode.AddChild(instance);
+	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D followedNode) {
+        Node2D particleInstance = particle.Instantiate<Node2D>();
 
-		UpdatedParticles.Add(instance, nodeToFollow);
-		nodeToFollow.TreeExited += () => UpdatedParticles.Remove(instance);
-		
-		return instance;
-	}
+        UpdatedParticles.Add(particleInstance, followedNode);
+
+        // Remove particle if node it's following is destroyed
+        followedNode.TreeExited += () => UpdatedParticles.Remove(particleInstance);
+        factoryNode.AddChild(particleInstance);
+
+		// Set the position on a deferred call because otherwise it shows 
+		// a bit of it at the coords 0,0 and I DON'T KNOW WHY.
+        factoryNode.CallDeferred("SetParticlePosition", followedNode, particleInstance);
+
+        return particleInstance;
+    }
+
+    private static void SetParticlePosition(Node2D followedNode, Node2D particleInstance) {
+        particleInstance.GlobalPosition = followedNode.GlobalPosition;
+    }
 
 	public static Node2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {
 		GpuParticles2D newParticle = (GpuParticles2D) particle.Duplicate();
+		factoryNode.AddChild(newParticle);
 
 		newParticle.Position = position;
 		newParticle.Rotation = rotation;
 		newParticle.Emitting = true;
-		
-		factoryNode.AddChild(newParticle);
 		
 		return newParticle;
 	}

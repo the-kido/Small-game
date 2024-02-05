@@ -3,6 +3,7 @@ using System;
 using Game.Bullets;
 using Game.Autoload;
 using Game.Graphics;
+using Game.UI;
 
 namespace Game.SealedContent;
 
@@ -12,11 +13,17 @@ public sealed partial class BadBullet : Bullet {
     private float wiggleStrength;
     private double wiggleDistance;
     
-    Node2D particle;
     public override void _Ready() {
-        particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
-        OnCollided += () => ParticleFactory.RemoveParticle(particle);
-        OnCollided += () => particle.GetChild<GpuParticles2D>(0).Emitting = false;
+        Node2D particle = ParticleFactory.SpawnGlobalFolliwngParticle(Effects.Fire, this);
+
+        OnCollided += () => {
+            ParticleFactory.RemoveParticle(particle);
+            
+            // Turns off smoke (is deleted in partical factory)
+            particle.GetChild<GpuParticles2D>(0).Emitting = false;
+            Camera.currentCamera.StartShake(50, 300, 1);
+
+        };
 
         Random random = new();
         wiggleDistance = random.Next((int) wiggleStrength * 2) - wiggleStrength;

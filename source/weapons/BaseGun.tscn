@@ -90,7 +90,6 @@ sprite = NodePath("Sprite")
 UsesReloadVisuals = true
 
 [node name="Sprite" type="Sprite2D" parent="."]
-z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 position = Vector2(22, 0)
@@ -98,15 +97,18 @@ scale = Vector2(7.16, 7.16)
 texture = ExtResource("2_e4ea4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../Sprite")
+root_node = NodePath("")
 libraries = {
 "": SubResource("AnimationLibrary_7kaqt")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("")
+libraries = {
+"": SubResource("AnimationLibrary_7kaqt")
+}
 tree_root = SubResource("AnimationNodeBlendSpace2D_doi4c")
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/blend_position = Vector2(-0.103168, 0.956332)
 
 [node name="Nuzzle" type="Node2D" parent="."]

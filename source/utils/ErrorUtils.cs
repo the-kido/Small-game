@@ -30,7 +30,8 @@ public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) 
         $"The actor {actorName} either has Y Sorting disabled or Z as relative enabled, both of which are invald.";
     
     public static void AvoidImproperOrdering(CanvasItem item) {
-
+        return;
+        
         if (!item.YSortEnabled || item.ZAsRelative) {
             CanvasItem parent = item.GetParentOrNull<CanvasItem>();
             if (parent is not null) {

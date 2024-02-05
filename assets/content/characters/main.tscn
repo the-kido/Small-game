@@ -39,6 +39,7 @@ size = Vector2(52, 57)
 
 [sub_resource type="Animation" id="Animation_r1vie"]
 resource_name = "dancing"
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -115,6 +116,7 @@ AnimationPlayer = NodePath("AnimationPlayer")
 scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_8vijk")
 animation = &"vibrating"
+frame = 1
 
 [node name="Area2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2.5)

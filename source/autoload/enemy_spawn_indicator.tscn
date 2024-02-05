@@ -70,8 +70,8 @@ animations = [{
 scale = Vector2(3, 3)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
-z_index = -1
 position = Vector2(0, 5.33333)
 sprite_frames = SubResource("SpriteFrames_f1dps")
 autoplay = "default"
-frame_progress = 0.932108
+frame = 1
+frame_progress = 0.954331

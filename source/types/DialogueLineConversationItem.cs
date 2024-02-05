@@ -1,5 +1,6 @@
 using Godot;
 using Game.Characters;
+using System;
 
 namespace Game.UI;
 
@@ -39,11 +40,10 @@ public class DialoguePlayer {
         // Update portrait even if the text has stopped typing
         UpdatePortraitImage(delta);
 
-        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) 
-            return;
+        if (bar.Label.VisibleCharacters == bar.Label.GetParsedText().Length) return;
         
-        if (CurrentCharacter == ' ') // Skip spaces.
-            lineProgress += 1;
+        // Skip spaces. 
+        if (CurrentCharacter == ' ') lineProgress += 1;
         
         lineProgress += delta * nextLine.charactersPerSecond;
         
@@ -53,9 +53,10 @@ public class DialoguePlayer {
     DialogueLineConversationItem nextLine;
     public void Start(DialogueLineConversationItem nextLine) {
         this.nextLine = nextLine;
+
+        if (nextLine.charactersPerSecond is 0) throw new ArgumentOutOfRangeException("The charactersPerSecond exported field for DialougeLineConversationItem must be greater than 0!");
         
         bar.Show(true);
-
         bar.Label.Text = bar.Label.Tr(nextLine.text);
         
         lineProgress = 0;
@@ -64,9 +65,7 @@ public class DialoguePlayer {
 
     // Called when click
     public void Skip() {
-        if (!IsPhraseFinished)
-            bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
-        else
-            conversationController.ContinueConversation();
+        if (!IsPhraseFinished) bar.Label.VisibleCharacters = bar.Label.GetParsedText().Length;
+        else conversationController.ContinueConversation();
     }
 }

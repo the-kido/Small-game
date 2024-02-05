@@ -46,7 +46,7 @@ zoom = Vector2(1.7, 1.7)
 tileMap = NodePath("../../Node2D/Enivornment/TileMap")
 
 [node name="Player Manager" type="Node2D" parent="Required"]
-position = Vector2(457, 420)
+position = Vector2(906, 375)
 script = ExtResource("12_qjdua")
 
 [node name="Node2D" type="Node2D" parent="."]
@@ -94,7 +94,6 @@ z_as_relative = false
 position = Vector2(711, 577)
 
 [node name="Chest" parent="Node2D/Gameplay" instance=ExtResource("16_dddk7")]
-z_as_relative = false
 position = Vector2(326, 630)
 
 [node name="Waves" type="Node2D" parent="Node2D"]

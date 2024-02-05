@@ -20,11 +20,22 @@ public sealed partial class CharacterActionConversationItem : ConversationItem {
     [Export]
     public StringName animationName;
     
+    [Export]
+    public bool playAmbiently; // Plays the animation in the background
+    [Export]
+    public float loopTime;
+
     [ExportGroup("Optional")]
     [Export]
-    public Vector2 moveToPosition = new();
-    [Export]
-    public float timeToStopLoopingAnimation;
+    public Vector2 moveToPosition = new(); // Moves the character to this positon while playing the given animation
+
+
+    private CharacterActionPlayer a;
+    public void ProcessPlayer(CharacterActionPlayer a) {
+        this.a = a;
+    }
+
+    public override void _Process(double delta) => a?.Update(delta);
 }
 
 public class CharacterActionPlayer {
@@ -38,52 +49,61 @@ public class CharacterActionPlayer {
         this.bar = bar;
     }
 
+    StringName AnimationName => action.animationName;
+    AnimationPlayer AnimationPlayer => action.character.AnimationPlayer;
+    KidoUtils.Timer loopTimer = KidoUtils.Timer.NONE;
+
+
     public void Start(CharacterActionConversationItem action) {
         this.action = action;
-        bar.Show(false);
+        action.ProcessPlayer(this); // i am testing right now!11
 
-        timerToStopLoopingAnimation = new(action.timeToStopLoopingAnimation);
-        timerToStopLoopingAnimation.TimeOver += conversationController.ContinueConversation;
+        if (!action.playAmbiently) bar.Show(false);
+
+        if (action.loopTime is not 0) {
+            AnimationPlayer.GetAnimation(AnimationName).LoopMode = Godot.Animation.LoopModeEnum.Linear;
+            loopTimer = new(action.loopTime);
+            
+            loopTimer.TimeOver += () => {
+                AnimationPlayer.Stop();
+                loopTimer = KidoUtils.Timer.NONE;
+            };
+            
+        } else {
+            AnimationPlayer.GetAnimation(AnimationName).LoopMode = Godot.Animation.LoopModeEnum.None;
+        } 
+
+        AnimationPlayer.Play(AnimationName);
+        
+        if (action.playAmbiently) {
+            conversationController.ContinueConversation();
+        } else {
+            if (action.loopTime is not 0) loopTimer.TimeOver += conversationController.ContinueConversation;
+            else AnimationPlayer.AnimationFinished += ContinueOnAnimationFinished;
+        }
     }
 
     public void Update(double delta) {
 
         if (action.moveToPosition != Vector2.Zero) {
-            MoveTo(delta);
-            return;
+            action.character.MoveTo(delta, action.moveToPosition);
         }
 
-        if (action.timeToStopLoopingAnimation is not 0) {
-            timerToStopLoopingAnimation.Update(delta);
-            return;
+        if (action.loopTime is not 0) {
+            loopTimer.Update(delta);
         }
-
-        // If the other criteria above pass, the only option left is to play the animation once.
-        PlayAnimationOnce();
-    }
-
-    // these are the 3 ways that this thing can be doned
-    #region #1
-    private void MoveTo(double delta) {
-        bool finished = action.character.MoveTo(delta, action.moveToPosition);
-        if (finished) conversationController.ContinueConversation();
-    }
-    #endregion #1
-
-    #region #2
-    private void PlayAnimationOnce() {
-        if (action.character.AnimationPlayer.IsPlaying()) return;
         
-        action.character.AnimationPlayer.Play(action.animationName);
-        action.character.AnimationPlayer.AnimationFinished += AnimationFinished;
+        if (!loopTimer.Equals(KidoUtils.Timer.NONE)) {
+            loopTimer.Update(delta);
+        }
     }
-    private void AnimationFinished(StringName stringName) {
-        action.character.AnimationPlayer.AnimationFinished -= AnimationFinished;
+
+    private void TimerFinished() {
+        
+    }
+
+    private void ContinueOnAnimationFinished(StringName stringName) {
+        AnimationPlayer.AnimationFinished -= ContinueOnAnimationFinished;
         conversationController.ContinueConversation();
     }
-    #endregion #2
-
-    #region #3
-    KidoUtils.Timer timerToStopLoopingAnimation;
-    #endregion #3
 }

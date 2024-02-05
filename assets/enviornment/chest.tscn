@@ -496,12 +496,13 @@ animations = [{
 size = Vector2(24, 13)
 
 [node name="Chest" type="AnimatedSprite2D" node_paths=PackedStringArray("interactable", "itemShowcase")]
+z_index = 2
+z_as_relative = false
 y_sort_enabled = true
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8ooks")
 animation = &"open"
 script = ExtResource("1_8vto3")
-chestLootTable = null
 interactable = NodePath("Interactable")
 itemShowcase = NodePath("New Item Showcase")
 
@@ -510,6 +511,7 @@ position = Vector2(0, -19)
 scale = Vector2(2, 2)
 
 [node name="New Item Showcase" type="Sprite2D" parent="."]
+z_index = 5
 position = Vector2(0, -0.5)
 scale = Vector2(2, 2)
 

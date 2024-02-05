@@ -3,11 +3,13 @@
 [ext_resource type="Texture2D" uid="uid://dmo3eaiw7qhle" path="res://assets/levels/debug/tile_set_2.png" id="1_kn8hh"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_6lica"]
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_6cbkv"]
 vertices = PackedVector2Array(1, -1.5, 1, 1, 0, 8, -1, 1, -1, -1.5, 0, -8, 8, 0, -8, 0)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(0, 6, 1), PackedInt32Array(3, 7, 4)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-1, -1.5, 0, -8, 1, -1.5, 8, 0, 1, 1, 0, 8, -1, 1, -8, 0)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_marwd"]
 texture = ExtResource("1_kn8hh")

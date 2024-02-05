@@ -44,6 +44,7 @@ public partial class DialogueBar : Control {
 // bar but still loops or plays an animation and QUICKLY
 // Such that it is basically "part of" the next line being spokened
 
+// Controls the passage of dialogue during a "
 public class ConversationController {
     // Publicly referable fields / events
     public Action Clicked;
@@ -54,38 +55,35 @@ public class ConversationController {
     ConversationItem[] currentDialogue = Array.Empty<ConversationItem>();
     int itemAt = -1;
     
-    ConversationItem currentItem => currentDialogue[itemAt];
+    ConversationItem CurrentItem => currentDialogue[itemAt];
     private readonly DialogueBar bar;
     
     bool IsConvsersationFinished => currentDialogue.Length == itemAt; 
 
     public void Update(double delta) {
         if (currentDialogue.Length is 0) return;
-
-        if (currentItem is DialogueLineConversationItem)
-            dialoguePlayer.Update(delta);
-        else if (currentItem is CharacterActionConversationItem)
-            characterActionPlayer.Update(delta);
+        
+        switch (CurrentItem) {
+            case DialogueLineConversationItem:
+                dialoguePlayer.Update(delta);
+                break;
+                
+        }
     }
 
     // rename to "continueDIalouge"
-    public void OnClicked() {
+    public void ContinueDialogue() {
         // Make sure that the player cannot click on the dialogue bar as it's going down.
         if (currentDialogue.Length is 0) return;
        
-        if (currentItem is DialogueLineConversationItem) {
+        if (CurrentItem is DialogueLineConversationItem) {
             dialoguePlayer.Skip();
-            return;
-        }
-        if (currentItem is CharacterActionConversationItem) {
-            // do nothing... we will force the player to watch it to completion
             return;
         }
     }
     
     public void Start(ConversationItem[] dialogue, ConversationInfo info) {
-        if (dialogue.Length is 0)
-            throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
+        if (dialogue.Length is 0) throw new IndexOutOfRangeException("There must be 1 or more ConversationItem's");
         
         itemAt = -1;
         currentDialogue = dialogue;
@@ -106,16 +104,11 @@ public class ConversationController {
             return;
         }
 
-        if (currentItem is DialogueLineConversationItem line) 
+        if (CurrentItem is DialogueLineConversationItem line) 
             dialoguePlayer.Start(line);
         
-        if (currentItem is CharacterActionConversationItem action)
+        if (CurrentItem is CharacterActionConversationItem action) {
             characterActionPlayer.Start(action);
-
-        // Play the animation, then quickly continue to the next thingy
-        if (currentItem is CharacterAnimationConversationItem characterAnimation) {
-            characterAnimationPlayer.Start(characterAnimation);
-            ContinueConversation();
         }
     }
 
@@ -130,14 +123,14 @@ public class ConversationController {
 
     readonly DialoguePlayer dialoguePlayer;
     readonly CharacterActionPlayer characterActionPlayer;
-    readonly CharacterAnimationPlayer characterAnimationPlayer;
+    // readonly CharacterAnimationPlayer characterAnimationPlayer;
 
     public ConversationController(DialogueBar bar) {
         this.bar = bar;
-        Clicked += OnClicked;
+        Clicked += ContinueDialogue;
 
         dialoguePlayer = new(this, bar);
         characterActionPlayer = new(this, bar);
-        characterAnimationPlayer = new();
+        // characterAnimationPlayer = new();
     }
 }

@@ -20,7 +20,7 @@ public partial class Level : Node, ISaveable {
 	public SaveData SaveData => new("LevelCompletions", LevelCompletions);
 	// The parent is the root of the level, so that's the name we want to save.
 	public string SaveName => GetParent().Name;
-	public static string CurrentScenePath =>CurrentLevel.GetParent().SceneFilePath;
+	public static string CurrentScenePath => CurrentLevel.GetParent().SceneFilePath;
 
 	[Export]
 	public Godot.Collections.Array<NodePath> doors = new();
@@ -40,6 +40,7 @@ public partial class Level : Node, ISaveable {
 			if (door.Name == name) 
 				return door;
 		}
+		GD.PushWarning("No such door ", name, " was found for level ", Name);
 		return null;
 	}
 

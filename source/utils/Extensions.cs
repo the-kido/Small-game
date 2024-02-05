@@ -18,6 +18,11 @@ public static class Extensions {
 
 	}
 
+	public static void ToggleYSorting(this Node2D node2D) {
+		node2D.ZAsRelative = false;
+		node2D.YSortEnabled = true;
+	}
+
 	public static string Colored(this string @string, string hexColor) =>
         $"[color={hexColor}]{@string}[/color]";
 }

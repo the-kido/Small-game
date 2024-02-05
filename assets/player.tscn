@@ -673,9 +673,11 @@ script = ExtResource("2_7escu")
 MovementController = NodePath("../Movement Controller")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]
+z_as_relative = false
+y_sort_enabled = true
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_gm7vi")
-animation = &"west"
+animation = &"south"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerSprites"]
 reset_on_save = false
@@ -702,9 +704,13 @@ shape = SubResource("RectangleShape2D_3eib2")
 debug_color = Color(0, 0.6, 0.701961, 0.172549)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../PlayerSprites")
+libraries = {
+"": SubResource("AnimationLibrary_j0dn8"),
+"player": SubResource("AnimationLibrary_ulu1t")
+}
 tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
 anim_player = NodePath("../PlayerSprites/AnimationPlayer")
-active = true
 parameters/conditions/idle = false
 parameters/conditions/walk = false
 parameters/Idle/blend_position = Vector2(-0.897644, 0.20524)
@@ -732,6 +738,7 @@ shape = SubResource("CircleShape2D_so67i")
 debug_color = Color(0.47451, 0.588235, 0, 0)
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("10_rp2rn")]
+defaultStatus = null
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_laf6i")

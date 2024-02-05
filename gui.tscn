@@ -323,8 +323,8 @@ theme = ExtResource("2_lc21n")
 text = "X"
 
 [node name="Death Animation Player" type="AnimationPlayer" parent="Revive"]
-root_node = NodePath("../..")
 reset_on_save = false
+root_node = NodePath("../..")
 libraries = {
 "": SubResource("AnimationLibrary_8q4wx")
 }
@@ -652,8 +652,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 32640.0
-offset_bottom = 18360.0
+offset_right = 34560.0
+offset_bottom = 19440.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("9_l0a7d")
