@@ -10,7 +10,7 @@ public static class Extensions {
         return new(centerX, centerY);
 	}
 	public static Vector2 Random(this Vector2 vector2) {
-		Random random = new Random();
+		Random random = new((int) Time.GetTicksUsec());
 		float x = random.NextSingle() - 0.5f;
 		float y = random.NextSingle() - 0.5f;
 		

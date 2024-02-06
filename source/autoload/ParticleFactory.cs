@@ -1,6 +1,7 @@
 using Godot;
 using KidoUtils;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Game.Autoload;
@@ -20,16 +21,18 @@ public partial class ParticleFactory : Node {
 
 	public async static void RemoveParticle(Node2D particleToRemove) {
 		if (particleToRemove is GpuParticles2D gpuParticles) gpuParticles.Emitting = false;
-        
+
+		// Here to avoid errors during the 5 seconds that the particle could possibly be queue free'd	
+		bool queueFreed = false;
+		particleToRemove.TreeExited += () => queueFreed = true;
+
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
         await Task.Delay(5000);
-
+		
 		// Stop updating this particle's position. 
-		if (UpdatedParticles.ContainsKey(particleToRemove)) {
-			UpdatedParticles.Remove(particleToRemove);
-		}
-        
-		particleToRemove.QueueFree();
+		if (UpdatedParticles.ContainsKey(particleToRemove)) UpdatedParticles.Remove(particleToRemove);
+
+		if (queueFreed is not true) particleToRemove.QueueFree();
     }
 
 	public override void _PhysicsProcess(double delta) {

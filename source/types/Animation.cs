@@ -11,7 +11,6 @@ public class AnimationController {
 
     public void StopCurrentAnimation(ref Action setEvent) {
         setEvent += () => currentAnimation = AnimationInfo.none;
-        
     }
 
     //I literally don't know how to solve this issue so this is what you're getting.

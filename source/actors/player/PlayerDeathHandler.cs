@@ -13,7 +13,7 @@ public class PlayerDeathHandler {
 
     public void OnDeath(DamageInstance _) {
 
-        player.GetNode<AudioStreamPlayer2D>("AudioStreamPlayer2D").Playing = true;
+        player.GetNode<AudioStreamPlayer2D>("Death Sound").Playing = true;
         
         PlayImpactFrames(1000);
         Camera.currentCamera.StartShake(300, 300, 2);

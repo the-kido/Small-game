@@ -15,6 +15,7 @@ public sealed partial class Interactable : AnimatedSprite2D {
     
     public event Action<Player> Interacted;
 
+    // I think this should be in-lined into "Enable"
     public void SetIndicatorVisibility(Player player, bool isVisible) {
         player.GUI.InteractButton.Enable(isVisible);
         Visible = isVisible;
@@ -36,8 +37,7 @@ public sealed partial class Interactable : AnimatedSprite2D {
     }
 
     private void OnBodyEntered(Node2D body) {
-        if (body is Player)
-            interactedWith.Add(this);
+        if (body is Player) interactedWith.Add(this);
     }
 
     private void OnBodyExited(Node2D body) {

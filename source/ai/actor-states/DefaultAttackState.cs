@@ -13,18 +13,17 @@ public sealed class DefaultAttackState : AIState {
 
     public Action OnShoot;
 
-    DamageInstance damage => new(actor) {
+    DamageInstance Damage => new(actor) {
         damage = 5,
         statusEffect = new FireEffect(),
     };
-   
-   
+    
     Pathfinder pathfinderComponent;
     PackedScene spamedBullet;
     float attackDelay;
     public DefaultAttackState(Pathfinder pathfinderComponent, PackedScene bullet, float attackDelay) {
         this.pathfinderComponent = pathfinderComponent;
-        this.spamedBullet = bullet;
+        spamedBullet = bullet;
         this.attackDelay = attackDelay;
     }
 
@@ -32,7 +31,8 @@ public sealed class DefaultAttackState : AIState {
         if (player is null) {
             time += (float) delta;
 
-            if (time > 10) {
+            if (time > 5) {
+                GD.Print("i forgor");
                 return true;
             }
         }
@@ -126,7 +126,7 @@ public sealed class DefaultAttackState : AIState {
         }
     }
     
-    BulletInstance bulletInstance => new(BulletFrom.Enemy, damage, BulletSpeed.KindaSlow);
+    BulletInstance bulletInstance => new(BulletFrom.Enemy, Damage, BulletSpeed.KindaSlow);
 
     private void Shoot(Player player) {
         OnShoot?.Invoke();
@@ -139,7 +139,7 @@ public sealed class DefaultAttackState : AIState {
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.
-        bool flip = MathF.Sign((lastRememberedPlayer.GlobalPosition - actor.GlobalPosition).X) == 1 ? false : true;
+        bool flip = MathF.Sign((lastRememberedPlayer.GlobalPosition - actor.GlobalPosition).X) != 1;
         actor.Flip(flip);
     }
 }

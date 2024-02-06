@@ -144,6 +144,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Shadow:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.368627)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_b47p4"]
 _data = {
@@ -153,7 +165,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0mh08"]
-size = Vector2(45.3333, 15)
+size = Vector2(45.3333, 9)
 
 [node name="Shop" type="Node2D" node_paths=PackedStringArray("shopItems", "shopItemAnchorsParent", "animationPlayer")]
 z_as_relative = false
@@ -170,14 +182,16 @@ z_index = -1
 z_as_relative = false
 position = Vector2(0, 9.33333)
 texture = ExtResource("2_ivoh0")
+offset = Vector2(0, -10)
 
 [node name="Moved Stuff" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Moved Stuff"]
 texture = ExtResource("1_xa43e")
+offset = Vector2(0, -10)
 
 [node name="Anchor Points Parent" type="Node2D" parent="Moved Stuff"]
-position = Vector2(0, 6)
+position = Vector2(0, -4)
 
 [node name="1" type="Node2D" parent="Moved Stuff/Anchor Points Parent"]
 position = Vector2(-16, 0)
@@ -229,6 +243,6 @@ libraries = {
 collision_mask = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody"]
-position = Vector2(0, 4.16667)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_0mh08")
 disabled = true

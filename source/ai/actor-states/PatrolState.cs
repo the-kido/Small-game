@@ -5,108 +5,95 @@ namespace Game.Actors.AI;
 
 public sealed class PatrolState : AIState {
 
-    Pathfinder pathfinderComponent;
-    int HoverAtSpawnPointDistance;
-    public PatrolState(Pathfinder pathfinderComponent, int HoverAtSpawnPointDistance) {
-        this.HoverAtSpawnPointDistance = HoverAtSpawnPointDistance;
+    readonly Pathfinder pathfinderComponent;
+    readonly int hoverAtSpawnPointDistance;
+    public PatrolState(Pathfinder pathfinderComponent, int hoverAtSpawnPointDistance) {
+        this.hoverAtSpawnPointDistance = hoverAtSpawnPointDistance;
         this.pathfinderComponent = pathfinderComponent;
 
-        timer.TimeOver += OnCooldownFinished;
+        idleTimer.TimeOver += StopIdling;
     }
 
     public Action IsIdle;
     public Action IsMoving;
 
-    private Vector2[] goBetween = new Vector2[3];
-    int pathOn = 0;
     private State state = State.Walking;
 
     public override void Init() {
-        for (int i = 0; i < 3; i++)
-            goBetween[i] = FindValidPatrolPoint();
-        
-        //SwitchPatrolPoint();
-        //Debug
-        pathfinderComponent.SetTargetPosition(new(500,5000));
+        pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
         IsMoving?.Invoke();
-
     }
 
     public Vector2 FindValidPatrolPoint() {
 
         Random rand = new((int)Time.GetTicksUsec());
         
-        Vector2 randomDirection = Vector2.Zero;
-        //Create a random direction to go (from -1 to 1)
-        randomDirection.Y += (float) (rand.NextSingle() - 0.5f) * 2;
-        randomDirection.X += (float) (rand.NextSingle() - 0.5f) * 2;
-
         //Get number between HoverAtSpawnPointDistance/2 and HoverAtSpawnPointDistance
-        float range = (rand.NextSingle() / 2 + 0.5f) * HoverAtSpawnPointDistance;
+        float range = (rand.NextSingle() / 2 + 0.5f) * hoverAtSpawnPointDistance;
 
-        Vector2 patrolPoint = randomDirection * range;
+        
+        Vector2 patrolPoint = Vector2.One.Random() * range;
         
         patrolPoint += actor.GlobalPosition;
         
         return patrolPoint; 
     }
+
     private enum State {
         Idle,
         Walking
     }
 
 
-    KidoUtils.Timer timer = KidoUtils.Timer.NONE;
-    public void SwitchPatrolPoint() {
+    KidoUtils.Timer idleTimer = new(5);// KidoUtils.Timer.NONE;
+    public void Idle() {
         if (state == State.Idle) return;
 
+        pathfinderComponent.SetTargetPosition(actor.GlobalPosition); // Stop them from conitnuing their navigation
         IsIdle?.Invoke();
-        //stop its movements.
-        // pathfinderComponent.SetTargetPosition(actor.GlobalPosition);
-
-        pathOn = (pathOn + 1) % 3;
         state = State.Idle;
-        
-        timer.Reset();
+        idleTimer.Reset();
     }
 
-    private void OnCooldownFinished() {
-        stateSwitchCooldown = 0;
+    private void StopIdling() {
+        pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
+        
+        pathfinderComponent.temp();
+        
         state = State.Walking;
         IsMoving?.Invoke();
-        //pathfinderComponent.SetTargetPosition(goBetween[pathOn]);
-        pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
+    
+        buffer = 0;
+
     }
 
-    double stateSwitchCooldown = 0;
-    public override void Update(double delta) {
-        timer.Update(delta);
-        FlipActor();
 
-        stateSwitchCooldown += delta;
+    double buffer = 0;
+    public override void Update(double delta) {
+        FlipActor();
+        buffer += delta;
+
+        if (state is State.Idle) idleTimer.Update(delta);
+
         pathfinderComponent.UpdatePathfind(actor);
 
-        if (state == State.Walking) {
-            if (stateSwitchCooldown < 1) return;
-
+        if (state is State.Walking) {
+            // lets character be like "oh shoot i gotta move" instead of giving up on the spot.
+            if (buffer < 1) return;
+            
             if (actor.IsStalling()) {
                 actor.Velocity = Vector2.Zero;
-                SwitchPatrolPoint(); 
-                
-                return;
+                Idle(); 
             }
         }
 
-        if (actor.VisiblePlayer() is not null)
-            stateMachine.ChangeState(stateToGoTo);
+        // Stop patrolling after finding a player.
+        if (actor.VisiblePlayer() is not null) stateMachine.ChangeState(stateToGoTo);
     } 
 
     private void FlipActor() {
         int val = MathF.Sign(actor.Velocity.X);
         
-        if (val is 0) 
-            return;
-
-        actor.Flip(val is -1);
+        if (val is not 0) actor.Flip(val is -1);
     }
 }
