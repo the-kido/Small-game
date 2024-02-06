@@ -9,8 +9,7 @@ public class PlayerDeathHandler {
 
     readonly Player player;
     
-    public PlayerDeathHandler(Player player) =>
-        this.player = player;
+    public PlayerDeathHandler(Player player) => this.player = player;
 
     public void OnDeath(DamageInstance _) {
 

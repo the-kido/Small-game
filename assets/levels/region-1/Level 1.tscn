@@ -1,16 +1,12 @@
-[gd_scene load_steps=26 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=23 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
-[ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_2ex4k"]
 [ext_resource type="TileSet" uid="uid://gqbewfy6k5vq" path="res://assets/levels/region-1/new_tile_set.tres" id="2_jmklh"]
 [ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="2_p4x51"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_knfxu"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="3_ktacb"]
-[ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="3_vve5v"]
 [ext_resource type="PackedScene" uid="uid://efpfsnuwlefm" path="res://assets/enviornment/decor/lights/dungeon_lamp.tscn" id="4_fu4ew"]
-[ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/content/portraits/first_boss/happy.tres" id="4_pbjbd"]
 [ext_resource type="Texture2D" uid="uid://beycrukxt85vd" path="res://assets/sprites/enviornment/tilemaps/skull_two.png" id="5_i682j"]
-[ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="5_vb4j5"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="6_tqm1w"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="7_0r8k2"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="7_ff2ca"]
@@ -19,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop.tscn" id="10_exj4u"]
 [ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/weapon_shop_item.tscn" id="11_jx2oq"]
 [ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/content/coin.tscn" id="12_o2gfm"]
+[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="12_ua1rh"]
 [ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/respawn_token_shop_item.tscn" id="13_gt3xo"]
 [ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/potion_shop_item.tscn.tscn" id="13_hpsnk"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="14_f2iyh"]
@@ -33,26 +30,6 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
-
-[node name="ConversationEvent" type="Node" parent="Level"]
-script = ExtResource("2_2ex4k")
-
-[node name="DialogueLineConversationItem" type="Node" parent="Level/ConversationEvent"]
-script = ExtResource("3_vve5v")
-text = "this is for testing purposes ONLY"
-portrait = ExtResource("4_pbjbd")
-
-[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
-script = ExtResource("5_vb4j5")
-character = NodePath("../../../Character")
-animationName = &"dancing"
-loopTime = 3.0
-moveToPosition = null
-
-[node name="DialogueLineConversationItem2" type="Node" parent="Level/ConversationEvent"]
-script = ExtResource("3_vve5v")
-text = "testing 123"
-portrait = ExtResource("4_pbjbd")
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
@@ -109,17 +86,20 @@ position = Vector2(178, 162)
 
 [node name="EnemyWave" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
-position = Vector2(635, 345)
 script = ExtResource("7_0r8k2")
 
 [node name="Weird enemy" parent="Y Sort/EnemyWave" instance=ExtResource("8_qk2u3")]
 z_as_relative = true
 y_sort_enabled = false
+position = Vector2(677, 321)
 
 [node name="PlayerManager" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
-position = Vector2(128, 345)
+position = Vector2(257, 235)
 script = ExtResource("7_ff2ca")
+
+[node name="Player" parent="Y Sort/PlayerManager" instance=ExtResource("12_ua1rh")]
+position = Vector2(538, -107)
 
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
 scale = Vector2(1.62912, 1.62912)
@@ -141,7 +121,7 @@ Price = 10
 
 [node name="1_bad" parent="Y Sort/Shop" instance=ExtResource("11_jx2oq")]
 position = Vector2(47.3333, 24.3333)
-chestLootTable = null
+chestLootTable = 1
 Price = 23
 
 [node name="2_trash" parent="Y Sort/Shop" instance=ExtResource("11_jx2oq")]
@@ -155,19 +135,15 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
-Speed = null
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
-Speed = null
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
-Speed = null
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
-Speed = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("14_f2iyh")

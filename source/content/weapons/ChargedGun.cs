@@ -9,7 +9,8 @@ using Game.UI;
 namespace Game.SealedContent;
 
 public sealed partial class ChargedGun : Gun {
-    const int MAX_DAMAGE = 10;
+    [Export]
+    int maxDamage = 3;
     
     // Overriding relavent properties / methods
     public override Type WeaponType {get; protected set;} = Type.HoldToCharge;
@@ -19,14 +20,14 @@ public sealed partial class ChargedGun : Gun {
 
 	protected override DamageInstance Damage => new(Player) {
         statusEffect = new FireEffect(), 
-        damage = (int) (MAX_DAMAGE * strength)
+        damage = (int) (maxDamage * strength)
     };
 
     public override string Description => 
     $@"{"Charged Gun".Colored(Colors.LEGENDARY_RARITY)}
 As you hold, this weapon charges. Releasing the weapon early deals less damage, but at full charge it is painful.
 
-Damage: {MAX_DAMAGE}
+Damage: {maxDamage}
 Reload Speed: {BaseReloadSpeed}
     ";
 

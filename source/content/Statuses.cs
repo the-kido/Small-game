@@ -47,6 +47,7 @@ public sealed class FireEffect : ActorStatus {
         damage = new(actorAttachedTo) {
             damage = 2,
             suppressImpactFrames = true,
+            overridesImmunityFrames = false
         };
         
         // actor.Modulate += new Color(0.3f, 0.2f, 0f);
@@ -54,7 +55,6 @@ public sealed class FireEffect : ActorStatus {
     }
     public override void Disable() {
         // actor.Modulate -= new Color(0.3f, 0.2f, 0f);
-
         ParticleFactory.RemoveParticle(fire);
     }
 
@@ -83,6 +83,7 @@ public sealed class WetStatus : PermanentStatus {
 
     public override Type[] Incompatibles {get; init;} = new Type[] {
         typeof(FireEffect),
+        typeof(GasStatus),
     };
 
     Node2D water;
@@ -174,6 +175,7 @@ public sealed class PoisonStatus : ActorStatus {
 
     private static DamageInstance GetDamageInstance(Actor actor) => new(actor) {
         damage = 1,
+        overridesImmunityFrames = false
     };
 
     private static void Damage(Actor actor) => actor.DamageableComponent.Damage(GetDamageInstance(actor));

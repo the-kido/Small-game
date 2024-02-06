@@ -234,6 +234,7 @@ collision_layer = 4
 collision_mask = 8
 Health = 10
 ImmunityFrames = null
+ImmuneToDamageFrom = Array[int]([])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 shape = SubResource("RectangleShape2D_0m8x3")

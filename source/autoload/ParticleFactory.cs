@@ -19,9 +19,6 @@ public partial class ParticleFactory : Node {
     }
 
 	public async static void RemoveParticle(Node2D particleToRemove) {
-		// if it's not here why would we delete it.
-		if (!UpdatedParticles.ContainsKey(particleToRemove)) return;
-
 		if (particleToRemove is GpuParticles2D gpuParticles) gpuParticles.Emitting = false;
         
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.

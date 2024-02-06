@@ -646,7 +646,6 @@ radius = 591.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
 z_as_relative = false
-y_sort_enabled = true
 scale = Vector2(0.92, 0.92)
 disable_mode = 1
 collision_layer = 2
@@ -674,7 +673,6 @@ MovementController = NodePath("../Movement Controller")
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="."]
 z_as_relative = false
-y_sort_enabled = true
 scale = Vector2(7, 7)
 sprite_frames = SubResource("SpriteFrames_gm7vi")
 animation = &"south"
@@ -692,7 +690,6 @@ script = ExtResource("8_kpbfh")
 
 [node name="Hand" type="Node2D" parent="." node_paths=PackedStringArray("reloadVisual")]
 z_as_relative = false
-y_sort_enabled = true
 position = Vector2(0, 20)
 script = ExtResource("2_v0jdn")
 reloadVisual = NodePath("../On Player HUD/Reload Visual")
@@ -738,7 +735,6 @@ shape = SubResource("CircleShape2D_so67i")
 debug_color = Color(0.47451, 0.588235, 0, 0)
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("10_rp2rn")]
-defaultStatus = null
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_laf6i")

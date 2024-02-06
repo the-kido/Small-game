@@ -76,7 +76,8 @@ public partial class MovementController : Node {
 	}
 
 	private void PlayMovementAnimations(bool isMoving) {
-		Vector2 playerDirectionNormal = -(player.Position - player.GetGlobalMousePosition()).Normalized();
+		Vector2 playerDirectionNormal = -(player.GlobalPosition - player.GetGlobalMousePosition()).Normalized();
+
 		playerAnimationTree.Set("parameters/conditions/idle", !isMoving);
 		playerAnimationTree.Set("parameters/conditions/walk", isMoving);
 

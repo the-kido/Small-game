@@ -58,11 +58,10 @@ public abstract partial class Actor : CharacterBody2D {
         if (!DamageableComponent.IsAlive) 
             return;
 
-        if (percentRed != 0) {
-            Modulate = new Color(1f, 1f, 1f, 1f);
-            percentRed = 100;
-            return;
-        }
+        // expidite the coloring so that we can re-colour again
+        if (percentRed != 0) Modulate += increaseByColor * percentRed / 5;
+        
+        // Reset right as hurt again
         percentRed = 100;
         Modulate -= new Color(0, 1f, 1f, 0);
 

@@ -81,9 +81,11 @@ blend_point_3/pos = Vector2(-0.1, -1)
 blend_mode = 1
 
 [node name="Base Gun" type="Node2D" node_paths=PackedStringArray("nuzzle", "sprite")]
+z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("1_d7w4p")
+maxDamage = 1
 bulletAsset = ExtResource("2_6x1e6")
 nuzzle = NodePath("Nuzzle")
 sprite = NodePath("Sprite")
@@ -97,13 +99,11 @@ scale = Vector2(7.16, 7.16)
 texture = ExtResource("2_e4ea4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("")
 libraries = {
 "": SubResource("AnimationLibrary_7kaqt")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-root_node = NodePath("")
 libraries = {
 "": SubResource("AnimationLibrary_7kaqt")
 }

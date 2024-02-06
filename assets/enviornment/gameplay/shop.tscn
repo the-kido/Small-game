@@ -165,7 +165,7 @@ shopItemAnchorsParent = NodePath("Moved Stuff/Anchor Points Parent")
 animationPlayer = NodePath("AnimationPlayer")
 
 [node name="Shadow" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(1, 1, 1, 0.368627)
 z_index = -1
 z_as_relative = false
 position = Vector2(0, 9.33333)
