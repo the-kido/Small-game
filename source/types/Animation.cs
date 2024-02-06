@@ -22,7 +22,14 @@ public class AnimationController {
 
     AnimationInfo currentAnimation = AnimationInfo.none;
 
+    private void tmp(StringName a, string fallback) {
+        if (a == fallback) return;
+
+        animationPlayer.Play(fallback);
+    }
+    
     private bool CanSetAnimation(AnimationInfo animation) {
+        
         if (animationPlayerFreed) return false;
 
         //Animations of the same priority should still override the current animation.
@@ -44,10 +51,16 @@ public class AnimationController {
             animationPlayer.Stop();
         }
 
+
         animationPlayer.Play(animation.name);
+
+        // if (animation.fallbackAnimation is not null) animationPlayer.AnimationFinished += (_) => tmp(_, animation.fallbackAnimation);
     }
 
-    private void OnAnimationComplete(StringName name) => currentAnimation = AnimationInfo.none;
+    private void OnAnimationComplete(StringName name) {
+        if (currentAnimation.fallbackAnimation is not null) animationPlayer.Play(currentAnimation.fallbackAnimation);
+        currentAnimation = AnimationInfo.none;
+    }
 }
 
 
@@ -57,8 +70,11 @@ public class AnimationInfo {
     public float speed = 1;
     public bool resetPreviousAnimation = true;
 
-    public AnimationInfo(string name, int priority) {
+    public string fallbackAnimation;
+
+    public AnimationInfo(string name, int priority, string fallbackAnimation = null) {
         this.name = name;
+        this.fallbackAnimation = fallbackAnimation;
         this.priority = priority;
     }   
 

@@ -25,7 +25,6 @@ public class AIStateMachine {
     public void UpdateState(double delta) => currentState?.Update(delta);
 
     public void ChangeState(AIState aiState) {
-        GD.Print("CHanging states to" + aiState.GetType().ToString());
         if (!states.Contains(aiState))
             throw new Exception($"The method {aiState} has not been added to this state machine!");
         currentState = aiState;
