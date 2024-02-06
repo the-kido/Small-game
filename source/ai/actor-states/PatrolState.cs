@@ -17,7 +17,10 @@ public sealed class PatrolState : AIState {
     public Action IsIdle;
     public Action IsMoving;
 
+    private enum State { Idle, Walking }
     private State state = State.Walking;
+
+    private KidoUtils.Timer idleTimer = new(5);
 
     public override void Init() {
         pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
@@ -25,27 +28,18 @@ public sealed class PatrolState : AIState {
     }
 
     public Vector2 FindValidPatrolPoint() {
-
         Random rand = new((int)Time.GetTicksUsec());
         
         //Get number between HoverAtSpawnPointDistance/2 and HoverAtSpawnPointDistance
-        float range = (rand.NextSingle() / 2 + 0.5f) * hoverAtSpawnPointDistance;
+        float range = rand.NextSingle() / 2 + 0.5f;
 
-        
-        Vector2 patrolPoint = Vector2.One.Random() * range;
+        Vector2 patrolPoint = Vector2.One.Random() * range * hoverAtSpawnPointDistance;
         
         patrolPoint += actor.GlobalPosition;
         
         return patrolPoint; 
     }
 
-    private enum State {
-        Idle,
-        Walking
-    }
-
-
-    KidoUtils.Timer idleTimer = new(5);// KidoUtils.Timer.NONE;
     public void Idle() {
         if (state == State.Idle) return;
 
@@ -58,33 +52,28 @@ public sealed class PatrolState : AIState {
     private void StopIdling() {
         pathfinderComponent.SetTargetPosition(FindValidPatrolPoint());
         
-        pathfinderComponent.temp();
-        
         state = State.Walking;
         IsMoving?.Invoke();
     
-        buffer = 0;
-
+        moveBuffer = 0;
     }
 
-
-    double buffer = 0;
+    /// <summary>
+    /// Right after setting the new positon, the actor will assume it hasn't moved and is therefore stalling
+    /// So this buffer is a countermeasure to allow the actor to correct itself.
+    /// </summary>
+    double moveBuffer = 0;
     public override void Update(double delta) {
         FlipActor();
-        buffer += delta;
+        moveBuffer += delta;
+        pathfinderComponent.UpdatePathfind(actor);
 
         if (state is State.Idle) idleTimer.Update(delta);
 
-        pathfinderComponent.UpdatePathfind(actor);
-
-        if (state is State.Walking) {
-            // lets character be like "oh shoot i gotta move" instead of giving up on the spot.
-            if (buffer < 1) return;
-            
-            if (actor.IsStalling()) {
-                actor.Velocity = Vector2.Zero;
-                Idle(); 
-            }
+        // Buffer allows actor to move before assuming it's already stalling
+        if (state is State.Walking && moveBuffer > 1 && actor.IsStalling()) {
+            actor.Velocity = Vector2.Zero;
+            Idle(); 
         }
 
         // Stop patrolling after finding a player.

@@ -17,7 +17,6 @@ public partial class Pathfinder : Node2D {
         
     }
 
-    public void temp() => GD.Print(agent.IsTargetReachable());
     public void SetTargetPosition(Vector2 position) => agent.TargetPosition = position;
     public bool IsNavigationFinished() => agent.IsNavigationFinished();
     public Vector2 GetNextPathPosition() => agent.GetNextPathPosition();
