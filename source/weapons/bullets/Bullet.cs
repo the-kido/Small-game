@@ -7,8 +7,9 @@ using Game.Damage;
 
 namespace Game.Bullets;
 
-public abstract partial class Bullet : Node2D { 
+public abstract partial class Nothing : Node2D { 
 
+    /*
     private DamageInstance damageInstance;
 
     [Export(PropertyHint.Enum)]
@@ -66,7 +67,7 @@ public abstract partial class Bullet : Node2D {
         damageInstance.forceDirection = direction; 
         return damageInstance;
     }
-    
+
     public void Init(Vector2 spawnPosition, float radians, BulletInstance bulletInfo) {
         //Attach events
         hitbox.AreaEntered += OnArea2DEntered;
@@ -105,5 +106,6 @@ public abstract partial class Bullet : Node2D {
     public override void _PhysicsProcess(double delta) {
         MoveBulletForward(delta);
     }
+*/
 }
 

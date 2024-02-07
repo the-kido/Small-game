@@ -2,7 +2,6 @@
 using System;
 using Game.Damage;
 using Godot;
-using KidoUtils;
 
 namespace Game.Bullets;
 
@@ -67,17 +66,8 @@ public interface IPattern {
 }
 
 
-public partial class BulletVisual : Sprite2D {
-    
-    [Export]
-    GpuParticles2D deathParticle;
 
-    [Export]
-    GpuParticles2D persistentParticle;
-
-}
-
-public record BulletInstance (BulletFrom from, BulletSpeed speed, DamageInstance damage);
+// public record BulletInstance (BulletFrom from, BulletSpeed speed, DamageInstance damage);
 
 public record BulletTemplate (BaseBullet BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual Visual, Vector2 SpawnPosition, float Rotation);
 
@@ -99,6 +89,7 @@ public enum BulletSpeed : uint {
     Instant = 2000,
 }
 
+/*
 
 class factory {
 
@@ -144,3 +135,5 @@ class factory {
     }
 
 }
+
+*/

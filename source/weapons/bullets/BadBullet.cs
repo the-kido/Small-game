@@ -7,7 +7,8 @@ using Game.UI;
 
 namespace Game.SealedContent;
 
-public sealed partial class BadBullet : Bullet {
+public sealed partial class BadBullet : BaseBullet {
+    /*
     
     [Export]
     private float wiggleStrength;
@@ -45,4 +46,5 @@ public sealed partial class BadBullet : Bullet {
 
         Position += vector;
     }
+    */
 }

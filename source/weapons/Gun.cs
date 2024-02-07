@@ -3,6 +3,8 @@ using KidoUtils;
 using Game.Damage;
 using Game.Autoload;
 using System;
+using Game.SealedContent;
+using Game.Actors.AI;
 
 namespace Game.Bullets;
 
@@ -13,11 +15,10 @@ public abstract partial class Gun : Weapon {
     protected Node2D nuzzle;
 
     protected abstract DamageInstance Damage {get;}
-    protected abstract BulletInstance BulletInstance();
     
     protected void SpawnBulletInstance() =>
-        BulletFactory.SpawnBullet(bulletAsset)
-        .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
+        BulletFactory.SpawnBullet(new (new BadBullet(), BulletFrom.Player, BulletSpeed.KindaSlow, Damage, tmp.GetVisual(), nuzzle.GlobalPosition, nuzzle.GlobalRotation));
+        // .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
  
     public override sealed void UpdateWeapon(Vector2 positionToAttack) {
         // Vector2 direction = positionToAttack - Hand.GlobalPosition;

@@ -31,7 +31,6 @@ Damage: {maxDamage}
 Reload Speed: {BaseReloadSpeed}
     ";
 
-    protected override BulletInstance BulletInstance() => new(BulletFrom.Player, BulletSpeed.VeryFast, Damage);
 
 	public override void Attack() {
         SpawnBulletInstance();

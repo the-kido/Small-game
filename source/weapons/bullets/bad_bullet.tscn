@@ -1,6 +1,5 @@
-[gd_scene load_steps=10 format=3 uid="uid://c5vl8xb18snvk"]
+[gd_scene load_steps=9 format=3 uid="uid://c5vl8xb18snvk"]
 
-[ext_resource type="Script" path="res://source/weapons/bullets/BadBullet.cs" id="1_yelol"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
 
@@ -12,40 +11,33 @@ height = 28.0
 offsets = PackedFloat32Array(0, 0.777778, 1)
 colors = PackedColorArray(1, 0.811765, 0.721569, 1, 1, 1, 0.764706, 1, 0.321569, 0.321569, 0.321569, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_hdrk0"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6q5rm"]
 gradient = SubResource("Gradient_ak2hm")
 
 [sub_resource type="Curve" id="Curve_8eusa"]
 _data = [Vector2(0.626506, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.318182), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_a6vhu"]
+[sub_resource type="CurveTexture" id="CurveTexture_irufr"]
 curve = SubResource("Curve_8eusa")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w40wf"]
 particle_flag_align_y = true
 particle_flag_rotate_y = true
 particle_flag_disable_z = true
+angle_min = -219.8
 direction = Vector3(0, 10, 0)
 spread = 75.28
 flatness = 1.0
-gravity = Vector3(0, 98.43, 0)
 initial_velocity_min = 37.78
 initial_velocity_max = 79.88
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-angle_min = -219.8
+gravity = Vector3(0, 98.43, 0)
 scale_min = 2.0
 scale_max = 3.0
-scale_curve = SubResource("CurveTexture_a6vhu")
-color_ramp = SubResource("GradientTexture1D_hdrk0")
+scale_curve = SubResource("CurveTexture_irufr")
+color_ramp = SubResource("GradientTexture1D_6q5rm")
 
-[node name="bullet" type="Node2D" node_paths=PackedStringArray("particles", "hitbox")]
-script = ExtResource("1_yelol")
-wiggleStrength = 1.0
-particles = NodePath("Sparks")
-particleDeletionTime = 10
-hitbox = NodePath("Area2D")
+[node name="bullet" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.85, 0.8, 0.8, 1)

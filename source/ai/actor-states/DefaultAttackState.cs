@@ -6,6 +6,7 @@ using Game.Players;
 using Game.Damage;
 using Game.Bullets;
 using Game.Autoload;
+using Game.SealedContent;
 
 namespace Game.Actors.AI;
 
@@ -127,14 +128,17 @@ public sealed class DefaultAttackState : AIState {
         }
     }
     
-    BulletInstance bulletInstance => new(BulletFrom.Enemy, BulletSpeed.KindaSlow, Damage);
+
 
     private void Shoot(Player player) {
         OnShoot?.Invoke();
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
-        BulletFactory.SpawnBullet(spamedBullet).Init(actor.Position, angle, bulletInstance);
+        BulletTemplate temp = new(new BadBullet(), BulletFrom.Enemy, BulletSpeed.Fast, Damage, tmp.GetVisual(), actor.Position, angle);
+        BulletFactory.SpawnBullet(temp);
+
+        // BulletFactory.SpawnBullet(spamedBullet).Init(actor.Position, angle, bulletInstance);
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.
@@ -143,4 +147,9 @@ public sealed class DefaultAttackState : AIState {
     }
 }
 
-
+public static class tmp {
+    public static BulletVisual GetVisual() {
+        PackedScene visual = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet_visual.tscn");
+        return visual.Instantiate<BulletVisual>();
+    }
+}

@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://c5t5n1ln3vvvw"]
+
+[ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_uko6o"]
+[ext_resource type="PackedScene" uid="uid://cyvulh26plhei" path="res://source/weapons/bullets/base_bullet.tscn" id="2_ndjd0"]
+[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_kpc8r"]
+
+[sub_resource type="Gradient" id="Gradient_3fsi2"]
+offsets = PackedFloat32Array(0, 0.777778, 1)
+colors = PackedColorArray(1, 0.811765, 0.721569, 1, 1, 1, 0.764706, 1, 0.321569, 0.321569, 0.321569, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hdrk0"]
+gradient = SubResource("Gradient_3fsi2")
+
+[sub_resource type="Curve" id="Curve_xt855"]
+_data = [Vector2(0.626506, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.318182), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a6vhu"]
+curve = SubResource("Curve_xt855")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ferv5"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+angle_min = -219.8
+direction = Vector3(0, 10, 0)
+spread = 75.28
+flatness = 1.0
+initial_velocity_min = 37.78
+initial_velocity_max = 79.88
+gravity = Vector3(0, 98.43, 0)
+scale_min = 2.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_a6vhu")
+color_ramp = SubResource("GradientTexture1D_hdrk0")
+
+[node name="Bullet Visual" type="Node2D"]
+script = ExtResource("1_uko6o")
+sprite = Object(Sprite2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"texture":null,"centered":true,"offset":Vector2(0, 0),"flip_h":false,"flip_v":false,"hframes":1,"vframes":1,"frame":0,"region_enabled":false,"region_rect":Rect2(0, 0, 0, 0),"region_filter_clip_enabled":false,"script":null)
+
+deathParticle = Object(GPUParticles2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":1.57079,"scale":Vector2(1, 1),"skew":0.0,"emitting":false,"amount":10,"amount_ratio":1.0,"sub_emitter":NodePath("."),"process_material":SubResource("ParticleProcessMaterial_ferv5"),"texture":ExtResource("3_kpc8r"),"lifetime":1.0,"one_shot":true,"preprocess":0.0,"speed_scale":1.61,"explosiveness":0.99,"randomness":0.1,"fixed_fps":30,"interpolate":true,"fract_delta":true,"interp_to_end":0.0,"collision_base_size":1.0,"visibility_rect":Rect2(-100, -100, 200, 200),"local_coords":false,"draw_order":1,"trail_enabled":false,"trail_lifetime":0.3,"trail_sections":8,"trail_section_subdivisions":4,"script":null)
+
+persistentParticle = Object(GPUParticles2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 0),"rotation":1.57079,"scale":Vector2(1, 1),"skew":0.0,"emitting":false,"amount":10,"amount_ratio":1.0,"sub_emitter":NodePath("."),"process_material":SubResource("ParticleProcessMaterial_ferv5"),"texture":ExtResource("3_kpc8r"),"lifetime":1.0,"one_shot":true,"preprocess":0.0,"speed_scale":1.61,"explosiveness":0.99,"randomness":0.1,"fixed_fps":30,"interpolate":true,"fract_delta":true,"interp_to_end":0.0,"collision_base_size":1.0,"visibility_rect":Rect2(-100, -100, 200, 200),"local_coords":false,"draw_order":1,"trail_enabled":false,"trail_lifetime":0.3,"trail_sections":8,"trail_section_subdivisions":4,"script":null)
+
+
+[node name="Node2D" type="Sprite2D" parent="."]
+
+[node name="Base Bullet" parent="Node2D" instance=ExtResource("2_ndjd0")]
+
+[node name="Sparks" type="GPUParticles2D" parent="."]
+rotation = 1.57079
+emitting = false
+amount = 10
+sub_emitter = NodePath(".")
+process_material = SubResource("ParticleProcessMaterial_ferv5")
+texture = ExtResource("3_kpc8r")
+one_shot = true
+speed_scale = 1.61
+explosiveness = 0.99
+randomness = 0.1
