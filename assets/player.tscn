@@ -677,9 +677,9 @@ scale = Vector2(7, 7)
 
 [node name="PlayerSprites" type="AnimatedSprite2D" parent="PlayerSpritesOffset"]
 z_as_relative = false
-position = Vector2(0, -3)
 sprite_frames = SubResource("SpriteFrames_gm7vi")
 animation = &"north"
+offset = Vector2(0, -3)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerSpritesOffset/PlayerSprites"]
 reset_on_save = false

@@ -1,8 +1,10 @@
-[gd_scene load_steps=23 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=27 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
+[ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="2_1lkkp"]
 [ext_resource type="TileSet" uid="uid://gqbewfy6k5vq" path="res://assets/levels/region-1/new_tile_set.tres" id="2_jmklh"]
 [ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="2_p4x51"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_wh8mw"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_knfxu"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="3_ktacb"]
 [ext_resource type="PackedScene" uid="uid://efpfsnuwlefm" path="res://assets/enviornment/decor/lights/dungeon_lamp.tscn" id="4_fu4ew"]
@@ -18,6 +20,8 @@
 [ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/respawn_token_shop_item.tscn" id="13_gt3xo"]
 [ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/potion_shop_item.tscn.tscn" id="13_hpsnk"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="14_f2iyh"]
+[ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="20_tlos5"]
+[ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="23_qrh1u"]
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="24_6ob4d"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_em3ql"]
@@ -38,6 +42,16 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
+
+[node name="ConversationEvent" type="Node" parent="Level"]
+script = ExtResource("2_wh8mw")
+
+[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
+script = ExtResource("2_1lkkp")
+character = NodePath("../../../Character")
+animationName = &"dancing"
+loopTime = 10.0
+moveToPosition = Vector2(500, 250)
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
@@ -106,7 +120,7 @@ position = Vector2(225, 334)
 
 [node name="PlayerManager" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
-position = Vector2(430, 307)
+position = Vector2(588, 347)
 script = ExtResource("7_ff2ca")
 
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
@@ -157,6 +171,14 @@ position = Vector2(563, -35)
 environment = ExtResource("14_f2iyh")
 
 [node name="Character" parent="." instance=ExtResource("24_6ob4d")]
-position = Vector2(50, 345)
+position = Vector2(600, 250)
+
+[node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
+position = Vector2(338, 327)
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(500, 250)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("23_qrh1u")
 
 [editable path="Y Sort/Shop/Respawn Token Shop Item"]

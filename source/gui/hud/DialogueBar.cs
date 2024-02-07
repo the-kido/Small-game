@@ -87,7 +87,6 @@ public class ConversationController {
         
         itemAt = -1;
         currentDialogue = dialogue;
-        bar.Show(true);
 
         bar.PortraitRect.Visible = info.ShowPortraitImage;
         Started?.Invoke(info);

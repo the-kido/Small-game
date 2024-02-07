@@ -7,14 +7,30 @@ public partial class Character : CharacterBody2D {
 	public AnimationPlayer AnimationPlayer {get; private set;}
 
 	float speed = 400;
-	public bool MoveTo(double delta, Vector2 finalPosition) {
+
+	Vector2 velocity;
+	public void InitMove(Vector2 finalPosition, float duration) {
 		Vector2 direction = GlobalPosition.DirectionTo(finalPosition);
-		Velocity = direction * speed;
+		
+
+		velocity = direction * (Position.DistanceTo(finalPosition) / duration);
+		
+		GD.Print(velocity," | " , Position.DistanceTo(finalPosition), " | ", Position, " | ", finalPosition);
+		
+	}
+
+	public void MoveTo() {
+		Velocity = velocity;
 		
 		MoveAndSlide();
 
-		float distanceToEndPoint = GlobalPosition.DistanceTo(finalPosition);
+		// float distanceToEndPoint = GlobalPosition.DistanceTo(finalPosition);
 
-		return distanceToEndPoint < 5 ? true : false;
+		// return distanceToEndPoint < 5;
+	}
+
+	public void StopMoving() {
+		GD.Print("stop1!");
+		Velocity = Vector2.Zero;
 	}
 }

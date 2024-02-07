@@ -53,7 +53,6 @@ public class CharacterActionPlayer {
     AnimationPlayer AnimationPlayer => action.character.AnimationPlayer;
     KidoUtils.Timer loopTimer = KidoUtils.Timer.NONE;
 
-
     public void Start(CharacterActionConversationItem action) {
         this.action = action;
         action.ProcessPlayer(this); // i am testing right now!11
@@ -81,25 +80,21 @@ public class CharacterActionPlayer {
             if (action.loopTime is not 0) loopTimer.TimeOver += conversationController.ContinueConversation;
             else AnimationPlayer.AnimationFinished += ContinueOnAnimationFinished;
         }
+
+        if (action.moveToPosition != Vector2.Zero) loopTimer.TimeOver += action.character.StopMoving;
+        
+        action.character.InitMove(action.moveToPosition, action.loopTime);
     }
 
     public void Update(double delta) {
 
         if (action.moveToPosition != Vector2.Zero) {
-            action.character.MoveTo(delta, action.moveToPosition);
-        }
-
-        if (action.loopTime is not 0) {
-            loopTimer.Update(delta);
+            action.character.MoveTo();
         }
         
         if (!loopTimer.Equals(KidoUtils.Timer.NONE)) {
             loopTimer.Update(delta);
         }
-    }
-
-    private void TimerFinished() {
-        
     }
 
     private void ContinueOnAnimationFinished(StringName stringName) {
