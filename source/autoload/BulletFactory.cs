@@ -1,6 +1,7 @@
 using Godot;
 using Game.Bullets;
 using KidoUtils;
+using System.Collections.Generic;
 
 namespace Game.Autoload;
 
@@ -8,6 +9,8 @@ public partial class BulletFactory : Node {
 
     static BulletFactory instance;
     public override void _Ready() => instance = this;
+    public override void _Process(double delta) => bullets.ForEach(bullet => bullet.Update(delta));
+
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
 
@@ -15,6 +18,8 @@ public partial class BulletFactory : Node {
         pattern.StartPattern(); // might be redundant; a direct call from the pattern might be better (?)
     }
 
+    static readonly List<BaseBullet> bullets = new();
+    
     public static void SpawnBullet(BulletTemplate bulletTemplate) {  
         Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
         instance.AddChild(baseNode);
@@ -26,6 +31,12 @@ public partial class BulletFactory : Node {
 
         DoSafetyChecks(area2D);
         UpdateBulletCollision(bulletTemplate.From, area2D);
+
+        baseNode.Position = bulletTemplate.SpawnPosition;
+        baseNode.Rotation = bulletTemplate.Rotation;
+
+        bullets.Add(bulletTemplate.BaseBullet);
+        baseNode.TreeExited += () => bullets.Remove(bulletTemplate.BaseBullet);
 
 
         // delte the visual after the bullet is deleted via "OnCollided"

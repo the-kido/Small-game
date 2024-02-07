@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cyvulh26plhei"]
-
-[ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="1_pico3"]
+[gd_scene load_steps=2 format=3 uid="uid://cyvulh26plhei"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d70go"]
 radius = 15.0
@@ -13,7 +11,3 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_d70go")
-
-[node name="Icon" type="Sprite2D" parent="."]
-position = Vector2(111, -2)
-texture = ExtResource("1_pico3")

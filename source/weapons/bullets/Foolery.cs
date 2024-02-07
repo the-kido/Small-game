@@ -9,11 +9,13 @@ namespace Game.Bullets;
 public abstract class BaseBullet {
     public event Action OnCollided; 
 
-    Node2D sceneNode;
+    protected Node2D sceneNode;
     DamageInstance damageInstance;
 
-    int speed;
-    Vector2 directionFacing;
+    protected int speed;
+    protected Vector2 directionFacing;
+
+    public abstract void Update(double delta);
 
     public void Create(Area2D area2D, Node2D sceneNode, DamageInstance damageInstance, int speed, float rotation) {
         this.sceneNode = sceneNode;
@@ -22,7 +24,6 @@ public abstract class BaseBullet {
         area2D.BodyEntered += OnBodyEntered;
         area2D.AreaEntered += OnArea2DEntered;      
 
-        
         this.speed = speed;
         directionFacing = new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation));
 
@@ -32,17 +33,13 @@ public abstract class BaseBullet {
 
     private void OnArea2DEntered(Area2D area) {
         if (area is Damageable damageable) {
-           damageable.Damage(damageInstance);
-           DestroyBullet();
+            damageable.Damage(damageInstance);
+            GD.Print("Damage is happening!");
+            DestroyBullet();
         }
     }
 
     public virtual void DestroyBullet() {
-        
-        /* Factory will deal with deleting the visuals.
-        OnCollided?.Invoke();
-        SpawnDestroyedParticle();
-        */
         OnCollided?.Invoke();
         sceneNode.QueueFree();
     }

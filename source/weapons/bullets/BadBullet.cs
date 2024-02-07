@@ -1,13 +1,10 @@
-using Godot;
-using System;
 using Game.Bullets;
-using Game.Autoload;
-using Game.Graphics;
-using Game.UI;
 
 namespace Game.SealedContent;
 
 public sealed partial class BadBullet : BaseBullet {
+
+
     /*
     
     [Export]
@@ -47,4 +44,7 @@ public sealed partial class BadBullet : BaseBullet {
         Position += vector;
     }
     */
+    public override void Update(double delta) {
+        sceneNode.Position += directionFacing * (float) delta * speed;
+    }
 }
