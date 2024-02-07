@@ -107,21 +107,3 @@ public abstract partial class Bullet : Node2D {
     }
 }
 
-public record BulletInstance (BulletFrom from, DamageInstance damage, BulletSpeed speed);
-
-// Makes debugging easier. 
-public enum BulletSpeed : uint {
-    VerySlow = 100,
-    KindaSlow = 250,
-    Slow = 500,
-    Fast = 1000,
-    VeryFast = 1500,
-    Instant = 2000,
-}
-
-interface IBullet{
-    Area2D GetArea2D();
-    virtual void OnHit() {
-
-    }
-}

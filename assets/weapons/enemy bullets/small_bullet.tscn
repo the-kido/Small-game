@@ -18,6 +18,7 @@ particleDeletionTime = 2
 hitbox = NodePath("Area2D")
 
 [node name="Destroy Particle" type="GPUParticles2D" parent="."]
+visible = false
 process_material = SubResource("ParticleProcessMaterial_f1t6o")
 
 [node name="Area2D" type="Area2D" parent="."]

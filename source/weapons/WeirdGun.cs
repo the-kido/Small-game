@@ -33,5 +33,5 @@ Reload Speed: {BaseReloadSpeed}
     }
 
     protected override BulletInstance BulletInstance() =>
-        new(KidoUtils.BulletFrom.Player, Damage, BulletSpeed.KindaSlow);
+        new(KidoUtils.BulletFrom.Player, BulletSpeed.KindaSlow, Damage);
 }

@@ -23,8 +23,4 @@ public partial class BulletFactory : Node {
         }
         return newBullet;
     }
-
-    public BulletPattern SpawnBulletPattern() {
-        return null;
-    }
 }

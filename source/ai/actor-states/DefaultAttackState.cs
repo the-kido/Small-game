@@ -127,7 +127,7 @@ public sealed class DefaultAttackState : AIState {
         }
     }
     
-    BulletInstance bulletInstance => new(BulletFrom.Enemy, Damage, BulletSpeed.KindaSlow);
+    BulletInstance bulletInstance => new(BulletFrom.Enemy, BulletSpeed.KindaSlow, Damage);
 
     private void Shoot(Player player) {
         OnShoot?.Invoke();
