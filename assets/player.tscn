@@ -704,7 +704,6 @@ shape = SubResource("RectangleShape2D_3eib2")
 debug_color = Color(0, 0.6, 0.701961, 0.172549)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-reset_on_save = false
 root_node = NodePath("../PlayerSpritesOffset/PlayerSprites")
 libraries = {
 "": SubResource("AnimationLibrary_j0dn8"),
@@ -714,8 +713,8 @@ tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
 anim_player = NodePath("../PlayerSpritesOffset/PlayerSprites/AnimationPlayer")
 parameters/conditions/idle = false
 parameters/conditions/walk = false
-parameters/Idle/blend_position = Vector2(0.0352, 0.746032)
-parameters/Walk/blend_position = Vector2(0.0144, 0.968254)
+parameters/Idle/blend_position = Vector2(0, 1)
+parameters/Walk/blend_position = Vector2(0, 1)
 
 [node name="Damageable" parent="." instance=ExtResource("8_spu4k")]
 position = Vector2(-1.1087, -21.2826)

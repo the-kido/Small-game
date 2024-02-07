@@ -16,9 +16,8 @@ public abstract partial class Gun : Weapon {
     protected abstract BulletInstance BulletInstance();
     
     protected void SpawnBulletInstance() =>
-            Utils.GetPreloadedScene<BulletFactory>(this, PreloadedScene.BulletFactory)
-            .SpawnBullet(bulletAsset)
-            .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
+        BulletFactory.SpawnBullet(bulletAsset)
+        .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
  
     public override sealed void UpdateWeapon(Vector2 positionToAttack) {
         // Vector2 direction = positionToAttack - Hand.GlobalPosition;

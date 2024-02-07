@@ -20,6 +20,7 @@ public sealed class DefaultAttackState : AIState {
     
     Pathfinder pathfinderComponent;
     PackedScene spamedBullet;
+    
     float attackDelay;
     public DefaultAttackState(Pathfinder pathfinderComponent, PackedScene bullet, float attackDelay) {
         this.pathfinderComponent = pathfinderComponent;
@@ -133,9 +134,7 @@ public sealed class DefaultAttackState : AIState {
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
-        Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
-            .SpawnBullet(spamedBullet)
-            .Init(actor.Position, angle, bulletInstance);
+        BulletFactory.SpawnBullet(spamedBullet).Init(actor.Position, angle, bulletInstance);
     }
     private void FlipActor(Player lastRememberedPlayer) {
         //1 == right, -1 == left.

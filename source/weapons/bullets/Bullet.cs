@@ -118,3 +118,10 @@ public enum BulletSpeed : uint {
     VeryFast = 1500,
     Instant = 2000,
 }
+
+interface IBullet{
+    Area2D GetArea2D();
+    virtual void OnHit() {
+
+    }
+}
