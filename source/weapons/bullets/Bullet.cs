@@ -66,7 +66,7 @@ public abstract partial class Bullet : Node2D {
         damageInstance.forceDirection = direction; 
         return damageInstance;
     }
-
+    
     public void Init(Vector2 spawnPosition, float radians, BulletInstance bulletInfo) {
         //Attach events
         hitbox.AreaEntered += OnArea2DEntered;
