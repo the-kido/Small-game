@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dedwm6mqc26n0"]
+
+[ext_resource type="Script" path="res://source/weapons/bullets/NormalBullet.cs" id="1_j5a8s"]
+[ext_resource type="Texture2D" uid="uid://deuo4a1knbklb" path="res://assets/sprites/bullets/enemy_bullet_small.png" id="2_glyrr"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f1t6o"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lx30b"]
+radius = 15.0333
+
+[node name="SmallBullet" type="Node2D" node_paths=PackedStringArray("particles", "hitbox")]
+script = ExtResource("1_j5a8s")
+speed = 500
+particles = NodePath("Destroy Particle")
+particleDeletionTime = 2
+hitbox = NodePath("Area2D")
+
+[node name="Destroy Particle" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_f1t6o")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_lx30b")
+
+[node name="EnemyBulletSmall" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("2_glyrr")

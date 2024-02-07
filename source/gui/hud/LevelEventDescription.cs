@@ -11,14 +11,13 @@ public partial class LevelEventDescription : Control{
         label.Text = null;
     }
 
-    private string GetText(string description) => $"Task: {description}";
 
     private void UpdateLabel(LevelCriteria criteria) {
         if (string.IsNullOrEmpty(criteria.Description)) label.Text = "";
 
         criteria.Finished += Clear;
 
-        label.Text = GetText(criteria.Description);
+        label.Text = criteria.Description;
     }
 
     private void Clear() {

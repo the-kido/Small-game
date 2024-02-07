@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=28 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
 [ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="2_1lkkp"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/content/coin.tscn" id="12_o2gfm"]
 [ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/respawn_token_shop_item.tscn" id="13_gt3xo"]
 [ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/potion_shop_item.tscn.tscn" id="13_hpsnk"]
+[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="14_d53mr"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="14_f2iyh"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="20_tlos5"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="23_qrh1u"]
@@ -43,6 +44,10 @@ radius = 6.69992
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
 
+[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+script = ExtResource("3_ktacb")
+wave = NodePath("../../Y Sort/EnemyWave")
+
 [node name="ConversationEvent" type="Node" parent="Level"]
 script = ExtResource("2_wh8mw")
 
@@ -50,12 +55,6 @@ script = ExtResource("2_wh8mw")
 script = ExtResource("2_1lkkp")
 character = NodePath("../../../Character")
 animationName = &"dancing"
-loopTime = 10.0
-moveToPosition = Vector2(500, 250)
-
-[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
-script = ExtResource("3_ktacb")
-wave = NodePath("../../Y Sort/EnemyWave")
 
 [node name="Y Sort" parent="." instance=ExtResource("3_knfxu")]
 
@@ -122,6 +121,9 @@ position = Vector2(225, 334)
 y_sort_enabled = true
 position = Vector2(588, 347)
 script = ExtResource("7_ff2ca")
+
+[node name="Player" parent="Y Sort/PlayerManager" instance=ExtResource("14_d53mr")]
+position = Vector2(149, -50)
 
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
 scale = Vector2(1.62912, 1.62912)

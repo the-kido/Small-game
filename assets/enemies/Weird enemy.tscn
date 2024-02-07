@@ -1,8 +1,8 @@
 [gd_scene load_steps=26 format=3 uid="uid://bqffuc80ll1k8"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
-[ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/base_bullet.tscn" id="2_lhrnb"]
 [ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="2_m5e2g"]
+[ext_resource type="PackedScene" uid="uid://dedwm6mqc26n0" path="res://assets/weapons/enemy bullets/small_bullet.tscn" id="2_nfoqd"]
 [ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
 [ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
@@ -12,7 +12,7 @@
 size = Vector2(19, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0m8x3"]
-size = Vector2(13.5364, 13.289)
+size = Vector2(11.4213, 11.2126)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_14qsf"]
 atlas = ExtResource("4_udhra")
@@ -239,7 +239,7 @@ motion_mode = 1
 script = ExtResource("1_lsih8")
 pathfinderComponent = NodePath("Pathfinder")
 HoverAtSpawnPointDistance = 1000
-spamedBullet = ExtResource("2_lhrnb")
+spamedBullet = ExtResource("2_nfoqd")
 attackDelay = 3.0
 animationPlayer = NodePath("WeirdEnemy/AnimationPlayer")
 Effect = NodePath("StatusEffectComponent")

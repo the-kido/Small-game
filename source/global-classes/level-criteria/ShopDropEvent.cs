@@ -11,6 +11,7 @@ public partial class ShopDropEvent : LevelCriteria {
     int time = 10;
 
 
+    public override string Description => "Grace Period: Shop at the dropped shop";
     public override event Action Finished;
 
     KidoUtils.Timer timer = KidoUtils.Timer.NONE;

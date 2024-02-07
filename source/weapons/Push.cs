@@ -37,21 +37,37 @@ Pushes things, but deals no damage
     }
     public override void Attack() {
         entities = GetEntitiesToPush();
+        
+        ToggleAI(true);
+        
         direction = DegreeAsVector();
         x = 0;
     }
     
+    private void ToggleAI(bool @bool) {
+        foreach (var entity in entities) {
+            if (entity is Enemy enemy) {
+                GD.Print("pasued ", @bool);
+                enemy.PauseAI = @bool;
+            }
+        }
+    }
+
     Node2D[] entities;
     const float STRENGTH = 400;
-    const float TIME = 0.5f; 
+    const float TIME = 2.5f; 
     double x = 0;
 
     Vector2 previous;
     Vector2 direction;
     private void UpdateEntityVelocities(double delta) {
         if (entities is null) return;
+        
         x += delta;
+        
         if (x > TIME) return;
+
+        if (x + delta > TIME) ToggleAI(false);
 
         //float y = strength * MathF.Pow(MathF.E, -2 * (float) x); 
         float y = Math.Max(100 * MathF.Log((float) -x + TIME) + STRENGTH, 0); 

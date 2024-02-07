@@ -40,12 +40,11 @@ public abstract partial class Enemy : Actor, IPlayerAttackable {
     protected abstract void Init(AnimationController animationController, AIStateMachine aIStateMachine);
     protected abstract List<ItemDrop> DeathDrops {get; init;}
 
-
     public override void _Process(double delta) {
         base._Process(delta);
         
-        if (!PauseAI)
-            stateMachine.UpdateState(delta);
+        if (!PauseAI) stateMachine.UpdateState(delta);
+        else Velocity = Vector2.Zero;
     }
 
     public void DropLootTable() => DeathDrops.ForEach(loot => loot.Init(this));

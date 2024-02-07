@@ -133,7 +133,7 @@ public sealed class DefaultAttackState : AIState {
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
-        KidoUtils.Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
+        Utils.GetPreloadedScene<BulletFactory>(player, PreloadedScene.BulletFactory) 
             .SpawnBullet(spamedBullet)
             .Init(actor.Position, angle, bulletInstance);
     }
