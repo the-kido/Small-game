@@ -10,10 +10,12 @@ namespace Game.Bullets;
 
 
 public abstract class BaseBullet {
-    public static BaseBullet New(All allBullets) => BulletMap[allBullets];
+    public static BaseBullet New(All type) {
+        return (BaseBullet) Activator.CreateInstance(BulletMap[type]);
+    }
 
-    private static readonly Dictionary<All, BaseBullet> BulletMap = new(){
-        {All.Normal, new BadBullet()}
+    private static readonly Dictionary<All, Type> BulletMap = new(){
+        {All.Normal, typeof(BadBullet)}
     };
 
     public enum All {

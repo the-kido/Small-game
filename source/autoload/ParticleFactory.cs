@@ -12,7 +12,7 @@ public partial class ParticleFactory : Node {
 		factoryNode = Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
 	}
 
-	public static Node2D AddParticle(Node2D node, PackedScene particle) {
+	public static Node2D AddParticleToNode(Node2D node, PackedScene particle) {
         Node2D instance = (Node2D) particle.Instantiate();
         node.AddChild(instance);
         return instance;
@@ -40,24 +40,15 @@ public partial class ParticleFactory : Node {
 
 	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
 	
-	public static Node2D SpawnGlobalFolliwngParticle(PackedScene particle, Node2D followedNode) {
-        Node2D particleInstance = particle.Instantiate<Node2D>();
+	public static void AddFollwingParticleToFactory(GpuParticles2D particle, Node2D followedNode) {
+		followedNode.TreeExiting += () => {
+        	UpdatedParticles.Remove(particle);
+			RemoveParticle(particle);
+		};
 
-        UpdatedParticles.Add(particleInstance, followedNode);
+        UpdatedParticles.Add(particle, followedNode);
 
-        // Remove particle if node it's following is destroyed
-        followedNode.TreeExited += () => UpdatedParticles.Remove(particleInstance);
-        factoryNode.AddChild(particleInstance);
-
-		// Set the position on a deferred call because otherwise it shows 
-		// a bit of it at the coords 0,0 and I DON'T KNOW WHY.
-        factoryNode.CallDeferred("SetParticlePosition", followedNode, particleInstance);
-
-        return particleInstance;
-    }
-
-    private static void SetParticlePosition(Node2D followedNode, Node2D particleInstance) {
-        particleInstance.GlobalPosition = followedNode.GlobalPosition;
+		particle.Reparent(factoryNode, true);
 	}
 
 	public static Node2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {

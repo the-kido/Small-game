@@ -20,8 +20,8 @@ public abstract partial class Gun : Weapon {
     
     protected void SpawnBulletInstance() =>
         BulletFactory.SpawnBullet(new (
-            BaseBullet.New(bulletResource.bulletBase), 
-            BulletFrom.Player, 
+            BaseBullet.New(bulletResource.bulletBase),
+            BulletFrom.Player,
             bulletResource.speed, 
             Damage, 
             BulletVisual.New(bulletResource.visual), 

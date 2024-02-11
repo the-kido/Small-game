@@ -9,7 +9,14 @@ public partial class BulletFactory : Node {
 
     static BulletFactory instance;
     public override void _Ready() => instance = this;
-    public override void _Process(double delta) => bullets.ForEach(bullet => bullet.Update(delta));
+    public override void _Process(double delta) {
+        foreach (BaseBullet bullet in bullets) {
+            bullet.Update(delta);
+            // bullets.ForEach(bullet => bullet.Update(delta));
+
+        }
+    } 
+    // => 
 
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
@@ -20,13 +27,10 @@ public partial class BulletFactory : Node {
 
     static readonly List<BaseBullet> bullets = new();
     
-
     public static void SpawnBullet(BulletTemplate template) {  
-        GD.Print("addded");
         Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
-        baseNode.TreeExiting += () => {GD.Print("removed"); bullets.Remove(template.BaseBullet);};
+        baseNode.TreeExiting += () => bullets.Remove(template.BaseBullet);
         instance.AddChild(baseNode);
-
 
         // Initialize the bullet 
         Area2D area2D = baseNode.GetNode<Area2D>("Area2D");
@@ -46,6 +50,7 @@ public partial class BulletFactory : Node {
         
         bullets.Add(template.BaseBullet);
         // delte the visual after the bullet is deleted via "OnCollided"
+        ParticleFactory.AddFollwingParticleToFactory(template.Visual.persistentParticle, baseNode);
 
         baseNode.TreeExiting += () => ParticleFactory.SpawnGlobalParticle(template.Visual.deathParticle, baseNode.GlobalPosition, template.Rotation);
     }

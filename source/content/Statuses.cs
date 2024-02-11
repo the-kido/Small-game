@@ -51,7 +51,7 @@ public sealed class FireEffect : ActorStatus {
         };
         
         // actor.Modulate += new Color(0.3f, 0.2f, 0f);
-        fire = ParticleFactory.AddParticle(actorAttachedTo, Effects.Fire);
+        fire = ParticleFactory.AddParticleToNode(actorAttachedTo, Effects.Fire);
     }
     public override void Disable() {
         // actor.Modulate -= new Color(0.3f, 0.2f, 0f);
@@ -94,7 +94,7 @@ public sealed class WetStatus : PermanentStatus {
     }; 
     
     public override void Init() {
-        water = ParticleFactory.AddParticle(actorAttachedTo, Effects.Wet);
+        water = ParticleFactory.AddParticleToNode(actorAttachedTo, Effects.Wet);
         actorAttachedTo.StatsManager.AddStats(debuff);
     }
 
@@ -121,7 +121,7 @@ public sealed class ShieldedStatus : PermanentStatus {
 
     public override void Init() {
         actorAttachedTo.StatsManager.AddStats(buff);
-        particle = ParticleFactory.AddParticle(actorAttachedTo, Effects.Shield);
+        particle = ParticleFactory.AddParticleToNode(actorAttachedTo, Effects.Shield);
     }
 }
 
@@ -139,7 +139,7 @@ public sealed class GasStatus : PermanentStatus {
     private Node2D gas;
     //TODO: Just make this have a cute visual. Gas state should do nothing paticularly cool. 
     public override void Init() {    
-        gas = ParticleFactory.AddParticle(actorAttachedTo, Effects.Gas);
+        gas = ParticleFactory.AddParticleToNode(actorAttachedTo, Effects.Gas);
     }
 }
 
@@ -215,7 +215,7 @@ public sealed class FreezeEffect : ActorStatus {
     Node2D particle;
     public override void Init() {
         Freeze(actorAttachedTo, true);
-        particle = ParticleFactory.AddParticle(actorAttachedTo, Effects.Ice);
+        particle = ParticleFactory.AddParticleToNode(actorAttachedTo, Effects.Ice);
     }
 
     public override void Update(double delta) {}

@@ -115,7 +115,7 @@ script = ExtResource("7_0r8k2")
 [node name="Weird enemy" parent="Y Sort/EnemyWave" instance=ExtResource("8_qk2u3")]
 z_as_relative = true
 y_sort_enabled = false
-position = Vector2(-64, 350)
+position = Vector2(-122, 242)
 
 [node name="PlayerManager" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
