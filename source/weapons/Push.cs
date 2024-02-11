@@ -47,7 +47,6 @@ Pushes things, but deals no damage
     private void ToggleAI(bool @bool) {
         foreach (var entity in entities) {
             if (entity is Enemy enemy) {
-                GD.Print("pasued ", @bool);
                 enemy.PauseAI = @bool;
             }
         }

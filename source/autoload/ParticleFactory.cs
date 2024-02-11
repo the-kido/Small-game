@@ -1,7 +1,6 @@
 using Godot;
 using KidoUtils;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Game.Autoload;
@@ -59,7 +58,7 @@ public partial class ParticleFactory : Node {
 
     private static void SetParticlePosition(Node2D followedNode, Node2D particleInstance) {
         particleInstance.GlobalPosition = followedNode.GlobalPosition;
-    }
+	}
 
 	public static Node2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {
 		GpuParticles2D newParticle = (GpuParticles2D) particle.Duplicate();

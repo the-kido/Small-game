@@ -1,8 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://buuyxsrfjvmqd"]
+[gd_scene load_steps=15 format=3 uid="uid://buuyxsrfjvmqd"]
 
 [ext_resource type="Script" path="res://source/content/weapons/ChargedGun.cs" id="1_d7w4p"]
 [ext_resource type="PackedScene" uid="uid://c5vl8xb18snvk" path="res://source/weapons/bullets/bad_bullet.tscn" id="2_6x1e6"]
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="2_e4ea4"]
+[ext_resource type="Script" path="res://source/weapons/bullets/BulletResource.cs" id="3_qvd1d"]
+
+[sub_resource type="Resource" id="Resource_rryvl"]
+script = ExtResource("3_qvd1d")
+bulletBase = 0
+visual = 0
+speed = 250
 
 [sub_resource type="Animation" id="Animation_6niuk"]
 length = 0.001
@@ -88,6 +95,7 @@ script = ExtResource("1_d7w4p")
 maxDamage = 1
 bulletAsset = ExtResource("2_6x1e6")
 nuzzle = NodePath("Nuzzle")
+bulletResource = SubResource("Resource_rryvl")
 sprite = NodePath("Sprite")
 UsesReloadVisuals = true
 

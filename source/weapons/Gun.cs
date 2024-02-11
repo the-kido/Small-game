@@ -13,12 +13,21 @@ public abstract partial class Gun : Weapon {
     private PackedScene bulletAsset;
     [Export]
     protected Node2D nuzzle;
+    [Export]
+    BulletResource bulletResource;
 
     protected abstract DamageInstance Damage {get;}
     
     protected void SpawnBulletInstance() =>
-        BulletFactory.SpawnBullet(new (new BadBullet(), BulletFrom.Player, BulletSpeed.KindaSlow, Damage, tmp.GetVisual(), nuzzle.GlobalPosition, nuzzle.GlobalRotation));
-        // .Init(nuzzle.GlobalPosition, nuzzle.GlobalRotation, BulletInstance());
+        BulletFactory.SpawnBullet(new (
+            BaseBullet.New(bulletResource.bulletBase), 
+            BulletFrom.Player, 
+            bulletResource.speed, 
+            Damage, 
+            BulletVisual.New(bulletResource.visual), 
+            nuzzle.GlobalPosition, 
+            nuzzle.GlobalRotation
+        ));
  
     public override sealed void UpdateWeapon(Vector2 positionToAttack) {
         // Vector2 direction = positionToAttack - Hand.GlobalPosition;

@@ -4,6 +4,7 @@ using LootTables;
 using Game.Actors;
 using Game.Actors.AI;
 using Game.Animation;
+using Game.Bullets;
 
 namespace Game.SealedContent;
 
@@ -13,13 +14,14 @@ public sealed partial class WeirdEnemy : Enemy {
     [Export]
     private int HoverAtSpawnPointDistance = 0;
     [Export]
-    private PackedScene spamedBullet;
+    private BulletResource spamedBullet;
     [Export]
     private float attackDelay;
 
 	protected override List<ItemDrop> DeathDrops {get; init;} = EnemyLootTable.GENERIC_ENEMY_DROPS;
 
 	protected sealed override void Init(AnimationController animationController, AIStateMachine stateMachine) {
+
         DefaultAttackState attackState = new(pathfinderComponent, spamedBullet, attackDelay);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
         

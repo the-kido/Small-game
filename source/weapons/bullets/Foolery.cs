@@ -1,13 +1,24 @@
 
 using System;
+using System.Collections.Generic;
+using Game.Autoload;
 using Game.Damage;
+using Game.SealedContent;
 using Godot;
 
 namespace Game.Bullets;
 
 
 public abstract class BaseBullet {
-    public event Action OnCollided; 
+    public static BaseBullet New(All allBullets) => BulletMap[allBullets];
+
+    private static readonly Dictionary<All, BaseBullet> BulletMap = new(){
+        {All.Normal, new BadBullet()}
+    };
+
+    public enum All {
+        Normal,
+    }
 
     protected Node2D sceneNode;
     DamageInstance damageInstance;
@@ -26,21 +37,16 @@ public abstract class BaseBullet {
 
         this.speed = speed;
         directionFacing = new Vector2(Mathf.Cos(rotation), Mathf.Sin(rotation));
-
-        // damageInstance = GetBulletDamageInstance(bulletInfo, directionFacing);
-
     }
 
     private void OnArea2DEntered(Area2D area) {
         if (area is Damageable damageable) {
             damageable.Damage(damageInstance);
-            GD.Print("Damage is happening!");
             DestroyBullet();
         }
     }
 
     public virtual void DestroyBullet() {
-        OnCollided?.Invoke();
         sceneNode.QueueFree();
     }
     
@@ -63,9 +69,6 @@ public interface IPattern {
 }
 
 
-
-// public record BulletInstance (BulletFrom from, BulletSpeed speed, DamageInstance damage);
-
 public record BulletTemplate (BaseBullet BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual Visual, Vector2 SpawnPosition, float Rotation);
 
 /// <summary>
@@ -78,59 +81,10 @@ public enum BulletFrom {
 }
 
 public enum BulletSpeed : uint {
-    VerySlow = 100,
+    VerySlow = 150,
     KindaSlow = 250,
     Slow = 500,
     Fast = 1000,
     VeryFast = 1500,
     Instant = 2000,
 }
-
-/*
-
-class factory {
-
-    readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
-
-    void SpawnBulletPattern(IPattern pattern) {
-        pattern.StartPattern(); // might be redundant; a direct call from the pattern might be better (?)
-    }
-
-    void SpawnBullet(BulletTemplate bulletTemplate) {  
-        Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
-        Area2D area2D = baseNode.GetNode<Area2D>("Area2D");
-
-        bulletTemplate.BaseBullet.Create(area2D, baseNode, bulletTemplate.Damage, (int) bulletTemplate.Speed, bulletTemplate.Rotation);
-
-        DoSafetyChecks(area2D);
-        UpdateBulletCollision(bulletTemplate.From, area2D);
-
-
-        // delte the visual after the bullet is deleted via "OnCollided"
-    }
-
-    private static void DoSafetyChecks(Area2D hitbox) {
-        if (hitbox.CollisionLayer != 0 || hitbox.CollisionMask != 0) {
-            GD.PushError( $"The hitbox {hitbox.Name} for {hitbox.GetParent().Name} has collisions/masks already set. Default them to have nothing.");
-            throw new Exception("Amazing");
-        }
-    }
-
-    private static void UpdateBulletCollision(BulletFrom from, Area2D hitbox) {
-        //Force the layers & masks to be overrided by the init
-        
-        switch (from) {
-            case BulletFrom.Player:
-                hitbox.CollisionLayer += (int) Layers.PlayerProjectile;
-                hitbox.CollisionMask += (int) Layers.Environment + (int) Layers.Enemies;
-                break;
-            case BulletFrom.Enemy:
-                hitbox.CollisionLayer += (int) Layers.EnemyProjectile;
-                hitbox.CollisionMask += (int) Layers.Environment + (int) Layers.Player;
-                break;
-        }
-    }
-
-}
-
-*/

@@ -20,26 +20,34 @@ public partial class BulletFactory : Node {
 
     static readonly List<BaseBullet> bullets = new();
     
-    public static void SpawnBullet(BulletTemplate bulletTemplate) {  
-        Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
-        instance.AddChild(baseNode);
-        baseNode.AddChild(bulletTemplate.Visual);
 
+    public static void SpawnBullet(BulletTemplate template) {  
+        GD.Print("addded");
+        Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
+        baseNode.TreeExiting += () => {GD.Print("removed"); bullets.Remove(template.BaseBullet);};
+        instance.AddChild(baseNode);
+
+
+        // Initialize the bullet 
         Area2D area2D = baseNode.GetNode<Area2D>("Area2D");
 
-        bulletTemplate.BaseBullet.Create(area2D, baseNode, bulletTemplate.Damage, (int) bulletTemplate.Speed, bulletTemplate.Rotation);
+        template.BaseBullet.Create(area2D, baseNode, template.Damage, (int) template.Speed, template.Rotation);
 
+        
+
+        baseNode.AddChild(template.Visual);
+
+        // Initialize other values required
+        baseNode.Position = template.SpawnPosition;
+        baseNode.Rotation = template.Rotation;
         DoSafetyChecks(area2D);
-        UpdateBulletCollision(bulletTemplate.From, area2D);
+        UpdateBulletCollision(template.From, area2D);
 
-        baseNode.Position = bulletTemplate.SpawnPosition;
-        baseNode.Rotation = bulletTemplate.Rotation;
-
-        bullets.Add(bulletTemplate.BaseBullet);
-        baseNode.TreeExited += () => bullets.Remove(bulletTemplate.BaseBullet);
-
-
+        
+        bullets.Add(template.BaseBullet);
         // delte the visual after the bullet is deleted via "OnCollided"
+
+        baseNode.TreeExiting += () => ParticleFactory.SpawnGlobalParticle(template.Visual.deathParticle, baseNode.GlobalPosition, template.Rotation);
     }
 
     private static void DoSafetyChecks(Area2D hitbox) {

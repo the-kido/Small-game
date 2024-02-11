@@ -20,12 +20,12 @@ public sealed class DefaultAttackState : AIState {
     };
     
     Pathfinder pathfinderComponent;
-    PackedScene spamedBullet;
+    BulletResource bulletResource;
     
     float attackDelay;
-    public DefaultAttackState(Pathfinder pathfinderComponent, PackedScene bullet, float attackDelay) {
+    public DefaultAttackState(Pathfinder pathfinderComponent, BulletResource bulletResource, float attackDelay) {
         this.pathfinderComponent = pathfinderComponent;
-        spamedBullet = bullet;
+        this.bulletResource = bulletResource;
         this.attackDelay = attackDelay;
     }
 
@@ -34,7 +34,6 @@ public sealed class DefaultAttackState : AIState {
             time += (float) delta;
 
             if (time > 5) {
-                GD.Print("i forgor");
                 return true;
             }
         }
@@ -135,7 +134,15 @@ public sealed class DefaultAttackState : AIState {
         float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
-        BulletTemplate temp = new(new BadBullet(), BulletFrom.Enemy, BulletSpeed.Fast, Damage, tmp.GetVisual(), actor.Position, angle);
+        BulletTemplate temp = new(
+            BaseBullet.New(bulletResource.bulletBase), 
+            BulletFrom.Enemy, 
+            bulletResource.speed,
+            Damage, 
+            BulletVisual.New(bulletResource.visual), 
+            actor.Position, 
+            angle
+        );
         BulletFactory.SpawnBullet(temp);
 
         // BulletFactory.SpawnBullet(spamedBullet).Init(actor.Position, angle, bulletInstance);

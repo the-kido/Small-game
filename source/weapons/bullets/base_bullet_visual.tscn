@@ -34,11 +34,10 @@ scale_max = 3.0
 scale_curve = SubResource("CurveTexture_a6vhu")
 color_ramp = SubResource("GradientTexture1D_hdrk0")
 
-[node name="Bullet Visual" type="Node2D"]
+[node name="Bullet Visual" type="Node2D" node_paths=PackedStringArray("sprite", "deathParticle")]
 script = ExtResource("1_uko6o")
-sprite = null
-deathParticle = null
-persistentParticle = null
+sprite = NodePath("Sprite")
+deathParticle = NodePath("Sparks")
 
 [node name="Sparks" type="GPUParticles2D" parent="."]
 rotation = 1.57079

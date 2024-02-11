@@ -11,12 +11,7 @@ public partial class Character : CharacterBody2D {
 	Vector2 velocity;
 	public void InitMove(Vector2 finalPosition, float duration) {
 		Vector2 direction = GlobalPosition.DirectionTo(finalPosition);
-		
-
 		velocity = direction * (Position.DistanceTo(finalPosition) / duration);
-		
-		GD.Print(velocity," | " , Position.DistanceTo(finalPosition), " | ", Position, " | ", finalPosition);
-		
 	}
 
 	public void MoveTo() {
@@ -30,7 +25,6 @@ public partial class Character : CharacterBody2D {
 	}
 
 	public void StopMoving() {
-		GD.Print("stop1!");
 		Velocity = Vector2.Zero;
 	}
 }

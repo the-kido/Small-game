@@ -58,7 +58,6 @@ shape = SubResource("CapsuleShape2D_3aaus")
 rotation = 1.57079
 emitting = false
 amount = 10
-sub_emitter = NodePath(".")
 process_material = SubResource("ParticleProcessMaterial_w40wf")
 texture = ExtResource("3_yfq7l")
 one_shot = true
