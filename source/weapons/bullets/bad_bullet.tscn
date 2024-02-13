@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c5vl8xb18snvk"]
 
-[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="2_gya27"]
+[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bullet-visuals/base_bullet.png" id="1_f7mhx"]
 [ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3aaus"]
@@ -11,14 +11,14 @@ height = 28.0
 offsets = PackedFloat32Array(0, 0.777778, 1)
 colors = PackedColorArray(1, 0.811765, 0.721569, 1, 1, 1, 0.764706, 1, 0.321569, 0.321569, 0.321569, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_6q5rm"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nn5tw"]
 gradient = SubResource("Gradient_ak2hm")
 
 [sub_resource type="Curve" id="Curve_8eusa"]
 _data = [Vector2(0.626506, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.318182), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_irufr"]
+[sub_resource type="CurveTexture" id="CurveTexture_7f60a"]
 curve = SubResource("Curve_8eusa")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w40wf"]
@@ -34,8 +34,8 @@ initial_velocity_max = 79.88
 gravity = Vector3(0, 98.43, 0)
 scale_min = 2.0
 scale_max = 3.0
-scale_curve = SubResource("CurveTexture_irufr")
-color_ramp = SubResource("GradientTexture1D_6q5rm")
+scale_curve = SubResource("CurveTexture_7f60a")
+color_ramp = SubResource("GradientTexture1D_nn5tw")
 
 [node name="bullet" type="Node2D"]
 
@@ -44,7 +44,7 @@ modulate = Color(0.85, 0.8, 0.8, 1)
 z_index = 1
 rotation = 1.57079
 scale = Vector2(3.17232, 3.16)
-texture = ExtResource("2_gya27")
+texture = ExtResource("1_f7mhx")
 
 [node name="Area2D" type="Area2D" parent="."]
 rotation = 1.57079

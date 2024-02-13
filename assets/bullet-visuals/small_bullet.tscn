@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dedwm6mqc26n0"]
 
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_25dga"]
-[ext_resource type="Texture2D" uid="uid://deuo4a1knbklb" path="res://assets/sprites/bullets/enemy_bullet_small.png" id="2_cn0c0"]
+[ext_resource type="Texture2D" uid="uid://deuo4a1knbklb" path="res://assets/bullet-visuals/enemy_bullet_small.png" id="2_cn0c0"]
 [ext_resource type="PackedScene" uid="uid://b0guw5xnd0ulf" path="res://assets/effects/gas.tscn" id="3_ppu62"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f1t6o"]

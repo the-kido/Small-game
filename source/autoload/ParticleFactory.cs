@@ -40,7 +40,7 @@ public partial class ParticleFactory : Node {
 
 	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
 	
-	public static void AddFollwingParticleToFactory(GpuParticles2D particle, Node2D followedNode) {
+	public static void AddFollowingParticleToFactory(GpuParticles2D particle, Node2D followedNode) {
 		followedNode.TreeExiting += () => {
         	UpdatedParticles.Remove(particle);
 			RemoveParticle(particle);

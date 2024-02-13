@@ -49,8 +49,9 @@ public partial class BulletFactory : Node {
 
         
         bullets.Add(template.BaseBullet);
-        // delte the visual after the bullet is deleted via "OnCollided"
-        ParticleFactory.AddFollwingParticleToFactory(template.Visual.persistentParticle, baseNode);
+        // Spawn the persistent particle
+        if (template.Visual.persistentParticle is not null) 
+            ParticleFactory.AddFollowingParticleToFactory(template.Visual.persistentParticle, baseNode);
 
         baseNode.TreeExiting += () => ParticleFactory.SpawnGlobalParticle(template.Visual.deathParticle, baseNode.GlobalPosition, template.Rotation);
     }

@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://l0yngo1lhnsi" path="res://source/shields/bad_shield.png" id="12_ymmpf"]
 [ext_resource type="Texture2D" uid="uid://4ex2ihoiytul" path="res://source/shields/indicator.png" id="13_rima0"]
 [ext_resource type="Script" path="res://source/gui/hud/LevelCompletionIndicator.cs" id="14_yw1tb"]
-[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/sprites/bullets/base_bullet.png" id="15_a153q"]
+[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bullet-visuals/base_bullet.png" id="15_a153q"]
 [ext_resource type="Script" path="res://source/gui/hud/InteractableDescription.cs" id="15_kguth"]
 [ext_resource type="Script" path="res://source/gui/hud/LevelEventDescription.cs" id="17_l4h7f"]
 

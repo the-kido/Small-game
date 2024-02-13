@@ -1,16 +1,10 @@
 using Godot;
-using KidoUtils;
 using Game.Damage;
 using Game.Autoload;
-using System;
-using Game.SealedContent;
-using Game.Actors.AI;
 
 namespace Game.Bullets;
 
 public abstract partial class Gun : Weapon {
-    [Export]
-    private PackedScene bulletAsset;
     [Export]
     protected Node2D nuzzle;
     [Export]
