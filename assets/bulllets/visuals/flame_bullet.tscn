@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://4ujh6o55kbnw"]
+
+[ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_ho53f"]
+[ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bulllets/visuals/base_bullet.png" id="2_wx43m"]
+[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/bulllets/visuals/spark.png" id="3_s73qp"]
+[ext_resource type="PackedScene" uid="uid://d2age2i033f5c" path="res://assets/effects/fire.tscn" id="4_lkqv1"]
+
+[sub_resource type="Gradient" id="Gradient_32mmq"]
+offsets = PackedFloat32Array(0, 0.777778, 1)
+colors = PackedColorArray(1, 0.811765, 0.721569, 1, 1, 1, 0.764706, 1, 0.321569, 0.321569, 0.321569, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6q5rm"]
+gradient = SubResource("Gradient_32mmq")
+
+[sub_resource type="Curve" id="Curve_tq3nc"]
+_data = [Vector2(0.626506, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.318182), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_irufr"]
+curve = SubResource("Curve_tq3nc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5r6x8"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+angle_min = -219.8
+direction = Vector3(0, 10, 0)
+spread = 75.28
+flatness = 1.0
+initial_velocity_min = 37.78
+initial_velocity_max = 79.88
+gravity = Vector3(0, 98.43, 0)
+scale_min = 2.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_irufr")
+color_ramp = SubResource("GradientTexture1D_6q5rm")
+
+[node name="Flame Bullet" type="Node2D" node_paths=PackedStringArray("sprite", "deathParticle", "persistentParticle")]
+script = ExtResource("1_ho53f")
+sprite = NodePath("Sprite2D")
+deathParticle = NodePath("Sparks")
+persistentParticle = NodePath("Fire")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.85, 0.8, 0.8, 1)
+z_index = 1
+rotation = 1.57079
+scale = Vector2(3.17232, 3.16)
+texture = ExtResource("2_wx43m")
+
+[node name="Sparks" type="GPUParticles2D" parent="."]
+rotation = 1.57079
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_5r6x8")
+texture = ExtResource("3_s73qp")
+one_shot = true
+speed_scale = 1.61
+explosiveness = 0.99
+randomness = 0.1
+
+[node name="Fire" parent="." instance=ExtResource("4_lkqv1")]

@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerClassResource.cs" id="1_cfhx7"]
 [ext_resource type="PackedScene" uid="uid://da4n4e0l3c612" path="res://source/content/shields/bad_shield.tscn" id="1_ogj7g"]
-[ext_resource type="PackedScene" uid="uid://bjaeqwecyx0k" path="res://source/weapons/WeirdGun.tscn" id="2_isa6p"]
+[ext_resource type="PackedScene" uid="uid://bjaeqwecyx0k" path="res://assets/weapons/WeirdGun.tscn" id="2_isa6p"]
 [ext_resource type="SpriteFrames" uid="uid://br1lpqu1a5uuq" path="res://assets/content/classes/default anim.tres" id="3_ppw5t"]
+
 
 [resource]
 script = ExtResource("1_cfhx7")

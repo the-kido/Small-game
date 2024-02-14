@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bt4kprgxq7588"]
+
+[ext_resource type="Script" path="res://assets/gui/GlobalCursor.cs" id="1_y8otm"]
+
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lybb8"]
+radius = 33.1361
+
+[node name="Global Cursor" type="Area2D"]
+collision_layer = 65535
+collision_mask = 65535
+script = ExtResource("1_y8otm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_lybb8")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="." to="." method="OnBodyExited"]

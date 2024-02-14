@@ -72,6 +72,7 @@ public sealed class DefaultAttackState : AIState {
         if (player is not null) {
             lastRememberedPlayer = player;
             playerSeenDuration += delta;
+            FlipActor(lastRememberedPlayer);
         }
 
         if (EnemyForgetPlayer(player, delta, ref forgetPlayerTimer)) {
@@ -97,7 +98,6 @@ public sealed class DefaultAttackState : AIState {
         }
         #endregion
 
-        FlipActor(lastRememberedPlayer);
         Move(player);
     }
 

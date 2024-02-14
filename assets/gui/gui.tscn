@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_1eh1k"]
 [ext_resource type="Script" path="res://source/gui/global-menus/SettingsPage.cs" id="9_dv56e"]
 [ext_resource type="Script" path="res://source/gui/menus/EscapeMenu.cs" id="9_l0a7d"]
-[ext_resource type="Texture2D" uid="uid://b70rm5564h00k" path="res://assets/sprites/gui/temp.png" id="11_b0krh"]
+[ext_resource type="Texture2D" uid="uid://b70rm5564h00k" path="res://assets/gui/temp.png" id="11_b0krh"]
 
 [sub_resource type="Animation" id="Animation_wjuk7"]
 resource_name = "Open"

@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="3_ktacb"]
 [ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="4_bpiwe"]
 [ext_resource type="PackedScene" uid="uid://efpfsnuwlefm" path="res://assets/enviornment/decor/lights/dungeon_lamp.tscn" id="4_fu4ew"]
-[ext_resource type="Texture2D" uid="uid://beycrukxt85vd" path="res://assets/sprites/enviornment/tilemaps/skull_two.png" id="5_i682j"]
+[ext_resource type="Texture2D" uid="uid://beycrukxt85vd" path="res://assets/tilemaps/skull_two.png" id="5_i682j"]
 [ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/portraits/first_boss/happy.tres" id="5_idwx8"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="6_tqm1w"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="7_0r8k2"]
@@ -47,6 +47,7 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
+doors = null
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
@@ -64,6 +65,9 @@ portrait = ExtResource("5_idwx8")
 script = ExtResource("2_1lkkp")
 character = NodePath("../../../Character")
 animationName = &"dancing"
+playAmbiently = null
+loopTime = null
+moveToPosition = null
 
 [node name="Y Sort" parent="." instance=ExtResource("3_knfxu")]
 
@@ -138,9 +142,10 @@ position = Vector2(149, -50)
 scale = Vector2(1.62912, 1.62912)
 tileMap = NodePath("../TileMap")
 
-[node name="Shop" parent="Y Sort" instance=ExtResource("10_exj4u")]
+[node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
-chanceWeight = Array[int]([1, 1, 1, 3, 10])
+shopItems = [NodePath("1_bad"), NodePath("2_trash"), NodePath("3_worst")]
+chanceWeight = Array[int]([1, 1, 1])
 
 [node name="Respawn Token Shop Item" parent="Y Sort/Shop" instance=ExtResource("13_gt3xo")]
 position = Vector2(-39, 113.333)
@@ -167,19 +172,15 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
-Speed = 1.0
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
-Speed = 1.0
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
-Speed = 1.0
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
-Speed = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("14_f2iyh")
@@ -189,6 +190,7 @@ position = Vector2(600, 250)
 
 [node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
 position = Vector2(338, 327)
+moveSpeed = null
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(500, 250)
@@ -197,7 +199,6 @@ texture = ExtResource("23_qrh1u")
 
 [node name="Chest" parent="." instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
-chestLootTable = 0
 
 [node name="This guy is agro as frick" parent="." instance=ExtResource("28_ygxmk")]
 position = Vector2(224, 289)
