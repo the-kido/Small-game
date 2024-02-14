@@ -17,7 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/shop/respawn_token_shop_item.tscn" id="18_a052s"]
 [ext_resource type="PackedScene" uid="uid://caqqb3q7pfcr1" path="res://assets/enviornment/attackables/shield_obelisk.tscn" id="18_i70b7"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="24_vfgcu"]
-[ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="25_o38qo"]
+[ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/characters/main.tscn" id="25_o38qo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ck6td"]
 size = Vector2(24, 42)

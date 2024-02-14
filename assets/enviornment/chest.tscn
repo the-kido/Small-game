@@ -100,7 +100,6 @@ animations = [{
 size = Vector2(24, 13)
 
 [node name="Chest" type="AnimatedSprite2D" node_paths=PackedStringArray("interactable", "itemShowcase")]
-z_index = 2
 z_as_relative = false
 y_sort_enabled = true
 scale = Vector2(2, 2)

@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://c4qvs3qftka0d"]
 
-[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="1_jyps1"]
+[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/tilemaps/ao/occlusion_tilemap.tres" id="1_jyps1"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_0uxak"]
+
 
 [node name="Enviornment" type="Node"]
 

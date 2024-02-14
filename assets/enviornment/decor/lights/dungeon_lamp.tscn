@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://blvl8uok84lyl" path="res://assets/tilemaps/k.png" id="1_u6fr3"]
 [ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/misc/light.png" id="2_5agsm"]
 
-[node name="dungeon_lamp" type="Node2D"]
+[node name="DungeonLamp" type="Node2D"]
 
 [node name="K" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)

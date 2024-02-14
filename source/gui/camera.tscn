@@ -7,6 +7,7 @@ radius = 604.02
 
 [node name="Camera" type="Camera2D"]
 process_mode = 3
+editor_draw_screen = false
 script = ExtResource("1_kne7i")
 
 [node name="Important Objects" type="Area2D" parent="."]
@@ -14,6 +15,7 @@ collision_layer = 7
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Important Objects"]
+modulate = Color(1, 1, 1, 0.286275)
 scale = Vector2(1, 0.81)
 shape = SubResource("CircleShape2D_q5fci")
 debug_color = Color(1, 0, 0, 0)

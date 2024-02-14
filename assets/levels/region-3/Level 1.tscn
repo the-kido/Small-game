@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://h7ddni6hoy2y"]
 
 [ext_resource type="TileSet" uid="uid://bu5uqnxeukvqv" path="res://assets/levels/region-3/region_3_tileset.tres" id="1_qhf56"]
-[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/enviornment/occlusion_tilemap.tres" id="2_fjcoe"]
+[ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/tilemaps/ao/occlusion_tilemap.tres" id="2_fjcoe"]
 
 [node name="Node2D" type="Node2D"]
 
