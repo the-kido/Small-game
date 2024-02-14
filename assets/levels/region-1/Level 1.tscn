@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=32 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
 [ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="2_1lkkp"]
@@ -7,23 +7,27 @@
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_wh8mw"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_knfxu"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="3_ktacb"]
+[ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="4_bpiwe"]
 [ext_resource type="PackedScene" uid="uid://efpfsnuwlefm" path="res://assets/enviornment/decor/lights/dungeon_lamp.tscn" id="4_fu4ew"]
 [ext_resource type="Texture2D" uid="uid://beycrukxt85vd" path="res://assets/sprites/enviornment/tilemaps/skull_two.png" id="5_i682j"]
+[ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/portraits/first_boss/happy.tres" id="5_idwx8"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="6_tqm1w"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="7_0r8k2"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="7_ff2ca"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="8_3vv2j"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="8_qk2u3"]
-[ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop.tscn" id="10_exj4u"]
-[ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/weapon_shop_item.tscn" id="11_jx2oq"]
-[ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/content/coin.tscn" id="12_o2gfm"]
-[ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/respawn_token_shop_item.tscn" id="13_gt3xo"]
-[ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/potion_shop_item.tscn.tscn" id="13_hpsnk"]
+[ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop/shop.tscn" id="10_exj4u"]
+[ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/shop/weapon_shop_item.tscn" id="11_jx2oq"]
+[ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/enviornment/pickupables/coin.tscn" id="12_o2gfm"]
+[ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/shop/respawn_token_shop_item.tscn" id="13_gt3xo"]
+[ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/shop/potion_shop_item.tscn.tscn" id="13_hpsnk"]
 [ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="14_d53mr"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="14_f2iyh"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="20_tlos5"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="23_qrh1u"]
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/content/characters/main.tscn" id="24_6ob4d"]
+[ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="25_uyrmv"]
+[ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="28_ygxmk"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_em3ql"]
 vertices = PackedVector2Array(-5, 224, -6, 206, 206, 206, 232, 224, 231, 23, 206, 146, 222, 62, 222, 23, 174, 146, 174, 142, 190, 142, 190, 98, 146, 62, 146, 98, 142, 94, 146, 114, 14, 114, 82, 94, 14, 62, 82, 62, 142, 22, 146, 22)
@@ -50,6 +54,11 @@ wave = NodePath("../../Y Sort/EnemyWave")
 
 [node name="ConversationEvent" type="Node" parent="Level"]
 script = ExtResource("2_wh8mw")
+
+[node name="DialogueLineConversationItem" type="Node" parent="Level/ConversationEvent"]
+script = ExtResource("4_bpiwe")
+text = "I want you to DIE"
+portrait = ExtResource("5_idwx8")
 
 [node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
 script = ExtResource("2_1lkkp")
@@ -129,9 +138,8 @@ position = Vector2(149, -50)
 scale = Vector2(1.62912, 1.62912)
 tileMap = NodePath("../TileMap")
 
-[node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
+[node name="Shop" parent="Y Sort" instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
-shopItems = [NodePath("Respawn Token Shop Item"), NodePath("PotionShopItem"), NodePath("2_trash"), NodePath("1_bad"), NodePath("3_worst")]
 chanceWeight = Array[int]([1, 1, 1, 3, 10])
 
 [node name="Respawn Token Shop Item" parent="Y Sort/Shop" instance=ExtResource("13_gt3xo")]
@@ -159,15 +167,19 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
+Speed = 1.0
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
+Speed = 1.0
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
+Speed = 1.0
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
+Speed = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("14_f2iyh")
@@ -182,5 +194,12 @@ position = Vector2(338, 327)
 position = Vector2(500, 250)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("23_qrh1u")
+
+[node name="Chest" parent="." instance=ExtResource("25_uyrmv")]
+position = Vector2(932, 300)
+chestLootTable = 0
+
+[node name="This guy is agro as frick" parent="." instance=ExtResource("28_ygxmk")]
+position = Vector2(224, 289)
 
 [editable path="Y Sort/Shop/Respawn Token Shop Item"]

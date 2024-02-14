@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dm05iyuyywyo2"]
+
+[ext_resource type="Script" path="res://source/resources/Portrait.cs" id="1_t7qlc"]
+[ext_resource type="SpriteFrames" uid="uid://bebo6lnh5thx5" path="res://assets/portraits/first_boss/sprite-sheet/first_boss.tres" id="2_0aamb"]
+
+
+[resource]
+script = ExtResource("1_t7qlc")
+sprites = ExtResource("2_0aamb")
+animationName = "sad"
+loopAnimation = false
+fps = 10.0

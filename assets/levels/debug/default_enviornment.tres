@@ -12,6 +12,6 @@ glow_blend_mode = 1
 glow_hdr_threshold = 0.72
 glow_hdr_scale = 0.49
 glow_map_strength = 0.0
+adjustment_enabled = true
 adjustment_brightness = 1.05
 adjustment_contrast = 1.1
-adjustment_saturation = 1.15

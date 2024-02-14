@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://buuyxsrfjvmqd"]
 
 [ext_resource type="Script" path="res://source/content/weapons/ChargedGun.cs" id="1_d7w4p"]
-[ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/sprites/equiptment/gun.png" id="2_e4ea4"]
+[ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/weapons/gun.png" id="2_e4ea4"]
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletResource.cs" id="3_qvd1d"]
 
 [sub_resource type="Resource" id="Resource_rryvl"]

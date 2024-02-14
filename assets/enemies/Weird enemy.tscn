@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://source/actors/enemies/WeirdEnemy.cs" id="1_lsih8"]
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletResource.cs" id="2_76ijg"]
 [ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="2_m5e2g"]
-[ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/sprites/enemies/weird_enemy_attack.png" id="4_udhra"]
-[ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/sprites/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
+[ext_resource type="Texture2D" uid="uid://bibuycmsd5xev" path="res://assets/enemies/weird_enemy_attack.png" id="4_udhra"]
+[ext_resource type="Texture2D" uid="uid://dtwgykxjp2f38" path="res://assets/enemies/weird_enemy-Sheet.png" id="4_xjf84"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="5_ubg6x"]
-[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://status_effect_component.tscn" id="7_o34sa"]
+[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://source/components/status_effect_component.tscn" id="7_o34sa"]
 
 [sub_resource type="Resource" id="Resource_55gvs"]
 script = ExtResource("2_76ijg")
@@ -264,6 +264,7 @@ scale = Vector2(2.364, 2.408)
 collision_layer = 4
 collision_mask = 8
 Health = 10
+ImmunityFrames = null
 ImmuneToDamageFrom = Array[int]([])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
@@ -289,3 +290,4 @@ avoidance_enabled = true
 radius = 50.0
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("7_o34sa")]
+defaultStatus = null

@@ -17,6 +17,8 @@ script = ExtResource("1_pl0pq")
 nuzzle = NodePath("Nuzzle")
 bulletResource = SubResource("Resource_3njt4")
 sprite = NodePath("Sprite2D")
+UsesReloadVisuals = null
+BaseReloadSpeed = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_as_relative = false

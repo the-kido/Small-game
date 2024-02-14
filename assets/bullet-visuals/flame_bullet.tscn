@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_ho53f"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bullet-visuals/base_bullet.png" id="2_wx43m"]
-[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_4qyod"]
+[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/bullet-visuals/spark.png" id="3_s73qp"]
 [ext_resource type="PackedScene" uid="uid://d2age2i033f5c" path="res://assets/effects/fire.tscn" id="4_lkqv1"]
 
 [sub_resource type="Gradient" id="Gradient_32mmq"]
@@ -53,7 +53,7 @@ rotation = 1.57079
 emitting = false
 amount = 10
 process_material = SubResource("ParticleProcessMaterial_5r6x8")
-texture = ExtResource("3_4qyod")
+texture = ExtResource("3_s73qp")
 one_shot = true
 speed_scale = 1.61
 explosiveness = 0.99

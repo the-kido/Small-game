@@ -1,13 +1,13 @@
 [gd_scene load_steps=38 format=3 uid="uid://fktd2hmwbgea"]
 
 [ext_resource type="Script" path="res://source/actors/enemies/AgroEnemyMiniBoss.cs" id="1_3njyc"]
-[ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/sprites/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
-[ext_resource type="PackedScene" path="res://source/components/damageable.tscn" id="3_i2isi"]
-[ext_resource type="Texture2D" uid="uid://b7x365xmp0l8a" path="res://assets/sprites/enemies/agro/agro-guy-preping-sheet.png" id="3_nc480"]
-[ext_resource type="Texture2D" uid="uid://b6js7gtjngrwl" path="res://assets/sprites/enemies/agro/agro-guy-running.png" id="4_6p7mc"]
+[ext_resource type="Texture2D" uid="uid://ddwhle3xu2p8x" path="res://assets/enemies/agro/agro-guy-fatigued-begin.png" id="3_fd2p1"]
+[ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="3_i2isi"]
+[ext_resource type="Texture2D" uid="uid://b7x365xmp0l8a" path="res://assets/enemies/agro/agro-guy-preping-sheet.png" id="3_nc480"]
+[ext_resource type="Texture2D" uid="uid://b6js7gtjngrwl" path="res://assets/enemies/agro/agro-guy-running.png" id="4_6p7mc"]
 [ext_resource type="PackedScene" uid="uid://btv44jyr6tfoa" path="res://source/components/pathfinder.tscn" id="4_y3w8l"]
-[ext_resource type="Texture2D" uid="uid://71w6lvj63lpu" path="res://assets/sprites/enemies/agro/agro-guy-wake-up.png" id="6_o5gc5"]
-[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://status_effect_component.tscn" id="9_6ypl0"]
+[ext_resource type="Texture2D" uid="uid://71w6lvj63lpu" path="res://assets/enemies/agro/agro-guy-wake-up.png" id="6_o5gc5"]
+[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://source/components/status_effect_component.tscn" id="9_6ypl0"]
 [ext_resource type="PackedScene" uid="uid://dqa6x8t1b5qlk" path="res://source/autoload/selected_target_indicator.tscn" id="9_wrtln"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rr0j3"]
@@ -363,6 +363,7 @@ position = Vector2(-1, 0)
 collision_layer = 4
 collision_mask = 8
 Health = 1
+ImmunityFrames = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
 position = Vector2(0.5, 0.688755)
@@ -387,5 +388,7 @@ shape = SubResource("RectangleShape2D_d2kor")
 debug_color = Color(0.619608, 0.533333, 0, 0)
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("9_6ypl0")]
+defaultStatus = null
 
 [node name="TargetEnemyCursor" parent="." instance=ExtResource("9_wrtln")]
+visible = false

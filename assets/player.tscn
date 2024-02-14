@@ -4,13 +4,13 @@
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
 [ext_resource type="Script" path="res://source/actors/player/InputController.cs" id="2_7escu"]
 [ext_resource type="Script" path="res://source/actors/player/WeaponManager.cs" id="2_v0jdn"]
-[ext_resource type="Texture2D" uid="uid://7kq1c3lwc6la" path="res://assets/sprites/player/player_east.png" id="3_24x38"]
-[ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/sprites/player/player_north.png" id="4_4lvjw"]
-[ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/sprites/player/player_south.png" id="5_3ebte"]
-[ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/sprites/player/player_west.png" id="6_qofij"]
+[ext_resource type="Texture2D" uid="uid://7kq1c3lwc6la" path="res://assets/player/player/player_east.png" id="3_24x38"]
+[ext_resource type="Texture2D" uid="uid://djk3xwpv4yl0h" path="res://assets/player/player/player_north.png" id="4_4lvjw"]
+[ext_resource type="Texture2D" uid="uid://jeolhys3q01e" path="res://assets/player/player/player_south.png" id="5_3ebte"]
+[ext_resource type="Texture2D" uid="uid://bnoc7ojd3fofd" path="res://assets/player/player/player_west.png" id="6_qofij"]
 [ext_resource type="Script" path="res://source/actors/player/ShieldManager.cs" id="8_kpbfh"]
 [ext_resource type="PackedScene" uid="uid://c58d060y5efdl" path="res://source/components/damageable.tscn" id="8_spu4k"]
-[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://status_effect_component.tscn" id="10_rp2rn"]
+[ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://source/components/status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
 [ext_resource type="Script" path="res://source/actors/player/PlayerInteractableRadar.cs" id="13_ksv65"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="14_arhrn"]
@@ -582,6 +582,7 @@ animation = &"player/idle-east"
 animation = &"player/idle-north"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_u1isj"]
+auto_triangles = false
 blend_point_0/node = SubResource("AnimationNodeAnimation_ikjx0")
 blend_point_0/pos = Vector2(-1, 0)
 blend_point_1/node = SubResource("AnimationNodeAnimation_t623c")
@@ -590,6 +591,8 @@ blend_point_2/node = SubResource("AnimationNodeAnimation_rnfs3")
 blend_point_2/pos = Vector2(1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_ah7qs")
 blend_point_3/pos = Vector2(0, -1)
+triangles = PackedInt32Array(0, 1, 2, 0, 2, 3)
+snap = Vector2(1, 1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ftu2e"]
@@ -681,6 +684,7 @@ animation = &"south"
 offset = Vector2(0, -3)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PlayerSpritesOffset/PlayerSprites"]
+active = false
 reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_j0dn8"),
@@ -713,7 +717,7 @@ tree_root = SubResource("AnimationNodeStateMachine_mhk0n")
 anim_player = NodePath("../PlayerSpritesOffset/PlayerSprites/AnimationPlayer")
 parameters/conditions/idle = false
 parameters/conditions/walk = false
-parameters/Idle/blend_position = Vector2(0, 1)
+parameters/Idle/blend_position = Vector2(0.0848, 0.280423)
 parameters/Walk/blend_position = Vector2(0, 1)
 
 [node name="Damageable" parent="." instance=ExtResource("8_spu4k")]

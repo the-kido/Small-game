@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ggq2ajfvmvpt"
+
+[deps]
+
+files=["res://assets/translation/temo.en.translation", "res://assets/translation/temo.fr.translation"]
+
+source_file="res://assets/translation/temo.csv"
+dest_files=["res://assets/translation/temo.en.translation", "res://assets/translation/temo.fr.translation"]
+
+[params]
+
+compress=true
+delimiter=0

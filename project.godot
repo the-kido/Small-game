@@ -24,7 +24,7 @@ SceneSwitcher="*res://source/autoload/scene_switcher.tscn"
 GlobalCursor="*res://Global Cursor.tscn"
 DamageTextManager="*res://source/autoload/DamageTextManager.cs"
 PickupablesManager="*res://source/autoload/PickupablesManager.cs"
-GUI="*res://gui.tscn"
+GUI="*res://assets/gui/gui.tscn"
 
 [display]
 
@@ -102,7 +102,7 @@ interaction_made={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://assets/content/translation/temo.en.translation", "res://assets/content/translation/temo.fr.translation")
+locale/translations=PackedStringArray("res://assets/translation/temo.en.translation", "res://assets/translation/temo.fr.translation")
 locale/test="en"
 locale/fallback="fr"
 

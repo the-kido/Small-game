@@ -1,7 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://b1ewi2kqaod66"]
 
-[ext_resource type="Texture2D" uid="uid://b8k4i1dvi8hib" path="res://assets/sprites/gui/interactable_arrow.png" id="1_jigfb"]
+[ext_resource type="Texture2D" uid="uid://b8k4i1dvi8hib" path="res://assets/enviornment/interactable_arrow.png" id="1_jigfb"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Interactables/Interactable.cs" id="2_guvv6"]
+
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_47q34"]
 atlas = ExtResource("1_jigfb")

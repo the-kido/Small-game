@@ -29,8 +29,7 @@ public class DialoguePlayer {
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {
-        if (nextLine.portrait.CurrentSprite is null)
-            return;
+        if (nextLine.portrait.CurrentSprite is null) return;
 
         nextLine.portrait.PlayAnimation(delta);
         bar.PortraitRect.Texture = nextLine.portrait.CurrentSprite;
@@ -55,6 +54,7 @@ public class DialoguePlayer {
         this.nextLine = nextLine;
 
         if (nextLine.charactersPerSecond is 0) throw new ArgumentOutOfRangeException("The charactersPerSecond exported field for DialougeLineConversationItem must be greater than 0!");
+        if (nextLine.portrait is null) throw new NullReferenceException("There was no portrait set for this dialogue line!");
         
         bar.Show(true);
         bar.Label.Text = bar.Label.Tr(nextLine.text);

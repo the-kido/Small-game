@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_nwpfc"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="3_pn4x1"]
-[ext_resource type="Resource" uid="uid://dkhmndlw03uo5" path="res://assets/content/portraits/none.tres" id="4_08wan"]
+[ext_resource type="Resource" uid="uid://dkhmndlw03uo5" path="res://assets/portraits/none.tres" id="4_08wan"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
 [ext_resource type="PackedScene" uid="uid://brgvf7tkh6hvx" path="res://assets/misc/default_nav_region.tscn" id="10_1hlsd"]
@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="12_qjdua"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="15_vbrl5"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="16_dddk7"]
-[ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/content/freeze_charge.tscn" id="16_qpqxl"]
+[ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/enviornment/pickupables/freeze_charge.tscn" id="16_qpqxl"]
 [ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/normal_door.tscn" id="17_dhp43"]
 
 [node name="Level 1" type="Node"]

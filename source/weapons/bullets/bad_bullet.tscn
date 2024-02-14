@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://c5vl8xb18snvk"]
 
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bullet-visuals/base_bullet.png" id="1_f7mhx"]
-[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/sprites/bullets/spark.png" id="3_yfq7l"]
+[ext_resource type="Texture2D" uid="uid://bau7sf7ol4a8u" path="res://assets/bullet-visuals/spark.png" id="2_bs8er"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3aaus"]
 radius = 7.0
@@ -59,7 +59,7 @@ rotation = 1.57079
 emitting = false
 amount = 10
 process_material = SubResource("ParticleProcessMaterial_w40wf")
-texture = ExtResource("3_yfq7l")
+texture = ExtResource("2_bs8er")
 one_shot = true
 speed_scale = 1.61
 explosiveness = 0.99
