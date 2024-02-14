@@ -119,16 +119,13 @@ y_sort_enabled = true
 position = Vector2(11, -7)
 script = ExtResource("15_vbrl5")
 
-[node name="Hillbilly" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_tonpy")]
+[node name="Hillbilly" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
 z_index = -2
 position = Vector2(448, 829)
-animationPlayer = NodePath("")
 
-[node name="Base Enemy2" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_tonpy")]
+[node name="Base Enemy2" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
-animationPlayer = NodePath("")
 
-[node name="Weird enemy" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_rymms")]
+[node name="Weird enemy" parent="Node2D/Waves/wave 1" instance=ExtResource("4_rymms")]
 position = Vector2(426, 244)
-animationPlayer = NodePath("")

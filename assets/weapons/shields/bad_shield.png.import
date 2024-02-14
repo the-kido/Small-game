@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://4ex2ihoiytul"
-path="res://.godot/imported/indicator.png-ded3287038290a4f0cbd81ed2acd5c48.ctex"
+uid="uid://l0yngo1lhnsi"
+path="res://.godot/imported/bad_shield.png-a581bbe51d4e75dd7852c79f73a52561.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://source/shields/indicator.png"
-dest_files=["res://.godot/imported/indicator.png-ded3287038290a4f0cbd81ed2acd5c48.ctex"]
+source_file="res://assets/weapons/shields/bad_shield.png"
+dest_files=["res://.godot/imported/bad_shield.png-a581bbe51d4e75dd7852c79f73a52561.ctex"]
 
 [params]
 

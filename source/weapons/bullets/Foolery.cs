@@ -1,13 +1,10 @@
-
 using System;
 using System.Collections.Generic;
-using Game.Autoload;
 using Game.Damage;
 using Game.SealedContent;
 using Godot;
 
 namespace Game.Bullets;
-
 
 public abstract class BaseBullet {
     public static BaseBullet New(All type) {
@@ -59,17 +56,13 @@ public abstract class BaseBullet {
     }
 }
 
-
 public interface IPattern {
     // called by bullet factory when bullet is created
-    
     BulletTemplate[] BulletTemplates {get;}
 
     public void StartPattern();
     public void UpdatePattern();
-    
 }
-
 
 public record BulletTemplate (BaseBullet BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual Visual, Vector2 SpawnPosition, float Rotation);
 
