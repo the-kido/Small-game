@@ -55,7 +55,7 @@ public sealed class FireEffect : ActorStatus {
     }
     public override void Disable() {
         // actor.Modulate -= new Color(0.3f, 0.2f, 0f);
-        ParticleFactory.RemoveParticle(fire);
+        ParticleFactory.RemoveEffect(fire);
     }
 
     double damageTime;
@@ -100,7 +100,7 @@ public sealed class WetStatus : PermanentStatus {
 
     public override void Disable() {
         actorAttachedTo.StatsManager.RemoveStats(debuff);
-        ParticleFactory.RemoveParticle(water);
+        ParticleFactory.RemoveEffect(water);
     }
 }
 
@@ -113,7 +113,7 @@ public sealed class ShieldedStatus : PermanentStatus {
     };
 
     public override void Disable() {
-        ParticleFactory.RemoveParticle(particle);
+        ParticleFactory.RemoveEffect(particle);
         actorAttachedTo.StatsManager.RemoveStats(buff);
     }
 
@@ -133,7 +133,7 @@ public sealed class GasStatus : PermanentStatus {
     public override Type[] Incompatibles {get; init;} 
 
     public override void Disable() {
-        ParticleFactory.RemoveParticle(gas);
+        ParticleFactory.RemoveEffect(gas);
     }
 
     private Node2D gas;
@@ -209,7 +209,7 @@ public sealed class FreezeEffect : ActorStatus {
     
     public override void Disable() {
         Freeze(actorAttachedTo, false);
-        ParticleFactory.RemoveParticle(particle);
+        ParticleFactory.RemoveEffect(particle);
     } 
     
     Node2D particle;

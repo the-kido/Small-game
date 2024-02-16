@@ -25,6 +25,7 @@ public sealed partial class PlayerClassMenu : ColorRect, IMenu {
 
     public Action Disable {get; set;}
     private Player player;
+    
 
     public void Enable(Player player) {
         this.player = player;

@@ -1,12 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=16 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
-[ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_cuvjw"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_nwpfc"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
-[ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="3_pn4x1"]
-[ext_resource type="Resource" uid="uid://dkhmndlw03uo5" path="res://assets/portraits/none.tres" id="4_08wan"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
 [ext_resource type="PackedScene" uid="uid://brgvf7tkh6hvx" path="res://assets/misc/default_nav_region.tscn" id="10_1hlsd"]
@@ -27,15 +24,7 @@ metadata/_edit_horizontal_guides_ = [464.0]
 script = ExtResource("1_xwy0o")
 doors = [NodePath("../Node2D/Enivornment/Door 1")]
 
-[node name="ConversationEvent" type="Node" parent="Level Info"]
-script = ExtResource("2_cuvjw")
-
-[node name="DialogueLineConversationItem" type="Node" parent="Level Info/ConversationEvent"]
-script = ExtResource("3_pn4x1")
-text = "AGRO ENEMY DEATH-1"
-portrait = ExtResource("4_08wan")
-
-[node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
+[node name="EnemyWaveEvent" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_nwpfc")
 wave = NodePath("../../Node2D/Waves/wave 1")
 

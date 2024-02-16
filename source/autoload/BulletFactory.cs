@@ -2,6 +2,8 @@ using Godot;
 using Game.Bullets;
 using KidoUtils;
 using System.Collections.Generic;
+using Game.Graphics;
+using System;
 
 namespace Game.Autoload;
 
@@ -13,11 +15,8 @@ public partial class BulletFactory : Node {
         foreach (BaseBullet bullet in bullets) {
             bullet.Update(delta);
             // bullets.ForEach(bullet => bullet.Update(delta));
-
         }
     } 
-    // => 
-
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
 
@@ -49,11 +48,12 @@ public partial class BulletFactory : Node {
 
         
         bullets.Add(template.BaseBullet);
+        
         // Spawn the persistent particle
-        if (template.Visual.persistentParticle is not null) 
-            ParticleFactory.AddFollowingParticleToFactory(template.Visual.persistentParticle, baseNode);
+        if (template.Visual.persistentParticle is not Effects.Persistent.None) 
+            ParticleFactory.AddFollowingParticle(Effects.GetEffect(template.Visual.persistentParticle), baseNode);
 
-        baseNode.TreeExiting += () => ParticleFactory.SpawnGlobalParticle(template.Visual.deathParticle, baseNode.GlobalPosition, template.Rotation);
+        baseNode.TreeExiting += () => ParticleFactory.AddInstantParticle(Effects.GetEffect(template.Visual.deathParticle), baseNode.GlobalPosition, template.Rotation + Mathf.DegToRad(90));
     }
 
     private static void DoSafetyChecks(Area2D hitbox) {

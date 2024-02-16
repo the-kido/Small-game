@@ -21,7 +21,6 @@ public partial class FreezeCharge : Pickupable {
         Random random = new();
         float single = random.NextSingle();
         
-        if (single > (1f/3f)) 
-            QueueFree();
+        if (single > (1f/3f)) QueueFree();
     }
 }

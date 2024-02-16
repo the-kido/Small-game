@@ -17,22 +17,20 @@ point_count = 2
 curve = SubResource("Curve_nqxxj")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hbe4j"]
+particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 1, 1)
-particle_flag_disable_z = true
+angle_max = 26.0
 direction = Vector3(0, -1, 0)
 spread = 106.08
-gravity = Vector3(0, -10, 0)
-initial_velocity_min = 20.0
-initial_velocity_max = 20.0
+initial_velocity_min = 25.0
+initial_velocity_max = 25.0
 angular_velocity_min = -200.0
 angular_velocity_max = 200.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, -10, 0)
 tangential_accel_min = -6.0
 tangential_accel_max = 6.0
 damping_max = 7.56
-angle_max = 26.0
 scale_min = 3.0
 scale_max = 3.0
 scale_curve = SubResource("CurveTexture_v2tws")

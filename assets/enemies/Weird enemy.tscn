@@ -264,7 +264,6 @@ scale = Vector2(2.364, 2.408)
 collision_layer = 4
 collision_mask = 8
 Health = 10
-ImmunityFrames = null
 ImmuneToDamageFrom = Array[int]([])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damageable"]
@@ -290,4 +289,3 @@ avoidance_enabled = true
 radius = 50.0
 
 [node name="StatusEffectComponent" parent="." instance=ExtResource("7_o34sa")]
-defaultStatus = null

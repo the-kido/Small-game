@@ -53,5 +53,7 @@ offset_right = 418.64
 offset_bottom = 407.28
 scale = Vector2(0.345931, 0.345931)
 icon = ExtResource("2_r8dv0")
+icon_alignment = 1
+expand_icon = true
 
 [connection signal="button_down" from="Panel/Button" to="." method="OnButtonDown"]

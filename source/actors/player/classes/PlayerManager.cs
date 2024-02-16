@@ -47,11 +47,12 @@ public partial class PlayerManager : Node2D {
 
 public static class PlayerClasses {
     public static readonly Normal normal = new();
-    public static readonly Script NormalPlayerScript = ResourceLoader.Load<Script>("res://source/actors/player/classes/Normal.cs");
 
     public static Dictionary<string, PlayerClassResource> List => new() {
-        {"Normal", ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres")},
+        {"Normal", ResourceLoader.Load<PlayerClassResource>("res://assets/player/classes/default.tres")},
     };
+
+    // Required for "PlayerClassMenu", which is currently unused.
     public static Dictionary<string, IPlayerClass> Other => new() {
         {"Normal", normal},
     };

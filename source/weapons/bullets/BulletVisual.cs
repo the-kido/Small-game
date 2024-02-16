@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Graphics;
 using Godot;
 
 public partial class BulletVisual : Node2D {
@@ -20,9 +21,9 @@ public partial class BulletVisual : Node2D {
     Sprite2D sprite;
     
     [Export]
-    public GpuParticles2D deathParticle;
+    public Effects.Instant deathParticle;
 
     [Export]
-    public GpuParticles2D persistentParticle;
+    public Effects.Persistent persistentParticle;
 
 }

@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dedwm6mqc26n0"]
+[gd_scene load_steps=4 format=3 uid="uid://dedwm6mqc26n0"]
 
-[ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_25dga"]
+[ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_v4tax"]
 [ext_resource type="Texture2D" uid="uid://deuo4a1knbklb" path="res://assets/bulllets/visuals/enemy_bullet_small.png" id="2_cn0c0"]
-[ext_resource type="PackedScene" uid="uid://b0guw5xnd0ulf" path="res://assets/effects/gas.tscn" id="3_ppu62"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f1t6o"]
 particle_flag_disable_z = true
@@ -15,11 +14,10 @@ gravity = Vector3(0, 98, 0)
 scale_min = 3.0
 scale_max = 3.0
 
-[node name="SmallBullet" type="Node2D" node_paths=PackedStringArray("sprite", "deathParticle", "persistentParticle")]
-script = ExtResource("1_25dga")
+[node name="SmallBullet" type="Node2D" node_paths=PackedStringArray("sprite")]
+script = ExtResource("1_v4tax")
 sprite = NodePath("EnemyBulletSmall")
-deathParticle = NodePath("Destroy Particle")
-persistentParticle = NodePath("GPUParticles2D")
+persistentParticle = 3
 
 [node name="Destroy Particle" type="GPUParticles2D" parent="."]
 emitting = false
@@ -31,5 +29,3 @@ randomness = 0.51
 [node name="EnemyBulletSmall" type="Sprite2D" parent="."]
 scale = Vector2(3, 3)
 texture = ExtResource("2_cn0c0")
-
-[node name="GPUParticles2D" parent="." instance=ExtResource("3_ppu62")]

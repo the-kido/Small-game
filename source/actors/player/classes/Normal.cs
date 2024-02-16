@@ -11,7 +11,7 @@ public sealed class Normal : IPlayerClass {
         damageDealt = new(1, 0.2f),
     };
 
-    public PlayerClassResource classResource => ResourceLoader.Load<PlayerClassResource>("res://assets/content/classes/default.tres");
+    public PlayerClassResource classResource => ResourceLoader.Load<PlayerClassResource>("res://assets/player/classes/default.tres");
 
     public void ClassInit(Player player) {
         player.StatsManager.AddStats(classStats);

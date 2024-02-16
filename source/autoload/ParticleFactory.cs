@@ -1,3 +1,4 @@
+using Game.Graphics;
 using Godot;
 using KidoUtils;
 using System.Collections.Generic;
@@ -12,53 +13,65 @@ public partial class ParticleFactory : Node {
 		factoryNode = Utils.GetPreloadedScene<ParticleFactory>(this, PreloadedScene.ParticleFactory);
 	}
 
-	public static Node2D AddParticleToNode(Node2D node, PackedScene particle) {
-        Node2D instance = (Node2D) particle.Instantiate();
-        node.AddChild(instance);
+	// Key: Instances
+	// Value: The effect that it's associated with. 
+    static readonly Dictionary<Node2D, Effect> instancedEffects = new();
+	// particle | followed
+	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
+
+	private static Node2D InstanceEffect(Effect particle, Node parent) {
+        Node2D instance = (Node2D) particle.packedScene.Instantiate();
+		instancedEffects.Add(instance, particle);
+		parent.AddChild(instance);
+
+		return instance;
+	}
+
+	public static Node2D AddParticleToNode(Node2D node, Effect particle) {
+		var instance = InstanceEffect(particle, node);
         return instance;
     }
 
-	public async static void RemoveParticle(Node2D particleToRemove) {
-		if (particleToRemove is GpuParticles2D gpuParticles) gpuParticles.Emitting = false;
+	public static void AddFollowingParticle(Effect effect, Node2D followedNode) {
+		Node2D instance = InstanceEffect(effect, factoryNode);
 
+		followedNode.TreeExiting += () => {
+        	UpdatedParticles.Remove(instance);
+			RemoveEffect(instance);
+		};
+
+        UpdatedParticles.Add(instance, followedNode);
+	}
+
+	public static void AddInstantParticle(Effect effect, Vector2 position, float rotation) {
+		Node2D newParticle = InstanceEffect(effect, factoryNode);
+		
+		if (newParticle is GpuParticles2D particles) particles.Emitting = true;
+		
+		newParticle.Position = position;
+		newParticle.Rotation = rotation;
+		RemoveEffect(newParticle);
+	}
+
+	// Removes particle after 5 seconds.
+	public async static void RemoveEffect(Node2D effect) {
+		instancedEffects[effect].removeAnimation(effect);
+		instancedEffects.Remove(effect);
+		
 		// Here to avoid errors during the 5 seconds that the particle could possibly be queue free'd	
 		bool queueFreed = false;
-		particleToRemove.TreeExited += () => queueFreed = true;
+		effect.TreeExited += () => queueFreed = true;
 
         // 5 seconds is p safe time to let all the particles go away before deleted the instance.
         await Task.Delay(5000);
 		
 		// Stop updating this particle's position. 
-		if (UpdatedParticles.ContainsKey(particleToRemove)) UpdatedParticles.Remove(particleToRemove);
+		if (UpdatedParticles.ContainsKey(effect)) UpdatedParticles.Remove(effect);
 
-		if (queueFreed is not true) particleToRemove.QueueFree();
+		if (queueFreed is not true) effect.QueueFree();
     }
 
 	public override void _PhysicsProcess(double delta) {
 		foreach (Node2D particle in UpdatedParticles.Keys) particle.Position = UpdatedParticles[particle].Position; 
-	}
-
-	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
-	
-	public static void AddFollowingParticleToFactory(GpuParticles2D particle, Node2D followedNode) {
-		followedNode.TreeExiting += () => {
-        	UpdatedParticles.Remove(particle);
-			RemoveParticle(particle);
-		};
-
-        UpdatedParticles.Add(particle, followedNode);
-
-		particle.Reparent(factoryNode, true);
-	}
-
-	public static Node2D SpawnGlobalParticle(GpuParticles2D particle, Vector2 position, float rotation) {
-		GpuParticles2D newParticle = (GpuParticles2D) particle.Duplicate();
-		factoryNode.AddChild(newParticle);
-
-		newParticle.Position = position;
-		newParticle.Rotation = rotation;
-		newParticle.Emitting = true;
-		
-		return newParticle;
 	}
 }
