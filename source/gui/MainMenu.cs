@@ -30,7 +30,7 @@ public partial class MainMenu : Control {
 	}
 	
 	private static PackedScene GetLastLevelLeftOff() {
-		string level = (string) (Level.LastLevelPlayedSaver as ISaveable).LoadData();
+		string level = (string) Level.lastLevelPlayedSaver.LoadValue();
 		
 		if (string.IsNullOrEmpty(level))
 			level = "res://assets/levels/debug/spawn.tscn"; 

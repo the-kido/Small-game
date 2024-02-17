@@ -1,59 +1,52 @@
 using Game.LevelContent;
 using Godot;
 using Godot.Collections;
+using System;
 using System.Linq;
 
 namespace Game.Data;
 
 public record SaveData (string Key, Variant Value);
 
-public interface ISaveable {
-	SaveData SaveData {get;}
-	
-	Variant LoadData() {
-		GameDataService.GetData().TryGetValue(SaveData.Key, out Variant value);
-		return value;
-	}
-	
-	void InitSaveable() {
+public class DataSaver {
+    public readonly Func<SaveData> getSaveData;
 
+    public DataSaver(Func<SaveData> getSaveData) {
+		this.getSaveData = getSaveData;
+		RegisterSavedValue();
+    }
+	
+	virtual public Variant LoadValue() => GameDataService.GetData().TryGetValue(getSaveData().Key, out Variant value) ? value : default;
+
+	virtual protected void RegisterSavedValue() {
 		// Remove ISaveable's of the same key in case the old object is now gone (i.e a past scene)
-		GameDataService.DynamicallySavedItems.RemoveAll((item) => item.SaveData.Key == SaveData.Key);
+		GameDataService.DynamicallySavedItems.RemoveAll((item) => item.getSaveData().Key == getSaveData().Key);
 
 		// Then add this refreshed one		
 		GameDataService.DynamicallySavedItems.Add(this);
 	}
 }
-
-public interface IRegionalSaveable {
-	SaveData SaveData {get;}
-
-    Variant LoadData() {
-		RegionManager.Region region = Level.RegionManager.CurrentRegion;
-		return region.savedData[SaveData.Key];
-	}
-	
-	void InitRegionSaveable() {
-		RegionManager.Region region = Level.RegionManager.CurrentRegion;
+public class RegionalSaveable : DataSaver {
+    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {}
+    
+	public override Variant LoadValue() => RegionManager.CurrentRegion.savedData[getSaveData().Key];
+    
+	protected override void RegisterSavedValue() {
+		RegionManager.Region region = RegionManager.CurrentRegion;
 
 		// Add key if it is not already there
-		if (!region.savedData.ContainsKey(SaveData.Key)) region.savedData.Add(SaveData.Key, SaveData.Value);
-	}
+		if (!region.savedData.ContainsKey(getSaveData().Key)) region.savedData.Add(getSaveData().Key, getSaveData().Value);
+    }
 }
 
-/*
-There is data that is dynamically saved (dynamicallySavedItems) and data drawn
-from a previous save file. 
-*/
 public static class GameDataService {
-
 	const bool USING_DEBUG = false;
 	const string SAVE_FILE = "user://savegame.json";
 	const string DEBUG_FILE = "user://copy.json";
 
-	public static readonly System.Collections.Generic.List<ISaveable> DynamicallySavedItems = new();
+	public static readonly System.Collections.Generic.List<DataSaver> DynamicallySavedItems = new();
 	static Dictionary<string, Variant> SavedItemsAsDictionary => 
-		new(DynamicallySavedItems.ToDictionary(x => x.SaveData.Key, x => x.SaveData.Value));
+		new(DynamicallySavedItems.ToDictionary(x => x.getSaveData().Key, x => x.getSaveData().Value));
 
 	// Pull from the previous data, then add the new data that needs to be added.
 	private static Dictionary<string, Variant> GetCompiledSaveData() {

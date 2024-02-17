@@ -22,15 +22,18 @@ metadata/_edit_horizontal_guides_ = [464.0]
 
 [node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_xwy0o")
+doors = [NodePath("../Node2D/Enivornment/Door 1")]
 
-[node name="Node" type="Node" parent="Level Info"]
+[node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_w27io")
+wave = NodePath("../../Node2D/Waves/wave 1")
 
 [node name="Required" type="Node" parent="."]
 
-[node name="Camera" parent="Required" instance=ExtResource("3_3il18")]
+[node name="Camera" parent="Required" node_paths=PackedStringArray("tileMap") instance=ExtResource("3_3il18")]
 position = Vector2(661, 447)
 zoom = Vector2(1.7, 1.7)
+tileMap = NodePath("../../Node2D/Enivornment/TileMap")
 
 [node name="Player Manager" type="Node2D" parent="Required"]
 position = Vector2(906, 375)

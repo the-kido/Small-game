@@ -7,7 +7,7 @@ using Game.LevelContent;
 namespace Game.Data;
 
 [GlobalClass]
-public partial class Condition : Resource, ISaveable {
+public partial class Condition : Resource {
     
     [Export, Description("Required to differentiate condition entries in the save file")]
     private string Name; 
@@ -17,15 +17,14 @@ public partial class Condition : Resource, ISaveable {
     
     // Required for saving the conditions
     public static Dictionary<string, bool> All {get; private set;} = new();
-    public SaveData SaveData => new("Conditions", All);
+    readonly static DataSaver dataSaver = new(() => new("Conditions", All));
     private static void Load() => All = (Dictionary<string,bool>) GameDataService.GetData()["Conditions"];
     private bool GetAchieved() => All.ContainsKey(Name) && All[Name];
     
     static Condition() => Level.LevelStarted += Load;
 
     public Condition() {
-        Level.LevelStarted += (this as ISaveable).InitSaveable;
-        All = (Dictionary<string, bool>) (this as ISaveable).LoadData();
+        All = (Dictionary<string, bool>) dataSaver.LoadValue();
     }
     
     public void Achieve() {

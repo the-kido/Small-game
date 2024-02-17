@@ -9,11 +9,11 @@ namespace Game.Players.Mechanics;
 // TODO:
 // this is a VERY small bug but if there is a chest
 // then the shield will regen its heatlh!
-public partial class ShieldManager : Node2D, ISaveable { 
+public partial class ShieldManager : Node2D { 
     
     public Shield HeldShield {get; private set;}
 
-    public SaveData SaveData => new("Shield", HeldShield?.Resource.ResourcePath);
+    private DataSaver dataSaver;
 
     public event Action<Shield> ShieldAdded;
     public event Action<Shield> ShieldRemoved;
@@ -30,7 +30,7 @@ public partial class ShieldManager : Node2D, ISaveable {
     }
 
     private void LoadShieldFromSave() {
-        string resourcePath = (string)(this as ISaveable).LoadData();
+        string resourcePath = (string) dataSaver.LoadValue();
         Shield loadedShield = string.IsNullOrEmpty(resourcePath) ? null : ResourceLoader.Load<PackedScene>(resourcePath).Instantiate<Shield>();
         
         if (loadedShield is null) 
@@ -40,12 +40,12 @@ public partial class ShieldManager : Node2D, ISaveable {
     }
 
     public void Init(Player player) {
+        dataSaver = new(() => new("Shield", HeldShield?.Resource.ResourcePath));
         playerDamageableComponent = player.DamageableComponent;
         player.InputController.ShieldInput = new(player);
 
         player.classManager.ClassSwitched += SwitchToDefaultShield;
 
-        (this as ISaveable).InitSaveable();
         LoadShieldFromSave();
     }
 

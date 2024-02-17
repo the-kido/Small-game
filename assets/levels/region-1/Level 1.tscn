@@ -46,6 +46,7 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
+doors = null
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")

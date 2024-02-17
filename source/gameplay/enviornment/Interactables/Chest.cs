@@ -7,7 +7,7 @@ using Game.Data;
 
 namespace Game.LevelContent;
 
-public partial class Chest : AnimatedSprite2D, IRegionalSaveable {
+public partial class Chest : AnimatedSprite2D {
 
 	[Export]
 	ChestTables chestLootTable;
@@ -22,10 +22,10 @@ public partial class Chest : AnimatedSprite2D, IRegionalSaveable {
 
 	private static Godot.Collections.Dictionary<string, bool> ChestOpened = new();
 	
-	public SaveData SaveData => new("Chest States", ChestOpened);
+	public RegionalSaveable regionalSaveable => new(() => new("Chest States", ChestOpened));
 
 	private bool LoadChestOpened() {
-		var loadedStuff = (this as IRegionalSaveable).LoadData();
+		var loadedStuff = regionalSaveable.LoadValue();
 		GD.Print(loadedStuff, " loaded ata");
 		ChestOpened = (Godot.Collections.Dictionary<string, bool>) loadedStuff;
 		GD.Print(ChestOpened, " chestOened dict");
@@ -33,7 +33,6 @@ public partial class Chest : AnimatedSprite2D, IRegionalSaveable {
 	}
 
 	public override void _Ready() {
-		(this as IRegionalSaveable).InitRegionSaveable();
 		bool isChestOpened = LoadChestOpened();
 		
 		if (isChestOpened) {

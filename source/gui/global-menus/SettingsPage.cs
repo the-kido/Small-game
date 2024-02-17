@@ -4,13 +4,12 @@ using Game.Players;
 using Game.UI;
 using Godot;
 
-public class Settings : ISaveable {
+public class Settings {
 
     public static Settings CurrentSettings = new();
 
     static Settings() {
-        var data = (Godot.Collections.Array) (CurrentSettings as ISaveable).LoadData();
-        (CurrentSettings as ISaveable).InitSaveable();
+        var data = (Godot.Collections.Array) dataSaver.LoadValue();
         
         if (data.ToString() == "[]") return;
 
@@ -32,7 +31,7 @@ public class Settings : ISaveable {
 
     public int languageSelected = 0;
 
-    public SaveData SaveData => new("Settings", CurrentSettings.Serialize());
+    static readonly DataSaver dataSaver = new(() => new("Settings", CurrentSettings.Serialize()));
 }
 
 public partial class SettingsPage : Control, IMenu {

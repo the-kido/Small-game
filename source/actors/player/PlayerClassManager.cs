@@ -5,9 +5,8 @@ using Game.SealedContent;
 
 namespace Game.Data;
 
-public class PlayerClassManager : ISaveable {
-    public SaveData SaveData => 
-        new("PlayerClass", playerClass?.GetType().ToString());
+public class PlayerClassManager {
+    private DataSaver dataSaver;
     
     readonly Player player;
 
@@ -15,12 +14,12 @@ public class PlayerClassManager : ISaveable {
 
     public PlayerClassManager(Player player) {
         this.player = player;
-        (this as ISaveable).InitSaveable();
+        dataSaver = new(() => new("PlayerClass", playerClass?.GetType().ToString()));
         ClassSwitched = null;
     }
 
     public void SwitchClassFromSave() {
-        string className = (string) (this as ISaveable).LoadData();
+        string className = (string) dataSaver.LoadValue();
         
         if (string.IsNullOrEmpty(className)) {
             SetClass(new Normal());

@@ -5,7 +5,7 @@ using Game.Mechanics;
 
 namespace Game.Data;
 
-public abstract class RunData : ISaveable {
+public abstract class RunData {
 
     public  readonly static RunData 
     Coins = new DungeonRunData.Coins(),
@@ -29,18 +29,12 @@ public abstract class RunData : ISaveable {
 
     public Action<int> ValueChanged {get; set;}
 
-    public SaveData SaveData => new(ValueName, _count);    
     public void Add(int value) => Count += value;
-    
+
+    readonly DataSaver saveable;
     public RunData() {
-        (this as ISaveable).InitSaveable();
-        _count = (int) (this as ISaveable).LoadData();
-    }
-}
-
-public class testing {
-    public testing(Func<SaveData> func) {
-
+        saveable = new(() => new(ValueName, _count));
+        _count = (int) saveable.LoadValue();
     }
 }
 

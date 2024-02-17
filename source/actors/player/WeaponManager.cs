@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Game.Players.Mechanics;
 
-public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
+public partial class WeaponManager : Node2D { // Also called "hand"
     public event Action<Weapon, int> HeldWeaponChanged; // This is for the visuals
     public event Action<Weapon> WeaponSwitched; // This is for the reloadbar thing
     public int SelectedSlot {get; private set;} = 0;
@@ -23,7 +23,7 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     public Weapon HeldWeapon => Weapons[SelectedSlot];
 
     // Stuff related to saving
-    public SaveData SaveData => new("Weapons", SavedWeapons);
+    public DataSaver dataSaver;
     private string[] SavedWeapons => 
         Weapons.Select(weapon => weapon?.PackedScene.ResourcePath).ToArray();   
     // Save more at walmart
@@ -32,7 +32,7 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
         player.InputController.WeaponController = new(this, player);
         WeaponController = player.InputController.WeaponController;
 
-        (this as ISaveable).InitSaveable();
+        dataSaver = new(() => new("Weapons", SavedWeapons));
 
         Load(player);
         
@@ -73,7 +73,7 @@ public partial class WeaponManager : Node2D, ISaveable { // Also called "hand"
     }
 
     private void LoadWeapons() {
-        var list = (string[]) (this as ISaveable).LoadData();
+        var list = (string[]) dataSaver.LoadValue();
 
         for (int i = 0; i < list.Length; i++) {
 

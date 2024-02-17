@@ -37,6 +37,7 @@ public partial class Camera : Camera2D {
 	}
 
 	public void Init(Player player) {
+		KidoUtils.ErrorUtils.AvoidNullExportedVariables(tileMap, this);
 		this.player = player;
 		
 		#region initialize the size of the camera for this level
