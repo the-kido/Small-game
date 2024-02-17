@@ -5,6 +5,7 @@ using Game.Actors;
 using Game.Actors.AI;
 using Game.Animation;
 using Game.Bullets;
+using Game.LevelContent;
 
 namespace Game.SealedContent;
 
@@ -22,6 +23,8 @@ public sealed partial class WeirdEnemy : Enemy {
 
 	protected sealed override void Init(AnimationController animationController, AIStateMachine stateMachine) {
 
+        // EnemyKilled += (a,b) => RegionManager.ResetRegionData(RegionManager.CurrentRegion);
+        
         DefaultAttackState attackState = new(pathfinderComponent, spamedBullet, attackDelay);
         PatrolState patrolState = new(pathfinderComponent, HoverAtSpawnPointDistance);
         

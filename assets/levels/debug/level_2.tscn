@@ -27,7 +27,6 @@ metadata/_edit_vertical_guides_ = [528.0]
 
 [node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_68dsa")
-doors = [NodePath("../Gameplay/Door 1"), NodePath("../Gameplay/Door 2")]
 
 [node name="1 (wave)" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("7_nm5at")
@@ -58,9 +57,10 @@ levelSwitcher = NodePath("Level Switcher")
 script = ExtResource("9_x5ao3")
 nextLevel = "res://assets/levels/debug/level_1.tscn"
 
-[node name="Door 2" parent="Gameplay" instance=ExtResource("9_y0vey")]
+[node name="Door 2" parent="Gameplay" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("9_y0vey")]
 position = Vector2(42, 453)
 scale = Vector2(-1, 1)
+levelSwitcher = NodePath("Level Switcher")
 doorOpeningDirection = Vector2i(1, 0)
 
 [node name="Level Switcher" type="Node" parent="Gameplay/Door 2"]
@@ -77,6 +77,7 @@ position = Vector2(926, 806)
 
 [node name="Base Enemy" parent="Waves/Wave 1" instance=ExtResource("7_5xse6")]
 position = Vector2(438, 473)
+moveSpeed = null
 
 [node name="This guy is agro as frick" parent="Waves/Wave 1" instance=ExtResource("8_vrrcy")]
 position = Vector2(907, 670)

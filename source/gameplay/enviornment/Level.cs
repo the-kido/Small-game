@@ -7,13 +7,69 @@ using Game.LevelContent.Criteria;
 
 namespace Game.LevelContent;
 
+public class RegionManager : ISaveable {
+    public SaveData SaveData => new("CurrentRegion", CurrentRegionName.ToString());
+
+	public string CurrentRegionName {get; private set;} = Regions[0];
+	public Region CurrentRegion => RegionClasses[CurrentRegionName];
+	public static readonly string[] Regions = new string[] {
+		"DungeonRegion",
+		"NatureRegion",
+		"TechRegion",
+		"IceRegion"
+	};
+	public static readonly Dictionary<string, Region> RegionClasses = new() {
+		{Regions[0], new Dungeon()},
+		{Regions[1], new Nature()},
+		{Regions[2], new Tech()},
+		{Regions[3], new Ice()}
+	};
+	
+	public static void ResetRegionData(Region region) {
+		region.savedData = new();
+		GameDataService.Save();
+	}
+
+    // I could have a bit of data for every region, and delete it depenidn go
+    public abstract class Region {
+		public Godot.Collections.Dictionary<string, Variant> savedData = new();
+    }
+    public class Dungeon : Region, ISaveable {
+		public Dungeon() {
+			(this as ISaveable).InitSaveable();
+			savedData = (Godot.Collections.Dictionary<string, Variant>) (this as ISaveable).LoadData();
+		}
+
+		public SaveData SaveData => new(Regions[0], savedData);
+    }
+    public class Nature : Region, ISaveable {
+        public Nature() : base() {}
+		public SaveData SaveData => new(Regions[1], savedData);
+    }
+    public class Tech : Region, ISaveable {
+        public Tech() => (this as ISaveable).InitSaveable();
+		public SaveData SaveData => new(Regions[2], savedData);
+    }
+    public class Ice : Region, ISaveable {
+        public Ice() => (this as ISaveable).InitSaveable();
+		public SaveData SaveData => new(Regions[3], savedData);
+    }
+
+    public RegionManager() {
+		(this as ISaveable).InitSaveable();
+		string loadedRegion = (string) (this as ISaveable).LoadData();
+		if (!string.IsNullOrEmpty(loadedRegion)) CurrentRegionName = loadedRegion;
+	}
+}
+
 [GlobalClass]
-public partial class Level : Node, ISaveable {
+public partial class Level : Node, IRegionalSaveable {
 
 	public static event Action LevelStarted;
 	public static event Action<LevelCriteria> CriterionStarted;
 
 	public static Level CurrentLevel {get; private set;} = new();
+	public static RegionManager RegionManager {get; private set;} = new();
 	public static Godot.Collections.Dictionary<string,bool> LevelCompletions {get; private set;} = new();
 	public static LevelCriteria CurrentCriterion {get; private set;}
 
@@ -45,7 +101,7 @@ public partial class Level : Node, ISaveable {
 	}
 
 	public override void _Ready() {
-		(this as ISaveable).InitSaveable();
+		(this as IRegionalSaveable).InitRegionSaveable();
 		
 		levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
 		
@@ -93,7 +149,7 @@ public partial class Level : Node, ISaveable {
 	}
 
 	private bool LoadCompletion() {
-		LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
+		LevelCompletions = (Godot.Collections.Dictionary<string, bool>) (this as IRegionalSaveable).LoadData();
 		return LevelCompletions.ContainsKey(SaveName) && LevelCompletions[SaveName];
 	}
 

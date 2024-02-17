@@ -16,11 +16,28 @@ public interface ISaveable {
 	}
 	
 	void InitSaveable() {
+
 		// Remove ISaveable's of the same key in case the old object is now gone (i.e a past scene)
 		GameDataService.DynamicallySavedItems.RemoveAll((item) => item.SaveData.Key == SaveData.Key);
 
 		// Then add this refreshed one		
 		GameDataService.DynamicallySavedItems.Add(this);
+	}
+}
+
+public interface IRegionalSaveable {
+	SaveData SaveData {get;}
+
+    Variant LoadData() {
+		RegionManager.Region region = Level.RegionManager.CurrentRegion;
+		return region.savedData[SaveData.Key];
+	}
+	
+	void InitRegionSaveable() {
+		RegionManager.Region region = Level.RegionManager.CurrentRegion;
+
+		// Add key if it is not already there
+		if (!region.savedData.ContainsKey(SaveData.Key)) region.savedData.Add(SaveData.Key, SaveData.Value);
 	}
 }
 
@@ -30,7 +47,7 @@ from a previous save file.
 */
 public static class GameDataService {
 
-	const bool USING_DEBUG = true;
+	const bool USING_DEBUG = false;
 	const string SAVE_FILE = "user://savegame.json";
 	const string DEBUG_FILE = "user://copy.json";
 

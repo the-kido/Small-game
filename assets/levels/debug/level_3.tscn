@@ -17,7 +17,6 @@
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_fgpcw")
-doors = [NodePath("../Y Sort/Gameplay/Door 2")]
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_3wa3g")
@@ -49,6 +48,7 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
 position = Vector2(373, 111)
+moveSpeed = null
 
 [node name="EnemyWave2" type="Node2D" parent="Y Sort/Gameplay/Waves"]
 z_as_relative = false
@@ -57,6 +57,7 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave2" instance=ExtResource("7_51kbw")]
 position = Vector2(238, 123)
+moveSpeed = null
 
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(214, 14)

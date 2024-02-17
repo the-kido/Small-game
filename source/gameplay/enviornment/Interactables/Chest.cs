@@ -7,7 +7,7 @@ using Game.Data;
 
 namespace Game.LevelContent;
 
-public partial class Chest : AnimatedSprite2D, ISaveable {
+public partial class Chest : AnimatedSprite2D, IRegionalSaveable {
 
 	[Export]
 	ChestTables chestLootTable;
@@ -20,14 +20,20 @@ public partial class Chest : AnimatedSprite2D, ISaveable {
 
 	IChestItem containedWeapon;
 
+	private static Godot.Collections.Dictionary<string, bool> ChestOpened = new();
+	
+	public SaveData SaveData => new("Chest States", ChestOpened);
 
 	private bool LoadChestOpened() {
-		ChestOpened = (Godot.Collections.Dictionary<string, bool>) (this as ISaveable).LoadData();
+		var loadedStuff = (this as IRegionalSaveable).LoadData();
+		GD.Print(loadedStuff, " loaded ata");
+		ChestOpened = (Godot.Collections.Dictionary<string, bool>) loadedStuff;
+		GD.Print(ChestOpened, " chestOened dict");
 		return ChestOpened.ContainsKey(GetPath()) && ChestOpened[GetPath()];
 	}
 
 	public override void _Ready() {
-		(this as ISaveable).InitSaveable();
+		(this as IRegionalSaveable).InitRegionSaveable();
 		bool isChestOpened = LoadChestOpened();
 		
 		if (isChestOpened) {
@@ -73,9 +79,7 @@ public partial class Chest : AnimatedSprite2D, ISaveable {
 
 	KidoUtils.Timer timer = KidoUtils.Timer.NONE;
 	
-	private static Godot.Collections.Dictionary<string, bool> ChestOpened = new();
 	
-	public SaveData SaveData => new("Chest States", ChestOpened);
 
 	private void Disable(Texture2D sprite) {
 		ChestOpened[GetPath()] = true;

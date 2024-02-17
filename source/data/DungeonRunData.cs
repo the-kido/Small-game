@@ -37,6 +37,13 @@ public abstract class RunData : ISaveable {
         _count = (int) (this as ISaveable).LoadData();
     }
 }
+
+public class testing {
+    public testing(Func<SaveData> func) {
+
+    }
+}
+
 public enum RunDataEnum {
     Coins,
     FreezeOrbs,

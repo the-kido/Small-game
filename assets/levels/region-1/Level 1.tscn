@@ -46,7 +46,6 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
-doors = null
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
@@ -59,6 +58,7 @@ script = ExtResource("2_wh8mw")
 script = ExtResource("4_bpiwe")
 text = "I want you to DIE"
 portrait = ExtResource("5_idwx8")
+charactersPerSecond = null
 
 [node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
 script = ExtResource("2_1lkkp")
@@ -140,9 +140,8 @@ y_sort_enabled = true
 position = Vector2(588, 347)
 script = ExtResource("7_ff2ca")
 
-[node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
+[node name="Camera" parent="Y Sort" instance=ExtResource("8_3vv2j")]
 scale = Vector2(1.62912, 1.62912)
-tileMap = NodePath("../TileMap")
 
 [node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
