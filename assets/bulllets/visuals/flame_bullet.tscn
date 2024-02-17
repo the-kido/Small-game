@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://4ujh6o55kbnw"]
+[gd_scene load_steps=5 format=3 uid="uid://4ujh6o55kbnw"]
 
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletVisual.cs" id="1_ho53f"]
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bulllets/visuals/base_bullet.png" id="2_wx43m"]
 [ext_resource type="PackedScene" uid="uid://cgxuxvmq4vsxy" path="res://assets/effects/spark.tscn" id="3_c5yxn"]
+[ext_resource type="PackedScene" uid="uid://cyvulh26plhei" path="res://source/weapons/bullets/base_bullet.tscn" id="4_ps5to"]
 
 [node name="Flame Bullet" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_ho53f")
 sprite = NodePath("Sprite2D")
+deathParticle = null
 persistentParticle = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -17,3 +19,5 @@ scale = Vector2(3.17232, 3.16)
 texture = ExtResource("2_wx43m")
 
 [node name="Sparks" parent="." instance=ExtResource("3_c5yxn")]
+
+[node name="Base Bullet" parent="." instance=ExtResource("4_ps5to")]

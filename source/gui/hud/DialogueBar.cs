@@ -109,6 +109,10 @@ public class ConversationController {
         if (CurrentItem is CharacterActionConversationItem action) {
             characterActionPlayer.Start(action);
         }
+        
+        if (CurrentItem is CameraPanConversationItem item) {
+            cameraPanPlayer.Start(item);
+        }
     }
 
     private void Close() {
@@ -122,7 +126,7 @@ public class ConversationController {
 
     readonly DialoguePlayer dialoguePlayer;
     readonly CharacterActionPlayer characterActionPlayer;
-    // readonly CharacterAnimationPlayer characterAnimationPlayer;
+    readonly CameraPanPlayer cameraPanPlayer;
 
     public ConversationController(DialogueBar bar) {
         this.bar = bar;
@@ -130,6 +134,6 @@ public class ConversationController {
 
         dialoguePlayer = new(this, bar);
         characterActionPlayer = new(this, bar);
-        // characterAnimationPlayer = new();
+        cameraPanPlayer = new(this, bar);
     }
 }

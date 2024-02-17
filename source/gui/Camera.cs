@@ -1,12 +1,19 @@
 using Godot;
 using System.Collections.Generic;
 using Game.Players;
+using System;
+using Game.LevelContent;
 
 namespace Game.UI;
 
 public partial class Camera : Camera2D {
 	[Export]
 	private TileMap tileMap;
+
+	
+	// These two functions allow outside classes to change how the camera behaves. 
+	public Func<Vector2> PositionOverride;
+	public Func<Vector2> ZoomOverride;
 
 	public static Camera currentCamera;
 	// public ShakePlayer ShakePlayer {get; init;} = new();
@@ -19,6 +26,15 @@ public partial class Camera : Camera2D {
 	private float diagonalLength;
 
 	Player player;
+
+
+	// Allows the camera to immediately move to its correct position instead of it weirdly panning from the 
+	// original position of the camera in the scene and settling. 	
+	static Camera() => Level.LevelStarted += () => currentCamera.CallDeferred("FixCamera");
+	public void FixCamera(){
+        Zoom = FinalCameraZoom(ImportantObjectsRect());
+		Position = FinalCameraPosition(ImportantObjectsRect().PointAverage());
+	}
 
 	public void Init(Player player) {
 		this.player = player;
@@ -42,19 +58,16 @@ public partial class Camera : Camera2D {
 		
 		importantObjects.Add(player);
 	}
-
+	
+	
 	public override void _Process(double delta) {
-		if (player is null) 
-			return;
+		if (player is null) return;
 
 		Rect2 importantObjectsRect = ImportantObjectsRect();
-
 		Vector2 finalPosition = FinalCameraPosition(importantObjectsRect.PointAverage());
-		
 		Vector2 finalZoom = FinalCameraZoom(importantObjectsRect);
 
         Zoom = Zoom.Lerp(finalZoom, (float) delta);
-
 		Position = Position.Lerp(finalPosition, (float) delta * 2);
 		
 		UpdateShake(delta);
@@ -64,6 +77,8 @@ public partial class Camera : Camera2D {
 	private readonly List<Node2D> importantObjects = new();
 
 	public Vector2 FinalCameraZoom(Rect2 importantObjectsRect) {
+		if (ZoomOverride is not null) return ZoomOverride();
+
 		Vector2 bottomLeft = importantObjectsRect.Position;
 		Vector2 topRight = importantObjectsRect.Size;
 		Vector2 diff = topRight - bottomLeft;
@@ -72,8 +87,8 @@ public partial class Camera : Camera2D {
 
 		//				the scale factor 				The default zoom.
 		float dif = (SCALE_MAX + SCALE_MIN) / 2 / (diagonal / diagonalLength);
+		
 		//If the dif is greater than the max, set it to the lower number.
-
 		dif = Mathf.Min(dif, SCALE_MAX);
         
 		//if the dif is lower than the min, set it to the min.
@@ -85,6 +100,7 @@ public partial class Camera : Camera2D {
 	public Vector2 ConstantCameraOffset => player.GlobalPosition - GetLocalMousePosition();
 
 	public Vector2 FinalCameraPosition(Vector2 importantObjectsRectCenter) {
+		if (PositionOverride is not null) return PositionOverride();
 		
 		Vector2 FinalCameraPosition = Vector2.Zero;
 
@@ -125,8 +141,7 @@ public partial class Camera : Camera2D {
 	double maxShakeTime;
 	double currentShakeTime;
 	private void UpdateShake(double delta) {
-		if (currentShakeTime <= 0)
-			return;
+		if (currentShakeTime <= 0) return;
 
 		currentShakeTime -= delta;
 		currentShakeStrength *= (float) (currentShakeTime / maxShakeTime); 

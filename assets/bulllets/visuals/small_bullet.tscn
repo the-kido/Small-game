@@ -17,6 +17,7 @@ scale_max = 3.0
 [node name="SmallBullet" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_v4tax")
 sprite = NodePath("EnemyBulletSmall")
+deathParticle = null
 persistentParticle = 3
 
 [node name="Destroy Particle" type="GPUParticles2D" parent="."]

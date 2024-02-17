@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cyvulh26plhei"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d70go"]
-radius = 15.0
 
 [node name="Base Bullet" type="Node2D"]
 

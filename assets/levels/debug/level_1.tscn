@@ -1,8 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=15 format=3 uid="uid://bm76pg7q1cac3"]
 
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
-[ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_nwpfc"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
@@ -23,10 +22,6 @@ metadata/_edit_horizontal_guides_ = [464.0]
 [node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_xwy0o")
 doors = [NodePath("../Node2D/Enivornment/Door 1")]
-
-[node name="EnemyWaveEvent" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
-script = ExtResource("2_nwpfc")
-wave = NodePath("../../Node2D/Waves/wave 1")
 
 [node name="Required" type="Node" parent="."]
 
@@ -72,7 +67,7 @@ levelSwitcher = NodePath("Level Switchwer")
 
 [node name="Level Switchwer" type="Node" parent="Node2D/Enivornment/Door 1"]
 script = ExtResource("12_48p24")
-nextLevel = "res://assets/levels/debug/level_2.tscn"
+nextLevel = "res://assets/levels/debug/spawn.tscn"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Node2D/Enivornment"]
 environment = ExtResource("12_2c1uv")
@@ -95,7 +90,6 @@ position = Vector2(711, 577)
 
 [node name="Chest" parent="Node2D/Gameplay" instance=ExtResource("16_dddk7")]
 position = Vector2(326, 630)
-chestLootTable = 0
 
 [node name="Waves" type="Node2D" parent="Node2D"]
 z_as_relative = false
@@ -109,12 +103,13 @@ position = Vector2(11, -7)
 script = ExtResource("15_vbrl5")
 
 [node name="Hillbilly" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
-z_index = -2
 position = Vector2(448, 829)
+moveSpeed = null
 
 [node name="Base Enemy2" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
+moveSpeed = null
 
 [node name="Weird enemy" parent="Node2D/Waves/wave 1" instance=ExtResource("4_rymms")]
 position = Vector2(426, 244)
