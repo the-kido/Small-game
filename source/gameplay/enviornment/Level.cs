@@ -16,26 +16,33 @@ public static class RegionManager {
 	};
 
 	public static string CurrentRegionName {get; private set;} = Regions[0];
-	public static Region CurrentRegion => RegionClasses[CurrentRegionName];
 	public static readonly Dictionary<string, Region> RegionClasses = new() {
-		{Regions[0], new Region(Regions[0])},
-		{Regions[1], new Region(Regions[1])},
-		{Regions[2], new Region(Regions[2])},
-		{Regions[3], new Region(Regions[3])}
+		{Regions[0], new Region(Regions[0], "res://assets/levels/region-1/Level 1.tscn")},
+		{Regions[1], new Region(Regions[1], "res://assets/levels/debug/level_1.tscn")},
+		{Regions[2], new Region(Regions[2], "res://assets/levels/debug/level_2.tscn")},
+		{Regions[3], new Region(Regions[3], "res://assets/levels/debug/level_3.tscn")}
 	};
+	public static Region CurrentRegion => RegionClasses[CurrentRegionName];
 	
 	public static void ResetRegionData(Region region) {
-		region.savedData.Clear();
-		GameDataService.Save();
+		foreach (var item in region.savedData) {
+			region.savedData[item.Key] = Json.ParseString("{}");
+		}
 	}
 
     // I could have a bit of data for every region, and delete it depenidn go
     public class Region {
+		public PackedScene FirstLevel;
+		public event Action OnSaveDeleted; 
 		public readonly Godot.Collections.Dictionary<string, Variant> savedData = new();
-        readonly DataSaver saveable;
-		public Region(string key) {
-			saveable = new(() => new(key, savedData));
-			savedData = (Godot.Collections.Dictionary<string, Variant>) saveable.LoadValue();	
+        readonly DataSaver dataSaver;
+		public Region(string key, string firstLevelPath) {
+			dataSaver = new(() => new(key, savedData));
+			savedData = (Godot.Collections.Dictionary<string, Variant>) dataSaver.LoadValue();
+			
+			Level.LevelStarted += () => {
+				FirstLevel = ResourceLoader.Load<PackedScene>(firstLevelPath);	
+			};
 		}
     }
     
@@ -48,7 +55,6 @@ public static class RegionManager {
 
 [GlobalClass]
 public partial class Level : Node {
-
 	public static event Action LevelStarted;
 	public static event Action<LevelCriteria> CriterionStarted;
 
@@ -82,7 +88,7 @@ public partial class Level : Node {
 		return null;
 	}
 
-	RegionalSaveable regionalSaveable = new(() => new("LevelCompletions", LevelCompletions));
+    readonly RegionalSaveable regionalSaveable = new(() => new("LevelCompletions", LevelCompletions));
 	public override void _Ready() {
 		levelEvents = GetChildren().Cast<LevelCriteria>().ToList();
 		

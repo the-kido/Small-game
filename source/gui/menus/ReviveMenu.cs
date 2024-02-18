@@ -17,6 +17,8 @@ public partial class ReviveMenu : Control, IMenu{
     [Export]
     private Button respawn;
 
+    public static event Action DeathAccepted;
+
     public Action Disable {get; set;}
     public override void _Ready() {
         close.Pressed += Die;
@@ -32,8 +34,9 @@ public partial class ReviveMenu : Control, IMenu{
 
     const string spawnScene = "res://assets/levels/debug/spawn.tscn";
     private void Die() {
-        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(spawnScene);
+        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(RegionManager.CurrentRegion.FirstLevel);
         OnDisable();
+        DeathAccepted?.Invoke();
     }
 
     private void OnDisable() {

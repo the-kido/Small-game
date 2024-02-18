@@ -25,7 +25,6 @@ public partial class SceneSwitcher : Node {
 		await ToSignal(GetTree().CreateTimer(0), "timeout"); // Wait a frame to let the scene load
 
 		SceneSwitched?.Invoke();
-		GD.Print("Don't crash plz");
 		
 		await ShowPanel(false);
 

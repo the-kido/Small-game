@@ -34,7 +34,7 @@ Reload Speed: {BaseReloadSpeed}
 
 	public override void Attack() {
         SpawnBulletInstance();
-        Camera.currentCamera.StartShake(strength * 100, 300, 1);
+        Camera.CurrentCamera.StartShake(strength * 100, 300, 1);
     }
 
     float strength = 0;

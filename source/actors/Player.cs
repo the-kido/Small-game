@@ -44,7 +44,7 @@ public sealed partial class Player : Actor {
 		
 		classManager = new(this);
 
-		Camera.currentCamera.Init(this);
+		Camera.CurrentCamera.Init(this);
 		
 		InputController.Init(this);
 		

@@ -2,6 +2,8 @@ using Godot;
 using System.Threading.Tasks;
 using Game.UI;
 using Game.Damage;
+using Game.Data;
+using Game.LevelContent;
 
 namespace Game.Players;
 
@@ -9,14 +11,26 @@ public class PlayerDeathHandler {
 
     readonly Player player;
     
-    public PlayerDeathHandler(Player player) => this.player = player;
+    public PlayerDeathHandler(Player player) {
+        this.player = player;
+        ReviveMenu.DeathAccepted += GiveDeathPentaly;
+    }
+
+    // hehe
+    private void GiveDeathPentaly() {
+        RunData.AllData[RunDataEnum.Coins].Set(0);
+        RunData.AllData[RunDataEnum.FreezeOrbs].Set(0);
+        RegionManager.ResetRegionData(RegionManager.CurrentRegion);
+
+		GameDataService.Save();
+    }
 
     public void OnDeath(DamageInstance _) {
 
         player.GetNode<AudioStreamPlayer2D>("Death Sound").Playing = true;
         
         PlayImpactFrames(1000);
-        Camera.currentCamera.StartShake(300, 300, 2);
+        Camera.CurrentCamera.StartShake(300, 300, 2);
         
         //Make player immune to anything and everything all of the time
         FreezePlayer();

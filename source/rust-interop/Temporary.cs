@@ -9,6 +9,6 @@ public static class Temp {
     public static extern int add(int a, int b);
 
     public static void Work() {
-        GD.Print("NOWAY: ", add(3, 4));
+        add(1,1);
     }
 }

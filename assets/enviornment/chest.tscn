@@ -106,7 +106,6 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_8ooks")
 animation = &"open"
 script = ExtResource("1_8vto3")
-chestLootTable = null
 interactable = NodePath("Interactable")
 itemShowcase = NodePath("New Item Showcase")
 

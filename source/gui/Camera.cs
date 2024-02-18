@@ -6,20 +6,19 @@ using Game.LevelContent;
 
 namespace Game.UI;
 
+[Tool]
 public partial class Camera : Camera2D {
 	[Export]
 	private TileMap tileMap;
-
 	
 	// These two functions allow outside classes to change how the camera behaves. 
 	public Func<Vector2> PositionOverride;
 	public Func<Vector2> ZoomOverride;
 
-	public static Camera currentCamera;
+	public static Camera CurrentCamera {get; private set;}
 	// public ShakePlayer ShakePlayer {get; init;} = new();
 	
-	private Camera() =>
-		currentCamera = this;
+	private Camera() => CurrentCamera = this;
 	
 	//0.9 -- 1.4
 	private const float SCALE_MAX = 1.9f, SCALE_MIN = 1.5f;
@@ -30,7 +29,10 @@ public partial class Camera : Camera2D {
 
 	// Allows the camera to immediately move to its correct position instead of it weirdly panning from the 
 	// original position of the camera in the scene and settling. 	
-	static Camera() => Level.LevelStarted += () => currentCamera.CallDeferred("FixCamera");
+	static Camera() {
+		Level.LevelStarted += () => CurrentCamera.CallDeferred("FixCamera");
+	}
+
 	public void FixCamera(){
         Zoom = FinalCameraZoom(ImportantObjectsRect());
 		Position = FinalCameraPosition(ImportantObjectsRect().PointAverage());
@@ -59,9 +61,13 @@ public partial class Camera : Camera2D {
 		
 		importantObjects.Add(player);
 	}
-	
-	
-	public override void _Process(double delta) {
+
+    public override string[] _GetConfigurationWarnings() {
+		if (tileMap is null) return new string[] {"Tilemap is null!"};
+        return null;
+    }
+
+    public override void _Process(double delta) {
 		if (player is null) return;
 
 		Rect2 importantObjectsRect = ImportantObjectsRect();

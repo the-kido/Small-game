@@ -1,4 +1,5 @@
 using Game.LevelContent;
+using Game.UI;
 using Godot;
 using Godot.Collections;
 using System;
@@ -27,7 +28,9 @@ public class DataSaver {
 	}
 }
 public class RegionalSaveable : DataSaver {
-    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {}
+    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {
+		// ReviveMenu.DeathAccepted += () => getSaveData().Value = "";
+	}
     
 	public override Variant LoadValue() => RegionManager.CurrentRegion.savedData[getSaveData().Key];
     
@@ -68,7 +71,6 @@ public static class GameDataService {
 		FileAccess.FileExists(SAVE_FILE);
 
 	public static void Save() {
-		
 		// Serialize the data. If there is no current file, then just draw from whatever was saved so far in dynamicallySavedItems.
 		Dictionary<string, Variant> data = FileExists ? GetCompiledSaveData() : SavedItemsAsDictionary;
 

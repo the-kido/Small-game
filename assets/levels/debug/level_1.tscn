@@ -26,14 +26,14 @@ doors = [NodePath("../Node2D/Enivornment/Door 1")]
 
 [node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_w27io")
-wave = NodePath("../../Node2D/Waves/wave 1")
+wave = NodePath("")
 
 [node name="Required" type="Node" parent="."]
 
 [node name="Camera" parent="Required" node_paths=PackedStringArray("tileMap") instance=ExtResource("3_3il18")]
 position = Vector2(661, 447)
 zoom = Vector2(1.7, 1.7)
-tileMap = NodePath("../../Node2D/Enivornment/TileMap")
+tileMap = NodePath("")
 
 [node name="Player Manager" type="Node2D" parent="Required"]
 position = Vector2(906, 375)
@@ -66,9 +66,10 @@ layer_0/name = "Shadows"
 layer_0/navigation_enabled = false
 layer_0/tile_data = PackedInt32Array(65538, 0, 0, 65539, 65536, 0, 65540, 65536, 0, 65541, 65536, 0, 65542, 65536, 0, 65543, 65536, 0, 65544, 65536, 0, 65545, 131072, 0, 65548, 131072, 0, 65547, 0, 0, 131083, 0, 1, 131081, 131072, 1, 196618, 65536, 0, 196617, 327680, 0, 196619, 262144, 0, 196609, 0, 0, 262145, 0, 1, 327681, 0, 1, 196610, 262144, 0, 131074, 0, 1, 327684, 65536, 0, 327685, 262144, 0, 327683, 327680, 0, 262147, 262144, 1, 262149, 327680, 1, 262148, 65537, 0, 131073, 65537, 0, 1, 1, 0, 2, 65537, 0, 3, 65537, 0, 4, 65537, 0, 5, 65537, 0, 6, 65537, 0, 7, 65537, 0, 8, 65537, 0, 9, 131073, 0, 131082, 65537, 0, 11, 1, 0, 12, 131073, 0, 458764, 65537, 0, 589831, 65537, 0, 458758, 131073, 0, 458757, 65537, 0, 458756, 65537, 0, 458755, 65537, 0, 458754, 65537, 0, 458753, 1, 0, -65535, 0, 1, -65527, 131072, 1, -65525, 0, 1, -65524, 131072, 1, 655363, 65537, 0, 393222, 131072, 1, 393217, 0, 1, 524289, 0, 0, 524294, 131072, 0, 524293, 65536, 0, 524290, 65536, 0, 589825, 0, 1, 655361, 0, 1, 589830, 131072, 1, 655366, 327680, 0, 655367, 65536, 0, 524291, 65536, 0, 524292, 65536, 0)
 
-[node name="Door 1" parent="Node2D/Enivornment" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("17_dhp43")]
+[node name="Door 1" parent="Node2D/Enivornment" node_paths=PackedStringArray("levelSwitcher", "doorSprite") instance=ExtResource("17_dhp43")]
 position = Vector2(1061, 362)
-levelSwitcher = NodePath("Level Switchwer")
+levelSwitcher = NodePath("")
+doorSprite = NodePath("")
 
 [node name="Level Switchwer" type="Node" parent="Node2D/Enivornment/Door 1"]
 script = ExtResource("12_48p24")
@@ -93,8 +94,10 @@ position = Vector2(605, 578)
 z_as_relative = false
 position = Vector2(711, 577)
 
-[node name="Chest" parent="Node2D/Gameplay" instance=ExtResource("16_dddk7")]
+[node name="Chest" parent="Node2D/Gameplay" node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("16_dddk7")]
 position = Vector2(326, 630)
+interactable = NodePath("")
+itemShowcase = NodePath("")
 
 [node name="Waves" type="Node2D" parent="Node2D"]
 z_as_relative = false
@@ -107,14 +110,28 @@ y_sort_enabled = true
 position = Vector2(11, -7)
 script = ExtResource("15_vbrl5")
 
-[node name="Hillbilly" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
+[node name="Hillbilly" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape") instance=ExtResource("1_tonpy")]
 position = Vector2(448, 829)
+animationPlayer = NodePath("")
+Effect = NodePath("")
+DamageableComponent = NodePath("")
+CollisionShape = NodePath("")
 moveSpeed = null
 
-[node name="Base Enemy2" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
+[node name="Base Enemy2" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape") instance=ExtResource("1_tonpy")]
 position = Vector2(776, 137)
 scale = Vector2(3.12, 3.12)
+animationPlayer = NodePath("")
+Effect = NodePath("")
+DamageableComponent = NodePath("")
+CollisionShape = NodePath("")
 moveSpeed = null
 
-[node name="Weird enemy" parent="Node2D/Waves/wave 1" instance=ExtResource("4_rymms")]
+[node name="Weird enemy" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "Effect", "DamageableComponent", "sprite", "CollisionShape") instance=ExtResource("4_rymms")]
 position = Vector2(426, 244)
+pathfinderComponent = NodePath("")
+animationPlayer = NodePath("")
+Effect = NodePath("")
+DamageableComponent = NodePath("")
+sprite = NodePath("")
+CollisionShape = NodePath("")

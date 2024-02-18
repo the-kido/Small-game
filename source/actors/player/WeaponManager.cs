@@ -39,7 +39,6 @@ public partial class WeaponManager : Node2D { // Also called "hand"
         reloadVisual.Init(this);
 
         player.classManager.ClassSwitched += SetToDefaultWeapon; 
-        player.DamageableComponent.OnDeath += (_) => SetToDefaultWeapon(player.classManager.playerClass);
     }
     
     public void AddAndSwitchWeapon(Weapon newWeapon, int slot) {

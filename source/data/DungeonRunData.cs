@@ -30,6 +30,7 @@ public abstract class RunData {
     public Action<int> ValueChanged {get; set;}
 
     public void Add(int value) => Count += value;
+    public void Set(int value) => Count = value;
 
     readonly DataSaver saveable;
     public RunData() {

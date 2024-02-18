@@ -20,13 +20,11 @@
 script = ExtResource("1_fgpcw")
 doors = null
 
-[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+[node name="EnemyWaveEvent" type="Node" parent="Level"]
 script = ExtResource("2_3wa3g")
-wave = NodePath("../../Y Sort/Gameplay/Waves/EnemyWave")
 
-[node name="EnemyWaveEvent2" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+[node name="EnemyWaveEvent2" type="Node" parent="Level"]
 script = ExtResource("2_3wa3g")
-wave = NodePath("../../Y Sort/Gameplay/Waves/EnemyWave2")
 
 [node name="Enviornment" parent="." instance=ExtResource("2_8waop")]
 
@@ -67,9 +65,8 @@ position = Vector2(214, 14)
 [node name="Freeze Charge2" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(174, 40)
 
-[node name="Door 2" parent="Y Sort/Gameplay" node_paths=PackedStringArray("levelSwitcher") instance=ExtResource("10_hj2w4")]
+[node name="Door 2" parent="Y Sort/Gameplay" instance=ExtResource("10_hj2w4")]
 position = Vector2(488, 86)
-levelSwitcher = NodePath("LevelSwitcher")
 
 [node name="LevelSwitcher" type="Node" parent="Y Sort/Gameplay/Door 2"]
 script = ExtResource("11_wydy7")
