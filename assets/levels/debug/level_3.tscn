@@ -20,8 +20,9 @@
 script = ExtResource("1_fgpcw")
 doors = null
 
-[node name="EnemyWaveEvent" type="Node" parent="Level"]
+[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_3wa3g")
+wave = NodePath("../../Y Sort/Gameplay/Waves/EnemyWave")
 
 [node name="EnemyWaveEvent2" type="Node" parent="Level"]
 script = ExtResource("2_3wa3g")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://bbq82o8g6ohd2"]
 
-[ext_resource type="Script" path="res://source/gameplay/enviornment/SpawnDoor.cs" id="1_1pfbd"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="1_1pfbd"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_mhyby"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="3_801g8"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="7_5n7c8"]
@@ -27,7 +27,6 @@ script = ExtResource("1_mhyby")
 position = Vector2(12, 231)
 collision_mask = 2
 script = ExtResource("1_1pfbd")
-firstLevel = "res://assets/levels/debug/level_1.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Start Game Area"]
 position = Vector2(22, 5)
@@ -43,33 +42,40 @@ layer_0/tile_data = PackedInt32Array(131074, 65536, 1, 131075, 65536, 1, 196612,
 [node name="Node" type="Node" parent="."]
 
 [node name="Camera" parent="Node" node_paths=PackedStringArray("tileMap") instance=ExtResource("7_5n7c8")]
-position = Vector2(180, 325)
-tileMap = NodePath("../../TileMap")
+position = Vector2(682, 544)
+tileMap = NodePath("")
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("interactable")]
 position = Vector2(300, 854)
 script = ExtResource("7_cmmw1")
-interactable = NodePath("Interactable")
+interactable = NodePath("")
 
 [node name="Sprite2D" type="Sprite2D" parent="Node2D"]
 texture = ExtResource("8_osgkk")
 
-[node name="Interactable" parent="Node2D" instance=ExtResource("9_pbc07")]
+[node name="Interactable" parent="Node2D" node_paths=PackedStringArray("range") instance=ExtResource("9_pbc07")]
 position = Vector2(-2, -86)
+range = NodePath("")
 
 [node name="Player Manager" type="Node2D" parent="."]
 position = Vector2(714, 799)
 script = ExtResource("7_6y6ar")
 
-[node name="Chest" parent="." instance=ExtResource("9_f61de")]
+[node name="Chest" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
 position = Vector2(361, 379)
 chestLootTable = 1
+interactable = NodePath("")
+itemShowcase = NodePath("")
 
-[node name="Chest2" parent="." instance=ExtResource("9_f61de")]
+[node name="Chest2" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
 position = Vector2(236, 479)
+interactable = NodePath("")
+itemShowcase = NodePath("")
 
-[node name="Chest3" parent="." instance=ExtResource("9_f61de")]
+[node name="Chest3" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
 position = Vector2(997, 821)
+interactable = NodePath("")
+itemShowcase = NodePath("")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(495, 479)

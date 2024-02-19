@@ -8,11 +8,10 @@
 [node name="Flame Bullet" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_ho53f")
 sprite = NodePath("Sprite2D")
-deathParticle = null
 persistentParticle = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.85, 0.8, 0.8, 1)
+modulate = Color(1.4, 1.4, 1.4, 1)
 z_index = 1
 rotation = 1.57079
 scale = Vector2(3.17232, 3.16)

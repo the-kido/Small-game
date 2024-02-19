@@ -8,8 +8,8 @@ public partial class LevelCompletionIndicator : Control {
     AnimationPlayer animationPlayer;
 
     public void Init() {
-        if (Level.CurrentCriterion is null) return;
-
+        if (Level.CurrentCriterion is null || CenterChamber.WithinCenterChamber) return;
+        
         if (Level.IsCurrentLevelCompleted()) Enable(); 
         else Level.CurrentLevel.LevelCompleted += Enable;
     }

@@ -6,7 +6,6 @@
 [node name="Coin" type="Node2D"]
 scale = Vector2(3, 3)
 script = ExtResource("3_8wtax")
-Speed = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_tjj6x")

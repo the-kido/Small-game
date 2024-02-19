@@ -7,7 +7,7 @@ namespace Game.Data;
 
 public abstract class RunData {
 
-    public  readonly static RunData 
+    public readonly static RunData 
     Coins = new DungeonRunData.Coins(),
     FreezeOrbs = new DungeonRunData.FreezeOrbs(),
     EnemiesKilled = new DungeonRunData.EnemiesKilled(),

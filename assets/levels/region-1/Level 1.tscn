@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=33 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
 [ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="2_1lkkp"]
@@ -13,9 +13,11 @@
 [ext_resource type="Resource" uid="uid://d0afkrste24xy" path="res://assets/portraits/first_boss/happy.tres" id="5_idwx8"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="6_tqm1w"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="7_0r8k2"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/ChangeSceneEvent.cs" id="7_5x86b"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="7_ff2ca"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="8_3vv2j"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="8_qk2u3"]
+[ext_resource type="PackedScene" uid="uid://yy2tuyp31grj" path="res://assets/levels/center_chamber.tscn" id="8_xntig"]
 [ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop/shop.tscn" id="10_exj4u"]
 [ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/shop/weapon_shop_item.tscn" id="11_jx2oq"]
 [ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/enviornment/pickupables/coin.tscn" id="12_o2gfm"]
@@ -47,9 +49,8 @@ radius = 6.69992
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
 
-[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+[node name="EnemyWaveEvent" type="Node" parent="Level"]
 script = ExtResource("3_ktacb")
-wave = NodePath("../../Y Sort/EnemyWave")
 
 [node name="ConversationEvent" type="Node" parent="Level"]
 script = ExtResource("2_wh8mw")
@@ -59,11 +60,14 @@ script = ExtResource("4_bpiwe")
 text = "I want you to DIE"
 portrait = ExtResource("5_idwx8")
 
-[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
+[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent"]
 script = ExtResource("2_1lkkp")
-character = NodePath("../../../Character")
 animationName = &"dancing"
 loopTime = 3.0
+
+[node name="ChangeSceneEvent" type="Node" parent="Level"]
+script = ExtResource("7_5x86b")
+sceneToSwitchTo = ExtResource("8_xntig")
 
 [node name="Y Sort" parent="." instance=ExtResource("3_knfxu")]
 
@@ -121,7 +125,7 @@ collision_mask = 30
 shape = SubResource("CircleShape2D_ltyfy")
 
 [node name="Chandelier" parent="Y Sort" instance=ExtResource("6_tqm1w")]
-position = Vector2(178, 162)
+position = Vector2(199, 146)
 
 [node name="EnemyWave" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
@@ -138,6 +142,7 @@ position = Vector2(588, 347)
 script = ExtResource("7_ff2ca")
 
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
+position = Vector2(918, 277)
 scale = Vector2(1.62912, 1.62912)
 tileMap = NodePath("../TileMap")
 
@@ -170,22 +175,21 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
-Speed = 1.0
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
-Speed = 1.0
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
-Speed = 1.0
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
-Speed = 1.0
 
 [node name="Chest" parent="Y Sort" instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="Y Sort"]
+color = Color(0.619608, 0.564706, 0.564706, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("14_f2iyh")
