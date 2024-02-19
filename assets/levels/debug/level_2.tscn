@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://cfjfj1rkw7xh8"]
+[gd_scene load_steps=22 format=3 uid="uid://cfjfj1rkw7xh8"]
 
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_3ykfo"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_68dsa"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="2_xg7am"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_0ta41"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="5_neoqb"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_5xse6"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="7_nm5at"]
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="8_vrrcy"]
@@ -21,6 +22,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ck6td"]
 size = Vector2(24, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v828n"]
+size = Vector2(103.534, 105.169)
 
 [node name="Level 2" type="Node"]
 metadata/_edit_vertical_guides_ = [528.0]
@@ -48,6 +52,15 @@ shape = SubResource("RectangleShape2D_ck6td")
 [node name="Camera" parent="GUI" node_paths=PackedStringArray("tileMap") instance=ExtResource("2_xg7am")]
 position = Vector2(8, 473)
 tileMap = NodePath("../../Enviornment/TileMap")
+
+[node name="Area2D" type="Area2D" parent="GUI"]
+position = Vector2(333.233, 747.416)
+collision_mask = 2
+script = ExtResource("5_neoqb")
+goToRegion = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GUI/Area2D"]
+shape = SubResource("RectangleShape2D_v828n")
 
 [node name="Gameplay" type="Node" parent="."]
 

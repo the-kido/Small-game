@@ -21,9 +21,19 @@ size = Vector2(110.136, 160)
 [node name="CenterChamber" type="Node" node_paths=PackedStringArray("level", "criterionParents")]
 script = ExtResource("1_xep3q")
 level = NodePath("Level")
-criterionParents = [NodePath("Variable Level Makeups?/Finish Dungeon Region"), null, null]
+criterionParents = [NodePath("Variable Level Makeups?/Finish Dungeon Region"), null, null, null, NodePath("Variable Level Makeups?/First Death")]
 
 [node name="Variable Level Makeups?" type="Node" parent="."]
+
+[node name="First Death" type="Node" parent="Variable Level Makeups?"]
+
+[node name="ConversationEvent" type="Node" parent="Variable Level Makeups?/First Death"]
+script = ExtResource("2_a0vq3")
+
+[node name="DialogueLineConversationItem" type="Node" parent="Variable Level Makeups?/First Death/ConversationEvent"]
+script = ExtResource("2_mi25v")
+text = "OOOO OOOH DAISY CHAIN"
+portrait = ExtResource("3_vh84y")
 
 [node name="Finish Dungeon Region" type="Node" parent="Variable Level Makeups?"]
 

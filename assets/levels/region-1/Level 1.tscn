@@ -49,8 +49,9 @@ radius = 6.69992
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
 
-[node name="EnemyWaveEvent" type="Node" parent="Level"]
+[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
+wave = NodePath("../../Y Sort/EnemyWave")
 
 [node name="ConversationEvent" type="Node" parent="Level"]
 script = ExtResource("2_wh8mw")
@@ -60,10 +61,13 @@ script = ExtResource("4_bpiwe")
 text = "I want you to DIE"
 portrait = ExtResource("5_idwx8")
 
-[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent"]
+[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
 script = ExtResource("2_1lkkp")
+character = NodePath("../../../Character")
 animationName = &"dancing"
+playAmbiently = null
 loopTime = 3.0
+moveToPosition = null
 
 [node name="ChangeSceneEvent" type="Node" parent="Level"]
 script = ExtResource("7_5x86b")
@@ -175,18 +179,23 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
+Speed = null
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
+Speed = null
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
+Speed = null
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
+Speed = null
 
 [node name="Chest" parent="Y Sort" instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
+chestLootTable = null
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Y Sort"]
 color = Color(0.619608, 0.564706, 0.564706, 1)
@@ -199,6 +208,7 @@ position = Vector2(600, 250)
 
 [node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
 position = Vector2(338, 327)
+moveSpeed = null
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(500, 250)

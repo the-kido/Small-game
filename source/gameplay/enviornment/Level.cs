@@ -50,26 +50,23 @@ public partial class Level : Node {
 		
 		Change();
 
-		if (!LoadCompletion()) CompleteAllEvents(0);
+		if (!LoadCompletion()) CompleteAllEvents(0, levelCriterion);
 		else Complete();
 	}
-	private List<LevelCriteria> GetLevelCriterion() => 
-		GetParent() is CenterChamber centerChamber 
-			? centerChamber.GetLevelCriterion() 
-			: GetChildren().Cast<LevelCriteria>().ToList();
-
+	private List<LevelCriteria> GetLevelCriterion() => GetChildren().Cast<LevelCriteria>().ToList();
+	
 	// I ♥ recursion
-	private void CompleteAllEvents(int index) {
-		if (index == levelCriterion.Count) {
+	public void CompleteAllEvents(int index, List<LevelCriteria> criterion) {
+		if (index == criterion.Count) {
 			Complete();
 			return;
 		}
 		
-		CurrentCriterion = levelCriterion[index];
+		CurrentCriterion = criterion[index];
 		
-		LevelCriteria currentCriterion = levelCriterion[index];
+		LevelCriteria currentCriterion = criterion[index];
 
-		currentCriterion.Finished += () => CompleteAllEvents(index + 1);
+		currentCriterion.Finished += () => CompleteAllEvents(index + 1, criterion);
 		currentCriterion.CallDeferred("Start");
 		
 		// Because the above is a deferred call, I have to invoke CriterionStarted deferred too; we will have a race condition otherwise

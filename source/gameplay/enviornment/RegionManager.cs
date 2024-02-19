@@ -8,6 +8,7 @@ namespace Game.LevelContent;
 public enum Regions : uint { Dungeon = 0, Nature = 1, Tech = 2, Ice = 3, CenterRegion = 4 }
 
 public static class RegionManager {
+	public const string CENTER_REGION_PATH = "res://assets/levels/center_chamber.tscn";
 	public static readonly string[] Regions = new string[] {
 		"DungeonRegion",
 		"NatureRegion",
@@ -24,10 +25,22 @@ public static class RegionManager {
 	};
 	public static Region CurrentRegion => RegionClasses[CurrentRegionName];
 	
-	public static readonly DataSaver saveable = new(() => new("CurrentRegion", CurrentRegionName));
+	public static readonly DataSaver currentRegionSaver = new(() => new("CurrentRegion", CurrentRegionName));
     static RegionManager() {
-		string loadedRegion = (string) saveable.LoadValue();
+		string loadedRegion = (string) currentRegionSaver.LoadValue();
 		if (!string.IsNullOrEmpty(loadedRegion)) CurrentRegionName = loadedRegion;
+		
+		RegionsWon = (Godot.Collections.Array<bool>) regionsWonSaver.LoadValue();
+	}
+
+	public static Godot.Collections.Array<bool> RegionsWon {get; private set;} = new() {false, false, false, false};
+    static readonly DataSaver regionsWonSaver = new(() => new("RegionsWon", RegionsWon));
+	public static void RegionWon() {
+		GD.Print(" we won ", CurrentRegionName);
+		// Will set whatever region we are currently in to true.
+		int i = Array.IndexOf(Regions, CurrentRegionName);
+		RegionsWon[i] = true;
+		GameDataService.Save();
 	}
 
 	public static void SetRegion(string regionName) {

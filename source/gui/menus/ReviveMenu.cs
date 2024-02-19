@@ -32,9 +32,10 @@ public partial class ReviveMenu : Control, IMenu{
         GameDataService.Save();
     }
 
-    const string spawnScene = "res://assets/levels/debug/spawn.tscn";
     private void Die() {
-        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(RegionManager.CurrentRegion.FirstLevel);
+        RunData.AllData[RunDataEnum.PlayerDeaths].Add(1);
+        CenterChamber.NotifyForEnteryOnDeath();
+        Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(RegionManager.CENTER_REGION_PATH /*RegionManager.CurrentRegion.FirstLevel*/);
         OnDisable();
         DeathAccepted?.Invoke();
     }

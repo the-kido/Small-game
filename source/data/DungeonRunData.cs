@@ -12,7 +12,8 @@ public abstract class RunData {
     FreezeOrbs = new DungeonRunData.FreezeOrbs(),
     EnemiesKilled = new DungeonRunData.EnemiesKilled(),
     DamageTaken = new DungeonRunData.DamageTaken(), 
-    RespawnTokens = new DungeonRunData.RespawnTokens();
+    RespawnTokens = new DungeonRunData.RespawnTokens(),
+    Deaths = new DungeonRunData.Deaths();
 
     public readonly static Dictionary<RunDataEnum, RunData> AllData = new() {
         {RunDataEnum.Coins, Coins},
@@ -20,6 +21,7 @@ public abstract class RunData {
         {RunDataEnum.EnemiesKilled, EnemiesKilled},
         {RunDataEnum.DamageTaken, DamageTaken},
         {RunDataEnum.RespawnTokens, RespawnTokens},
+        {RunDataEnum.PlayerDeaths, Deaths},
     };
 
     public abstract int Count {get; set;}
@@ -45,6 +47,7 @@ public enum RunDataEnum {
     EnemiesKilled,
     DamageTaken,
     RespawnTokens,
+    PlayerDeaths,
 }
 
 public static class DungeonRunData {
@@ -120,5 +123,18 @@ public static class DungeonRunData {
                 ValueChanged?.Invoke(_count);
             }
         }
+    }
+
+    public class Deaths : RunData
+    {
+        public override string ValueName => "PlayerDeaths";
+        public override int Count { 
+            get => _count; 
+            set {
+                _count = value;
+                ValueChanged?.Invoke(_count);
+            } 
+        }
+
     }
 }

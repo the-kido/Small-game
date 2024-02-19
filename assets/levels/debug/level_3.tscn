@@ -36,6 +36,9 @@ layer_0/tile_data = PackedInt32Array(131072, 65536, 1, 65537, 65536, 1, 65536, 6
 [node name="WorldEnvironment" parent="Enviornment" index="2"]
 environment = ExtResource("4_21v4f")
 
+[node name="Camera" parent="Enviornment" index="3" node_paths=PackedStringArray("tileMap")]
+tileMap = NodePath("")
+
 [node name="Y Sort" parent="." instance=ExtResource("3_37we6")]
 
 [node name="Gameplay" parent="Y Sort" instance=ExtResource("3_37we6")]
@@ -80,5 +83,6 @@ position = Vector2(338, 86)
 
 [node name="Coin" parent="." instance=ExtResource("13_1ia68")]
 position = Vector2(121, 76)
+Speed = null
 
 [editable path="Enviornment"]

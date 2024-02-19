@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Game.Data;
 using Game.LevelContent;
 using Game.LevelContent.Criteria;
 using Godot;
@@ -16,23 +16,32 @@ public partial class CenterChamber : Node {
 	// Put this in order of Dungeon, Nature, Tech, ice.
 	Godot.Collections.Array<Node> criterionParents;
 
-	// Check what the current region is.
-	// depending on the current region, play some thing and then 
-	// mark the level as complete (?)
-	static int? futureCriterionParentIndex = 0; 
+	static int? futureCriterionParentIndex = null; 
+	public static void NotifyForEnteryOnDeath() {
+		// This is only for the first death of the player
+		if (RunData.AllData[RunDataEnum.PlayerDeaths].Count is 1) futureCriterionParentIndex = 4;  
+	}	
 
-	public static void NotifyForEntery() {	
-		// What i want to do:
-		//  Depending on the region, get the right value.
-		futureCriterionParentIndex = Array.IndexOf(RegionManager.Regions, RegionManager.CurrentRegionName);
+	public static void NotifyForEnteryAfterWinning() {	
+		int index = Array.IndexOf(RegionManager.Regions, RegionManager.CurrentRegionName);
+		
+		GD.Print("we are checking");
+		if (RegionManager.RegionsWon[index]) { 
+			GD.Print("we already won!");
+			return;
+		}
+
+		GD.Print("we did not win!");
+		futureCriterionParentIndex = index;
 	}
 	
-	public List<LevelCriteria> GetLevelCriterion() {
-		return criterionParents[futureCriterionParentIndex ?? 0].GetChildren().Cast<LevelCriteria>().ToList();
+	public override void _Ready() {
+		if (futureCriterionParentIndex is null) return;
+
+		level.CompleteAllEvents(0, criterionParents[futureCriterionParentIndex ?? 0].GetChildren().Cast<LevelCriteria>().ToList());
+
+		futureCriterionParentIndex = null;
 	}
 
 	public static bool WithinCenterChamber => Level.CurrentLevel.GetParent() is CenterChamber;  
-
-	public override void _Process(double delta) {
-	}
 }
