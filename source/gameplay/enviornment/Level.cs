@@ -30,19 +30,18 @@ public partial class Level : Node {
 	public static readonly DataSaver lastLevelPlayedSaver = new( () => new("LastLevel", LastLevelFilePath));
 	public static string LastLevelFilePath {get; private set;}
 	
-	public Door GetLinkedDoor(string name) {
+	public LevelSwitchRegion GetLinkedDoor(string name) {
 		
 		foreach (NodePath doorPath in doors) {
-			Door door = GetNode<Door>(doorPath);
+			LevelSwitchRegion door = GetNode<LevelSwitchRegion>(doorPath);
 
 			if (door.Name == name) 
 				return door;
 		}
-		GD.PushWarning("No such door ", name, " was found for level ", Name);
 		return null;
 	}
 
-    readonly RegionalSaveable regionalSaveable = new(() => new("LevelCompletions", LevelCompletions));
+    static readonly RegionalSaveable regionalSaveable = new(() => new("LevelCompletions", LevelCompletions));
 	public override void _Ready() {
 		levelCriterion = GetLevelCriterion();
 

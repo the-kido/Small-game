@@ -65,9 +65,7 @@ portrait = ExtResource("5_idwx8")
 script = ExtResource("2_1lkkp")
 character = NodePath("../../../Character")
 animationName = &"dancing"
-playAmbiently = null
 loopTime = 3.0
-moveToPosition = null
 
 [node name="ChangeSceneEvent" type="Node" parent="Level"]
 script = ExtResource("7_5x86b")
@@ -148,10 +146,11 @@ script = ExtResource("7_ff2ca")
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
 position = Vector2(918, 277)
 scale = Vector2(1.62912, 1.62912)
-tileMap = NodePath("../TileMap")
+tileMap = NodePath("")
 
-[node name="Shop" parent="Y Sort" instance=ExtResource("10_exj4u")]
+[node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
+shopItems = [NodePath("1_bad"), NodePath("2_trash"), NodePath("3_worst")]
 chanceWeight = Array[int]([1, 1, 1])
 
 [node name="Respawn Token Shop Item" parent="Y Sort/Shop" instance=ExtResource("13_gt3xo")]
@@ -179,23 +178,18 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
-Speed = null
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
-Speed = null
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
-Speed = null
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
-Speed = null
 
 [node name="Chest" parent="Y Sort" instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
-chestLootTable = null
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Y Sort"]
 color = Color(0.619608, 0.564706, 0.564706, 1)
@@ -208,7 +202,6 @@ position = Vector2(600, 250)
 
 [node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
 position = Vector2(338, 327)
-moveSpeed = null
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(500, 250)

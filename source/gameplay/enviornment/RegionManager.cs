@@ -31,12 +31,12 @@ public static class RegionManager {
 		if (!string.IsNullOrEmpty(loadedRegion)) CurrentRegionName = loadedRegion;
 		
 		RegionsWon = (Godot.Collections.Array<bool>) regionsWonSaver.LoadValue();
+		if (RegionsWon.Count == 0) RegionsWon = new() {false, false, false, false};
 	}
 
-	public static Godot.Collections.Array<bool> RegionsWon {get; private set;} = new() {false, false, false, false};
+	public static Godot.Collections.Array<bool> RegionsWon {get; private set;}
     static readonly DataSaver regionsWonSaver = new(() => new("RegionsWon", RegionsWon));
 	public static void RegionWon() {
-		GD.Print(" we won ", CurrentRegionName);
 		// Will set whatever region we are currently in to true.
 		int i = Array.IndexOf(Regions, CurrentRegionName);
 		RegionsWon[i] = true;

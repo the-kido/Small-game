@@ -2,20 +2,22 @@ using KidoUtils;
 using Godot;
 using Game.Players;
 using Game.Autoload;
-using Game.Data;
-using System.Linq;
 
 namespace Game.LevelContent;
 
 public partial class RegionDoor : Area2D {
     
-    
-
     [Export]
     Regions goToRegion;
     
+    [Export]
+    Door door;
+    
     public override void _Ready() {
-        BodyEntered += ChangeSceneToFirstLevel;  
+        BodyEntered += ChangeSceneToFirstLevel; 
+        int index = (int) goToRegion - 1;
+        if (index < 0 && goToRegion is Regions.Dungeon) door.Open();
+        if (RegionManager.RegionsWon[index]) door.Open();
     }
     
     //there are 2 ways to get to the center:

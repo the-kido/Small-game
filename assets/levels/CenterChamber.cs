@@ -25,13 +25,10 @@ public partial class CenterChamber : Node {
 	public static void NotifyForEnteryAfterWinning() {	
 		int index = Array.IndexOf(RegionManager.Regions, RegionManager.CurrentRegionName);
 		
-		GD.Print("we are checking");
 		if (RegionManager.RegionsWon[index]) { 
-			GD.Print("we already won!");
 			return;
 		}
 
-		GD.Print("we did not win!");
 		futureCriterionParentIndex = index;
 	}
 	
