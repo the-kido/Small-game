@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=37 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://source/gui/hud/ToggleAttackButton.cs" id="4_13lqt"]
 [ext_resource type="Script" path="res://source/gui/hud/DialogueBar.cs" id="5_i761r"]
 [ext_resource type="Texture2D" uid="uid://dosvh1v8ga85c" path="res://icon.svg" id="6_lqvlh"]
+[ext_resource type="Texture2D" uid="uid://d4mbecgvlo68p" path="res://assets/enviornment/pickupables/coin.png" id="6_shchm"]
 [ext_resource type="Script" path="res://source/gui/hud/InteractButton.cs" id="7_mrwpn"]
 [ext_resource type="Script" path="res://source/gui/hud/CoinsLabel.cs" id="7_yaa1g"]
 [ext_resource type="Script" path="res://source/gui/hud/HeldItems.cs" id="9_3t3pf"]
@@ -17,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bulllets/visuals/base_bullet.png" id="15_a153q"]
 [ext_resource type="Script" path="res://source/gui/hud/InteractableDescription.cs" id="15_kguth"]
 [ext_resource type="Script" path="res://source/gui/hud/LevelEventDescription.cs" id="17_l4h7f"]
+[ext_resource type="Script" path="res://source/gui/hud/ResourcesViewer.cs" id="17_w36gh"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -58,6 +60,9 @@ _data = {
 "RESET": SubResource("Animation_gjelb"),
 "show": SubResource("Animation_y57l1")
 }
+
+[sub_resource type="LabelSettings" id="LabelSettings_fi6w6"]
+font_size = 30
 
 [sub_resource type="Animation" id="Animation_ki2dc"]
 resource_name = "Open"
@@ -247,8 +252,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -6.0
-offset_right = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -258,7 +261,7 @@ AttackButton = NodePath("Auto Aim Button")
 dialogueBar = NodePath("Dialogue Bar")
 levelCompletionIndicator = NodePath("Level Completed Indicator")
 healthLable = NodePath("Health label background/Label")
-coinsLabel = NodePath("Coins")
+coinsLabel = NodePath("Coins/HBoxContainer/Label")
 interactButton = NodePath("Interact")
 heldItems = NodePath("Held Weapons")
 shieldInfo = NodePath("Shield Info")
@@ -267,11 +270,12 @@ levelEventDescription = NodePath("Level Event Description")
 HUDCover = NodePath("HUD Cover")
 
 [node name="Health label background" type="ColorRect" parent="."]
-layout_mode = 0
-offset_left = 17.0
-offset_top = 16.0
-offset_right = 133.0
-offset_bottom = 97.0
+layout_mode = 1
+anchors_preset = -1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 116.0
+offset_bottom = 81.0
 theme = SubResource("Theme_tsgnt")
 color = Color(0.223529, 0.223529, 0.223529, 1)
 
@@ -336,18 +340,36 @@ libraries = {
 "": SubResource("AnimationLibrary_4dhoq")
 }
 
-[node name="Coins" type="Label" parent="."]
+[node name="Coins" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -104.0
-offset_top = 51.0
-offset_right = -64.0
-offset_bottom = 74.0
+offset_left = -178.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 60.0
 grow_horizontal = 0
-text = "Coins: 1
-"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Coins"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -158.0
+offset_bottom = 42.0
+grow_horizontal = 0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="Coins/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_shchm")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="Coins/HBoxContainer"]
+layout_mode = 2
+text = " x0"
+label_settings = SubResource("LabelSettings_fi6w6")
 script = ExtResource("7_yaa1g")
 
 [node name="Held Weapons" type="Control" parent="."]
@@ -750,6 +772,60 @@ offset_bottom = -6.28903
 grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("15_a153q")
+
+[node name="Resources" type="Control" parent="." node_paths=PackedStringArray("prototype", "vBox")]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 129.0
+offset_right = 166.0
+offset_bottom = 349.0
+script = ExtResource("17_w36gh")
+prototype = NodePath("Prototype Resource")
+vBox = NodePath("Panel/Resource Vbox")
+
+[node name="Panel" type="Panel" parent="Resources"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -69.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resource Vbox" type="VBoxContainer" parent="Resources/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 50.0
+offset_bottom = -5.0
+grow_vertical = 2
+
+[node name="Prototype Resource" type="TextureRect" parent="Resources"]
+visible = false
+layout_mode = 2
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 60.0
+offset_bottom = 60.0
+texture = ExtResource("6_lqvlh")
+expand_mode = 4
+
+[node name="Label" type="Label" parent="Resources/Prototype Resource"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 56.0
+offset_top = -10.0
+offset_right = 124.0
+offset_bottom = 13.0
+grow_vertical = 2
+text = "x2"
 
 [node name="Level Event Description" type="Control" parent="." node_paths=PackedStringArray("label")]
 layout_mode = 1

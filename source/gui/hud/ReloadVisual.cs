@@ -43,6 +43,5 @@ public partial class ReloadVisual : ProgressBar {
         // Call these initially
         hand.WeaponSwitched += OnWeaponSwitched;
         AttachEvents();
-        OnWeaponSwitched(hand.HeldWeapon);
     }
 }

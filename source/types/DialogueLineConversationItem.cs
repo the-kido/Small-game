@@ -10,8 +10,6 @@ public sealed partial class DialogueLineConversationItem : ConversationItem {
     public string text;
     [Export]
     public Portrait portrait;
-
-    [ExportGroup("Optional")]
     [Export]
     public float charactersPerSecond = 10;
 }

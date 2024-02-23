@@ -6,7 +6,6 @@ using Game.LevelContent;
 
 namespace Game.UI;
 
-[Tool]
 public partial class Camera : Camera2D {
 	[Export]
 	private TileMap tileMap;

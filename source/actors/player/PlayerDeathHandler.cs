@@ -18,9 +18,10 @@ public class PlayerDeathHandler {
 
     // hehe
     private void GiveDeathPentaly() {
-        RunData.AllData[RunDataEnum.Coins].Set(0);
-        RunData.AllData[RunDataEnum.FreezeOrbs].Set(0);
-        RegionManager.ResetRegionData(RegionManager.CurrentRegion);
+        RunData.Coins.Set(0);
+        RunData.FreezeOrbs.Set(0);
+
+        RegionManager.ResetCurrentRegionData();
 
 		GameDataService.Save();
     }

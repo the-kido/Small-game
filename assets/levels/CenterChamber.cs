@@ -19,11 +19,11 @@ public partial class CenterChamber : Node {
 	static int? futureCriterionParentIndex = null; 
 	public static void NotifyForEnteryOnDeath() {
 		// This is only for the first death of the player
-		if (RunData.AllData[RunDataEnum.PlayerDeaths].Count is 1) futureCriterionParentIndex = 4;  
+		if (RunData.Deaths.Count is 1) futureCriterionParentIndex = 4;  
 	}	
 
 	public static void NotifyForEnteryAfterWinning() {	
-		int index = Array.IndexOf(RegionManager.Regions, RegionManager.CurrentRegionName);
+		int index = (int) RegionManager.CurrentRegion;
 		
 		if (RegionManager.RegionsWon[index]) { 
 			return;

@@ -161,6 +161,7 @@ script = ExtResource("2_a0vq3")
 script = ExtResource("2_mi25v")
 text = "OOOO OOOH DAISY CHAIN"
 portrait = ExtResource("3_vh84y")
+charactersPerSecond = null
 
 [node name="Finish Dungeon Region" type="Node" parent="Variable Level Makeups?"]
 
@@ -171,9 +172,11 @@ script = ExtResource("2_a0vq3")
 script = ExtResource("2_mi25v")
 text = "What the frick"
 portrait = ExtResource("3_vh84y")
+charactersPerSecond = null
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_coemf")
+doors = null
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(3, 3)
@@ -243,6 +246,7 @@ position = Vector2(722, 426)
 position = Vector2(1084.93, 464.517)
 collision_mask = 2
 script = ExtResource("8_4wtvt")
+goToRegion = null
 door = NodePath("../Testing/Door")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DungeonDoor"]

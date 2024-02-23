@@ -1,9 +1,18 @@
 using System;
-using System.Collections.Generic;
 using Game.Actors;
 using Game.Mechanics;
+using Godot;
 
 namespace Game.Data;
+
+public enum RunDataEnum {
+    Coins,
+    FreezeOrbs,
+    EnemiesKilled,
+    DamageTaken,
+    RespawnTokens,
+    PlayerDeaths,
+}
 
 public abstract class RunData {
 
@@ -15,16 +24,24 @@ public abstract class RunData {
     RespawnTokens = new DungeonRunData.RespawnTokens(),
     Deaths = new DungeonRunData.Deaths();
 
-    public readonly static Dictionary<RunDataEnum, RunData> AllData = new() {
-        {RunDataEnum.Coins, Coins},
-        {RunDataEnum.FreezeOrbs, FreezeOrbs},
-        {RunDataEnum.EnemiesKilled, EnemiesKilled},
-        {RunDataEnum.DamageTaken, DamageTaken},
-        {RunDataEnum.RespawnTokens, RespawnTokens},
-        {RunDataEnum.PlayerDeaths, Deaths},
+    public static RunData GetRunDataFromEnum(RunDataEnum runDataEnum) => runDataEnum switch {
+        RunDataEnum.Coins => Coins,
+        RunDataEnum.FreezeOrbs => FreezeOrbs,
+        RunDataEnum.EnemiesKilled => EnemiesKilled,
+        RunDataEnum.DamageTaken => DamageTaken,
+        RunDataEnum.RespawnTokens => RespawnTokens,
+        RunDataEnum.PlayerDeaths => Deaths,
+        _ => default
     };
 
-    public abstract int Count {get; set;}
+    public virtual int Count { 
+        get => _count;
+        set {
+            _count = (int) MathF.Max(0, value);
+            ValueChanged?.Invoke(_count);
+        }
+    }
+    
     public abstract string ValueName {get;}
 
     protected int _count = 0;
@@ -41,33 +58,23 @@ public abstract class RunData {
     }
 }
 
-public enum RunDataEnum {
-    Coins,
-    FreezeOrbs,
-    EnemiesKilled,
-    DamageTaken,
-    RespawnTokens,
-    PlayerDeaths,
-}
-
 public static class DungeonRunData {
     public class Coins : RunData { 
-        
         public override string ValueName => "Coins";
-
-        public override int Count {
-            get => _count;
-            set {
-                ValueChanged?.Invoke(value);
-                _count = value;
-            }
-        }
     }
 
     public class FreezeOrbs : RunData {
         public override string ValueName => "FreezeOrbs";
 
-        public FreezeOrbs() : base() => FreezeWave += FreezeOrbMechanic.Freeze;
+        static ViewedResource viewedResource;
+        public FreezeOrbs() : base() {
+            FreezeWave += FreezeOrbMechanic.Freeze;
+            viewedResource = new(
+                RunDataEnum.FreezeOrbs,
+                () => $"{_count}",
+                ResourceLoader.Load<Texture2D>("res://assets/enviornment/pickupables/freeze-charge.png")
+            );
+        }
 
         public static event Action FreezeWave;
         public override int Count {
@@ -85,56 +92,27 @@ public static class DungeonRunData {
     }
 
     public class EnemiesKilled : RunData {
-
         public override string ValueName => "EnemiesKilled";
-        
         public EnemiesKilled() : base() => Enemy.EnemyKilled += (_,_) => Add(1);
-        
-        public override int Count { 
-            get => _count;
-            set {
-                _count = (int) MathF.Max(0, value);
-                ValueChanged?.Invoke(_count);
-            }
-        }
     }
 
     public class DamageTaken : RunData {
-
         public override string ValueName => "DamageTaken";
-
-        public override int Count { 
-            get => _count;
-            set {
-                _count = (int) MathF.Max(0, value);
-                ValueChanged?.Invoke(_count);
-            }
-        }
     }
 
-     public class RespawnTokens : RunData {
-
+    public class RespawnTokens : RunData {
         public override string ValueName => "RespawnTokens";
 
-        public override int Count { 
-            get => _count;
-            set {
-                _count = (int) MathF.Max(0, value);
-                ValueChanged?.Invoke(_count);
-            }
+        public RespawnTokens () : base() {
+            ViewedResource resourcesViewer = new(
+                RunDataEnum.RespawnTokens,
+                () => $"{_count}", 
+                ResourceLoader.Load<Texture2D>("res://assets/enviornment/gameplay/shop/respawn_token.png")
+            );
         }
     }
 
-    public class Deaths : RunData
-    {
+    public class Deaths : RunData {
         public override string ValueName => "PlayerDeaths";
-        public override int Count { 
-            get => _count; 
-            set {
-                _count = value;
-                ValueChanged?.Invoke(_count);
-            } 
-        }
-
     }
 }

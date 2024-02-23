@@ -27,14 +27,12 @@ public class DataSaver {
 	}
 }
 public class RegionalSaveable : DataSaver {
-    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {
-		// ReviveMenu.DeathAccepted += () => getSaveData().Value = "";
-	}
+    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {}
     
-	public override Variant LoadValue() => RegionManager.CurrentRegion.savedData[getSaveData().Key];
-    
+	public override Variant LoadValue() => RegionManager.GetRegionClass(RegionManager.CurrentRegion).savedData[getSaveData().Key];
+
 	protected override void RegisterSavedValue() {
-		RegionManager.Region region = RegionManager.CurrentRegion;
+		RegionManager.Region region = RegionManager.GetRegionClass(RegionManager.CurrentRegion);
 
 		// Add key if it is not already there
 		if (!region.savedData.ContainsKey(getSaveData().Key)) region.savedData.Add(getSaveData().Key, getSaveData().Value);

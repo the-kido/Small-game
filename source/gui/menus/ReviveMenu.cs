@@ -33,7 +33,7 @@ public partial class ReviveMenu : Control, IMenu{
     }
 
     private void Die() {
-        RunData.AllData[RunDataEnum.PlayerDeaths].Add(1);
+        RunData.Deaths.Add(1);
         CenterChamber.NotifyForEnteryOnDeath();
         Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(RegionManager.CENTER_REGION_PATH /*RegionManager.CurrentRegion.FirstLevel*/);
         OnDisable();

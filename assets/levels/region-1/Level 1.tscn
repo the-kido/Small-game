@@ -1,10 +1,11 @@
-[gd_scene load_steps=33 format=3 uid="uid://dtso7xjmspnqq"]
+[gd_scene load_steps=49 format=3 uid="uid://dtso7xjmspnqq"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_53p3x"]
 [ext_resource type="Script" path="res://source/types/CharacterActionConversationItem.cs" id="2_1lkkp"]
 [ext_resource type="TileSet" uid="uid://gqbewfy6k5vq" path="res://assets/levels/region-1/new_tile_set.tres" id="2_jmklh"]
 [ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/tilemaps/ao/occlusion_tilemap.tres" id="2_p4x51"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_wh8mw"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/LearnResourceEvent.cs" id="2_wrsh5"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_knfxu"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="3_ktacb"]
 [ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="4_bpiwe"]
@@ -19,7 +20,10 @@
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="8_qk2u3"]
 [ext_resource type="PackedScene" uid="uid://yy2tuyp31grj" path="res://assets/levels/center_chamber.tscn" id="8_xntig"]
 [ext_resource type="PackedScene" uid="uid://dl1c2lkk7o2ik" path="res://assets/enviornment/gameplay/shop/shop.tscn" id="10_exj4u"]
+[ext_resource type="Texture2D" uid="uid://b5pmh6td3pwl5" path="res://assets/enviornment/doors/door_open_new.png" id="10_p512s"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="11_dgd62"]
 [ext_resource type="PackedScene" uid="uid://ewavi0hsgkds" path="res://assets/enviornment/gameplay/shop/weapon_shop_item.tscn" id="11_jx2oq"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="12_doowa"]
 [ext_resource type="PackedScene" uid="uid://djksdju3ym3wo" path="res://assets/enviornment/pickupables/coin.tscn" id="12_o2gfm"]
 [ext_resource type="PackedScene" uid="uid://catq2ey4gxfuk" path="res://assets/enviornment/gameplay/shop/respawn_token_shop_item.tscn" id="13_gt3xo"]
 [ext_resource type="PackedScene" uid="uid://daiqmgj2yvc5c" path="res://assets/enviornment/gameplay/shop/potion_shop_item.tscn.tscn" id="13_hpsnk"]
@@ -29,6 +33,134 @@
 [ext_resource type="PackedScene" uid="uid://cokuv20iypbm" path="res://assets/characters/main.tscn" id="24_6ob4d"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="25_uyrmv"]
 [ext_resource type="PackedScene" uid="uid://fktd2hmwbgea" path="res://assets/enemies/this_guy_is_agro_as_frick.tscn" id="28_ygxmk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0q4t"]
+atlas = ExtResource("10_p512s")
+region = Rect2(0, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ksi0"]
+atlas = ExtResource("10_p512s")
+region = Rect2(4, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jqd55"]
+atlas = ExtResource("10_p512s")
+region = Rect2(8, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kjlhm"]
+atlas = ExtResource("10_p512s")
+region = Rect2(12, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u2a0c"]
+atlas = ExtResource("10_p512s")
+region = Rect2(16, 0, 4, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fhgh2"]
+atlas = ExtResource("10_p512s")
+region = Rect2(20, 0, 4, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xfpdg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r0q4t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ksi0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jqd55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kjlhm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u2a0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fhgh2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihvut"]
+size = Vector2(20, 147)
+
+[sub_resource type="Animation" id="Animation_b11w6"]
+resource_name = "Open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Testing/AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Testing/Door/CollisionShape2D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(20, 147), Vector2(20, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Testing/Door/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 30), Vector2(0, -47.682)]
+}
+
+[sub_resource type="Animation" id="Animation_gff7p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Testing/Door/CollisionShape2D:shape:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(20, 147)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Testing/Door/CollisionShape2D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -47.682)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5674j"]
+_data = {
+"Open": SubResource("Animation_b11w6"),
+"RESET": SubResource("Animation_gff7p")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sa6av"]
+size = Vector2(110.136, 160)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_em3ql"]
 vertices = PackedVector2Array(-5, 224, -6, 206, 206, 206, 232, 224, 231, 23, 206, 146, 222, 62, 222, 23, 174, 146, 174, 142, 190, 142, 190, 98, 146, 62, 146, 98, 142, 94, 146, 114, 14, 114, 82, 94, 14, 62, 82, 62, 142, 22, 146, 22)
@@ -48,10 +180,19 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
+doors = null
+
+[node name="Learn freeze orbs" type="Node" parent="Level"]
+script = ExtResource("2_wrsh5")
+runDataEnum = 1
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
 wave = NodePath("../../Y Sort/EnemyWave")
+
+[node name="LearnResourceEvent" type="Node" parent="Level"]
+script = ExtResource("2_wrsh5")
+runDataEnum = 4
 
 [node name="ConversationEvent" type="Node" parent="Level"]
 script = ExtResource("2_wh8mw")
@@ -60,18 +201,60 @@ script = ExtResource("2_wh8mw")
 script = ExtResource("4_bpiwe")
 text = "I want you to DIE"
 portrait = ExtResource("5_idwx8")
+charactersPerSecond = null
 
 [node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
 script = ExtResource("2_1lkkp")
 character = NodePath("../../../Character")
 animationName = &"dancing"
+playAmbiently = null
 loopTime = 3.0
+moveToPosition = null
 
 [node name="ChangeSceneEvent" type="Node" parent="Level"]
 script = ExtResource("7_5x86b")
 sceneToSwitchTo = ExtResource("8_xntig")
 
 [node name="Y Sort" parent="." instance=ExtResource("3_knfxu")]
+
+[node name="Testing" type="Node2D" parent="Y Sort"]
+position = Vector2(632.417, 310.604)
+scale = Vector2(11.387, 11.387)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Y Sort/Testing"]
+position = Vector2(37.0231, 14.4371)
+sprite_frames = SubResource("SpriteFrames_xfpdg")
+
+[node name="Door" type="StaticBody2D" parent="Y Sort/Testing" node_paths=PackedStringArray("doorAnimation")]
+position = Vector2(37.0287, 10.9113)
+scale = Vector2(0.0878193, 0.0878193)
+collision_mask = 2
+script = ExtResource("11_dgd62")
+doorAnimation = NodePath("../AnimationPlayer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Y Sort/Testing/Door"]
+position = Vector2(0, -47.682)
+shape = SubResource("RectangleShape2D_ihvut")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Y Sort/Testing"]
+root_node = NodePath("../../Level")
+libraries = {
+"": SubResource("AnimationLibrary_5674j")
+}
+
+[node name="DungeonDoor" type="Area2D" parent="Y Sort/Testing" node_paths=PackedStringArray("door")]
+position = Vector2(39.7394, 13.5166)
+scale = Vector2(0.0878194, 0.0878194)
+collision_mask = 2
+script = ExtResource("12_doowa")
+goToRegion = 4
+door = NodePath("../Door")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Y Sort/Testing/DungeonDoor"]
+position = Vector2(56.0682, 14.4832)
+shape = SubResource("RectangleShape2D_sa6av")
+debug_color = Color(0.470588, 0.443137, 1, 0)
 
 [node name="Ambient Occlusion" type="TileMap" parent="Y Sort"]
 scale = Vector2(3, 3)
@@ -146,11 +329,10 @@ script = ExtResource("7_ff2ca")
 [node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
 position = Vector2(918, 277)
 scale = Vector2(1.62912, 1.62912)
-tileMap = NodePath("")
+tileMap = NodePath("../TileMap")
 
-[node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItems") instance=ExtResource("10_exj4u")]
+[node name="Shop" parent="Y Sort" instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
-shopItems = [NodePath("1_bad"), NodePath("2_trash"), NodePath("3_worst")]
 chanceWeight = Array[int]([1, 1, 1])
 
 [node name="Respawn Token Shop Item" parent="Y Sort/Shop" instance=ExtResource("13_gt3xo")]
@@ -178,18 +360,23 @@ Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
+Speed = null
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
+Speed = null
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
+Speed = null
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(563, -35)
+Speed = null
 
 [node name="Chest" parent="Y Sort" instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
+chestLootTable = null
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Y Sort"]
 color = Color(0.619608, 0.564706, 0.564706, 1)
@@ -202,6 +389,7 @@ position = Vector2(600, 250)
 
 [node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
 position = Vector2(338, 327)
+moveSpeed = null
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(500, 250)

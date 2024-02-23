@@ -12,7 +12,7 @@ public partial class CoinsLabel : Label {
     
 	public override void _ExitTree() => RunData.Coins.ValueChanged -= UpdateCoinValue;
  
-    private string CustomText(int value) => $"Coins: {value}";
+    private string CustomText(int value) => $" x{value}";
 
     private void UpdateCoinValue(int newValue) {
         Text = CustomText(newValue);

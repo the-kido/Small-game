@@ -49,9 +49,8 @@ shape = SubResource("RectangleShape2D_ck6td")
 
 [node name="GUI" type="Node" parent="."]
 
-[node name="Camera" parent="GUI" node_paths=PackedStringArray("tileMap") instance=ExtResource("2_xg7am")]
+[node name="Camera" parent="GUI" instance=ExtResource("2_xg7am")]
 position = Vector2(8, 473)
-tileMap = NodePath("")
 
 [node name="Area2D" type="Area2D" parent="GUI"]
 position = Vector2(333.233, 747.416)

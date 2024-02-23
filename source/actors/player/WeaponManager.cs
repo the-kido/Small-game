@@ -35,7 +35,6 @@ public partial class WeaponManager : Node2D { // Also called "hand"
         dataSaver = new(() => new("Weapons", SavedWeapons));
 
         Load(player);
-        
         reloadVisual.Init(this);
 
         player.classManager.ClassSwitched += SetToDefaultWeapon; 
