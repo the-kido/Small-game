@@ -180,14 +180,15 @@ radius = 6.69992
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_53p3x")
+doors = null
 
 [node name="Learn freeze orbs" type="Node" parent="Level"]
 script = ExtResource("2_wrsh5")
 runDataEnum = 1
 
-[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
+[node name="EnemyWaveEvent" type="Node" parent="Level"]
 script = ExtResource("3_ktacb")
-wave = NodePath("../../Y Sort/EnemyWave")
+wave = null
 
 [node name="LearnResourceEvent" type="Node" parent="Level"]
 script = ExtResource("2_wrsh5")
@@ -198,13 +199,16 @@ script = ExtResource("2_wh8mw")
 
 [node name="DialogueLineConversationItem" type="Node" parent="Level/ConversationEvent"]
 script = ExtResource("4_bpiwe")
+text = "afwa"
 portrait = ExtResource("5_idwx8")
 
-[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent" node_paths=PackedStringArray("character")]
+[node name="CharacterActionConversationItem" type="Node" parent="Level/ConversationEvent"]
 script = ExtResource("2_1lkkp")
-character = NodePath("")
 animationName = &"dancing"
+playAmbiently = null
 loopTime = 3.0
+moveToPosition = null
+character = null
 
 [node name="ChangeSceneEvent" type="Node" parent="Level"]
 script = ExtResource("7_5x86b")
@@ -220,12 +224,12 @@ scale = Vector2(11.387, 11.387)
 position = Vector2(37.0231, 14.4371)
 sprite_frames = SubResource("SpriteFrames_xfpdg")
 
-[node name="Door" type="StaticBody2D" parent="Y Sort/Testing" node_paths=PackedStringArray("doorAnimation")]
+[node name="Door" type="StaticBody2D" parent="Y Sort/Testing"]
 position = Vector2(37.0287, 10.9113)
 scale = Vector2(0.0878193, 0.0878193)
 collision_mask = 2
 script = ExtResource("11_dgd62")
-doorAnimation = NodePath("../AnimationPlayer")
+doorAnimation = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Y Sort/Testing/Door"]
 position = Vector2(0, -47.682)
@@ -238,13 +242,13 @@ libraries = {
 "": SubResource("AnimationLibrary_5674j")
 }
 
-[node name="DungeonDoor" type="Area2D" parent="Y Sort/Testing" node_paths=PackedStringArray("door")]
+[node name="DungeonDoor" type="Area2D" parent="Y Sort/Testing"]
 position = Vector2(39.7394, 13.5166)
 scale = Vector2(0.0878194, 0.0878194)
 collision_mask = 2
 script = ExtResource("12_doowa")
 goToRegion = 4
-door = NodePath("../Door")
+door = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Y Sort/Testing/DungeonDoor"]
 position = Vector2(56.0682, 14.4832)
@@ -311,73 +315,85 @@ position = Vector2(199, 146)
 y_sort_enabled = true
 script = ExtResource("7_0r8k2")
 
-[node name="Weird enemy" parent="Y Sort/EnemyWave" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("8_qk2u3")]
+[node name="Weird enemy" parent="Y Sort/EnemyWave" instance=ExtResource("8_qk2u3")]
 z_as_relative = true
 y_sort_enabled = false
 position = Vector2(839, 275)
-animationPlayer = NodePath("")
+pathfinderComponent = null
+animationPlayer = null
+Effect = null
+DamageableComponent = null
+sprite = null
+CollisionShape = null
 
 [node name="PlayerManager" type="Node2D" parent="Y Sort"]
 y_sort_enabled = true
 position = Vector2(588, 347)
 script = ExtResource("7_ff2ca")
 
-[node name="Camera" parent="Y Sort" node_paths=PackedStringArray("tileMap") instance=ExtResource("8_3vv2j")]
+[node name="Camera" parent="Y Sort" instance=ExtResource("8_3vv2j")]
 position = Vector2(918, 277)
 scale = Vector2(1.62912, 1.62912)
-tileMap = NodePath("../TileMap")
+tileMap = null
 
-[node name="Shop" parent="Y Sort" node_paths=PackedStringArray("shopItemAnchorsParent", "animationPlayer") instance=ExtResource("10_exj4u")]
+[node name="Shop" parent="Y Sort" instance=ExtResource("10_exj4u")]
 position = Vector2(348, 236)
+shopItemAnchorsParent = null
+animationPlayer = null
 chanceWeight = Array[int]([1, 1, 1])
-shopItemAnchorsParent = NodePath("")
-animationPlayer = NodePath("")
 
-[node name="Respawn Token Shop Item" parent="Y Sort/Shop" node_paths=PackedStringArray("interactable") instance=ExtResource("13_gt3xo")]
+[node name="Respawn Token Shop Item" parent="Y Sort/Shop" instance=ExtResource("13_gt3xo")]
 position = Vector2(-39, 113.333)
-interactable = NodePath("")
+interactable = null
 Price = 15
 
-[node name="Interactable" parent="Y Sort/Shop/Respawn Token Shop Item" index="0" node_paths=PackedStringArray("range")]
-range = NodePath("")
+[node name="Interactable" parent="Y Sort/Shop/Respawn Token Shop Item" index="0"]
+range = null
 
-[node name="PotionShopItem" parent="Y Sort/Shop" node_paths=PackedStringArray("interactable") instance=ExtResource("13_hpsnk")]
+[node name="PotionShopItem" parent="Y Sort/Shop" instance=ExtResource("13_hpsnk")]
 position = Vector2(-2.33333, 111.333)
+interactable = null
 HealAmount = 10
-interactable = NodePath("")
 Price = 10
 
-[node name="1_bad" parent="Y Sort/Shop" node_paths=PackedStringArray("interactable") instance=ExtResource("11_jx2oq")]
+[node name="1_bad" parent="Y Sort/Shop" instance=ExtResource("11_jx2oq")]
 position = Vector2(36, 113.333)
+interactable = null
 chestLootTable = 1
-interactable = NodePath("")
 Price = 23
 
-[node name="2_trash" parent="Y Sort/Shop" node_paths=PackedStringArray("interactable") instance=ExtResource("11_jx2oq")]
+[node name="2_trash" parent="Y Sort/Shop" instance=ExtResource("11_jx2oq")]
+interactable = null
 chestLootTable = 1
-interactable = NodePath("")
 Price = 3
 
-[node name="3_worst" parent="Y Sort/Shop" node_paths=PackedStringArray("interactable") instance=ExtResource("11_jx2oq")]
+[node name="3_worst" parent="Y Sort/Shop" instance=ExtResource("11_jx2oq")]
 position = Vector2(-82.6667, 25)
+interactable = null
 chestLootTable = 1
-interactable = NodePath("")
 Price = 1
 
 [node name="Coin" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(558, 79)
+Speed = null
 
 [node name="Coin2" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(553, 34)
+Speed = null
 
 [node name="Coin3" parent="Y Sort" instance=ExtResource("12_o2gfm")]
 position = Vector2(539, -14)
+Speed = null
 
 [node name="Coin4" parent="Y Sort" instance=ExtResource("12_o2gfm")]
-position = Vector2(563, -35)
+position = Vector2(905, 304)
+Speed = null
 
 [node name="Chest" parent="Y Sort" instance=ExtResource("25_uyrmv")]
 position = Vector2(932, 300)
+interactable = null
+itemShowcase = null
+chestLootTable = null
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Y Sort"]
 color = Color(0.619608, 0.564706, 0.564706, 1)
@@ -387,18 +403,28 @@ environment = ExtResource("14_f2iyh")
 
 [node name="Character" parent="." instance=ExtResource("24_6ob4d")]
 position = Vector2(600, 250)
+AnimationPlayer = null
 
-[node name="Base Enemy" parent="." node_paths=PackedStringArray("animationPlayer") instance=ExtResource("20_tlos5")]
+[node name="Base Enemy" parent="." instance=ExtResource("20_tlos5")]
 position = Vector2(338, 327)
-animationPlayer = NodePath("")
+animationPlayer = null
+Effect = null
+DamageableComponent = null
+CollisionShape = null
+moveSpeed = null
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(500, 250)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("23_qrh1u")
 
-[node name="This guy is agro as frick" parent="." node_paths=PackedStringArray("animationPlayer") instance=ExtResource("28_ygxmk")]
+[node name="This guy is agro as frick" parent="." instance=ExtResource("28_ygxmk")]
 position = Vector2(826, 75)
-animationPlayer = NodePath("")
+pathfinder = null
+animationPlayer = null
+Effect = null
+DamageableComponent = null
+sprite = null
+CollisionShape = null
 
 [editable path="Y Sort/Shop/Respawn Token Shop Item"]

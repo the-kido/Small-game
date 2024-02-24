@@ -1,14 +1,12 @@
 using Godot;
 using KidoUtils;
 using Game.Autoload;
-using Game.Data;
 using Game.LevelContent;
 
 namespace Game.UI;
 
 public partial class MainMenu : Control {
-
-	[Export]
+    [Export]
 	private Button settings;
 	[Export]
 	private Button startGame;
@@ -29,11 +27,12 @@ public partial class MainMenu : Control {
 		};
 	}
 	
+
 	private static PackedScene GetLastLevelLeftOff() {
 		string level = (string) Level.lastLevelPlayedSaver.LoadValue();
 		
 		if (string.IsNullOrEmpty(level))
-			level = "res://assets/levels/debug/spawn.tscn"; 
+			level = Level.FIRST_LEVEL_PATH; 
 
 		return ResourceLoader.Load<PackedScene>(level);
 	}

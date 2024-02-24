@@ -27,8 +27,9 @@ public partial class Level : Node {
 	private List<LevelCriteria> levelCriterion;
 
 	// Remembers the last level the player was in.
-	public static readonly DataSaver lastLevelPlayedSaver = new( () => new("LastLevel", LastLevelFilePath));
 	public static string LastLevelFilePath {get; private set;}
+	public static readonly DataSaver lastLevelPlayedSaver = 
+		new("LastLevel", () => LastLevelFilePath, () => LastLevelFilePath = FIRST_LEVEL_PATH);
 	
 	public LevelSwitchRegion GetLinkedDoor(string name) {
 		
@@ -41,7 +42,9 @@ public partial class Level : Node {
 		return null;
 	}
 
-    static readonly RegionalSaveable regionalSaveable = new(() => new("LevelCompletions", LevelCompletions));
+    static readonly RegionDataSaver regionalSaveable = 
+		new("LevelCompletions", () => LevelCompletions, () => LevelCompletions = new());
+	
 	public override void _Ready() {
 		levelCriterion = GetLevelCriterion();
 
@@ -103,5 +106,7 @@ public partial class Level : Node {
 	/// </summary>
 	public static event Action LevelProcessedFrame;
 	public override void _Process(double delta) => LevelProcessedFrame?.Invoke(); 
+
+	public static readonly string FIRST_LEVEL_PATH = "res://assets/levels/debug/spawn.tscn";
 }
 

@@ -6,7 +6,7 @@ using Game.SealedContent;
 namespace Game.Data;
 
 public class PlayerClassManager {
-    private DataSaver dataSaver;
+    private UserDataSaver dataSaver;
     
     readonly Player player;
 
@@ -14,7 +14,8 @@ public class PlayerClassManager {
 
     public PlayerClassManager(Player player) {
         this.player = player;
-        dataSaver = new(() => new("PlayerClass", playerClass?.GetType().ToString()));
+        dataSaver = new("PlayerClass", () => playerClass?.GetType().ToString());
+        
         ClassSwitched = null;
     }
 

@@ -17,7 +17,9 @@ public partial class Condition : Resource {
     
     // Required for saving the conditions
     public static Dictionary<string, bool> All {get; private set;} = new();
-    readonly static DataSaver dataSaver = new(() => new("Conditions", All));
+    readonly static DataSaver dataSaver = 
+        new("Conditions",  () => All, () => All = new());
+
     private static void Load() => All = (Dictionary<string,bool>) dataSaver.LoadValue();
     private bool GetAchieved() => All.ContainsKey(Name) && All[Name];
     

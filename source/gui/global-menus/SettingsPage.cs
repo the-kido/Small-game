@@ -9,7 +9,7 @@ public class Settings {
     public static Settings CurrentSettings = new();
 
     static Settings() {
-        var data = (Godot.Collections.Array) dataSaver.LoadValue();
+        var data = (Godot.Collections.Array) settingsSaver.LoadValue();
         
         if (data.ToString() == "[]") return;
 
@@ -31,7 +31,9 @@ public class Settings {
 
     public int languageSelected = 0;
 
-    static readonly DataSaver dataSaver = new(() => new("Settings", CurrentSettings.Serialize()));
+    static readonly UserDataSaver settingsSaver = 
+        new("Settings", () => CurrentSettings.Serialize());
+
 }
 
 public partial class SettingsPage : Control, IMenu {

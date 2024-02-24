@@ -51,10 +51,10 @@ public abstract class RunData {
     public void Add(int value) => Count += value;
     public void Set(int value) => Count = value;
 
-    readonly DataSaver saveable;
+    readonly DataSaver saver;
     public RunData() {
-        saveable = new(() => new(ValueName, _count));
-        _count = (int) saveable.LoadValue();
+        saver = new(ValueName, () => _count, () => _count = 0);
+        _count = (int) saver.LoadValue();
     }
 }
 

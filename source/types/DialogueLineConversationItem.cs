@@ -51,7 +51,7 @@ public class DialoguePlayer {
     public void Start(DialogueLineConversationItem nextLine) {
         this.nextLine = nextLine;
 
-        if (nextLine.charactersPerSecond is 0) throw new ArgumentOutOfRangeException("The charactersPerSecond exported field for DialougeLineConversationItem must be greater than 0!");
+        if (nextLine.charactersPerSecond is 0) throw new ArgumentOutOfRangeException(nextLine.charactersPerSecond.ToString(), "The charactersPerSecond exported field for DialougeLineConversationItem must be greater than 0!");
         if (nextLine.portrait is null) throw new NullReferenceException("There was no portrait set for this dialogue line!");
         
         bar.Show(true);

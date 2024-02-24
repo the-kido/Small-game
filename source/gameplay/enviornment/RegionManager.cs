@@ -57,8 +57,10 @@ public static class RegionManager {
 		}
 	}
 
-	static readonly DataSaver currentRegionSaver = new(() => new("CurrentRegion", CurrentRegion.ToString()));
-    static readonly DataSaver regionsWonSaver = new(() => new("RegionsWon", RegionsWon));
+	static readonly DataSaver currentRegionSaver = 
+		new("CurrentRegion", () => CurrentRegion.ToString(), () => CurrentRegion = Regions.Dungeon);
+    static readonly DataSaver regionsWonSaver = 
+		new("RegionsWon", () => RegionsWon, () => RegionsWon = new() {false, false, false, false});
     
 	static RegionManager() {
 		string loadedRegion = (string) currentRegionSaver.LoadValue();
@@ -74,8 +76,7 @@ public static class RegionManager {
 		public readonly Godot.Collections.Dictionary<string, Variant> savedData = new();
         readonly DataSaver dataSaver;
 		public Region(Regions regions, string firstLevelPath) {
-
-			dataSaver = new(() => new(regions.ToString(), savedData));
+			dataSaver = new(regions.ToString(), () => savedData, () => ResetCurrentRegionData());
 			savedData = (Godot.Collections.Dictionary<string, Variant>) dataSaver.LoadValue();
 			
 			Level.LevelStarted += () => {

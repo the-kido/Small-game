@@ -22,10 +22,11 @@ public partial class Chest : AnimatedSprite2D {
 
 	private static Godot.Collections.Dictionary<string, bool> ChestOpened = new();
 	
-	public static RegionalSaveable regionalSaveable => new(() => new("Chest States", ChestOpened));
+	static readonly RegionDataSaver chestStatesSaver = 
+		new("ChestStates", () => ChestOpened, () => ChestOpened = new());
 
 	private bool LoadChestOpened() {
-		var loadedStuff = regionalSaveable.LoadValue();
+		var loadedStuff = chestStatesSaver.LoadValue();
 		ChestOpened = (Godot.Collections.Dictionary<string, bool>) loadedStuff;
 		return ChestOpened.ContainsKey(GetPath()) && ChestOpened[GetPath()];
 	}

@@ -15,7 +15,9 @@ public partial class ResourcesViewer : Control {
 	static ResourcesViewer viewer;
 
 	internal static List<ViewedResource> allResources = new();
-	static readonly DataSaver discoveredResourceSaver = new(() => new("Discovered Resources", discoveredResources));
+	static readonly DataSaver discoveredResourceSaver = 
+		new("DiscoveredResources", () => discoveredResources, () => discoveredResources = new());
+	
 	static Godot.Collections.Array<string> discoveredResources = new();
 
 	public static void DiscoverNewResource(RunDataEnum runData) {
@@ -86,7 +88,7 @@ public partial class ResourcesViewer : Control {
 		RunData.GetRunDataFromEnum(newResource.runData).ValueChanged += (_) => UpdateText(newResource);
 		instancedResources.Add(newResource, label);
 
-		OnResourcesChanged();
+		CallDeferred("OnResourcesChanged");
     }
 
 	private static void UpdateText(ViewedResource viewedResource) {

@@ -10,9 +10,12 @@ public record SaveData (string Key, Variant Value);
 
 public class DataSaver {
     public readonly Func<SaveData> getSaveData;
+    public readonly Action resetValue;
 
-    public DataSaver(Func<SaveData> getSaveData) {
-		this.getSaveData = getSaveData;
+    public DataSaver(string key, Func<Variant> getValue, Action resetValue) {
+		this.resetValue = resetValue;
+		getSaveData = () => new(key, getValue());
+
 		RegisterSavedValue();
     }
 	
@@ -25,10 +28,14 @@ public class DataSaver {
 		// Then add this refreshed one		
 		GameDataService.fileWritter.DynamicallySavedItems.Add(this);
 	}
+
+	internal void Reset() {
+		// getSaveData().Value = LoadValue();
+	}
 }
 
-public class RegionalSaveable : DataSaver {
-    public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {}
+public class RegionDataSaver : DataSaver {
+    public RegionDataSaver(string key, Func<Variant> getValue, Action resetValue) : base(key, getValue, resetValue) {}
     
 	public override Variant LoadValue() => RegionManager.GetRegionClass(RegionManager.CurrentRegion).savedData[getSaveData().Key];
 
@@ -43,7 +50,7 @@ public class RegionalSaveable : DataSaver {
 }
 
 public class UserDataSaver : DataSaver {
-    public UserDataSaver(Func<SaveData> getSaveData) : base(getSaveData) {}
+    public UserDataSaver(string key, Func<Variant> getValue, Action resetValue = null) : base(key, getValue, resetValue) {}
 
     public override Variant LoadValue() => UserDataService.fileWritter.GetData().TryGetValue(getSaveData().Key, out Variant value) ? value : default;
 
@@ -98,6 +105,9 @@ public class FileWritter {
 	public void ResetFile() {
 		using FileAccess saveFile = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Write);
         saveFile.StoreLine("");
+
+		DynamicallySavedItems.ForEach( item => item.resetValue() );
+
 	}
 
 	public Dictionary<string, Variant> GetData() {
@@ -124,7 +134,7 @@ public class FileWritter {
 
 
 public static class GameDataService {
-	const bool USING_DEBUG = true;
+	const bool USING_DEBUG = false;
 	const string SAVE_FILE = "user://savegame.json";
 	const string DEBUG_FILE = "user://copy.json";
 

@@ -5,6 +5,7 @@ using Game.Actors;
 using Game.Data;
 using Game.Players.Inputs;
 using System.Linq;
+using Game.SealedContent;
 
 namespace Game.Players.Mechanics;
 
@@ -32,7 +33,7 @@ public partial class WeaponManager : Node2D { // Also called "hand"
         player.InputController.WeaponController = new(this, player);
         WeaponController = player.InputController.WeaponController;
 
-        dataSaver = new(() => new("Weapons", SavedWeapons));
+        dataSaver = new("Weapons", () => SavedWeapons, () => SetToDefaultWeapon(new Normal()));
 
         Load(player);
         reloadVisual.Init(this);

@@ -40,7 +40,7 @@ public partial class ShieldManager : Node2D {
     }
 
     public void Init(Player player) {
-        dataSaver = new(() => new("Shield", HeldShield?.Resource.ResourcePath));
+        dataSaver = new("Shield", () => HeldShield?.Resource.ResourcePath, () => HeldShield = null);
         playerDamageableComponent = player.DamageableComponent;
         player.InputController.ShieldInput = new(player);
 

@@ -17,6 +17,8 @@ public partial class RegionDoor : Area2D {
         BodyEntered += SwitchScene; 
         int index = (int) goToRegion - 1;
         
+        
+        if (door is null) return;
         if (index < 0 && goToRegion is Regions.Dungeon) door.Open();
         else if (RegionManager.RegionsWon[index]) door.Open();
     }
