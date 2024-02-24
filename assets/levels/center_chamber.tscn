@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://yy2tuyp31grj"]
+[gd_scene load_steps=16 format=3 uid="uid://yy2tuyp31grj"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_coemf"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="1_mos04"]
@@ -9,136 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://dafgd73bj50my" path="res://assets/misc/player_manager.tscn" id="3_ue2i4"]
 [ext_resource type="Resource" uid="uid://dkhmndlw03uo5" path="res://assets/portraits/none.tres" id="3_vh84y"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="4_ko3uk"]
-[ext_resource type="Texture2D" uid="uid://b5pmh6td3pwl5" path="res://assets/enviornment/doors/door_open_new.png" id="6_sybik"]
 [ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/misc/light.png" id="6_yavct"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="7_e0jkn"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="8_4wtvt"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/Door.cs" id="9_4uuf4"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r0q4t"]
-atlas = ExtResource("6_sybik")
-region = Rect2(0, 0, 4, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2ksi0"]
-atlas = ExtResource("6_sybik")
-region = Rect2(4, 0, 4, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jqd55"]
-atlas = ExtResource("6_sybik")
-region = Rect2(8, 0, 4, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kjlhm"]
-atlas = ExtResource("6_sybik")
-region = Rect2(12, 0, 4, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u2a0c"]
-atlas = ExtResource("6_sybik")
-region = Rect2(16, 0, 4, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fhgh2"]
-atlas = ExtResource("6_sybik")
-region = Rect2(20, 0, 4, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_f1hmu"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_r0q4t")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2ksi0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jqd55")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kjlhm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u2a0c")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fhgh2")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqavo"]
-size = Vector2(20, 147)
-
-[sub_resource type="Animation" id="Animation_b11w6"]
-resource_name = "Open"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Testing/AnimatedSprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6, 0.8, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../Testing/Door/CollisionShape2D:shape:size")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(20, 147), Vector2(20, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../Testing/Door/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 30), Vector2(0, -47.682)]
-}
-
-[sub_resource type="Animation" id="Animation_gff7p"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Testing/Door/CollisionShape2D:shape:size")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(20, 147)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../Testing/Door/CollisionShape2D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -47.682)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5674j"]
-_data = {
-"Open": SubResource("Animation_b11w6"),
-"RESET": SubResource("Animation_gff7p")
-}
+[ext_resource type="PackedScene" uid="uid://cima7jwjkwxoe" path="res://assets/enviornment/doors/chamber_door_side.tscn" id="8_rbhrh"]
 
 [sub_resource type="Environment" id="Environment_qgviy"]
 
@@ -192,31 +66,8 @@ tile_set = ExtResource("2_j7ftr")
 format = 2
 layer_0/tile_data = PackedInt32Array(65537, 0, 0, 65538, 65536, 0, 65539, 65536, 0, 65540, 65536, 0, 65541, 65536, 0, 65542, 65536, 0, 65543, 65536, 0, 65544, 65536, 0, 65545, 65536, 0, 65546, 65536, 0, 65547, 65536, 0, 65548, 65536, 0, 65549, 65536, 0, 65550, 65536, 0, 65551, 65536, 0, 65552, 65536, 0, 65553, 65536, 0, 65554, 65536, 0, 65555, 65536, 0, 65556, 131072, 0, 196630, 65536, 0, 196629, 65536, 0, 196631, 65536, 0, 262142, 65536, 0, 262143, 65536, 0, 196608, 65536, 0, 655358, 65536, 0, 655359, 65536, 0, 589824, 65536, 0, 589825, 65536, 0, 589844, 65536, 0, 589845, 65536, 0, 589846, 65536, 0, 589847, 65536, 0, 589826, 262144, 0, 196609, 262144, 0, 589843, 327680, 0, 196628, 327680, 0, 131092, 131072, 1, 458771, 262144, 1, 524307, 131072, 1, 917523, 131072, 1, 983042, 0, 1, 983059, 131072, 1, 524290, 0, 1, 458754, 327680, 1, 131073, 0, 1, 851987, 262144, 1, 1310734, 131072, 1, 1245198, 131072, 1, 1179662, 262144, 1, 1376265, 0, 1, 1310729, 0, 1, 1245193, 0, 1, 1179657, 327680, 1, 589821, 1, 0, 589822, 65537, 0, 589823, 65537, 0, 524288, 65537, 0, 524289, 65537, 0, 196605, 1, 0, 131069, 0, 1, 65533, 0, 1, 131093, 65537, 0, 524308, 65537, 0, 131072, 65537, 0, 131096, 131073, 0, 524312, 131073, 0, 458776, 131072, 1, 1, 1, 0, 20, 131073, 0, 2, 65537, 0, 3, 65537, 0, 4, 65537, 0, 5, 65537, 0, 6, 65537, 0, 7, 65537, 0, 8, 65537, 0, 9, 65537, 0, 10, 65537, 0, 11, 65537, 0, 12, 65537, 0, 13, 65537, 0, 14, 65537, 0, 15, 65537, 0, 16, 65537, 0, 17, 65537, 0, 18, 65537, 0, 19, 65537, 0, 131094, 65537, 0, 131095, 65537, 0, 524309, 65537, 0, 524310, 65537, 0, 524311, 65537, 0, 196606, 65537, 0, 196607, 65537, 0, -65535, 0, 1, -65516, 131072, 1, 1376271, 131072, 0, 1048583, 131072, 1, 65560, 131072, 1, 24, 131072, 1, 524285, 0, 1, 1376270, 131072, 1)
 
-[node name="Testing" type="Node2D" parent="."]
-position = Vector2(632.417, 310.604)
-scale = Vector2(11.387, 11.387)
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Testing"]
-position = Vector2(37.0231, 14.4371)
-sprite_frames = SubResource("SpriteFrames_f1hmu")
-
-[node name="Door" type="StaticBody2D" parent="Testing" node_paths=PackedStringArray("doorAnimation")]
-position = Vector2(37.0287, 10.9113)
-scale = Vector2(0.0878193, 0.0878193)
-collision_mask = 2
-script = ExtResource("9_4uuf4")
-doorAnimation = NodePath("../AnimationPlayer")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Testing/Door"]
-position = Vector2(0, -47.682)
-shape = SubResource("RectangleShape2D_hqavo")
-debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Testing"]
-root_node = NodePath("../../Level")
-libraries = {
-"": SubResource("AnimationLibrary_5674j")
-}
+[node name="Testing" parent="." node_paths=PackedStringArray("doorAnimation") instance=ExtResource("8_rbhrh")]
+doorAnimation = NodePath("Chamber Door/AnimationPlayer")
 
 [node name="Player Manager" parent="." instance=ExtResource("3_ue2i4")]
 position = Vector2(708, 362)
@@ -240,26 +91,33 @@ texture = ExtResource("6_yavct")
 [node name="Chandelier" parent="." instance=ExtResource("7_e0jkn")]
 position = Vector2(722, 426)
 
-[node name="DungeonDoor" type="Area2D" parent="." node_paths=PackedStringArray("door")]
+[node name="Dungeon teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 464.517)
 collision_mask = 2
 script = ExtResource("8_4wtvt")
-goToRegion = null
-door = NodePath("../Testing/Door")
+door = NodePath("Dungeon Door")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DungeonDoor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dungeon teleporter"]
 position = Vector2(56.0682, 14.4832)
 shape = SubResource("RectangleShape2D_rftcp")
 debug_color = Color(0.470588, 0.443137, 1, 0)
 
-[node name="DungeonDoor2" type="Area2D" parent="." node_paths=PackedStringArray("door")]
+[node name="Dungeon Door" parent="Dungeon teleporter" node_paths=PackedStringArray("doorAnimation") instance=ExtResource("8_rbhrh")]
+position = Vector2(-32.9301, -12.517)
+doorAnimation = NodePath("Chamber Door/AnimationPlayer")
+
+[node name="Nature teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 193)
 collision_mask = 2
 script = ExtResource("8_4wtvt")
 goToRegion = 1
-door = NodePath("../Testing/Door")
+door = NodePath("Nature Region Door")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DungeonDoor2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Nature teleporter"]
 position = Vector2(56.0682, 26)
 shape = SubResource("RectangleShape2D_rftcp")
 debug_color = Color(0.470588, 0.443137, 1, 0)
+
+[node name="Nature Region Door" parent="Nature teleporter" node_paths=PackedStringArray("doorAnimation") instance=ExtResource("8_rbhrh")]
+position = Vector2(-29.9301, 21)
+doorAnimation = NodePath("Chamber Door/AnimationPlayer")
