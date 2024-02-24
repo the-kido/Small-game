@@ -41,41 +41,32 @@ layer_0/tile_data = PackedInt32Array(131074, 65536, 1, 131075, 65536, 1, 196612,
 
 [node name="Node" type="Node" parent="."]
 
-[node name="Camera" parent="Node" node_paths=PackedStringArray("tileMap") instance=ExtResource("7_5n7c8")]
+[node name="Camera" parent="Node" instance=ExtResource("7_5n7c8")]
 position = Vector2(682, 544)
-tileMap = NodePath("")
 
-[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("interactable")]
+[node name="Node2D" type="Node2D" parent="."]
 position = Vector2(300, 854)
 script = ExtResource("7_cmmw1")
-interactable = NodePath("")
 
 [node name="Sprite2D" type="Sprite2D" parent="Node2D"]
 texture = ExtResource("8_osgkk")
 
-[node name="Interactable" parent="Node2D" node_paths=PackedStringArray("range") instance=ExtResource("9_pbc07")]
+[node name="Interactable" parent="Node2D" instance=ExtResource("9_pbc07")]
 position = Vector2(-2, -86)
-range = NodePath("")
 
 [node name="Player Manager" type="Node2D" parent="."]
 position = Vector2(714, 799)
 script = ExtResource("7_6y6ar")
 
-[node name="Chest" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
+[node name="Chest" parent="." instance=ExtResource("9_f61de")]
 position = Vector2(361, 379)
 chestLootTable = 1
-interactable = NodePath("")
-itemShowcase = NodePath("")
 
-[node name="Chest2" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
+[node name="Chest2" parent="." instance=ExtResource("9_f61de")]
 position = Vector2(236, 479)
-interactable = NodePath("")
-itemShowcase = NodePath("")
 
-[node name="Chest3" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("9_f61de")]
+[node name="Chest3" parent="." instance=ExtResource("9_f61de")]
 position = Vector2(997, 821)
-interactable = NodePath("")
-itemShowcase = NodePath("")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(495, 479)
@@ -87,4 +78,3 @@ shape = SubResource("CircleShape2D_gsuug")
 
 [node name="Coin" parent="." instance=ExtResource("11_fd2vq")]
 position = Vector2(435, 255)
-Speed = 1.0

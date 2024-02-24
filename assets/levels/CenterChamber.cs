@@ -25,10 +25,8 @@ public partial class CenterChamber : Node {
 	public static void NotifyForEnteryAfterWinning() {	
 		int index = (int) RegionManager.CurrentRegion;
 		
-		if (RegionManager.RegionsWon[index]) { 
-			return;
-		}
-
+		if (RegionManager.RegionsWon[index]) return;
+		
 		futureCriterionParentIndex = index;
 	}
 	

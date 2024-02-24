@@ -13,7 +13,7 @@ public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) 
             if (parent is not null)
                 message = $"For child node of {parent.Name}: {message}";
 
-            GD.PushError(message);
+            GD.PushWarning(message);
         }
     }
 
@@ -22,7 +22,7 @@ public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) 
 
     public static void AvoidNullExportedVariables(Node exportedValue, Node exporter) {
         if (exportedValue is null)
-            GD.PushError(Message2(exporter.Name));
+            GD.PushWarning(Message2(exporter.Name));
         
     }
 

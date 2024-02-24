@@ -23,7 +23,7 @@ public class DialoguePlayer {
     }
 
     double lineProgress;
-    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.Text.Length; 
+    private bool IsPhraseFinished => bar.Label.VisibleCharacters >= bar.Label.GetParsedText().Length; 
     char CurrentCharacter => bar.Label.Text[bar.Label.VisibleCharacters];
 
     public void UpdatePortraitImage(double delta) {

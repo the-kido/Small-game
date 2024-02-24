@@ -18,6 +18,7 @@ config/windows_native_icon="res://assets/mythings.ico"
 
 [autoload]
 
+LoadClasses="*res://source/autoload/LoadClasses.cs"
 BulletFactory="*res://source/autoload/bullet_factory.tscn"
 ParticleFactory="*res://source/autoload/ParticleFactory.cs"
 SceneSwitcher="*res://source/autoload/scene_switcher.tscn"

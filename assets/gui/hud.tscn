@@ -632,10 +632,10 @@ offset_bottom = -8.03001
 grow_horizontal = 2
 grow_vertical = 2
 bbcode_enabled = true
-text = "[b] Hello you should not see this [/b]"
+text = "[b]Hello you should not see this[/b]"
 fit_content = true
-visible_characters = 27
-visible_ratio = 0.9
+visible_characters = 30
+visible_ratio = 1.03448
 
 [node name="TextureRect" type="Control" parent="Dialogue Bar/Background"]
 layout_mode = 2

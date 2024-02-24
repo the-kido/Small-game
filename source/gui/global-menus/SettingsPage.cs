@@ -39,13 +39,21 @@ public partial class SettingsPage : Control, IMenu {
     private Button closeButton;
     [Export]
     private OptionButton languageChoice;
+    [Export]
+    Button resetEntireGame;
 
     public Action Disable {get; set;}
     public override void _Ready() {
         closeButton.Pressed += () => Disable?.Invoke();
+        resetEntireGame.Pressed += ResetEntireGame;
 
         languageChoice.ItemSelected += OnLanguageItemSelected; 
         languageChoice.Select(Settings.CurrentSettings.languageSelected);
+    }
+
+    private void ResetEntireGame() {
+        // This is totally broken
+        GameDataService.fileWritter.ResetFile();
     }
 
     private void OnLanguageItemSelected(long longIndex) {

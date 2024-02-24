@@ -26,16 +26,19 @@ public class DataSaver {
 		GameDataService.fileWritter.DynamicallySavedItems.Add(this);
 	}
 }
+
 public class RegionalSaveable : DataSaver {
     public RegionalSaveable(Func<SaveData> getSaveData) : base(getSaveData) {}
     
 	public override Variant LoadValue() => RegionManager.GetRegionClass(RegionManager.CurrentRegion).savedData[getSaveData().Key];
 
 	protected override void RegisterSavedValue() {
-		RegionManager.Region region = RegionManager.GetRegionClass(RegionManager.CurrentRegion);
+		foreach (Regions regions in Enum.GetValues(typeof(Regions))) {
+			RegionManager.Region region = RegionManager.GetRegionClass(regions);
 
-		// Add key if it is not already there
-		if (!region.savedData.ContainsKey(getSaveData().Key)) region.savedData.Add(getSaveData().Key, getSaveData().Value);
+			// Add key if it is not already there
+			if (!region.savedData.ContainsKey(getSaveData().Key)) region.savedData.Add(getSaveData().Key, getSaveData().Value);
+		}
     }
 }
 
@@ -92,6 +95,11 @@ public class FileWritter {
 		saveFile.StoreLine(stringifiedData);
 	}    
 
+	public void ResetFile() {
+		using FileAccess saveFile = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Write);
+        saveFile.StoreLine("");
+	}
+
 	public Dictionary<string, Variant> GetData() {
 		
 		if (!FileExists) {
@@ -116,7 +124,7 @@ public class FileWritter {
 
 
 public static class GameDataService {
-	const bool USING_DEBUG = false;
+	const bool USING_DEBUG = true;
 	const string SAVE_FILE = "user://savegame.json";
 	const string DEBUG_FILE = "user://copy.json";
 

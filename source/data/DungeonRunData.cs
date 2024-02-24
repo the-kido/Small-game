@@ -69,9 +69,9 @@ public static class DungeonRunData {
         static ViewedResource viewedResource;
         public FreezeOrbs() : base() {
             FreezeWave += FreezeOrbMechanic.Freeze;
-            viewedResource = new(
+            viewedResource = new (
                 RunDataEnum.FreezeOrbs,
-                () => $"{_count}",
+                () => $"x{_count}",
                 ResourceLoader.Load<Texture2D>("res://assets/enviornment/pickupables/freeze-charge.png")
             );
         }
@@ -83,9 +83,10 @@ public static class DungeonRunData {
                 if (value >= 3) {
                     FreezeWave?.Invoke();
                     _count = 0;
-                } else {
                     ValueChanged?.Invoke(value);
+                } else {
                     _count = value;
+                    ValueChanged?.Invoke(value);
                 }
             }
         }

@@ -1,11 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://bgfgxlgncsmho"]
+[gd_scene load_steps=17 format=3 uid="uid://bgfgxlgncsmho"]
 
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_fgpcw"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_3wa3g"]
 [ext_resource type="PackedScene" uid="uid://c4qvs3qftka0d" path="res://assets/levels/enviornment.tscn" id="2_8waop"]
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/ConversationEvent.cs" id="2_835k2"]
 [ext_resource type="PackedScene" uid="uid://civihtmkmtef7" path="res://assets/enviornment/y_sort_placeholder.tscn" id="3_37we6"]
+[ext_resource type="Script" path="res://source/types/DialogueLineConversationItem.cs" id="3_blava"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="3_k1clx"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="4_21v4f"]
+[ext_resource type="Resource" uid="uid://dkhmndlw03uo5" path="res://assets/portraits/none.tres" id="4_i1ili"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="7_51kbw"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="8_5mkwa"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/enviornment/pickupables/freeze_charge.tscn" id="9_mgbxg"]
@@ -18,7 +21,14 @@
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_fgpcw")
-doors = null
+
+[node name="ConversationEvent" type="Node" parent="Level"]
+script = ExtResource("2_835k2")
+
+[node name="DialogueLineConversationItem" type="Node" parent="Level/ConversationEvent"]
+script = ExtResource("3_blava")
+text = "Hello [wave] sir! [/wave] Go to sleep."
+portrait = ExtResource("4_i1ili")
 
 [node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_3wa3g")
@@ -36,9 +46,6 @@ layer_0/tile_data = PackedInt32Array(131072, 65536, 1, 65537, 65536, 1, 65536, 6
 [node name="WorldEnvironment" parent="Enviornment" index="2"]
 environment = ExtResource("4_21v4f")
 
-[node name="Camera" parent="Enviornment" index="3" node_paths=PackedStringArray("tileMap")]
-tileMap = NodePath("")
-
 [node name="Y Sort" parent="." instance=ExtResource("3_37we6")]
 
 [node name="Gameplay" parent="Y Sort" instance=ExtResource("3_37we6")]
@@ -52,7 +59,6 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
 position = Vector2(373, 111)
-moveSpeed = null
 
 [node name="EnemyWave2" type="Node2D" parent="Y Sort/Gameplay/Waves"]
 z_as_relative = false
@@ -61,7 +67,6 @@ script = ExtResource("8_5mkwa")
 
 [node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave2" instance=ExtResource("7_51kbw")]
 position = Vector2(238, 123)
-moveSpeed = null
 
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(214, 14)
@@ -74,7 +79,6 @@ position = Vector2(488, 86)
 
 [node name="LevelSwitcher" type="Node" parent="Y Sort/Gameplay/Door 2"]
 script = ExtResource("11_wydy7")
-nextLevel = "res://assets/levels/debug/level_2.tscn"
 
 [node name="Player Manager" parent="Y Sort/Gameplay" instance=ExtResource("11_hjbvo")]
 position = Vector2(338, 86)
@@ -83,6 +87,5 @@ position = Vector2(338, 86)
 
 [node name="Coin" parent="." instance=ExtResource("13_1ia68")]
 position = Vector2(121, 76)
-Speed = null
 
 [editable path="Enviornment"]

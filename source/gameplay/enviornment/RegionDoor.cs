@@ -26,7 +26,6 @@ public partial class RegionDoor : Area2D {
     // if you die, it should not reset the LevelCompleted to false
     private void SwitchScene(Node2D body) {
         if (body is not Player) return;
-
         
         if (goToRegion is Regions.Center) {
             CenterChamber.NotifyForEnteryAfterWinning();
@@ -36,6 +35,7 @@ public partial class RegionDoor : Area2D {
             // Enter the new dungeon 
             Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(RegionManager.GetRegionClass(goToRegion).FirstLevel);
         }
+        
         RegionManager.SetRegion(goToRegion);
     }
 }

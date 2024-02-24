@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://source/gui/MainMenu.cs" id="1_yje07"]
 [ext_resource type="Texture2D" uid="uid://b70rm5564h00k" path="res://assets/gui/temp.png" id="2_r8dv0"]
 
-[node name="Main Menu" type="Control" node_paths=PackedStringArray("settings")]
+[node name="Main Menu" type="Control" node_paths=PackedStringArray("settings", "startGame")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_yje07")
 settings = NodePath("Settings")
+startGame = NodePath("Panel/Button")
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="."]
@@ -55,5 +56,3 @@ scale = Vector2(0.345931, 0.345931)
 icon = ExtResource("2_r8dv0")
 icon_alignment = 1
 expand_icon = true
-
-[connection signal="button_down" from="Panel/Button" to="." method="OnButtonDown"]

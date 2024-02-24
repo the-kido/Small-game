@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Game.Data;
 using Godot;
 
@@ -21,7 +20,8 @@ public static class RegionManager {
 		{Regions.Dungeon, new Region(Regions.Dungeon, "res://assets/levels/region-1/Level 1.tscn")},
 		{Regions.Nature, new Region(Regions.Nature, "res://assets/levels/debug/level_1.tscn")},
 		{Regions.Tech, new Region(Regions.Tech, "res://assets/levels/debug/level_2.tscn")},
-		{Regions.Ice, new Region(Regions.Ice, "res://assets/levels/debug/level_3.tscn")}
+		{Regions.Ice, new Region(Regions.Ice, "res://assets/levels/debug/level_3.tscn")},
+		{Regions.Center, new Region(Regions.Center, "res://assets/levels/center_chamber.tscn")} // Here to fix TypeInitializationError
 	};
 	
 	public static void RegionWon() {
@@ -30,13 +30,24 @@ public static class RegionManager {
 		GameDataService.Save();
 	}
 
+	/// <summary>
+	/// Called when the first level of a new region is loaded.
+	/// </summary>
 	public static event Action<Regions> RegionSwitched; 
+
+	static readonly Action<Regions> levelStartedHandler = (goToRegion) => {
+		RegionSwitched?.Invoke(goToRegion);
+		Level.LevelStarted -= () => levelStartedHandler(goToRegion); // Detach the handler
+	};
+
 	public static void SetRegion(Regions goToRegion) {
 		CurrentRegion = goToRegion;
 
-		RegionSwitched?.Invoke(goToRegion);
+		Level.LevelStarted += () => levelStartedHandler(goToRegion);
+
 		GameDataService.Save(); // Update save file to reflect the change in region.
 	}
+
 
 	public static void ResetCurrentRegionData() {
 		Region region = RegionClasses[CurrentRegion];

@@ -1,5 +1,6 @@
-[gd_scene load_steps=16 format=3 uid="uid://bm76pg7q1cac3"]
+[gd_scene load_steps=17 format=3 uid="uid://bm76pg7q1cac3"]
 
+[ext_resource type="Script" path="res://source/global-classes/level-criteria/LearnResourceEvent.cs" id="1_lubmp"]
 [ext_resource type="PackedScene" uid="uid://by0owtwfhbrt2" path="res://assets/enemies/Base Enemy.tscn" id="1_tonpy"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_xwy0o"]
 [ext_resource type="Script" path="res://source/global-classes/level-criteria/EnemyWaveEvent.cs" id="2_w27io"]
@@ -23,6 +24,10 @@ metadata/_edit_horizontal_guides_ = [464.0]
 [node name="Level Info" type="Node" parent="."]
 script = ExtResource("1_xwy0o")
 doors = [NodePath("../Node2D/Enivornment/Door 1")]
+
+[node name="LearnResourceEvent" type="Node" parent="Level Info"]
+script = ExtResource("1_lubmp")
+runDataEnum = 1
 
 [node name="Node" type="Node" parent="Level Info" node_paths=PackedStringArray("wave")]
 script = ExtResource("2_w27io")
@@ -68,14 +73,9 @@ layer_0/tile_data = PackedInt32Array(65538, 0, 0, 65539, 65536, 0, 65540, 65536,
 
 [node name="Door 1" parent="Node2D/Enivornment" instance=ExtResource("17_dhp43")]
 position = Vector2(1061, 362)
-doorSprite = Object(AnimatedSprite2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":false,"y_sort_enabled":true,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(-19, -5),"rotation":0.0,"scale":Vector2(-5, 5),"skew":0.0,"sprite_frames":null,"animation":&"open","autoplay":"","frame":8,"frame_progress":1.0,"speed_scale":0.1,"centered":true,"offset":Vector2(0, 0),"flip_h":false,"flip_v":false,"script":null)
-
-levelSwitcher = Object(Node,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","script":ExtResource("12_48p24"),"nextLevel":"res://assets/levels/debug/level_2.tscn")
-
 
 [node name="Level Switchwer" type="Node" parent="Node2D/Enivornment/Door 1"]
 script = ExtResource("12_48p24")
-nextLevel = "res://assets/levels/debug/level_2.tscn"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Node2D/Enivornment"]
 environment = ExtResource("12_2c1uv")
@@ -110,12 +110,15 @@ y_sort_enabled = true
 position = Vector2(11, -7)
 script = ExtResource("15_vbrl5")
 
-[node name="Hillbilly" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
-position = Vector2(448, 829)
-
-[node name="Base Enemy2" parent="Node2D/Waves/wave 1" instance=ExtResource("1_tonpy")]
-position = Vector2(776, 137)
-scale = Vector2(3.12, 3.12)
-
-[node name="Weird enemy" parent="Node2D/Waves/wave 1" instance=ExtResource("4_rymms")]
+[node name="Weird enemy" parent="Node2D/Waves/wave 1" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("4_rymms")]
 position = Vector2(426, 244)
+animationPlayer = NodePath("")
+
+[node name="Base Enemy2" parent="Node2D/Waves" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_tonpy")]
+position = Vector2(787, 130)
+scale = Vector2(3.12, 3.12)
+animationPlayer = NodePath("")
+
+[node name="Hillbilly" parent="Node2D/Waves" node_paths=PackedStringArray("animationPlayer") instance=ExtResource("1_tonpy")]
+position = Vector2(459, 822)
+animationPlayer = NodePath("")

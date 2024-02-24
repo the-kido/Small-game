@@ -30,8 +30,6 @@ public partial class HUD : Control {
     [Export]
     public HUDCover HUDCover;
     
-    public void Cover(bool enable) {
-        HUDCover.Enable(enable);
-    }
+    public void Cover(bool enable) => HUDCover.Enable(enable);
 }
 
