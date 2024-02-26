@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://bbq82o8g6ohd2"]
 
-[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="1_1pfbd"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionSwitcher.cs" id="1_1pfbd"]
 [ext_resource type="Script" path="res://source/gameplay/enviornment/Level.cs" id="1_mhyby"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="3_801g8"]
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="7_5n7c8"]

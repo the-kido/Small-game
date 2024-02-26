@@ -15,7 +15,7 @@ public partial class ValueCondition : Condition {
         RunData.GetRunDataFromEnum(runData).ValueChanged += CheckForAchievement;
     }
     
-    private void CheckForAchievement(int newValue) {
+    private void CheckForAchievement(int old, int newValue) {
         if (newValue >= valueToAchieve) 
             Achieve();
     }

@@ -14,7 +14,7 @@ public partial class CoinsLabel : Label {
  
     private string CustomText(int value) => $" x{value}";
 
-    private void UpdateCoinValue(int newValue) {
+    private void UpdateCoinValue(int old, int newValue) {
         Text = CustomText(newValue);
     }
 }

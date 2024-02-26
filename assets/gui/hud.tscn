@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=41 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthLabelTemp.cs" id="2_nt4yp"]
@@ -18,7 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://t580kg1qud3y" path="res://assets/bulllets/visuals/base_bullet.png" id="15_a153q"]
 [ext_resource type="Script" path="res://source/gui/hud/InteractableDescription.cs" id="15_kguth"]
 [ext_resource type="Script" path="res://source/gui/hud/LevelEventDescription.cs" id="17_l4h7f"]
-[ext_resource type="Script" path="res://source/gui/hud/ResourcesViewer.cs" id="17_w36gh"]
+[ext_resource type="Script" path="res://source/gui/hud/ResourcesViewer.cs" id="18_qj1jl"]
+[ext_resource type="Script" path="res://source/gui/hud/ResourceLabel.cs" id="19_vvsqr"]
 
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
@@ -245,6 +246,67 @@ tracks/2/keys = {
 _data = {
 "Close": SubResource("Animation_vkjvj"),
 "Open": SubResource("Animation_j0t4s")
+}
+
+[sub_resource type="Animation" id="Animation_qymh6"]
+resource_name = "value_changed"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:self_modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.5, 0.5, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1.41, 1.41), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_1sni6"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hrkws"]
+_data = {
+"RESET": SubResource("Animation_1sni6"),
+"value_changed": SubResource("Animation_qymh6")
 }
 
 [node name="HUD" type="Control" node_paths=PackedStringArray("AttackButton", "dialogueBar", "levelCompletionIndicator", "healthLable", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "InteractableDescription", "levelEventDescription", "HUDCover")]
@@ -634,8 +696,6 @@ grow_vertical = 2
 bbcode_enabled = true
 text = "[b]Hello you should not see this[/b]"
 fit_content = true
-visible_characters = 30
-visible_ratio = 1.03448
 
 [node name="TextureRect" type="Control" parent="Dialogue Bar/Background"]
 layout_mode = 2
@@ -779,7 +839,7 @@ anchors_preset = 0
 offset_top = 129.0
 offset_right = 166.0
 offset_bottom = 349.0
-script = ExtResource("17_w36gh")
+script = ExtResource("18_qj1jl")
 prototype = NodePath("Prototype Resource")
 vBox = NodePath("Panel/Resource Vbox")
 
@@ -805,7 +865,7 @@ offset_right = 50.0
 offset_bottom = -5.0
 grow_vertical = 2
 
-[node name="Prototype Resource" type="TextureRect" parent="Resources"]
+[node name="Prototype Resource" type="TextureRect" parent="Resources" node_paths=PackedStringArray("label", "animationPlayer")]
 visible = false
 layout_mode = 2
 offset_left = 15.0
@@ -814,8 +874,11 @@ offset_right = 60.0
 offset_bottom = 60.0
 texture = ExtResource("6_lqvlh")
 expand_mode = 4
+script = ExtResource("19_vvsqr")
+label = NodePath("Label")
+animationPlayer = NodePath("AnimationPlayer")
 
-[node name="Label" type="Label" parent="Resources/Prototype Resource"]
+[node name="Label" type="RichTextLabel" parent="Resources/Prototype Resource"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -825,7 +888,14 @@ offset_top = -10.0
 offset_right = 124.0
 offset_bottom = 13.0
 grow_vertical = 2
-text = "x2"
+pivot_offset = Vector2(0, 11)
+bbcode_enabled = true
+text = "temp"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Resources/Prototype Resource"]
+libraries = {
+"": SubResource("AnimationLibrary_hrkws")
+}
 
 [node name="Level Event Description" type="Control" parent="." node_paths=PackedStringArray("label")]
 layout_mode = 1

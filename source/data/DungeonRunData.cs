@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Game.Actors;
 using Game.Mechanics;
 using Godot;
@@ -37,8 +38,9 @@ public abstract class RunData {
     public virtual int Count { 
         get => _count;
         set {
+            int old = _count;
             _count = (int) MathF.Max(0, value);
-            ValueChanged?.Invoke(_count);
+            ValueChanged?.Invoke(old, value);
         }
     }
     
@@ -46,7 +48,8 @@ public abstract class RunData {
 
     protected int _count = 0;
 
-    public Action<int> ValueChanged {get; set;}
+    // Before and after values
+    public Action<int, int> ValueChanged {get; set;}
 
     public void Add(int value) => Count += value;
     public void Set(int value) => Count = value;
@@ -67,11 +70,27 @@ public static class DungeonRunData {
         public override string ValueName => "FreezeOrbs";
 
         static ViewedResource viewedResource;
+        bool temporarilyThree = false;
+
+        static string NormalText(int value) => $"x{value}/3";
+        static string FancyText(int value) => $"[wave][color=85ffff]{NormalText(value)}";
+        string GetText => !temporarilyThree ? NormalText(_count) : FancyText(3);
+
+        async void ShowViewerAsThreeForABit() {
+            temporarilyThree = true;
+            viewedResource.UpdateText(valueGained: true);
+            await Task.Delay(5000);
+            temporarilyThree = false;
+            viewedResource.UpdateText(valueGained: false);
+        }
+        
         public FreezeOrbs() : base() {
             FreezeWave += FreezeOrbMechanic.Freeze;
+            FreezeWave += ShowViewerAsThreeForABit;
+
             viewedResource = new (
                 RunDataEnum.FreezeOrbs,
-                () => $"x{_count}",
+                () => GetText,
                 ResourceLoader.Load<Texture2D>("res://assets/enviornment/pickupables/freeze-charge.png")
             );
         }
@@ -80,13 +99,14 @@ public static class DungeonRunData {
         public override int Count {
             get => _count;
             set {
+                int old = _count;
                 if (value >= 3) {
                     FreezeWave?.Invoke();
                     _count = 0;
-                    ValueChanged?.Invoke(value);
+                    ValueChanged?.Invoke(2, 3);
                 } else {
                     _count = value;
-                    ValueChanged?.Invoke(value);
+                    ValueChanged?.Invoke(old, value);
                 }
             }
         }
@@ -107,7 +127,7 @@ public static class DungeonRunData {
         public RespawnTokens () : base() {
             ViewedResource resourcesViewer = new(
                 RunDataEnum.RespawnTokens,
-                () => $"{_count}", 
+                () => $"x{_count}", 
                 ResourceLoader.Load<Texture2D>("res://assets/enviornment/gameplay/shop/respawn_token.png")
             );
         }

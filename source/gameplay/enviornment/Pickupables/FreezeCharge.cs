@@ -10,9 +10,9 @@ public partial class FreezeCharge : Sprite2D {
     Interactable interactable;
 
     public override void _Ready() {
-        if (Level.IsCurrentLevelCompleted()) GetParent().QueueFree();
+        // if (Level.IsCurrentLevelCompleted()) GetParent().QueueFree();
 
-        if (new Random((int)Time.GetTicksMsec()).NextSingle() > 1f / 3f) {
+        if (new Random((int)Time.GetTicksMsec()).NextSingle() > 3f / 3f) {
             GetParent().QueueFree();
         } else {
             // Delete them after the level finishes
@@ -21,6 +21,7 @@ public partial class FreezeCharge : Sprite2D {
             interactable.Interacted += (player) => {
                 RunData.FreezeOrbs.Add(1);
                 PlayAbsorbAnimation(); // Play death animation in the future or something.
+                if (Level.IsCurrentLevelCompleted()) GameDataService.Save();
             };
         }
     }

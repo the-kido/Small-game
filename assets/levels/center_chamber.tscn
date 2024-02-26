@@ -11,10 +11,54 @@
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="4_ko3uk"]
 [ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/misc/light.png" id="6_yavct"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="7_e0jkn"]
-[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionDoor.cs" id="8_4wtvt"]
 [ext_resource type="PackedScene" uid="uid://cima7jwjkwxoe" path="res://assets/enviornment/doors/chamber_door_side.tscn" id="8_rbhrh"]
 
 [sub_resource type="Environment" id="Environment_qgviy"]
+
+[sub_resource type="CSharpScript" id="CSharpScript_ccpcf"]
+script/source = "using KidoUtils;
+using Godot;
+using Game.Players;
+using Game.Autoload;
+
+namespace Game.LevelContent;
+
+public partial class RegionSwitcher : Area2D {
+    
+    [Export]
+    Regions goToRegion;
+    
+    [Export]
+    Door door;
+    
+    public override void _Ready() {
+        BodyEntered += SwitchScene; 
+        int index = (int) goToRegion - 1;
+        
+        
+        if (door is null) return;
+        if (index < 0 && goToRegion is Regions.Dungeon) door.Open();
+        else if (RegionManager.RegionsWon[index]) door.Open();
+    }
+    
+    //there are 2 ways to get to the center:
+    // death / winning.
+    // if you die, it should not reset the LevelCompleted to false
+    private void SwitchScene(Node2D body) {
+        if (body is not Player) return;
+        
+        if (goToRegion is Regions.Center) {
+            CenterChamber.NotifyForEnteryAfterWinning();
+            Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(RegionManager.CENTER_REGION_PATH);
+            RegionManager.RegionWon();
+        } else {
+            // Enter the new dungeon 
+            Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(RegionManager.GetRegionClass(goToRegion).FirstLevel);
+        }
+        
+        RegionManager.SetRegion(goToRegion);
+    }
+}"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rftcp"]
 size = Vector2(110.136, 160)
@@ -48,7 +92,6 @@ portrait = ExtResource("3_vh84y")
 
 [node name="Level" type="Node" parent="."]
 script = ExtResource("1_coemf")
-doors = null
 
 [node name="TileMap" type="TileMap" parent="."]
 scale = Vector2(3, 3)
@@ -89,12 +132,14 @@ energy = 3.88
 texture = ExtResource("6_yavct")
 
 [node name="Chandelier" parent="." instance=ExtResource("7_e0jkn")]
-position = Vector2(722, 426)
+position = Vector2(539, -314)
+scale = Vector2(2.2942, 2.2942)
 
 [node name="Dungeon teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 464.517)
 collision_mask = 2
-script = ExtResource("8_4wtvt")
+script = SubResource("CSharpScript_ccpcf")
+goToRegion = null
 door = NodePath("Dungeon Door")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dungeon teleporter"]
@@ -109,7 +154,7 @@ doorAnimation = NodePath("Chamber Door/AnimationPlayer")
 [node name="Nature teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 193)
 collision_mask = 2
-script = ExtResource("8_4wtvt")
+script = SubResource("CSharpScript_ccpcf")
 goToRegion = 1
 door = NodePath("Nature Region Door")
 

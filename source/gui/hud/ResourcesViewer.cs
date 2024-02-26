@@ -8,7 +8,7 @@ namespace Game.Data;
 
 public partial class ResourcesViewer : Control {
 	[Export]
-	TextureRect prototype;
+	ResourceLabel prototype;
 	[Export]
 	VBoxContainer vBox;
 
@@ -33,10 +33,11 @@ public partial class ResourcesViewer : Control {
 	}
 
 	private bool GetVisibility() {
+		
 		if (RegionManager.CurrentRegion is Regions.Center) return false;
 		
 		// if any child is visible, return true.
-		return vBox.GetChildren().Cast<TextureRect>().Any(child => Visible);
+		return vBox.GetChildren().Cast<TextureRect>().Any(child => child.Visible);
 	}
 
 	public override void _Ready() {
@@ -47,15 +48,13 @@ public partial class ResourcesViewer : Control {
 
 		foreach (var a in allResources) AddViewedResource(a);
 		
-		Visible = GetVisibility();
-		
 		UpdateResourceVisibility(RegionManager.CurrentRegion); // Call this for when we just enter the game
     }
 
     private void UpdateResourceVisibility(Regions regionSwitched) {
 		if (regionSwitched is Regions.Center) {
 			// hide the children
-			foreach (var resource in instancedResources.Keys) ChangeResourceVisability(resource, false);
+			foreach (var resource in instancedResourceLabels.Keys) ChangeResourceVisability(resource, false);
 		} else {
 			foreach (var resource in allResources) {
 				// If the region we're in doesn't show this resource, continue.
@@ -71,32 +70,31 @@ public partial class ResourcesViewer : Control {
 	}
 
 	private void ChangeResourceVisability(ViewedResource resource, bool visible) {
-		Label label = instancedResources[resource];
-		label.GetParent<TextureRect>().Visible = visible;
+		ResourceLabel label = instancedResourceLabels[resource];
+		label.Visible = visible;
 
 		OnResourcesChanged();
 	}
 
     private void AddViewedResource(ViewedResource newResource) {
-        TextureRect dup = prototype.Duplicate() as TextureRect;
-        dup.Texture = newResource.image;
-
-		Label label = dup.GetChild<Label>(0);
-		label.Text = newResource.getText();
+        ResourceLabel dup = prototype.Duplicate() as ResourceLabel;
+        
+		dup.Texture = newResource.image;
+		dup.SetText(newResource.getText());
+		dup.Name = newResource.runData.ToString();
 
         vBox.AddChild(dup);
-		RunData.GetRunDataFromEnum(newResource.runData).ValueChanged += (_) => UpdateText(newResource);
-		instancedResources.Add(newResource, label);
+		RunData.GetRunDataFromEnum(newResource.runData).ValueChanged += (before, after) => UpdateText(newResource, gained: after > before);
+		instancedResourceLabels.Add(newResource, dup);
 
 		CallDeferred("OnResourcesChanged");
     }
 
-	private static void UpdateText(ViewedResource viewedResource) {
-		Label label = instancedResources[viewedResource];
-		label.Text = viewedResource.getText();
+	internal static void UpdateText(ViewedResource viewedResource, bool gained, string textOverride = null) {
+		instancedResourceLabels[viewedResource].SetText(textOverride is null ? viewedResource.getText() : textOverride, gained);
 	}
 
-	static readonly Dictionary<ViewedResource, Label> instancedResources = new();
+	static readonly Dictionary<ViewedResource, ResourceLabel> instancedResourceLabels = new();
 }
 
 public class ViewedResource {
@@ -104,6 +102,10 @@ public class ViewedResource {
 	public readonly Texture2D image;
 	public readonly Regions[] viewableRegions;
 	public readonly RunDataEnum runData;
+
+	public virtual void UpdateText(string textOverride = null, bool valueGained = true) {
+		ResourcesViewer.UpdateText(this, valueGained, textOverride);
+	} 
 
 	public bool ViewableEverywhere => viewableRegions.Length == 0;
 

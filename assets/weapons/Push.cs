@@ -7,7 +7,7 @@ namespace Game.SealedContent;
 
 public sealed partial class Push : Weapon {
     public override string Description => @$"
-{"Push".Colored(Colors.LEGENDARY_RARITY)}
+{"Push".Colored(KidoUtils.Colors.LEGENDARY_RARITY)}
 Pushes things, but deals no damage    
     ";
     public override PackedScene PackedScene => ResourceLoader.Load<PackedScene>("res://source/weapons/push.tscn");

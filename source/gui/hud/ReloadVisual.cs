@@ -8,7 +8,12 @@ public partial class ReloadVisual : ProgressBar {
 
     double barProgress = 0;
 
-    private void ApplyProgress(double value) => Value = value;
+    readonly Color glow = new(1.3f, 1.3f, 1.3f);
+
+    private void ApplyProgress(double value) {
+        Value = value;
+        SelfModulate = Value >= 1 ? glow : Colors.White;
+    }       
     
     private void UpdateBar(double delta) {
         barProgress += delta;

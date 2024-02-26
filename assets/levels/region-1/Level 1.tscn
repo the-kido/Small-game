@@ -55,8 +55,9 @@ script = ExtResource("1_53p3x")
 script = ExtResource("2_wrsh5")
 runDataEnum = 1
 
-[node name="EnemyWaveEvent" type="Node" parent="Level"]
+[node name="EnemyWaveEvent" type="Node" parent="Level" node_paths=PackedStringArray("wave")]
 script = ExtResource("3_ktacb")
+wave = NodePath("../../Y Sort/EnemyWave")
 
 [node name="LearnResourceEvent" type="Node" parent="Level"]
 script = ExtResource("2_wrsh5")
@@ -144,7 +145,7 @@ script = ExtResource("7_0r8k2")
 [node name="Weird enemy" parent="Y Sort/EnemyWave" node_paths=PackedStringArray("pathfinderComponent", "animationPlayer", "Effect", "DamageableComponent", "sprite", "CollisionShape") instance=ExtResource("8_qk2u3")]
 z_as_relative = true
 y_sort_enabled = false
-position = Vector2(839, 275)
+position = Vector2(917, 240)
 pathfinderComponent = NodePath("Pathfinder")
 animationPlayer = NodePath("WeirdEnemy/AnimationPlayer")
 Effect = NodePath("StatusEffectComponent")
@@ -213,7 +214,7 @@ position = Vector2(539, -14)
 position = Vector2(905, 304)
 
 [node name="Chest" parent="Y Sort" node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("25_uyrmv")]
-position = Vector2(932, 300)
+position = Vector2(790, 233)
 interactable = NodePath("Interactable")
 itemShowcase = NodePath("New Item Showcase")
 

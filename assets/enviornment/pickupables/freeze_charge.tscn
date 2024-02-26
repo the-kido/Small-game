@@ -16,8 +16,9 @@ texture = ExtResource("1_dd0rd")
 script = ExtResource("1_kn8gb")
 interactable = NodePath("../Interactable")
 
-[node name="Interactable" parent="." instance=ExtResource("3_le80f")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("range") instance=ExtResource("3_le80f")]
 position = Vector2(0, -50)
+range = NodePath("Area2D")
 
 [node name="CollisionShape2D" parent="Interactable/Area2D" index="0"]
 position = Vector2(0, 12.5)

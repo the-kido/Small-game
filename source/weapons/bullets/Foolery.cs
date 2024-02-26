@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.Actors;
 using Game.Damage;
 using Game.SealedContent;
 using Godot;
@@ -56,12 +57,12 @@ public abstract class BaseBullet {
     }
 }
 
-public interface IPattern {
+public abstract class BulletPattern {
     // called by bullet factory when bullet is created
-    BulletTemplate[] BulletTemplates {get;}
+    protected abstract BulletTemplate[] BulletTemplates(BulletFrom from, Actor actor);
 
-    public void StartPattern();
-    public void UpdatePattern();
+    public abstract void StartPattern(BulletFrom bulletFrom, Actor actor);
+    protected abstract void UpdatePattern(double delta);
 }
 
 public record BulletTemplate (BaseBullet BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual Visual, Vector2 SpawnPosition, float Rotation);

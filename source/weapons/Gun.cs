@@ -23,6 +23,17 @@ public abstract partial class Gun : Weapon {
             nuzzle.GlobalRotation
         ));
  
+    protected void SpawnBulletPattern() =>
+        BulletFactory.SpawnBullet(new (
+            BaseBullet.New(bulletResource.bulletBase),
+            BulletFrom.Player,
+            bulletResource.speed, 
+            Damage, 
+            BulletVisual.New(bulletResource.visual), 
+            nuzzle.GlobalPosition, 
+            nuzzle.GlobalRotation
+        ));
+ 
     public override sealed void UpdateWeapon(Vector2 positionToAttack) {
         // Vector2 direction = positionToAttack - Hand.GlobalPosition;
         

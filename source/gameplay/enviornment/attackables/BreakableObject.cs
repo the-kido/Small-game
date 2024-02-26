@@ -10,9 +10,11 @@ public abstract partial class BreakableObject : StaticBody2D {
         Damageable.OnDamaged += Flash;
         Damageable.OnDeath += Destroy;
     }
-    private void Destroy(DamageInstance damageInstance) {
+
+    protected void Destroy(DamageInstance damageInstance) {
         // temp
-        QueueFree();
+        Modulate = new(1,1,1,0.5f);
+        // QueueFree();
     }
 
     private void Flash(DamageInstance damageInstance) {

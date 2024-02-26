@@ -15,6 +15,8 @@ public sealed partial class ShieldObelisk : BreakableObject, IPlayerAttackable {
     
     public override void _Ready() {
         base._Ready();
+        if (Level.IsCurrentLevelCompleted()) Destroy(null);
+
         Damageable.OnDeath += Uneffect;
         
         Level.CriterionStarted += AddEffectToEveryone;

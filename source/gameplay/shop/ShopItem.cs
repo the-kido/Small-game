@@ -17,7 +17,7 @@ public abstract partial class ShopItem : Sprite2D {
         RunData.Coins.ValueChanged += UpdateInteractableInteractability;
     }
 
-    private void UpdateInteractableInteractability(int newValue) {
+    private void UpdateInteractableInteractability(int old, int newValue) {
         interactable.ProcessMode = newValue >= Price ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
     }
 

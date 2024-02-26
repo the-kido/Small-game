@@ -24,13 +24,12 @@ public sealed partial class ChargedGun : Gun {
     };
 
     public override string Description => 
-    $@"{"Charged Gun".Colored(Colors.LEGENDARY_RARITY)}
+    $@"{"Charged Gun".Colored(KidoUtils.Colors.LEGENDARY_RARITY)}
 As you hold, this weapon charges. Releasing the weapon early deals less damage, but at full charge it is painful.
 
 Damage: {maxDamage}
 Reload Speed: {BaseReloadSpeed}
     ";
-
 
 	public override void Attack() {
         SpawnBulletInstance();

@@ -3,7 +3,7 @@ using Game.Bullets;
 using KidoUtils;
 using System.Collections.Generic;
 using Game.Graphics;
-using System;
+using Game.Actors;
 
 namespace Game.Autoload;
 
@@ -20,8 +20,8 @@ public partial class BulletFactory : Node {
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
 
-    void SpawnBulletPattern(IPattern pattern) {
-        pattern.StartPattern(); // might be redundant; a direct call from the pattern might be better (?)
+    void SpawnBulletPattern(BulletPattern pattern, Actor actor, BulletFrom bulletFrom) {
+        pattern.StartPattern(bulletFrom, actor); // might be redundant; a direct call from the pattern might be better (?)
     }
 
     static readonly List<BaseBullet> bullets = new();
