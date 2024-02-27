@@ -21,7 +21,7 @@ public sealed partial class Damageable : Area2D {
 	
 	public ModifiedStat maxHealth = new();
 	public int EffectiveHealth => (int) maxHealth.GetEffectiveValue(BaseMaxHealth);
-	public int BaseMaxHealth {get; init;}
+	public int BaseMaxHealth {get; private set;}
 
 	public bool BlocksDamage {get; set;} = false;
 	public bool IsImmune {get; private set;} = false;
@@ -38,7 +38,11 @@ public sealed partial class Damageable : Area2D {
 
 	public Action<DamageInstance> OnDeath;
 
-	public override void _Ready() => ErrorUtils.AvoidEmptyCollisionLayers(this);
+	public override void _Ready() {
+		BaseMaxHealth = Health;
+		
+		ErrorUtils.AvoidEmptyCollisionLayers(this);
+	}
 
 	private async void WaitForImmunityFrames(DamageInstance _) {
 		
@@ -48,9 +52,6 @@ public sealed partial class Damageable : Area2D {
 	}
 
 	private Damageable() {
-		
-		BaseMaxHealth = Health;
-
 		OnDamaged += WaitForImmunityFrames;
 
 		OnDeath += (_) => QueueFree(); // QueueFree in order to not take more damage

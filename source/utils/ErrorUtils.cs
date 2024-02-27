@@ -1,11 +1,10 @@
-using Game.Actors;
 using Godot;
 
 namespace KidoUtils;
 
 public static class ErrorUtils {
     static string Message1(string objectName) => "The CollisionObject2D " + objectName + " does not have any collision layers/masks selected";
-public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) {
+    public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) {
         if (collisionObject.CollisionLayer == 0 || collisionObject.CollisionMask == 0) {
             string message = Message1(collisionObject.Name);
 
@@ -21,24 +20,10 @@ public static void AvoidEmptyCollisionLayers(CollisionObject2D collisionObject) 
         $"An exported variable is null for exporter {exporterName}";
 
     public static void AvoidNullExportedVariables(Node exportedValue, Node exporter) {
-        if (exportedValue is null)
-            GD.PushWarning(Message2(exporter.Name));
-        
+        if (exportedValue is null) GD.PushWarning(Message2(exporter.Name));
     }
 
-    static string Message3(string actorName) => 
-        $"The actor {actorName} either has Y Sorting disabled or Z as relative enabled, both of which are invald.";
-    
-    public static void AvoidImproperOrdering(CanvasItem item) {
-        return;
-        
-        if (!item.YSortEnabled || item.ZAsRelative) {
-            CanvasItem parent = item.GetParentOrNull<CanvasItem>();
-            if (parent is not null) {
-                GD.PushError($"For node whose parent is {parent.Name}: {Message3(item.Name)}");
-            } else {
-                GD.PushError(Message3(item.Name));
-            }
-        } 
+    public static void AvoidIncorrectVisibility(Control node, bool whatItShouldBe) {
+        GD.PushWarning($"The control{node.Name}'s visibility should be {whatItShouldBe} but is {!whatItShouldBe}!");
     }
 }

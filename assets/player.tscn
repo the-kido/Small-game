@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://shgah1s0wehh"]
+[gd_scene load_steps=67 format=3 uid="uid://shgah1s0wehh"]
 
 [ext_resource type="Script" path="res://source/actors/Player.cs" id="1_5h6l3"]
 [ext_resource type="Script" path="res://source/actors/player/MovementController.cs" id="1_30x0s"]
@@ -13,7 +13,9 @@
 [ext_resource type="PackedScene" uid="uid://b368macoruqxa" path="res://source/components/status_effect_component.tscn" id="10_rp2rn"]
 [ext_resource type="Script" path="res://source/gui/hud/ReloadVisual.cs" id="12_f1bp5"]
 [ext_resource type="Script" path="res://source/actors/player/PlayerInteractableRadar.cs" id="13_ksv65"]
+[ext_resource type="Texture2D" uid="uid://cmjrvurptrojd" path="res://assets/gui/reload.png" id="13_x5p6u"]
 [ext_resource type="AudioStream" uid="uid://c0wra00isqlmm" path="res://assets/sound/player_death.mp3" id="14_arhrn"]
+[ext_resource type="Texture2D" uid="uid://ll0kymfnitw5" path="res://assets/gui/selection.png" id="15_8qasa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_58fkk"]
 atlas = ExtResource("3_24x38")
@@ -651,15 +653,18 @@ radius = 591.0
 bg_color = Color(0.10748, 0.10748, 0.10748, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2puv"]
-bg_color = Color(0.489, 0.67, 0.64, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+bg_color = Color(0.7482, 0.86, 0.841367, 1)
 
 [sub_resource type="Theme" id="Theme_7nwbi"]
 ProgressBar/styles/background = SubResource("StyleBoxFlat_b4wd3")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_q2puv")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_86d0k"]
+texture = ExtResource("15_8qasa")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "sprite", "CollisionShape")]
 z_as_relative = false
@@ -713,7 +718,7 @@ script = ExtResource("8_kpbfh")
 z_as_relative = false
 scale = Vector2(0.5, 0.5)
 script = ExtResource("2_v0jdn")
-reloadVisual = NodePath("../On Player HUD/Reload Visual")
+reloadVisual = NodePath("../On Player HUD/ColorRect/Reload Visual")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1.5)
@@ -755,6 +760,7 @@ debug_color = Color(0.47451, 0.588235, 0, 0)
 [node name="StatusEffectComponent" parent="." instance=ExtResource("10_rp2rn")]
 
 [node name="On Player HUD" type="Control" parent="."]
+visible = false
 z_index = 40
 layout_mode = 3
 anchors_preset = 0
@@ -765,7 +771,15 @@ offset_bottom = -36.0
 scale = Vector2(0.5, 0.5)
 theme = SubResource("Theme_7nwbi")
 
-[node name="Reload Visual" type="ProgressBar" parent="On Player HUD"]
+[node name="ColorRect" type="TextureRect" parent="On Player HUD"]
+clip_children = 1
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 8.0
+texture = ExtResource("13_x5p6u")
+
+[node name="Reload Visual" type="ProgressBar" parent="On Player HUD/ColorRect" node_paths=PackedStringArray("bar")]
+clip_children = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -774,9 +788,25 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(50, 15)
 max_value = 1.0
-value = 0.9
+step = 0.2
 show_percentage = false
 script = ExtResource("12_f1bp5")
+bar = NodePath("../..")
+
+[node name="NinePatchRect" type="Panel" parent="On Player HUD"]
+modulate = Color(0.46, 0.46, 0.46, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+theme_override_styles/panel = SubResource("StyleBoxTexture_86d0k")
 
 [node name="Death Sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("14_arhrn")

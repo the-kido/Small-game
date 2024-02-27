@@ -3,7 +3,6 @@ using Game.Bullets;
 using KidoUtils;
 using System.Collections.Generic;
 using Game.Graphics;
-using Game.Actors;
 
 namespace Game.Autoload;
 
@@ -20,25 +19,28 @@ public partial class BulletFactory : Node {
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
 
-    void SpawnBulletPattern(BulletPattern pattern, Actor actor, BulletFrom bulletFrom) {
-        pattern.StartPattern(bulletFrom, actor); // might be redundant; a direct call from the pattern might be better (?)
+    public static void SpawnBulletPattern(BulletPattern pattern) {
+        pattern.StartPattern(); // might be redundant; a direct call from the pattern might be better (?)
     }
 
     static readonly List<BaseBullet> bullets = new();
     
     public static void SpawnBullet(BulletTemplate template) {  
         Node2D baseNode = baseBulletStuff.Instantiate<Node2D>();
-        baseNode.TreeExiting += () => bullets.Remove(template.BaseBullet);
+        BaseBullet baseBullet = BaseBullet.New(template.BaseBullet);
+        BulletVisual bulletVisual = BulletVisual.New(template.Visual);
+
+        baseNode.TreeExiting += () => bullets.Remove(baseBullet);
         instance.AddChild(baseNode);
 
         // Initialize the bullet 
         Area2D area2D = baseNode.GetNode<Area2D>("Area2D");
 
-        template.BaseBullet.Create(area2D, baseNode, template.Damage, (int) template.Speed, template.Rotation);
+        baseBullet.Create(area2D, baseNode, template.Damage, (int) template.Speed, template.Rotation);
 
         
 
-        baseNode.AddChild(template.Visual);
+        baseNode.AddChild(bulletVisual);
 
         // Initialize other values required
         baseNode.Position = template.SpawnPosition;
@@ -47,13 +49,13 @@ public partial class BulletFactory : Node {
         UpdateBulletCollision(template.From, area2D);
 
         
-        bullets.Add(template.BaseBullet);
+        bullets.Add(baseBullet);
         
         // Spawn the persistent particle
-        if (template.Visual.persistentParticle is not Effects.Persistent.None) 
-            ParticleFactory.AddFollowingParticle(Effects.GetEffect(template.Visual.persistentParticle), baseNode);
+        if (bulletVisual.persistentParticle is not Effects.Persistent.None) 
+            ParticleFactory.AddFollowingParticle(Effects.GetEffect(bulletVisual.persistentParticle), baseNode);
 
-        baseNode.TreeExiting += () => ParticleFactory.AddInstantParticle(Effects.GetEffect(template.Visual.deathParticle), baseNode.GlobalPosition, template.Rotation + Mathf.DegToRad(90));
+        baseNode.TreeExiting += () => ParticleFactory.AddInstantParticle(Effects.GetEffect(bulletVisual.deathParticle), baseNode.GlobalPosition, template.Rotation + Mathf.DegToRad(90));
     }
 
     private static void DoSafetyChecks(Area2D hitbox) {

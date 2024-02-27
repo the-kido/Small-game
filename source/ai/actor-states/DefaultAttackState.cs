@@ -135,11 +135,11 @@ public sealed class DefaultAttackState : AIState {
         actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
         
         BulletTemplate temp = new(
-            BaseBullet.New(bulletResource.bulletBase), 
+            bulletResource.bulletBase, 
             BulletFrom.Enemy, 
             bulletResource.speed,
             Damage, 
-            BulletVisual.New(bulletResource.visual), 
+            bulletResource.visual, 
             actor.Position, 
             angle
         );

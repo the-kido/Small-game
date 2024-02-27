@@ -20,10 +20,6 @@ public partial class ResourceLabel : TextureRect {
 		}
 	}
 
-	public void PlayAnimation() {
-		animationPlayer.Play();
-	}
-
 	Color reduced = new(1f, 0.5f, 0.5f);
 	Color gained = new(1f, 0.84f, 0.5f);
 }

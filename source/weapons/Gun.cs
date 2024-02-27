@@ -9,45 +9,44 @@ public abstract partial class Gun : Weapon {
     protected Node2D nuzzle;
     [Export]
     BulletResource bulletResource;
+    [Export]
+    BulletPatternResource bulletPatternResource;
+    [Export]
+    Godot.Collections.Array<BulletResource> bulletPatternResources;
 
-    protected abstract DamageInstance Damage {get;}
-    
+    protected abstract DamageInstance Damage { get; }
+
     protected void SpawnBulletInstance() =>
-        BulletFactory.SpawnBullet(new (
-            BaseBullet.New(bulletResource.bulletBase),
+        BulletFactory.SpawnBullet(new(
+            bulletResource.bulletBase,
             BulletFrom.Player,
-            bulletResource.speed, 
-            Damage, 
-            BulletVisual.New(bulletResource.visual), 
-            nuzzle.GlobalPosition, 
+            bulletResource.speed,
+            Damage,
+            bulletResource.visual,
+            nuzzle.GlobalPosition,
             nuzzle.GlobalRotation
-        ));
- 
-    protected void SpawnBulletPattern() =>
-        BulletFactory.SpawnBullet(new (
-            BaseBullet.New(bulletResource.bulletBase),
-            BulletFrom.Player,
-            bulletResource.speed, 
-            Damage, 
-            BulletVisual.New(bulletResource.visual), 
-            nuzzle.GlobalPosition, 
-            nuzzle.GlobalRotation
-        ));
- 
+        )
+    );
+
+    private BulletTemplate GetBulletTemplate(int index) => bulletPatternResource.bulletResources.Count > index 
+    ? new(
+        bulletPatternResource.bulletResources[index].bulletBase,
+        BulletFrom.Player,
+        bulletPatternResource.bulletResources[index].speed,
+        Damage,
+        bulletPatternResource.bulletResources[index].visual,
+        nuzzle.GlobalPosition,
+        nuzzle.GlobalRotation
+    ) : null;
+    
+    protected void SpawnBulletPattern() => BulletFactory.SpawnBulletPattern(GetBulletPattern());
+    BulletPattern GetBulletPattern() {
+        var pattern = BulletPattern.NewUninitialized(BulletPattern.All.TrioBulletPattern);
+        pattern.Init(GetBulletTemplate(0), GetBulletTemplate(1), GetBulletTemplate(2));
+        return pattern;
+    }
+
     public override sealed void UpdateWeapon(Vector2 positionToAttack) {
-        // Vector2 direction = positionToAttack - Hand.GlobalPosition;
-        
-        // double radians = Math.Atan2(-direction.Y, direction.X);
-
-        // double degrees = radians * (180 / Math.PI) + 45;
-        // if (degrees < 0) degrees += 360;
-
-        // double remainder =  (degrees % 90);
-        // float a = (float) (remainder - degrees);
-        
-        // Hand.RotationDegrees = a;
-
         Hand.LookAt(positionToAttack);
     }
 }
-

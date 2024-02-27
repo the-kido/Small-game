@@ -1,30 +1,22 @@
-using Game.Actors;
 using Game.Autoload;
 using Game.Bullets;
-using Game.SealedContent;
+using Godot;
 
 public sealed class TrioBulletPattern : BulletPattern {
-    
+    public override void StartPattern() {
+        for (int i = -1; i <= 1; i++) {
+            float newRotation = primaryBullet.Rotation + Mathf.Pi/6 * i;
 
-    public override void StartPattern(BulletFrom bulletFrom, Actor actor) {
-        BulletFactory.SpawnBullet(BulletTemplates(bulletFrom, actor)[0]);
+            var temp = primaryBullet with {
+                Rotation = newRotation
+            };
+
+            BulletFactory.SpawnBullet(temp);
+        }
     }
 
-    protected override void UpdatePattern(double delta) {
+    // Called by bullet factory
+    public override void UpdatePattern(double delta) {
         throw new System.NotImplementedException();
-    }
-
-    protected override BulletTemplate[] BulletTemplates(BulletFrom from, Actor actor) {
-        return new BulletTemplate[] {
-            new(
-                new BadBullet(),
-                from,
-                BulletSpeed.Fast,
-                new(actor) {damage = 10},
-                BulletVisual.New(BulletVisual.All.FlameBullet),
-                actor.Position,
-                actor.Rotation
-            )
-        };
     }
 }

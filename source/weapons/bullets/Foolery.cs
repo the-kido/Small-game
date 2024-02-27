@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Game.Actors;
 using Game.Damage;
 using Game.SealedContent;
 using Godot;
@@ -58,14 +57,33 @@ public abstract class BaseBullet {
 }
 
 public abstract class BulletPattern {
-    // called by bullet factory when bullet is created
-    protected abstract BulletTemplate[] BulletTemplates(BulletFrom from, Actor actor);
+    public enum All {
+        TrioBulletPattern,
+    }
 
-    public abstract void StartPattern(BulletFrom bulletFrom, Actor actor);
-    protected abstract void UpdatePattern(double delta);
+    public static BulletPattern NewUninitialized(All all) {
+        return (BulletPattern) Activator.CreateInstance(BulletMap[all]);
+    }
+
+    private static readonly Dictionary<All, Type> BulletMap = new(){
+        {All.TrioBulletPattern, typeof(TrioBulletPattern)}
+    };
+
+    protected BulletTemplate primaryBullet;
+    protected BulletTemplate secondaryBullet;
+    protected BulletTemplate tertiaryBullet;
+    
+    public void Init(params BulletTemplate[] templates) {
+        primaryBullet = templates[0];
+        secondaryBullet = templates[1];
+        tertiaryBullet = templates[2];
+    }
+
+    public abstract void StartPattern();
+    public abstract void UpdatePattern(double delta);
 }
 
-public record BulletTemplate (BaseBullet BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual Visual, Vector2 SpawnPosition, float Rotation);
+public record BulletTemplate (BaseBullet.All BaseBullet, BulletFrom From, BulletSpeed Speed, DamageInstance Damage, BulletVisual.All Visual, Vector2 SpawnPosition, float Rotation);
 
 /// <summary>
 /// Defined actors can summon bullets. Therefor, each enum will hold the layers/mask that the 

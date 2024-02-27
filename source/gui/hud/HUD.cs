@@ -13,7 +13,7 @@ public partial class HUD : Control {
     [Export]
     public LevelCompletionIndicator levelCompletionIndicator;
     [Export]
-    public HealthLabelTemp healthLable;
+    public HealthHud healthHud;
     [Export]
     public CoinsLabel coinsLabel;   
     [Export]

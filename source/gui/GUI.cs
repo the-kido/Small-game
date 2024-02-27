@@ -43,7 +43,7 @@ public partial class GUI : CanvasLayer {
 	public DialogueBar DialogueBar => HUD.dialogueBar;
 	public LevelCompletionIndicator LevelCompletionIndicator => HUD.levelCompletionIndicator;
 	public ConversationController DialoguePlayer => HUD.dialogueBar.ConversationController;
-	public HealthLabelTemp HealthLable => HUD.healthLable;
+	public HealthHud HealthLable => HUD.healthHud;
 	public CoinsLabel CoinsLable => HUD.coinsLabel;
 	public InteractButton InteractButton => HUD.interactButton;
 	public HeldItems HeldItems => HUD.heldItems;

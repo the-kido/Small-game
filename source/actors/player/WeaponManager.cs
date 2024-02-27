@@ -32,11 +32,11 @@ public partial class WeaponManager : Node2D { // Also called "hand"
     public void Init(Player player) {
         player.InputController.WeaponController = new(this, player);
         WeaponController = player.InputController.WeaponController;
+        reloadVisual.Init(this);
 
         dataSaver = new("Weapons", () => SavedWeapons, () => SetToDefaultWeapon(new Normal()));
 
         Load(player);
-        reloadVisual.Init(this);
 
         player.classManager.ClassSwitched += SetToDefaultWeapon; 
     }
@@ -56,6 +56,7 @@ public partial class WeaponManager : Node2D { // Also called "hand"
         Weapons[slot].Visible = true; // Show new one
         
         EnableWeapon(slot);
+        GD.Print("wabt");
         WeaponSwitched?.Invoke(Weapons[slot]);
         HeldWeaponChanged?.Invoke(Weapons[slot], slot);
         
@@ -107,8 +108,6 @@ public partial class WeaponManager : Node2D { // Also called "hand"
 
     private void AddWeapon(Weapon newWeapon, int slot) {
         RemoveWeapon(slot); // Remove whatever is currently there.
-
-        newWeapon.DoSafetyChecks();
         
         newWeapon.Init(this, slot);
         

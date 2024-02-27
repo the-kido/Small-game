@@ -213,9 +213,21 @@ escapeMenu = NodePath("EscapeMenu")
 settingsPage = NodePath("SettingsPage")
 debugHUD = NodePath("DEBUG")
 
-[node name="HUD" parent="." instance=ExtResource("2_ckuxr")]
+[node name="HUD" parent="." node_paths=PackedStringArray("AttackButton", "dialogueBar", "levelCompletionIndicator", "healthHud", "coinsLabel", "interactButton", "heldItems", "shieldInfo", "InteractableDescription", "levelEventDescription", "HUDCover") instance=ExtResource("2_ckuxr")]
+AttackButton = NodePath("Auto Aim Button")
+dialogueBar = NodePath("Dialogue Bar")
+levelCompletionIndicator = NodePath("Level Completed Indicator")
+healthHud = NodePath("Health")
+coinsLabel = NodePath("Coins/HBoxContainer/Label")
+interactButton = NodePath("Interact")
+heldItems = NodePath("Held Weapons")
+shieldInfo = NodePath("Shield Info")
+InteractableDescription = NodePath("Interactable Description")
+levelEventDescription = NodePath("Level Event Description")
+HUDCover = NodePath("HUD Cover")
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 499.0

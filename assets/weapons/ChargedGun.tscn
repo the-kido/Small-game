@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://buuyxsrfjvmqd"]
+[gd_scene load_steps=18 format=3 uid="uid://buuyxsrfjvmqd"]
 
 [ext_resource type="Script" path="res://assets/weapons/ChargedGun.cs" id="1_d7w4p"]
 [ext_resource type="Texture2D" uid="uid://ddcuy73wv67in" path="res://assets/weapons/gun.png" id="2_e4ea4"]
+[ext_resource type="Script" path="res://source/weapons/bullets/BulletPatternResource.cs" id="3_b2d8s"]
 [ext_resource type="Script" path="res://source/weapons/bullets/BulletResource.cs" id="3_qvd1d"]
 
 [sub_resource type="Resource" id="Resource_rryvl"]
@@ -9,6 +10,23 @@ script = ExtResource("3_qvd1d")
 bulletBase = 0
 visual = 1
 speed = 250
+
+[sub_resource type="Resource" id="Resource_koo5y"]
+script = ExtResource("3_qvd1d")
+bulletBase = 0
+visual = 1
+speed = 1000
+
+[sub_resource type="Resource" id="Resource_gtb1n"]
+script = ExtResource("3_qvd1d")
+bulletBase = 0
+visual = 0
+speed = 0
+
+[sub_resource type="Resource" id="Resource_ewond"]
+script = ExtResource("3_b2d8s")
+pattern = 0
+bulletResources = Array[Object]([SubResource("Resource_koo5y"), SubResource("Resource_gtb1n")])
 
 [sub_resource type="Animation" id="Animation_6niuk"]
 length = 0.001
@@ -94,6 +112,7 @@ script = ExtResource("1_d7w4p")
 maxDamage = 5
 nuzzle = NodePath("Nuzzle")
 bulletResource = SubResource("Resource_rryvl")
+bulletPatternResource = SubResource("Resource_ewond")
 sprite = NodePath("Sprite")
 UsesReloadVisuals = true
 
@@ -110,9 +129,6 @@ libraries = {
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_7kaqt")
-}
 tree_root = SubResource("AnimationNodeBlendSpace2D_doi4c")
 anim_player = NodePath("../AnimationPlayer")
 parameters/blend_position = Vector2(-0.103168, 0.956332)

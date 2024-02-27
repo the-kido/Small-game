@@ -32,7 +32,9 @@ Reload Speed: {BaseReloadSpeed}
     ";
 
 	public override void Attack() {
-        SpawnBulletInstance();
+        SpawnBulletPattern(); // Temporary testing thingy
+        
+        // SpawnBulletInstance();
         Camera.CurrentCamera.StartShake(strength * 100, 300, 1);
     }
 
