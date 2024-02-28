@@ -93,13 +93,11 @@ public partial class InputController : Node {
 	}
 
 	public override void _Process(double delta) {
-		if (attachedPlayer is null) 
-			return; // Enforce that this node is initialized
+		if (attachedPlayer is null) return; // Enforce that this node is initialized
 		
 		UpdateUIInput(delta); // Allow player to interact with UI even if input is filtered.
 
-		if (UIInputFilter.FilterNonUiInput) 
-			return;
+		if (UIInputFilter.FilterNonUiInput) return;
 		
 		UpdateNonUIInput(delta);
 	}
@@ -107,8 +105,7 @@ public partial class InputController : Node {
 
 	//Update Non-UI-Input which requires Physics Process
     public override void _PhysicsProcess(double delta) {
-        if (attachedPlayer is null || UIInputFilter.FilterNonUiInput) 
-			return;
+        if (attachedPlayer is null || UIInputFilter.FilterNonUiInput) return;
 		MovementController.UpdateMovement();
     }
 

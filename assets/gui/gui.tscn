@@ -202,6 +202,7 @@ _data = {
 }
 
 [node name="GUI" type="CanvasLayer" node_paths=PackedStringArray("TargetIndicator", "HUD", "reviveMenu", "chestMenu", "playerClassMenu", "escapeMenu", "settingsPage", "debugHUD")]
+process_mode = 3
 layer = 10
 script = ExtResource("1_7vbvm")
 TargetIndicator = NodePath("TargetEnemyCursor")
@@ -227,11 +228,12 @@ levelEventDescription = NodePath("Level Event Description")
 HUDCover = NodePath("HUD Cover")
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
-visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_right = 499.0
-offset_bottom = 113.0
+offset_left = 153.0
+offset_top = 103.0
+offset_right = 652.0
+offset_bottom = 216.0
 script = ExtResource("8_or5hb")
 anySlider = NodePath("Any Slider")
 anyButton = NodePath("Button")

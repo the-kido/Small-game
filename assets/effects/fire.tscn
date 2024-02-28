@@ -67,3 +67,4 @@ visibility_rect = Rect2(-2000, -2000, 4000, 4000)
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 z_index = -1
 process_material = SubResource("ParticleProcessMaterial_k2fde")
+visibility_rect = Rect2(-2000, -2000, 4000, 4000)

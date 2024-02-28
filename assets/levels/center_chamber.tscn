@@ -12,53 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/misc/light.png" id="6_yavct"]
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="7_e0jkn"]
 [ext_resource type="PackedScene" uid="uid://cima7jwjkwxoe" path="res://assets/enviornment/doors/chamber_door_side.tscn" id="8_rbhrh"]
+[ext_resource type="Script" path="res://source/gameplay/enviornment/RegionSwitcher.cs" id="13_3ntq8"]
 
 [sub_resource type="Environment" id="Environment_qgviy"]
-
-[sub_resource type="CSharpScript" id="CSharpScript_ccpcf"]
-script/source = "using KidoUtils;
-using Godot;
-using Game.Players;
-using Game.Autoload;
-
-namespace Game.LevelContent;
-
-public partial class RegionSwitcher : Area2D {
-    
-    [Export]
-    Regions goToRegion;
-    
-    [Export]
-    Door door;
-    
-    public override void _Ready() {
-        BodyEntered += SwitchScene; 
-        int index = (int) goToRegion - 1;
-        
-        
-        if (door is null) return;
-        if (index < 0 && goToRegion is Regions.Dungeon) door.Open();
-        else if (RegionManager.RegionsWon[index]) door.Open();
-    }
-    
-    //there are 2 ways to get to the center:
-    // death / winning.
-    // if you die, it should not reset the LevelCompleted to false
-    private void SwitchScene(Node2D body) {
-        if (body is not Player) return;
-        
-        if (goToRegion is Regions.Center) {
-            CenterChamber.NotifyForEnteryAfterWinning();
-            Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPath(RegionManager.CENTER_REGION_PATH);
-            RegionManager.RegionWon();
-        } else {
-            // Enter the new dungeon 
-            Utils.GetPreloadedScene<SceneSwitcher>(this, PreloadedScene.SceneSwitcher).ChangeSceneWithPackedMap(RegionManager.GetRegionClass(goToRegion).FirstLevel);
-        }
-        
-        RegionManager.SetRegion(goToRegion);
-    }
-}"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rftcp"]
 size = Vector2(110.136, 160)
@@ -138,8 +94,7 @@ scale = Vector2(2.2942, 2.2942)
 [node name="Dungeon teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 464.517)
 collision_mask = 2
-script = SubResource("CSharpScript_ccpcf")
-goToRegion = null
+script = ExtResource("13_3ntq8")
 door = NodePath("Dungeon Door")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Dungeon teleporter"]
@@ -154,7 +109,7 @@ doorAnimation = NodePath("Chamber Door/AnimationPlayer")
 [node name="Nature teleporter" type="Area2D" parent="." node_paths=PackedStringArray("door")]
 position = Vector2(1084.93, 193)
 collision_mask = 2
-script = SubResource("CSharpScript_ccpcf")
+script = ExtResource("13_3ntq8")
 goToRegion = 1
 door = NodePath("Nature Region Door")
 
@@ -164,5 +119,5 @@ shape = SubResource("RectangleShape2D_rftcp")
 debug_color = Color(0.470588, 0.443137, 1, 0)
 
 [node name="Nature Region Door" parent="Nature teleporter" node_paths=PackedStringArray("doorAnimation") instance=ExtResource("8_rbhrh")]
-position = Vector2(-29.9301, 21)
+position = Vector2(-29.9301, 19)
 doorAnimation = NodePath("Chamber Door/AnimationPlayer")

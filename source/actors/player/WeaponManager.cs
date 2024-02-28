@@ -56,7 +56,6 @@ public partial class WeaponManager : Node2D { // Also called "hand"
         Weapons[slot].Visible = true; // Show new one
         
         EnableWeapon(slot);
-        GD.Print("wabt");
         WeaponSwitched?.Invoke(Weapons[slot]);
         HeldWeaponChanged?.Invoke(Weapons[slot], slot);
         

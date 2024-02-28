@@ -3,19 +3,33 @@ using Game.Bullets;
 using KidoUtils;
 using System.Collections.Generic;
 using Game.Graphics;
+using Game.LevelContent;
 
 namespace Game.Autoload;
 
 public partial class BulletFactory : Node {
 
     static BulletFactory instance;
-    public override void _Ready() => instance = this;
+    public override void _Ready() {
+        SceneSwitcher.SceneSwitched += GetRidOfEverything;
+        instance = this;
+    }
+    
+    private void GetRidOfEverything() {
+        foreach (BaseBullet bullet in bullets) {
+            bullet.DestroyBullet();
+        }
+
+        bullets.Clear();
+    }
+
     public override void _Process(double delta) {
         foreach (BaseBullet bullet in bullets) {
             bullet.Update(delta);
-            // bullets.ForEach(bullet => bullet.Update(delta));
         }
     } 
+
+    
 
     static readonly PackedScene baseBulletStuff = ResourceLoader.Load<PackedScene>("res://source/weapons/bullets/base_bullet.tscn");
 

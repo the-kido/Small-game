@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://crdkmn1ouh8k2"]
+[gd_scene load_steps=52 format=3 uid="uid://crdkmn1ouh8k2"]
 
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthHud.cs" id="2_nt4yp"]
@@ -26,11 +26,41 @@
 
 [sub_resource type="Theme" id="Theme_rprt4"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7whx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2d6qd"]
 bg_color = Color(0.31, 0, 0, 0.658824)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tn7w8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qrj78"]
+bg_color = Color(1, 0.965, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1myxv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upocb"]
 bg_color = Color(0.93, 0.41354, 0.2976, 1)
+
+[sub_resource type="Animation" id="Animation_tunho"]
+resource_name = "red_flash"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f4612"]
+_data = {
+"red_flash": SubResource("Animation_tunho")
+}
 
 [sub_resource type="Animation" id="Animation_gjelb"]
 length = 0.001
@@ -71,6 +101,43 @@ _data = {
 
 [sub_resource type="LabelSettings" id="LabelSettings_fi6w6"]
 font_size = 30
+
+[sub_resource type="Animation" id="Animation_o4aec"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_uchhf"]
+resource_name = "gained"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.960784, 0.980392, 0.67451, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fg24v"]
+_data = {
+"RESET": SubResource("Animation_o4aec"),
+"gained": SubResource("Animation_uchhf")
+}
 
 [sub_resource type="Animation" id="Animation_ki2dc"]
 resource_name = "Open"
@@ -338,7 +405,7 @@ InteractableDescription = NodePath("Interactable Description")
 levelEventDescription = NodePath("Level Event Description")
 HUDCover = NodePath("HUD Cover")
 
-[node name="Health" type="Control" parent="." node_paths=PackedStringArray("healthLable")]
+[node name="Health" type="Control" parent="." node_paths=PackedStringArray("healthLable", "animationPlayer", "actualHealth", "healthDifference")]
 layout_mode = 1
 anchors_preset = 0
 offset_left = 10.0
@@ -348,6 +415,9 @@ offset_bottom = 71.0
 theme = SubResource("Theme_tsgnt")
 script = ExtResource("2_nt4yp")
 healthLable = NodePath("Label")
+animationPlayer = NodePath("AnimationPlayer")
+actualHealth = NodePath("Control/Actual health")
+healthDifference = NodePath("Control/Health Diff")
 
 [node name="Label" type="RichTextLabel" parent="Health"]
 layout_mode = 1
@@ -359,29 +429,65 @@ theme_override_font_sizes/normal_font_size = 30
 bbcode_enabled = true
 text = "temp[color=gray] / other"
 
-[node name="ProgressBar" type="ProgressBar" parent="Health"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.417
-anchor_top = 0.328
-anchor_right = 0.417
-anchor_bottom = 0.328
-offset_left = 9.968
-offset_top = -20.008
-offset_right = 256.968
-offset_bottom = 19.992
-pivot_offset = Vector2(0, 10)
-theme_override_styles/background = SubResource("StyleBoxFlat_j7whx")
-theme_override_styles/fill = SubResource("StyleBoxFlat_upocb")
-value = 50.0
-show_percentage = false
-
 [node name="TextureRect" type="TextureRect" parent="Health"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("3_b20hq")
 expand_mode = 2
+
+[node name="Control" type="Control" parent="Health"]
+anchors_preset = 0
+offset_left = 50.0
+offset_right = 300.0
+offset_bottom = 40.0
+
+[node name="Background" type="ProgressBar" parent="Health/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 10)
+theme_override_styles/background = SubResource("StyleBoxFlat_2d6qd")
+max_value = 1.0
+show_percentage = false
+
+[node name="Health Diff" type="ProgressBar" parent="Health/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 10)
+theme_override_styles/background = SubResource("StyleBoxFlat_tn7w8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_qrj78")
+max_value = 1.0
+step = 0.001
+value = 1.0
+show_percentage = false
+
+[node name="Actual health" type="ProgressBar" parent="Health/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 10)
+theme_override_styles/background = SubResource("StyleBoxFlat_1myxv")
+theme_override_styles/fill = SubResource("StyleBoxFlat_upocb")
+max_value = 1.0
+step = 0.001
+value = 0.34
+show_percentage = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Health"]
+libraries = {
+"": SubResource("AnimationLibrary_f4612")
+}
 
 [node name="Auto Aim Button" type="Button" parent="."]
 visible = false
@@ -455,11 +561,17 @@ layout_mode = 2
 texture = ExtResource("6_shchm")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="Coins/HBoxContainer"]
+[node name="Label" type="Label" parent="Coins/HBoxContainer" node_paths=PackedStringArray("animationPlayer")]
 layout_mode = 2
 text = " x0"
 label_settings = SubResource("LabelSettings_fi6w6")
 script = ExtResource("7_yaa1g")
+animationPlayer = NodePath("../../Coin Animations")
+
+[node name="Coin Animations" type="AnimationPlayer" parent="Coins"]
+libraries = {
+"": SubResource("AnimationLibrary_fg24v")
+}
 
 [node name="Held Weapons" type="Control" parent="."]
 layout_mode = 1

@@ -1,22 +1,38 @@
 using Godot;
-using System.Threading.Tasks;
 using Game.Players;
 using Game.Damage;
 
 namespace Game.UI;
 
 public partial class HealthHud : Control {
-    
-    #region move to seperate "health lable" class
     [Export]
     RichTextLabel healthLable;
-    string HealthLableText => $"♥: {player.DamageableComponent.Health}[color=gray] / {player.DamageableComponent.EffectiveHealth}";
+    [Export]
+    AnimationPlayer animationPlayer;
+
+    [Export]
+    ProgressBar actualHealth, healthDifference;
+
+    string HealthLableText => $"♥: {player.DamageableComponent.Health}[color=gray] / {player.DamageableComponent.EffectiveMaxHealth}";
 
     private Player player;
+    const float SPEED = 0.5f;
+
+    // While negative, it is interpolating until it stops at -1
+    double showDifferenceDelay = -2;
+    double difference;
     
     public void UpdateHealth(DamageInstance damage) {
         healthLable.Text = HealthLableText;
-        DamageFlash();
+        animationPlayer.Play("red_flash");
+
+        if (showDifferenceDelay <= -1) healthDifference.Value = actualHealth.Value;
+        healthDifferenceValue = healthDifference.Value;
+
+        actualHealth.Value = (float) player.DamageableComponent.Health / player.DamageableComponent.EffectiveMaxHealth;
+        difference = (float) healthDifference.Value - actualHealth.Value; 
+
+        showDifferenceDelay = SPEED;
     }
 
     public void Init(Player player) {
@@ -24,27 +40,18 @@ public partial class HealthHud : Control {
         healthLable.Text = HealthLableText;
 
         player.DamageableComponent.OnDamaged += UpdateHealth;
-    } 
 
-    volatile int percentRed = 0;    
-    //Set the flashing to true.
-    //If another damage comes in, stop the other flashing and start a new flashing.    
-    private async void DamageFlash() {
-        if (percentRed != 0) {
-            percentRed = 100;
-            return;
-        }
-        percentRed = 100;
+        healthDifference.Value = player.DamageableComponent.Health;
+        actualHealth.Value = player.DamageableComponent.Health / player.DamageableComponent.EffectiveMaxHealth;
+    }
 
-        Color color = new(1,1,1);
-        while (percentRed > 0) {
-
-            color.G = 1 - percentRed / 100f;
-            color.B = 1 - percentRed / 100f;
-            healthLable.Modulate = color;
-            await Task.Delay(3);
-            percentRed-=5;
+    // Required because of innaccuracies in how Godot handles ProgressBars
+    double healthDifferenceValue = 0;
+    public override void _Process(double delta) {
+        showDifferenceDelay -= delta;
+        if (showDifferenceDelay <= 0 && showDifferenceDelay >= -SPEED) {
+            healthDifferenceValue -= difference * delta * (1 / SPEED);
+            healthDifference.Value = healthDifferenceValue;
         }
     }
-    #endregion
 }

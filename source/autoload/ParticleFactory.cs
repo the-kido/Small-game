@@ -18,10 +18,16 @@ public partial class ParticleFactory : Node {
     static readonly Dictionary<Node2D, Effect> instancedEffects = new();
 	// particle | followed
 	static readonly Dictionary<Node2D, Node2D> UpdatedParticles = new();
+	
+	static Rect2 visiblityRect = new(-2000, -2000, new(4000,4000));
 
 	private static Node2D InstanceEffect(Effect particle, Node parent) {
         Node2D instance = (Node2D) particle.packedScene.Instantiate();
 		instancedEffects.Add(instance, particle);
+
+		// This might be performance heavy so create a warning to make the rect a better size in the future (maybe)?
+		if (instance is GpuParticles2D gpuParticles2D) gpuParticles2D.VisibilityRect = visiblityRect; 
+
 		parent.AddChild(instance);
 
 		return instance;

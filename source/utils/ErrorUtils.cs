@@ -23,6 +23,12 @@ public static class ErrorUtils {
         if (exportedValue is null) GD.PushWarning(Message2(exporter.Name));
     }
 
+    static string Message3(string exportedValueName, string exporter) => 
+        $"{exporter}'s {exportedValueName} (exported value) is invalid!";
+    public static void AvoidInvalidExportedVariables(bool isInvalid, Node exporter, string exportedValueName) {
+        if (isInvalid is true) GD.PushWarning(Message2(exporter.Name));
+    }
+
     public static void AvoidIncorrectVisibility(Control node, bool whatItShouldBe) {
         GD.PushWarning($"The control{node.Name}'s visibility should be {whatItShouldBe} but is {!whatItShouldBe}!");
     }

@@ -16,7 +16,7 @@ public record DamageInstance {
 	public int damage = 0;
 	public bool isGrounded = true;
 	public Vector2 forceDirection = Vector2.Zero;
-	public bool overridesImmunityFrames = true;
+	public bool overridesImmunityFrames = false;
 	public bool suppressImpactFrames = false;
 	public ActorStatus statusEffect = null;
 

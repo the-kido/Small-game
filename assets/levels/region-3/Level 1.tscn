@@ -44,8 +44,10 @@ environment = ExtResource("3_3op51")
 [node name="Camera" parent="." instance=ExtResource("4_1gi2y")]
 position = Vector2(370, 318)
 
-[node name="Chest" parent="." instance=ExtResource("6_05nvv")]
+[node name="Chest" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("6_05nvv")]
 position = Vector2(377, 290)
+interactable = NodePath("Interactable")
+itemShowcase = NodePath("New Item Showcase")
 
 [node name="Chandelier" parent="." instance=ExtResource("5_yj87m")]
 position = Vector2(182, 230)

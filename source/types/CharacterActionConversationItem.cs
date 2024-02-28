@@ -34,6 +34,11 @@ public sealed partial class CharacterActionConversationItem : ConversationItem {
     public void ProcessPlayer(CharacterActionPlayer a) {
         this.a = a;
     }
+    
+    public override void _Ready() {
+        KidoUtils.ErrorUtils.AvoidNullExportedVariables(character, this);
+        KidoUtils.ErrorUtils.AvoidInvalidExportedVariables(string.IsNullOrEmpty(animationName), this, "animationName");
+    }
 
     public override void _Process(double delta) => a?.Update(delta);
 }

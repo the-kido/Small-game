@@ -7,7 +7,6 @@ using Game.Actors;
 using Game.ActorStatuses;
 using KidoUtils;
 
-
 namespace Game.Damage;
 
 public sealed partial class Damageable : Area2D {
@@ -20,7 +19,7 @@ public sealed partial class Damageable : Area2D {
     public Godot.Collections.Array<AllStatuses> ImmuneToDamageFrom {get; private set;}
 	
 	public ModifiedStat maxHealth = new();
-	public int EffectiveHealth => (int) maxHealth.GetEffectiveValue(BaseMaxHealth);
+	public int EffectiveMaxHealth => (int) maxHealth.GetEffectiveValue(BaseMaxHealth);
 	public int BaseMaxHealth {get; private set;}
 
 	public bool BlocksDamage {get; set;} = false;
@@ -89,10 +88,13 @@ public sealed partial class Damageable : Area2D {
 		return true; // it passes the test. pog champ
 	}
 
+	public void ChangeImmunity(bool immune) {
+		IsImmune = immune;
+	}
 
 	public void Heal(int healthAdded) {
 		SpawnDamageText(-healthAdded);
-		Health = Mathf.Min(Health + healthAdded, EffectiveHealth);
+		Health = Mathf.Min(Health + healthAdded, EffectiveMaxHealth);
 
 	}
 

@@ -1,6 +1,10 @@
 using Godot;
 using Game.Players.Inputs;
 using System;
+using Game.SealedContent;
+using System.Drawing;
+using System.Reflection.Metadata;
+using System.ComponentModel;
 
 namespace Game.Players;
 
@@ -29,8 +33,10 @@ public partial class MovementController : Node {
 		this.inputController = inputController;
 
 		// Used in case the player is holding the move button even when the input is frozen. Resets velocity to nothing.
-		inputController.UIInputFilter.OnFilterModeChanged += (changed) => 
+		inputController.UIInputFilter.OnFilterModeChanged += (changed) => {
 			player.Velocity = changed ? Vector2.Zero : player.Velocity; 
+			UpdateMovement(player.Velocity);
+		}; 
 	}
 
     private Vector2 GetMovementInput() => inputController.UIInputFilter.FilterNonUiInput
@@ -40,8 +46,10 @@ public partial class MovementController : Node {
 			Input.GetAxis("up", "down")
 		).Normalized();
 
-    public void UpdateMovement() {
-		Vector2 normalizedInput = GetMovementInput();
+	static readonly Vector2 a = new(0, 0);
+    public void UpdateMovement(Vector2? dir = null) {
+		Vector2 normalizedInput = dir is null ? GetMovementInput() : dir ?? Vector2.Zero;
+
 		player.Velocity = normalizedInput * player.EffectiveSpeed * 100;
 
 		if (normalizedInput != Vector2.Zero)
