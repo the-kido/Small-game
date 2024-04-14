@@ -127,12 +127,10 @@ public sealed class DefaultAttackState : AIState {
         }
     }
     
-
-
     private void Shoot(Player player) {
         OnShoot?.Invoke();
-        float angle = (player.GlobalPosition - actor.GlobalPosition).Angle();
-        actor.Velocity =  (actor.GlobalPosition - player.GlobalPosition).Normalized() * 20;
+        float angle = (player.DamageableComponent.GlobalPosition - actor.GlobalPosition).Angle();
+        actor.Velocity =  (actor.GlobalPosition - player.DamageableComponent.GlobalPosition).Normalized() * 20;
         
         BulletTemplate temp = new(
             bulletResource.bulletBase, 

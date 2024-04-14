@@ -13,6 +13,9 @@ public partial class HealthHud : Control {
     [Export]
     ProgressBar actualHealth, healthDifference;
 
+    [Export]
+    LowHealthShader lowHealthShader;
+
     string HealthLableText => $"♥: {player.DamageableComponent.Health}[color=gray] / {player.DamageableComponent.EffectiveMaxHealth}";
 
     private Player player;
@@ -22,7 +25,7 @@ public partial class HealthHud : Control {
     double showDifferenceDelay = -2;
     double difference;
     
-    public void UpdateHealth(DamageInstance damage) {
+    public void DecreaseHealth(DamageInstance damage) {
         healthLable.Text = HealthLableText;
         animationPlayer.Play("red_flash");
 
@@ -34,12 +37,21 @@ public partial class HealthHud : Control {
 
         showDifferenceDelay = SPEED;
     }
+    public void IncreaseHealth(int increase) {
+        healthLable.Text = HealthLableText;
+        animationPlayer.Play("red_flash");
+        // temporary fix to heatlh nto increasing on bar
+        healthDifference.Value = player.DamageableComponent.Health;
+    }
 
     public void Init(Player player) {
         this.player = player;
         healthLable.Text = HealthLableText;
 
-        player.DamageableComponent.OnDamaged += UpdateHealth;
+        lowHealthShader.Init(player);
+
+        player.DamageableComponent.OnDamaged += DecreaseHealth;
+        player.DamageableComponent.OnHealed += IncreaseHealth;
 
         healthDifference.Value = player.DamageableComponent.Health;
         actualHealth.Value = player.DamageableComponent.Health / player.DamageableComponent.EffectiveMaxHealth;

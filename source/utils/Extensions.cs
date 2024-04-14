@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.ComponentModel;
 
 public static class Extensions {
 
@@ -15,7 +16,12 @@ public static class Extensions {
 		float y = random.NextSingle() - 0.5f;
 		
 		return new Vector2(x, y).Normalized();
-
+	}
+	
+	public static Vector2 Shifted(this Vector2 vector2, Vector2 shift) {
+		float x = vector2.X + shift.X;
+		float y = vector2.Y + shift.Y;
+		return new Vector2(x, y);
 	}
 
 	public static void ToggleYSorting(this Node2D node2D) {

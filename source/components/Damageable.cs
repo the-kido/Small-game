@@ -32,6 +32,7 @@ public sealed partial class Damageable : Area2D {
 	public bool IsAlive => Health > 0;
 
 	public event Action<DamageInstance> OnDamaged;
+	public event Action<int> OnHealed;
 	public event Action<int> TotalDamageTaken;
 	public event Action<DamageInstance> DamagedBlocked;
 
@@ -95,7 +96,7 @@ public sealed partial class Damageable : Area2D {
 	public void Heal(int healthAdded) {
 		SpawnDamageText(-healthAdded);
 		Health = Mathf.Min(Health + healthAdded, EffectiveMaxHealth);
-
+		OnHealed?.Invoke(healthAdded);
 	}
 
 	public void Damage(DamageInstance damageInstance) {

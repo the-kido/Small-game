@@ -6,7 +6,7 @@ using Game.Players.Inputs;
 using Game.UI;
 using Game.Data;
 using KidoUtils;
-using System;
+using Game.LevelContent;
 
 namespace Game.Players;
 
@@ -63,6 +63,8 @@ public sealed partial class Player : Actor {
 		// Make player immune to damage while in dialogue.
 		GUI.DialoguePlayer.Started += (_) => DamageableComponent.ChangeImmunity(true);
 		GUI.DialoguePlayer.Ended += () => DamageableComponent.ChangeImmunity(false);
+
+		Level.CurrentLevel.LevelCompleted += Effect.ClearAllEffects;
 
 		classManager.SwitchClassFromSave();
 	}

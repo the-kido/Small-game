@@ -7,16 +7,21 @@
 [ext_resource type="PackedScene" uid="uid://ce2fu80i6pekh" path="res://source/gui/camera.tscn" id="3_3il18"]
 [ext_resource type="PackedScene" uid="uid://bqffuc80ll1k8" path="res://assets/enemies/Weird enemy.tscn" id="4_rymms"]
 [ext_resource type="TileSet" uid="uid://cibnx04ft0y40" path="res://assets/levels/debug/weirldTilemap.tres" id="5_bb0ig"]
+[ext_resource type="Shader" path="res://assets/levels/debug/low_health.gdshader" id="6_kc5ci"]
 [ext_resource type="PackedScene" uid="uid://brgvf7tkh6hvx" path="res://assets/misc/default_nav_region.tscn" id="10_1hlsd"]
 [ext_resource type="Environment" uid="uid://behbpmp41p03v" path="res://assets/levels/debug/default_enviornment.tres" id="12_2c1uv"]
-[ext_resource type="Script" path="res://source/gameplay/LevelSwitcher.cs" id="12_48p24"]
 [ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/tilemaps/ao/occlusion_tilemap.tres" id="12_f3yix"]
 [ext_resource type="Script" path="res://source/actors/player/classes/PlayerManager.cs" id="12_qjdua"]
 [ext_resource type="Script" path="res://source/gameplay/EnemyWave.cs" id="15_vbrl5"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="16_dddk7"]
 [ext_resource type="PackedScene" uid="uid://ceud6pw6cw5jr" path="res://assets/enviornment/pickupables/freeze_charge.tscn" id="16_qpqxl"]
 [ext_resource type="PackedScene" uid="uid://cvtkt6uc0esu0" path="res://assets/enviornment/normal_door.tscn" id="17_dhp43"]
-[ext_resource type="PackedScene" uid="uid://shgah1s0wehh" path="res://assets/player.tscn" id="17_jvbr8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qbyer"]
+shader = ExtResource("6_kc5ci")
+shader_parameter/r_displacement = Vector2(3, 0)
+shader_parameter/g_displacement = Vector2(0, 0)
+shader_parameter/b_displacement = Vector2(-3, 0)
 
 [node name="Level 1" type="Node"]
 metadata/_edit_vertical_guides_ = [823.0]
@@ -67,7 +72,6 @@ layer_1/navigation_enabled = false
 layer_1/tile_data = PackedInt32Array(327681, 131072, 3, 327682, 131072, 3, 327683, 131072, 3, 327684, 131072, 3, 327685, 131072, 3, 327686, 131072, 3, 589831, 393217, 1)
 
 [node name="NavigationRegion2D2" parent="Node2D/Enivornment/TileMap" instance=ExtResource("10_1hlsd")]
-visible = false
 
 [node name="Ambient Occlusion" type="TileMap" parent="Node2D/Enivornment"]
 scale = Vector2(3, 3)
@@ -77,17 +81,6 @@ layer_0/name = "Shadows"
 layer_0/navigation_enabled = false
 layer_0/tile_data = PackedInt32Array(65538, 0, 0, 65539, 65536, 0, 65540, 65536, 0, 65541, 65536, 0, 65542, 65536, 0, 65543, 65536, 0, 65544, 65536, 0, 65545, 131072, 0, 65548, 131072, 0, 65547, 0, 0, 131083, 0, 1, 131081, 131072, 1, 196618, 65536, 0, 196617, 327680, 0, 196619, 262144, 0, 196609, 0, 0, 262145, 0, 1, 327681, 0, 1, 196610, 262144, 0, 131074, 0, 1, 327684, 65536, 0, 327685, 262144, 0, 327683, 327680, 0, 262147, 262144, 1, 262149, 327680, 1, 262148, 65537, 0, 131073, 65537, 0, 1, 1, 0, 2, 65537, 0, 3, 65537, 0, 4, 65537, 0, 5, 65537, 0, 6, 65537, 0, 7, 65537, 0, 8, 65537, 0, 9, 131073, 0, 131082, 65537, 0, 11, 1, 0, 12, 131073, 0, 458764, 65537, 0, 589831, 65537, 0, 458758, 131073, 0, 458757, 65537, 0, 458756, 65537, 0, 458755, 65537, 0, 458754, 65537, 0, 458753, 1, 0, -65535, 0, 1, -65527, 131072, 1, -65525, 0, 1, -65524, 131072, 1, 655363, 65537, 0, 393222, 131072, 1, 393217, 0, 1, 524289, 0, 0, 524294, 131072, 0, 524293, 65536, 0, 524290, 65536, 0, 589825, 0, 1, 655361, 0, 1, 589830, 131072, 1, 655366, 327680, 0, 655367, 65536, 0, 524291, 65536, 0, 524292, 65536, 0)
 
-[node name="Player" parent="Node2D/Enivornment" node_paths=PackedStringArray("InteractableRadar", "InputController", "WeaponManager", "ShieldManager", "Effect", "DamageableComponent", "sprite", "CollisionShape") instance=ExtResource("17_jvbr8")]
-position = Vector2(456, 494)
-InteractableRadar = NodePath("Nearby Interactable Area")
-InputController = NodePath("Input Controller")
-WeaponManager = NodePath("Hand")
-ShieldManager = NodePath("Shield")
-Effect = NodePath("StatusEffectComponent")
-DamageableComponent = NodePath("Damageable")
-sprite = NodePath("PlayerSpritesOffset/PlayerSprites")
-CollisionShape = NodePath("CollisionShape2D")
-
 [node name="Chest" parent="Node2D/Enivornment" node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("16_dddk7")]
 y_sort_enabled = false
 position = Vector2(330, 496)
@@ -96,10 +89,8 @@ itemShowcase = NodePath("New Item Showcase")
 
 [node name="Door 1" parent="Node2D/Enivornment" node_paths=PackedStringArray("doorToOpen") instance=ExtResource("17_dhp43")]
 position = Vector2(1061, 362)
+nextLevel = "res://assets/levels/debug/level_2.tscn"
 doorToOpen = NodePath("StaticBody2D")
-
-[node name="Level Switchwer" type="Node" parent="Node2D/Enivornment/Door 1"]
-script = ExtResource("12_48p24")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Node2D/Enivornment"]
 environment = ExtResource("12_2c1uv")
@@ -141,6 +132,7 @@ sprite = NodePath("WeirdEnemy")
 CollisionShape = NodePath("Damageable/CollisionShape2D")
 
 [node name="Base Enemy2" parent="Node2D/Waves" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape") instance=ExtResource("1_tonpy")]
+material = SubResource("ShaderMaterial_qbyer")
 position = Vector2(787, 130)
 scale = Vector2(3.12, 3.12)
 animationPlayer = NodePath("AnimationPlayer")

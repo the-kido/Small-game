@@ -1,4 +1,3 @@
-using Game.Actors;
 using Game.Players;
 using Game.SealedContent;
 using Godot;
@@ -15,7 +14,8 @@ public partial class DebugHUD : Control {
     public static DebugHUD instance;
 
     public override void _Ready() {
-        anyButton.Pressed += () => Player.Players[0].DamageableComponent.Damage(new(new AgroEnemyMiniBoss()) {damage = 4});
+        // anyButton.Pressed += () => Player.Players[0].DamageableComponent.Damage(new(new AgroEnemyMiniBoss()) {damage = 4, overridesImmunityFrames = true});
+        anyButton.Pressed += () => Player.Players[0].DamageableComponent.Heal(10);
     }
     
     public void Init() {

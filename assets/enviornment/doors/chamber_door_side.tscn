@@ -128,7 +128,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hqavo"]
 size = Vector2(20, 147)
 
-[node name="Door" type="StaticBody2D" node_paths=PackedStringArray("doorAnimation")]
+[node name="Door" type="StaticBody2D" node_paths=PackedStringArray("doorAnimation") groups=["navigation"]]
 collision_mask = 2
 script = ExtResource("2_ms8yk")
 doorAnimation = NodePath("Chamber Door/AnimationPlayer")

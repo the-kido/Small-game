@@ -109,16 +109,17 @@ script = ExtResource("1_8vto3")
 interactable = NodePath("Interactable")
 itemShowcase = NodePath("New Item Showcase")
 
-[node name="Interactable" parent="." instance=ExtResource("2_ol4j4")]
+[node name="Interactable" parent="." node_paths=PackedStringArray("range") instance=ExtResource("2_ol4j4")]
 position = Vector2(0, -19)
 scale = Vector2(2, 2)
+range = NodePath("Area2D")
 
 [node name="New Item Showcase" type="Sprite2D" parent="."]
 z_index = 5
 position = Vector2(0, -0.5)
 scale = Vector2(2, 2)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["navigation"]]
 collision_mask = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]

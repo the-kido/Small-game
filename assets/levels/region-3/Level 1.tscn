@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://h7ddni6hoy2y"]
+[gd_scene load_steps=10 format=3 uid="uid://h7ddni6hoy2y"]
 
 [ext_resource type="TileSet" uid="uid://bu5uqnxeukvqv" path="res://assets/levels/region-3/region_3_tileset.tres" id="1_qhf56"]
 [ext_resource type="TileSet" uid="uid://dfgnpmxhyxjfs" path="res://assets/tilemaps/ao/occlusion_tilemap.tres" id="2_fjcoe"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://71nxoi2lr7ne" path="res://assets/enviornment/decor/lights/chandelier.tscn" id="5_yj87m"]
 [ext_resource type="PackedScene" uid="uid://cwbjqawig7pct" path="res://assets/enviornment/chest.tscn" id="6_05nvv"]
 [ext_resource type="Texture2D" uid="uid://d0s50krtrlruy" path="res://assets/misc/light.png" id="7_lon5i"]
+[ext_resource type="PackedScene" uid="uid://dafgd73bj50my" path="res://assets/misc/player_manager.tscn" id="9_yd26f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iyuvi"]
 
 [node name="Node2D" type="Node2D"]
 
@@ -22,7 +25,6 @@ layer_1/tile_data = PackedInt32Array(65538, 65550, 2, 65539, 65550, 2, 65540, 65
 
 [node name="TileMap2" type="TileMap" parent="."]
 visible = false
-rotation = 0.00135684
 scale = Vector2(3, 3)
 tile_set = ExtResource("1_qhf56")
 format = 2
@@ -36,13 +38,16 @@ format = 2
 layer_0/tile_data = PackedInt32Array(196608, 65536, 0, 196609, 65536, 0, 196610, 65536, 0, 196611, 65536, 0, 196612, 65536, 0, 196613, 65536, 0, 196614, 65536, 0, 196615, 65536, 0, 196616, 65536, 0, 131072, 65537, 0, 131073, 65537, 0, 131074, 65537, 0, 131075, 65537, 0, 131076, 65537, 0, 131077, 65537, 0, 131078, 65537, 0, 131079, 65537, 0)
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+z_index = 4
+material = SubResource("ShaderMaterial_iyuvi")
 color = Color(0.360784, 0.360784, 0.360784, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("3_3op51")
 
-[node name="Camera" parent="." instance=ExtResource("4_1gi2y")]
+[node name="Camera" parent="." node_paths=PackedStringArray("tileMap") instance=ExtResource("4_1gi2y")]
 position = Vector2(370, 318)
+tileMap = NodePath("../TileMap")
 
 [node name="Chest" parent="." node_paths=PackedStringArray("interactable", "itemShowcase") instance=ExtResource("6_05nvv")]
 position = Vector2(377, 290)
@@ -56,5 +61,8 @@ position = Vector2(182, 230)
 position = Vector2(230, 136)
 scale = Vector2(5.11264, 5.92804)
 texture = ExtResource("7_lon5i")
+
+[node name="Player Manager" parent="." instance=ExtResource("9_yd26f")]
+position = Vector2(82, 319)
 
 [editable path="Chandelier"]

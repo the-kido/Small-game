@@ -5,6 +5,7 @@ using Game.ActorStatuses;
 using Game.Players;
 using Game.Damage;
 using System;
+using System.ComponentModel;
 
 namespace Game.Actors;
 
@@ -93,30 +94,37 @@ public abstract partial class Actor : CharacterBody2D {
     /// <Summary>
     /// Gap (in pixels) from the center of the actor
     /// </Summary>
-	public Player VisiblePlayer(int gap = 0) {
-        
-        /* Struggling to figure out this gap thing.
-        int[] raycastPoints = new int[] {gap/2, -gap/2};
-        
-        foreach (int )
-        */
+    int radius = 10;
+	public Player VisiblePlayer() {
+        Player visiblePlayer = null;
 
+        // This has a focus on detecting the players damageable component, not their movement hitbox!
         foreach (Player player in Player.Players) {
             if (player is null) continue;
             
+            for (int x = -1; x <= 1; x += 2) {
+                for (int y = -1; y <= 1; y += 2) {
+                    Vector2 from = GlobalPosition;
+                    Vector2 to = player.GlobalPosition;
 
-            var rayQuery = PhysicsRayQueryParameters2D.Create(
-                GlobalPosition, player.GlobalPosition, raycastCollisionMask, new Godot.Collections.Array<Rid> {GetRid()}
-            );
+                    var rayQuery = PhysicsRayQueryParameters2D.Create(
+                        from, to, raycastCollisionMask, new Godot.Collections.Array<Rid> {GetRid()}
+                    );
 
-            var result = GetWorld2D().DirectSpaceState.IntersectRay(rayQuery);
+                    var result = GetWorld2D().DirectSpaceState.IntersectRay(rayQuery);
 
-            //If the only thing between the player and the enemy is just that -- the enemy and player -- then we good.
-            if (result.Count > 0 && (Rid) result["collider"] == player.GetRid())
-                return player;
+                    // if (result.Count > 0) GD.Print(result["collider"]);
+                    
+                    //If the only thing between the player and the enemy is just that -- the enemy and player -- then we good.
+                    if (result.Count > 0 && (Rid) result["collider"] == player.GetRid()) visiblePlayer = player;
+                    else {
+                        // GD.Print("failed at ", x, y);
+                        return null;
+                    }
+                }
+            }
         }
-
-        return null;
+        return visiblePlayer;
     }
     
     #endregion

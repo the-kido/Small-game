@@ -46,6 +46,9 @@ layer_0/tile_data = PackedInt32Array(131072, 65536, 1, 65537, 65536, 1, 65536, 6
 [node name="WorldEnvironment" parent="Enviornment" index="2"]
 environment = ExtResource("4_21v4f")
 
+[node name="Camera" parent="Enviornment" index="3" node_paths=PackedStringArray("tileMap")]
+tileMap = NodePath("../Room")
+
 [node name="Y Sort" parent="." instance=ExtResource("3_37we6")]
 
 [node name="Gameplay" parent="Y Sort" instance=ExtResource("3_37we6")]
@@ -57,16 +60,24 @@ z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("8_5mkwa")
 
-[node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" instance=ExtResource("7_51kbw")]
+[node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape") instance=ExtResource("7_51kbw")]
 position = Vector2(373, 111)
+animationPlayer = NodePath("AnimationPlayer")
+Effect = NodePath("StatusEffectComponent")
+DamageableComponent = NodePath("Damageable")
+CollisionShape = NodePath("CollisionShape2D")
 
 [node name="EnemyWave2" type="Node2D" parent="Y Sort/Gameplay/Waves"]
 z_as_relative = false
 y_sort_enabled = true
 script = ExtResource("8_5mkwa")
 
-[node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave2" instance=ExtResource("7_51kbw")]
+[node name="Base Enemy" parent="Y Sort/Gameplay/Waves/EnemyWave2" node_paths=PackedStringArray("animationPlayer", "Effect", "DamageableComponent", "CollisionShape") instance=ExtResource("7_51kbw")]
 position = Vector2(238, 123)
+animationPlayer = NodePath("AnimationPlayer")
+Effect = NodePath("StatusEffectComponent")
+DamageableComponent = NodePath("Damageable")
+CollisionShape = NodePath("CollisionShape2D")
 
 [node name="Freeze Charge" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(214, 14)
@@ -74,8 +85,9 @@ position = Vector2(214, 14)
 [node name="Freeze Charge2" parent="Y Sort/Gameplay" instance=ExtResource("9_mgbxg")]
 position = Vector2(174, 40)
 
-[node name="Door 2" parent="Y Sort/Gameplay" instance=ExtResource("10_hj2w4")]
+[node name="Door 2" parent="Y Sort/Gameplay" node_paths=PackedStringArray("doorToOpen") instance=ExtResource("10_hj2w4")]
 position = Vector2(488, 86)
+doorToOpen = NodePath("StaticBody2D")
 
 [node name="LevelSwitcher" type="Node" parent="Y Sort/Gameplay/Door 2"]
 script = ExtResource("11_wydy7")

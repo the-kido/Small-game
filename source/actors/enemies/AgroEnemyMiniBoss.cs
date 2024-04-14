@@ -27,10 +27,12 @@ public sealed partial class AgroEnemyMiniBoss : Enemy {
         stateMachine.AddState(rushState, patrolState);
         stateMachine.AddState(patrolState, rushState);
 
-        stateMachine.ChangeState(patrolState);
 
         animationController.AddAnimation(new("RESET", 1), ref patrolState.IsIdle);
         animationController.AddAnimation(new("Running", 1), ref patrolState.IsMoving);
+        
+        // Switch state only after the events have been attached.
+        stateMachine.ChangeState(patrolState);
         
         // This isnt even needed? 
         // animationController.StopCurrentAnimation(ref rushState.OnStateChanged);

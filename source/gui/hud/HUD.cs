@@ -26,7 +26,6 @@ public partial class HUD : Control {
     public InteractableDescription InteractableDescription;
     [Export]
     public LevelEventDescription levelEventDescription;
-
     [Export]
     public HUDCover HUDCover;
     
