@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://source/gui/hud/HUD.cs" id="1_8tgmq"]
 [ext_resource type="Script" path="res://source/gui/hud/HealthHud.cs" id="2_nt4yp"]
 [ext_resource type="Texture2D" uid="uid://byv03qqrcqjh8" path="res://assets/gui/heart.png" id="3_b20hq"]
-[ext_resource type="Shader" path="res://assets/levels/debug/low_health.gdshader" id="3_k5oq5"]
+[ext_resource type="Shader" path="res://assets/levels/debug/low_health.gdshader" id="3_gdgu0"]
 [ext_resource type="Theme" uid="uid://ci4einl7b1225" path="res://assets/misc/theme.tres" id="3_mgucu"]
 [ext_resource type="Script" path="res://source/gui/hud/ToggleAttackButton.cs" id="4_13lqt"]
 [ext_resource type="Script" path="res://assets/levels/region-1/LowHealthShader.cs" id="4_ecsb2"]
@@ -27,7 +27,7 @@
 [sub_resource type="Theme" id="Theme_tsgnt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e2km3"]
-shader = ExtResource("3_k5oq5")
+shader = ExtResource("3_gdgu0")
 shader_parameter/starting = 0.0
 shader_parameter/r_displacement = Vector2(5, 5)
 shader_parameter/g_displacement = Vector2(5, -5)
@@ -414,7 +414,7 @@ InteractableDescription = NodePath("Interactable Description")
 levelEventDescription = NodePath("Level Event Description")
 HUDCover = NodePath("HUD Cover")
 
-[node name="Health" type="Control" parent="." node_paths=PackedStringArray("healthLable", "animationPlayer", "actualHealth", "healthDifference")]
+[node name="Health" type="Control" parent="." node_paths=PackedStringArray("healthLable", "animationPlayer", "actualHealth", "healthDifference", "lowHealthShader")]
 layout_mode = 1
 anchors_preset = 0
 offset_left = 10.0
@@ -427,11 +427,11 @@ healthLable = NodePath("Label")
 animationPlayer = NodePath("AnimationPlayer")
 actualHealth = NodePath("Control/Actual health")
 healthDifference = NodePath("Control/Health Diff")
+lowHealthShader = NodePath("CanvasLayer/Low health shader")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Health"]
 
 [node name="Low health shader" type="ColorRect" parent="Health/CanvasLayer"]
-visible = false
 material = SubResource("ShaderMaterial_e2km3")
 anchors_preset = 15
 anchor_right = 1.0
@@ -502,7 +502,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_1myxv")
 theme_override_styles/fill = SubResource("StyleBoxFlat_upocb")
 max_value = 1.0
 step = 0.001
-value = 0.34
+value = 1.0
 show_percentage = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Health"]

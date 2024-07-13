@@ -1,10 +1,6 @@
 using Godot;
 using Game.Players.Inputs;
 using System;
-using Game.SealedContent;
-using System.Drawing;
-using System.Reflection.Metadata;
-using System.ComponentModel;
 
 namespace Game.Players;
 

@@ -228,6 +228,7 @@ levelEventDescription = NodePath("Level Event Description")
 HUDCover = NodePath("HUD Cover")
 
 [node name="DEBUG" type="Control" parent="." node_paths=PackedStringArray("anySlider", "anyButton")]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 153.0
